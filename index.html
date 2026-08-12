@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Family Finance Manager - Pro Edition</title>
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PDF Generation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    
+    <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            --bg-body: #005A9E; --bg-app: #f4f7f6; --bg-sidebar: #ffffff; --bg-card: #ffffff; --bg-card-alt: #f8f9fa; --text-main: #1c4587; --text-muted: #7f8c8d; --text-accent: #27ae60; --border-color: #e0e0e0; --total-box: #1c4587; --hover-color: #e8eff5; --danger: #e74c3c;
+        }
+        [data-theme="dark"] {
+            --bg-body: #121212; --bg-app: #1e1e1e; --bg-sidebar: #252525; --bg-card: #2d2d2d; --bg-card-alt: #333333; --text-main: #e0e0e0; --text-muted: #aaaaaa; --text-accent: #4ade80; --border-color: #444444; --total-box: #1a1a1a; --hover-color: #3a3a3a; --danger: #ff6b6b;
+        }
+        [data-theme="green"] {
+            --bg-body: #145A32; --bg-app: #EAFAF1; --bg-sidebar: #ffffff; --bg-card: #ffffff; --bg-card-alt: #F8FFF9; --text-main: #196F3D; --text-muted: #7f8c8d; --text-accent: #d35400; --border-color: #ABEBC6; --total-box: #1E8449; --hover-color: #D5F5E3; --danger: #c0392b;
+        }
+        [data-theme="purple"] {
+            --bg-body: #4A235A; --bg-app: #F5EEF8; --bg-sidebar: #ffffff; --bg-card: #ffffff; --bg-card-alt: #F4ECF7; --text-main: #5B2C6F; --text-muted: #7f8c8d; --text-accent: #8E44AD; --border-color: #D7BDE2; --total-box: #6C3483; --hover-color: #E8DAEF; --danger: #e74c3c;
+        }
+        [data-theme="red"] {
+            --bg-body: #641E16; --bg-app: #FDEDEC; --bg-sidebar: #ffffff; --bg-card: #ffffff; --bg-card-alt: #FADBD8; --text-main: #78281F; --text-muted: #7f8c8d; --text-accent: #E74C3C; --border-color: #F5B7B1; --total-box: #922B21; --hover-color: #F2D7D5; --danger: #c0392b;
+        }
+        [data-theme="orange"] {
+            --bg-body: #D35400; --bg-app: #FEF5E7; --bg-sidebar: #ffffff; --bg-card: #ffffff; --bg-card-alt: #FDEBD0; --text-main: #CA6F1E; --text-muted: #7f8c8d; --text-accent: #E67E22; --border-color: #F8C471; --total-box: #D35400; --hover-color: #FAE5D3; --danger: #e74c3c;
+        }
+        [data-theme="teal"] {
+            --bg-body: #0E6251; --bg-app: #E8F8F5; --bg-sidebar: #ffffff; --bg-card: #ffffff; --bg-card-alt: #D1F2EB; --text-main: #117864; --text-muted: #7f8c8d; --text-accent: #1ABC9C; --border-color: #A3E4D7; --total-box: #148F77; --hover-color: #D0ECE7; --danger: #e74c3c;
+        }
+        [data-theme="pink"] {
+            --bg-body: #880E4F; --bg-app: #FCE4EC; --bg-sidebar: #ffffff; --bg-card: #ffffff; --bg-card-alt: #F8BBD0; --text-main: #AD1457; --text-muted: #7f8c8d; --text-accent: #E91E63; --border-color: #F48FB1; --total-box: #C2185B; --hover-color: #F8BBD0; --danger: #e74c3c;
+        }
+        [data-theme="brown"] {
+            --bg-body: #3E2723; --bg-app: #EFEBE9; --bg-sidebar: #ffffff; --bg-card: #ffffff; --bg-card-alt: #D7CCC8; --text-main: #4E342E; --text-muted: #7f8c8d; --text-accent: #795548; --border-color: #BCAAA4; --total-box: #5D4037; --hover-color: #D7CCC8; --danger: #e74c3c;
+        }
+        [data-theme="grey"] {
+            --bg-body: #263238; --bg-app: #ECEFF1; --bg-sidebar: #ffffff; --bg-card: #ffffff; --bg-card-alt: #CFD8DC; --text-main: #37474F; --text-muted: #7f8c8d; --text-accent: #607D8B; --border-color: #B0BEC5; --total-box: #455A64; --hover-color: #CFD8DC; --danger: #e74c3c;
+        }
+        [data-theme="cyberpunk"] {
+            --bg-body: #0d0221; --bg-app: #190028; --bg-sidebar: #0d0221; --bg-card: #20003b; --bg-card-alt: #2a004f; --text-main: #00ffcc; --text-muted: #ff007f; --text-accent: #fcee0a; --border-color: #ff007f; --total-box: #20003b; --hover-color: #3b006e; --danger: #ff0000;
+        }
+        [data-theme="gold"] {
+            --bg-body: #9A7D0A; --bg-app: #FEF9E7; --bg-sidebar: #ffffff; --bg-card: #ffffff; --bg-card-alt: #FCF3CF; --text-main: #B7950B; --text-muted: #7f8c8d; --text-accent: #D4AC0D; --border-color: #F4D03F; --total-box: #B7950B; --hover-color: #FCF3CF; --danger: #e74c3c;
+        }
+        [data-theme="disco"] {
+            --bg-body: #000000; --bg-app: #111111; --bg-sidebar: #222222; --bg-card: #000000; --bg-card-alt: #111111; --text-main: #ffffff; --text-muted: #aaaaaa; --text-accent: #00ff00; --border-color: #ff00ff; --total-box: #0000ff; --hover-color: #333333; --danger: #ff0000;
+        }
+
+        /* --- DISCO ANIMATIONS --- */
+        @keyframes discoBg { 0% { background-color: #ff00ff; } 20% { background-color: #00ffff; } 40% { background-color: #00ff00; } 60% { background-color: #ffff00; } 80% { background-color: #ff0000; } 100% { background-color: #0000ff; } }
+        @keyframes discoText { 0% { color: #ffff00; } 33% { color: #00ffff; } 66% { color: #ff00ff; } 100% { color: #00ff00; } }
+        @keyframes discoBorder { 0% { border-color: #00ff00; box-shadow: 0 0 15px #00ff00; } 50% { border-color: #ff00ff; box-shadow: 0 0 25px #ff00ff; } 100% { border-color: #00ffff; box-shadow: 0 0 15px #00ffff; } }
+        [data-theme="disco"] body { animation: discoBg 0.5s infinite alternate; }
+        [data-theme="disco"] .module-btn { animation: discoBg 0.7s infinite alternate-reverse, discoBorder 0.4s infinite; border-width: 3px; }
+        [data-theme="disco"] .total-box { animation: discoBg 0.3s infinite; border: 3px solid #fff; }
+        [data-theme="disco"] h1, [data-theme="disco"] h2, [data-theme="disco"] .module-icon { animation: discoText 0.4s infinite; }
+        [data-theme="disco"] .widget-card { animation: discoBorder 0.6s infinite alternate; }
+        [data-theme="disco"] .sidebar { animation: discoBorder 1s infinite alternate; }
+
+        /* --- BASE STYLES --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-body); display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; transition: background-color 0.4s ease; overflow: hidden; }
+        .app-window { background-color: var(--bg-app); width: 95vw; max-width: 1100px; height: 90vh; border-radius: 12px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); display: flex; position: relative; overflow: hidden; transition: all 0.4s ease; }
+
+        /* --- SIDEBAR --- */
+        .sidebar { width: 200px; background-color: var(--bg-sidebar); display: flex; flex-direction: column; justify-content: space-between; padding: 20px; border-right: 1px solid var(--border-color); z-index: 10; transition: all 0.3s ease; }
+        .menu-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .menu-btn { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 10px 15px; color: var(--text-main); font-weight: 600; font-size: 13px; text-align: left; cursor: pointer; box-shadow: 2px 2px 8px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 10px; transition: all 0.2s ease; position: relative; }
+        .menu-btn i { color: #f39c12; font-size: 14px; width: 20px; text-align: center; }
+        .menu-btn:hover, .menu-btn.active { background-color: var(--hover-color); transform: translateY(-2px); border-color: var(--text-main); }
+        .btn-cycle { background-color: var(--total-box); color: white; border: none; margin-top: 15px;}
+        .btn-cycle i { color: white; }
+        .btn-cycle:hover { filter: brightness(1.2); border-color: transparent;}
+        .menu-btn.danger { color: var(--danger); margin-top: 10px; }
+        .menu-btn.danger i { color: var(--danger); }
+        .menu-btn.danger:hover { background-color: transparent; border-color: var(--danger); }
+        .footer-info { font-size: 11px; color: var(--text-muted); font-weight: 600; line-height: 1.6; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { flex: 1; display: flex; position: relative; background-color: var(--bg-app); color: var(--text-main); overflow: hidden; }
+        .page { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 20px; animation: fadeIn 0.3s ease-in-out; }
+        .page.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- DASHBOARD VIEW --- */
+        #dashboard-page { flex-direction: row; padding: 0; }
+        .center-col { width: 280px; display: flex; flex-direction: column; align-items: center; padding: 20px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); overflow-y: auto; }
+        .logo-container { text-align: center; margin-bottom: 20px; }
+        .logo-container h1 { color: var(--text-main); font-size: 30px; font-weight: 900; letter-spacing: 1px; border-bottom: 3px solid var(--text-main); display: inline-block; margin-bottom: 5px; }
+        .logo-container h2 { color: var(--text-accent); font-size: 13px; font-weight: bold; }
+
+        /* --- FINANCIAL SUMMARY BOX --- */
+        .total-box {
+            background: var(--total-box); border-radius: 15px; width: 100%; padding: 15px;
+            text-align: center; color: white; box-shadow: 2px 5px 15px rgba(0,0,0,0.2);
+            margin-top: auto; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px;
+        }
+        .balance-main { border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; }
+        .balance-main h3 { font-size: 13px; font-weight: normal; margin-bottom: 5px; opacity: 0.9; }
+        .balance-main h2 { font-size: 28px; font-weight: bold; }
+        .balance-splits { display: flex; justify-content: space-between; }
+        .split-item { display: flex; flex-direction: column; align-items: flex-start; }
+        .split-item.right { align-items: flex-end; }
+        .split-item span { font-size: 10px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
+        .split-item .amt.inc { color: #4ade80; font-weight: bold; font-size: 14px;}
+        .split-item .amt.exp { color: #ff6b6b; font-weight: bold; font-size: 14px;}
+
+        /* --- CATEGORY GRID & TOGGLE --- */
+        .grid-wrapper { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+        .type-toggle-container { display: flex; justify-content: center; padding: 20px 20px 0; width: 100%; }
+        .type-toggle { display: flex; background: var(--bg-card); border-radius: 30px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); width: 100%; max-width: 400px; }
+        .toggle-btn { flex: 1; padding: 12px; text-align: center; cursor: pointer; font-weight: bold; font-size: 14px; color: var(--text-muted); transition: all 0.3s; }
+        .toggle-btn.active.inc { background: var(--text-accent); color: white; box-shadow: 0 2px 10px rgba(39,174,96,0.3); }
+        .toggle-btn.active.exp { background: var(--danger); color: white; box-shadow: 0 2px 10px rgba(231,76,60,0.3); }
+
+        .grid-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 20px 0; width: 100%; }
+        .grid-header h3 { color: var(--text-main); font-size: 16px; margin: 0; }
+        .btn-edit-toggle { background: var(--text-main); color: white; border: none; padding: 6px 14px; border-radius: 15px; cursor: pointer; font-weight: bold; font-size: 12px; transition: all 0.2s; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        
+        .grid-container { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 110px; gap: 15px; padding: 20px; align-content: start; }
+        .module-btn { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 15px; box-shadow: 2px 2px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s ease; position: relative; }
+        .module-btn:hover { transform: scale(1.05); box-shadow: 2px 5px 15px rgba(0,0,0,0.15); border-color: var(--text-main); }
+        .module-icon { font-size: 32px; margin-bottom: 12px; transition: transform 0.2s; }
+        .module-text { font-size: 12px; font-weight: 700; color: var(--text-muted); text-align: center; padding: 0 5px; line-height: 1.2;}
+        .module-btn.edit-mode { border: 2px dashed var(--text-main); }
+        .edit-badge { position: absolute; top: 8px; right: 8px; background: var(--text-main); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); pointer-events: none; }
+        .module-btn.add-btn { border: 2px dashed var(--text-muted); background: transparent; box-shadow: none; }
+
+        .c-blue { color: #3498db; } .c-red { color: #e74c3c; } .c-yellow { color: #f1c40f; } .c-orange { color: #e67e22; } .c-dark { color: #8e44ad; } .c-green { color: #27ae60; } .c-purple { color: #9b59b6; }
+
+        /* --- CATEGORY EDIT MODAL --- */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(3px); }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: var(--bg-app); width: 90%; max-width: 400px; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 15px; border: 1px solid var(--border-color); color: var(--text-main); }
+        .modal-header { font-size: 18px; font-weight: bold; margin-bottom: 5px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .modal-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-size: 16px; outline: none; }
+        .modal-input:focus { border-color: var(--text-accent); box-shadow: 0 0 5px rgba(39, 174, 96, 0.3);}
+        .selection-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; max-height: 160px; overflow-y: auto; padding: 5px; }
+        .select-item { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid transparent; background: var(--bg-card); box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: all 0.2s; font-size: 16px;}
+        .select-item:hover { transform: scale(1.1); }
+        .select-item.selected { border-color: var(--text-main); background: var(--hover-color); transform: scale(1.1); }
+        .color-item { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;}
+        .color-item.selected { border-color: var(--text-main); transform: scale(1.2); box-shadow: 0 0 8px rgba(0,0,0,0.3);}
+        .modal-actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 10px; }
+        .btn-modal { flex: 1; padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; font-size:14px; display:flex; justify-content:center; align-items:center; gap:5px;}
+        .btn-save { background: var(--text-main); color: white; }
+        .btn-cancel { background: var(--bg-card-alt); color: var(--text-muted); border: 1px solid var(--border-color); }
+        .btn-delete { background: var(--danger); color: white; flex: 0.3;}
+        .btn-modal:hover { filter: brightness(1.1); }
+        
+        .selection-grid::-webkit-scrollbar { width: 6px; }
+        .selection-grid::-webkit-scrollbar-track { background: var(--bg-card-alt); border-radius: 10px; }
+        .selection-grid::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+
+        /* --- HISTORY VIEW --- */
+        #history-page { flex-direction: column; }
+        .page-header { font-size: 24px; color: var(--text-main); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .table-container { flex: 1; overflow-y: auto; overflow-x: auto; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-card); }
+        table { width: 100%; border-collapse: collapse; min-width: 500px; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); color: var(--text-main); white-space: nowrap; }
+        th { background-color: var(--total-box); color: white; position: sticky; top: 0; }
+        tr:nth-child(even) { background-color: var(--bg-card-alt); }
+        tr:hover { background-color: var(--hover-color); }
+        .amt-cell.inc { font-weight: bold; color: var(--text-accent); }
+        .amt-cell.exp { font-weight: bold; color: var(--danger); }
+        .type-badge { padding: 4px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; text-transform: uppercase;}
+        .type-badge.inc { background: rgba(39, 174, 96, 0.2); color: var(--text-accent); }
+        .type-badge.exp { background: rgba(231, 76, 60, 0.2); color: var(--danger); }
+
+        /* --- THEMES PAGE --- */
+        #themes-page { flex-direction: column; align-items: center; padding-top: 30px;}
+        .theme-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px; width: 100%; overflow-y: auto; padding-bottom: 20px; }
+        .theme-card { background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .theme-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: var(--text-main); }
+        .theme-preview { width: 100%; height: 50px; border-radius: 6px; margin-bottom: 10px; border: 1px solid rgba(0,0,0,0.1); }
+        .theme-name { font-weight: bold; color: var(--text-main); font-size: 13px;}
+
+        /* --- EXPORT VIEW (INTERACTIVE NOTEBOOK) --- */
+        #export-page { display: none; align-items: center; justify-content: center; perspective: 1500px; background-color: #dcdde1; padding: 20px;}
+        .book-container { width: 100%; max-width: 450px; height: 500px; position: relative; transform-style: preserve-3d; margin: 0 auto; }
+        .book-cover { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--total-box); border-radius: 5px 15px 15px 5px; box-shadow: inset 4px 0 10px rgba(0,0,0,0.2), 5px 5px 15px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; transform-origin: left center; transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1); z-index: 5; cursor: pointer; border-left: 15px solid rgba(0,0,0,0.2); }
+        .book-cover i { font-size: 60px; margin-bottom: 20px; color: var(--text-accent); }
+        .book-cover h2 { margin-bottom: 10px; letter-spacing: 2px;}
+        .book-cover p { font-size: 14px; opacity: 0.8; margin-bottom: 30px; }
+        .click-to-open { animation: bounce 2s infinite; font-weight: bold; background: rgba(0,0,0,0.2); padding: 10px 20px; border-radius: 20px;}
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .book-inside { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #fdfbf7; border-radius: 5px 15px 15px 5px; box-shadow: inset 4px 0 10px rgba(0,0,0,0.1), 5px 5px 15px rgba(0,0,0,0.2); padding: 40px 30px 40px 60px; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background-image: linear-gradient(#a9cce3 1px, transparent 1px); background-size: 100% 30px; line-height: 30px; }
+        .book-inside::before { content: ''; position: absolute; top: 0; bottom: 0; left: 40px; width: 2px; background-color: #e74c3c; opacity: 0.6; }
+        .book-inside h3 { color: #2c3e50; margin-bottom: 20px; font-family: 'Courier New', Courier, monospace; z-index: 2;}
+        .btn-large { background: var(--text-accent); color: white; border: none; padding: 15px 30px; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: all 0.2s; display: inline-flex; align-items: center; gap: 10px; z-index: 2; margin-top: 20px; }
+        .btn-large:hover { filter: brightness(0.9); transform: translateY(-2px); }
+        .book-cover.open { transform: rotateY(-130deg); }
+
+        /* =========================================
+           MOBILE RESPONSIVENESS ENGINE
+           ========================================= */
+        @media (max-width: 768px) {
+            body { padding: 0; background: var(--bg-body); }
+            .app-window { width: 100%; max-width: none; height: 100vh; border-radius: 0; flex-direction: column; box-shadow: none; }
+            .sidebar { width: 100%; height: auto; padding: 5px 10px; border-right: none; border-top: 1px solid var(--border-color); order: 2; background: var(--bg-sidebar); z-index: 1000; }
+            .sidebar > div:first-child { width: 100%; }
+            .menu-list { flex-direction: row; margin-top: 0; gap: 0; justify-content: space-between; overflow-x: auto; }
+            .menu-btn { flex-direction: column; padding: 8px 5px; flex: 1; min-width: 60px; border: none; background: transparent; box-shadow: none; gap: 4px; }
+            .menu-btn i { font-size: 20px; width: 100%; }
+            .menu-btn span { font-size: 10px; display: block; white-space: nowrap;}
+            .menu-btn.active { background-color: var(--hover-color); border-radius: 12px; }
+            .btn-cycle { background-color: transparent; color: var(--text-main); margin-top: 0;}
+            .menu-btn.danger { margin-top: 0; }
+            .footer-info { display: none; }
+            .main-content { order: 1; height: calc(100vh - 65px); }
+            #dashboard-page { flex-direction: column; overflow-y: auto; }
+            .center-col { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); padding: 15px; flex-shrink: 0; }
+            .grid-wrapper { overflow: visible; }
+            .grid-container { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 100px; padding: 15px; }
+            .theme-grid { grid-template-columns: repeat(2, 1fr); }
+            .book-container { height: 400px; max-width: 320px; }
+            .selection-grid { grid-template-columns: repeat(5, 1fr) !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-window">
+        
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div>
+                <div class="menu-list">
+                    <button class="menu-btn active" id="btn-dashboard" onclick="switchPage('dashboard')">
+                        <i class="fas fa-chart-pie"></i> <span>Dashboard</span>
+                    </button>
+                    <button class="menu-btn" id="btn-history" onclick="switchPage('history')">
+                        <i class="fas fa-list"></i> <span>History</span>
+                    </button>
+                    <button class="menu-btn" id="btn-themes" onclick="switchPage('themes')">
+                        <i class="fas fa-palette"></i> <span>Themes</span>
+                    </button>
+                    <button class="menu-btn" id="btn-export" onclick="switchPage('export')">
+                        <i class="fas fa-book"></i> <span>Export</span>
+                    </button>
+                    <button class="menu-btn btn-cycle" onclick="cycleTheme()">
+                        <i class="fas fa-magic"></i> <span>Change</span>
+                    </button>
+                    <button class="menu-btn danger" onclick="resetData()">
+                        <i class="fas fa-trash-alt"></i> <span>Reset</span>
+                    </button>
+                </div>
+            </div>
+            <div class="footer-info">
+                <div>Status: Active</div>
+                <div>Storage: LocalDB</div>
+                <div>Version: 12.0 Final Pro</div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+
+            <!-- DASHBOARD PAGE -->
+            <div id="dashboard-page" class="page active">
+                
+                <!-- Center Column (Summary) -->
+                <div class="center-col">
+                    <div class="logo-container">
+                        <h1>TRACKER</h1>
+                        <h2>Family Finance</h2>
+                    </div>
+
+                    <!-- TOTAL BOX WITH INCOME/EXPENSE SPLIT -->
+                    <div class="total-box">
+                        <div class="balance-main">
+                            <h3>Available Balance</h3>
+                            <h2 id="total-balance">₹0.00</h2>
+                        </div>
+                        <div class="balance-splits">
+                            <div class="split-item">
+                                <span>Income</span>
+                                <div class="amt inc" id="total-income">+₹0.00</div>
+                            </div>
+                            <div class="split-item right">
+                                <span>Expenses</span>
+                                <div class="amt exp" id="total-expense">-₹0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CATEGORY GRID AREA -->
+                <div class="grid-wrapper">
+                    
+                    <!-- Toggle Switch -->
+                    <div class="type-toggle-container">
+                        <div class="type-toggle">
+                            <div class="toggle-btn active exp" id="tab-expense" onclick="switchGridType('expense')">Expenses</div>
+                            <div class="toggle-btn" id="tab-income" onclick="switchGridType('income')">Income</div>
+                        </div>
+                    </div>
+
+                    <div class="grid-header">
+                        <h3 id="grid-title">Expense Categories</h3>
+                        <button id="btn-toggle-edit" class="btn-edit-toggle" onclick="toggleEditMode()">
+                            <i class="fas fa-pen"></i> Edit
+                        </button>
+                    </div>
+                    <div class="grid-container" id="category-grid"></div>
+                </div>
+            </div>
+
+            <!-- HISTORY PAGE -->
+            <div id="history-page" class="page">
+                <div class="page-header">
+                    <span>Transaction History</span>
+                    <span id="history-count" style="font-size: 14px; color: var(--text-muted);">0 Entries</span>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Type</th>
+                                <th>Category</th>
+                                <th>Amount (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- THEMES PAGE -->
+            <div id="themes-page" class="page">
+                <div class="page-header" style="width:100%;"><span>Select a Theme</span></div>
+                <p style="color: var(--text-muted);">Pick from 13 unique colour schemes.</p>
+                <div class="theme-grid" id="theme-grid-container"></div>
+            </div>
+
+            <!-- EXPORT PAGE (NOTEBOOK) -->
+            <div id="export-page" class="page" style="display:none; background: #2c3e50;">
+                <div class="book-container">
+                    <div class="book-inside">
+                        <h3>Ready to Export!</h3>
+                        <p style="text-align:center; color:#7f8c8d; font-size:13px; font-weight:bold; line-height:30px;">
+                            Clicking the button below will generate a realistic Notebook PDF containing all your incomes and expenses.
+                        </p>
+                        <button class="btn-large" onclick="exportNotebookPDF()">
+                            <i class="fas fa-download"></i> Save Notebook PDF
+                        </button>
+                    </div>
+                    <div class="book-cover" id="bookCover" onclick="turnPage()">
+                        <i class="fas fa-book-open"></i>
+                        <h2>FAMILY LEDGER</h2>
+                        <p>Income & Expenses</p>
+                        <div class="click-to-open">Tap to Open</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CUSTOM CATEGORY EDITOR MODAL -->
+    <div class="modal-overlay" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-title">Edit Category</div>
+            
+            <input type="text" id="modal-cat-name" class="modal-input" placeholder="Category Name (e.g. Electricity)" autocomplete="off">
+            
+            <div style="font-size:12px; font-weight:bold; color:var(--text-muted); margin-top:5px;">Select Icon / Logo:</div>
+            <div class="selection-grid" id="modal-icon-grid"></div>
+            
+            <div style="font-size:12px; font-weight:bold; color:var(--text-muted); margin-top:5px;">Select Color:</div>
+            <div class="selection-grid" id="modal-color-grid" style="grid-template-columns: repeat(7, 1fr); max-height:none;"></div>
+
+            <div class="modal-actions">
+                <button class="btn-modal btn-delete" id="modal-btn-delete" onclick="deleteCategoryFromModal()"><i class="fas fa-trash"></i></button>
+                <button class="btn-modal btn-cancel" onclick="closeCategoryModal()">Cancel</button>
+                <button class="btn-modal btn-save" onclick="saveCategoryFromModal()">Save Category</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- CATEGORIES (INCOME & EXPENSE) ---
+        const defaultCategories = [
+            { name: "My Salary (Petrol Bunk)", icon: "fas fa-gas-pump", color: "c-green", type: "income" },
+            { name: "My Salary (Instagram)", icon: "fas fa-camera-retro", color: "c-blue", type: "income" },
+            { name: "Mom's Salary", icon: "fas fa-female", color: "c-purple", type: "income" },
+            { name: "Dad's Salary", icon: "fas fa-male", color: "c-orange", type: "income" },
+            
+            { name: "Food & Groceries", icon: "fas fa-utensils", color: "c-orange", type: "expense" },
+            { name: "Fuel & Transport", icon: "fas fa-car", color: "c-red", type: "expense" },
+            { name: "Mobile & Internet", icon: "fas fa-mobile-alt", color: "c-blue", type: "expense" },
+            { name: "Family & Home", icon: "fas fa-home", color: "c-green", type: "expense" },
+            { name: "Movies & Media", icon: "fas fa-film", color: "c-dark", type: "expense" },
+            { name: "Shopping", icon: "fas fa-shopping-bag", color: "c-yellow", type: "expense" },
+            { name: "Miscellaneous", icon: "fas fa-wallet", color: "c-dark", type: "expense" }
+        ];
+
+        let categories = JSON.parse(localStorage.getItem('financeCategories')) || defaultCategories;
+        let currentGridType = 'expense'; 
+        let isEditMode = false;
+
+        function saveCategories() { localStorage.setItem('financeCategories', JSON.stringify(categories)); }
+
+        function switchGridType(type) {
+            currentGridType = type;
+            document.getElementById('tab-expense').className = `toggle-btn ${type === 'expense' ? 'active exp' : ''}`;
+            document.getElementById('tab-income').className = `toggle-btn ${type === 'income' ? 'active inc' : ''}`;
+            document.getElementById('grid-title').innerText = type === 'expense' ? 'Expense Categories' : 'Income Sources';
+            renderCategories();
+        }
+
+        function renderCategories() {
+            const grid = document.getElementById('category-grid');
+            grid.innerHTML = '';
+            
+            const filteredCategories = categories.filter(c => c.type === currentGridType);
+
+            filteredCategories.forEach((cat) => {
+                let originalIndex = categories.indexOf(cat);
+                let extraClass = isEditMode ? 'edit-mode' : '';
+                let badgeHTML = isEditMode ? '<div class="edit-badge"><i class="fas fa-pencil-alt"></i></div>' : '';
+                grid.innerHTML += `<div class="module-btn ${extraClass}" onclick="handleCategoryClick(${originalIndex})"><i class="${cat.icon} module-icon ${cat.color}"></i><span class="module-text">${cat.name}</span>${badgeHTML}</div>`;
+            });
+            
+            if (isEditMode) {
+                grid.innerHTML += `<div class="module-btn add-btn" onclick="addNewCategory()"><i class="fas fa-plus module-icon" style="color:var(--text-muted)"></i><span class="module-text">Add New</span></div>`;
+            }
+        }
+
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            const btn = document.getElementById('btn-toggle-edit');
+            if (isEditMode) { btn.innerHTML = '<i class="fas fa-check"></i> Done'; btn.style.background = 'var(--text-main)'; } 
+            else { btn.innerHTML = '<i class="fas fa-pen"></i> Edit'; btn.style.background = 'var(--text-main)'; }
+            renderCategories();
+        }
+
+        function handleCategoryClick(index) {
+            if (isEditMode) openCategoryModal(index);
+            else addTransaction(categories[index].name, categories[index].type);
+        }
+        function addNewCategory() { openCategoryModal(null); }
+
+        // --- CUSTOM MODAL LOGIC FOR CHANGING LOGO & COLOR ---
+        const iconLibrary = [
+            'fas fa-utensils', 'fas fa-gas-pump', 'fas fa-mobile-alt', 'fas fa-home', 'fas fa-film',
+            'fas fa-shopping-bag', 'fas fa-wallet', 'fas fa-car', 'fas fa-plane', 'fas fa-heart',
+            'fas fa-gift', 'fas fa-briefcase', 'fas fa-money-bill-wave', 'fas fa-graduation-cap',
+            'fas fa-laptop', 'fas fa-tshirt', 'fas fa-pills', 'fas fa-gamepad', 'fas fa-paw',
+            'fas fa-baby', 'fas fa-bus', 'fas fa-train', 'fas fa-wrench', 'fas fa-dumbbell',
+            'fas fa-coffee', 'fas fa-bolt', 'fas fa-music', 'fas fa-camera-retro', 'fas fa-coins', 'fas fa-star'
+        ];
+        
+        const colorLibrary = [
+            { class: 'c-blue', hex: '#3498db' }, { class: 'c-red', hex: '#e74c3c' },
+            { class: 'c-yellow', hex: '#f1c40f' }, { class: 'c-orange', hex: '#e67e22' },
+            { class: 'c-dark', hex: '#2c3e50' }, { class: 'c-green', hex: '#27ae60' },
+            { class: 'c-purple', hex: '#9b59b6' }
+        ];
+
+        let editingCategoryIndex = null;
+        let selectedIcon = '';
+        let selectedColor = '';
+
+        function initModalGrids() {
+            const iconGrid = document.getElementById('modal-icon-grid');
+            iconGrid.innerHTML = iconLibrary.map(icon => `<div class="select-item" onclick="selectModalIcon('${icon}')" data-icon="${icon}"><i class="${icon}" style="color:var(--text-muted)"></i></div>`).join('');
+            
+            const colorGrid = document.getElementById('modal-color-grid');
+            colorGrid.innerHTML = colorLibrary.map(c => `<div class="color-item" onclick="selectModalColor('${c.class}')" data-color="${c.class}" style="background-color:${c.hex}"></div>`).join('');
+        }
+
+        function selectModalIcon(icon) {
+            selectedIcon = icon;
+            document.querySelectorAll('#modal-icon-grid .select-item').forEach(el => el.classList.remove('selected'));
+            document.querySelector(`#modal-icon-grid .select-item[data-icon="${icon}"]`).classList.add('selected');
+        }
+
+        function selectModalColor(colorClass) {
+            selectedColor = colorClass;
+            document.querySelectorAll('#modal-color-grid .color-item').forEach(el => el.classList.remove('selected'));
+            document.querySelector(`#modal-color-grid .color-item[data-color="${colorClass}"]`).classList.add('selected');
+        }
+
+        function openCategoryModal(index = null) {
+            editingCategoryIndex = index;
+            document.getElementById('categoryModal').classList.add('active');
+            
+            if (index !== null) { 
+                let cat = categories[index];
+                document.getElementById('modal-title').innerText = "Edit Category";
+                document.getElementById('modal-cat-name').value = cat.name;
+                document.getElementById('modal-btn-delete').style.display = 'block';
+                
+                let targetIcon = iconLibrary.includes(cat.icon) ? cat.icon : iconLibrary[0];
+                selectModalIcon(targetIcon);
+                selectModalColor(cat.color || colorLibrary[0].class);
+            } else { 
+                let titleType = currentGridType === 'income' ? 'Income' : 'Expense';
+                document.getElementById('modal-title').innerText = `New ${titleType} Category`;
+                document.getElementById('modal-cat-name').value = '';
+                document.getElementById('modal-btn-delete').style.display = 'none';
+                
+                selectModalIcon(iconLibrary[Math.floor(Math.random() * iconLibrary.length)]);
+                selectModalColor(colorLibrary[Math.floor(Math.random() * colorLibrary.length)].class);
+            }
+        }
+
+        function closeCategoryModal() { document.getElementById('categoryModal').classList.remove('active'); }
+
+        function saveCategoryFromModal() {
+            let name = document.getElementById('modal-cat-name').value.trim();
+            if (!name) { alert("Please enter a category name."); return; }
+            
+            if (editingCategoryIndex !== null) {
+                categories[editingCategoryIndex].name = name;
+                categories[editingCategoryIndex].icon = selectedIcon;
+                categories[editingCategoryIndex].color = selectedColor;
+            } else {
+                categories.push({ name: name, icon: selectedIcon, color: selectedColor, type: currentGridType });
+            }
+            saveCategories(); renderCategories(); closeCategoryModal();
+        }
+
+        function deleteCategoryFromModal() {
+            if (confirm("Are you sure you want to delete this category?")) {
+                categories.splice(editingCategoryIndex, 1);
+                saveCategories(); renderCategories(); closeCategoryModal();
+            }
+        }
+
+        // --- THEME ENGINE ---
+        const themeList = [
+            { id: 'default', name: 'Ocean Blue', color: '#005A9E' }, { id: 'dark', name: 'Midnight Dark', color: '#121212' },
+            { id: 'green', name: 'Emerald Green', color: '#145A32' }, { id: 'purple', name: 'Royal Purple', color: '#4A235A' },
+            { id: 'red', name: 'Crimson Red', color: '#641E16' }, { id: 'orange', name: 'Sunset Orange', color: '#D35400' },
+            { id: 'teal', name: 'Mint Teal', color: '#0E6251' }, { id: 'pink', name: 'Sakura Pink', color: '#880E4F' },
+            { id: 'brown', name: 'Coffee Brown', color: '#3E2723' }, { id: 'grey', name: 'Slate Grey', color: '#263238' },
+            { id: 'cyberpunk', name: 'Cyberpunk', color: '#0d0221' }, { id: 'gold', name: 'Golden Mustard', color: '#9A7D0A' },
+            { id: 'disco', name: 'Blinking Disco', color: '#ff00ff' } 
+        ];
+
+        let currentThemeIndex = themeList.findIndex(t => t.id === (localStorage.getItem('appTheme') || 'default'));
+        if(currentThemeIndex === -1) currentThemeIndex = 0;
+        document.documentElement.setAttribute('data-theme', themeList[currentThemeIndex].id);
+
+        function setTheme(themeId) { document.documentElement.setAttribute('data-theme', themeId); localStorage.setItem('appTheme', themeId); currentThemeIndex = themeList.findIndex(t => t.id === themeId); }
+        function cycleTheme() { currentThemeIndex = (currentThemeIndex + 1) % themeList.length; setTheme(themeList[currentThemeIndex].id); }
+
+        const themeGrid = document.getElementById('theme-grid-container');
+        themeList.forEach(theme => {
+            const card = document.createElement('div');
+            card.className = 'theme-card'; card.onclick = () => setTheme(theme.id);
+            let previewClass = theme.id === 'disco' ? 'theme-preview disco-preview' : 'theme-preview';
+            card.innerHTML = `<div class="${previewClass}" style="background: ${theme.color};"></div><div class="theme-name">${theme.name}</div>`;
+            themeGrid.appendChild(card);
+        });
+
+        // --- CORE APPLICATION LOGIC (Transactions) ---
+        let transactions = JSON.parse(localStorage.getItem('transactionsDB')) || [];
+        let legacyExpenses = JSON.parse(localStorage.getItem('expensesDB'));
+        if (legacyExpenses && transactions.length === 0) {
+            transactions = legacyExpenses.map(item => ({...item, type: 'expense'}));
+            localStorage.removeItem('expensesDB'); saveData();
+        }
+
+        initModalGrids();
+        updateUI(); 
+        renderCategories();
+
+        function switchPage(pageName) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+            
+            if(pageName === 'export') {
+                document.getElementById('export-page').style.display = 'flex';
+                document.getElementById('bookCover').classList.remove('open');
+            } else {
+                document.getElementById('export-page').style.display = 'none';
+            }
+
+            document.getElementById(`${pageName}-page`).classList.add('active');
+            if(pageName !== 'reset' && pageName !== 'cycle') document.getElementById(`btn-${pageName}`).classList.add('active');
+            if(pageName === 'history') renderHistoryTable();
+            if(isEditMode && pageName !== 'dashboard') toggleEditMode();
+        }
+
+        function turnPage() { document.getElementById('bookCover').classList.add('open'); }
+
+        function addTransaction(category, type) {
+            let actionText = type === 'income' ? 'received from' : 'spent on';
+            let amountStr = prompt(`Enter amount ${actionText} ${category} (₹):`);
+            
+            if (amountStr !== null && amountStr.trim() !== "") {
+                let amount = parseFloat(amountStr);
+                if (!isNaN(amount) && amount > 0) {
+                    let newEntry = { date: new Date().toLocaleString('en-GB'), category: category, amount: amount, type: type };
+                    transactions.push(newEntry); saveData(); updateUI();
+                } else alert("Please enter a valid number greater than 0.");
+            }
+        }
+
+        function resetData() { if (confirm("WARNING: Are you sure you want to delete ALL transaction records permanently?")) { transactions = []; saveData(); updateUI(); renderHistoryTable(); switchPage('dashboard'); } }
+        function saveData() { localStorage.setItem('transactionsDB', JSON.stringify(transactions)); }
+        
+        function updateUI() {
+            let totalIncome = transactions.filter(t => t.type === 'income').reduce((sum, item) => sum + item.amount, 0);
+            let totalExpense = transactions.filter(t => t.type === 'expense').reduce((sum, item) => sum + item.amount, 0);
+            let balance = totalIncome - totalExpense;
+
+            document.getElementById('total-balance').innerText = '₹' + balance.toFixed(2);
+            document.getElementById('total-income').innerText = '+₹' + totalIncome.toFixed(2);
+            document.getElementById('total-expense').innerText = '-₹' + totalExpense.toFixed(2);
+            document.getElementById('history-count').innerText = `${transactions.length} Entries`;
+        }
+
+        function renderHistoryTable() {
+            const tbody = document.getElementById('history-table-body'); tbody.innerHTML = ''; 
+            if (transactions.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">No transactions logged yet.</td></tr>`; return; }
+            
+            for (let i = transactions.length - 1; i >= 0; i--) {
+                let entry = transactions[i];
+                let isInc = entry.type === 'income';
+                let typeBadge = `<span class="type-badge ${isInc ? 'inc' : 'exp'}">${isInc ? 'Income' : 'Expense'}</span>`;
+                let amtDisplay = `${isInc ? '+' : '-'}₹${entry.amount.toFixed(2)}`;
+                
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.date}</td>
+                    <td>${typeBadge}</td>
+                    <td>${entry.category}</td>
+                    <td class="amt-cell ${isInc ? 'inc' : 'exp'}">${amtDisplay}</td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        // --- NOTEBOOK PDF GENERATOR ---
+        function exportNotebookPDF() {
+            if (transactions.length === 0) { alert("There is no data to export."); return; }
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'pt', 'a4'); 
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+
+            doc.setFillColor(253, 251, 247); doc.rect(0, 0, pageWidth, pageHeight, 'F');
+            doc.setDrawColor(231, 76, 60); doc.setLineWidth(1.5); doc.line(80, 0, 80, pageHeight); 
+            doc.setDrawColor(169, 204, 227); doc.setLineWidth(1);
+            let startY = 120; let lineSpacing = 30; 
+            for (let y = startY; y < pageHeight; y += lineSpacing) { doc.line(0, y, pageWidth, y); }
+
+            doc.setFont("courier", "bold"); doc.setFontSize(22); doc.setTextColor(44, 62, 80); 
+            doc.text("GOKUL'S FAMILY LEDGER", 100, 60);
+            doc.setFontSize(12); doc.setTextColor(100, 100, 100); doc.text(`Printed: ${new Date().toLocaleString('en-GB')}`, 100, 80);
+            
+            let totalInc = transactions.filter(t => t.type === 'income').reduce((sum, item) => sum + item.amount, 0);
+            let totalExp = transactions.filter(t => t.type === 'expense').reduce((sum, item) => sum + item.amount, 0);
+            let bal = totalInc - totalExp;
+            
+            doc.setFontSize(14); doc.setTextColor(39, 174, 96); doc.text(`Net Balance: Rs. ${bal.toFixed(2)}`, 100, 100);
+
+            doc.setFont("courier", "bold"); doc.setFontSize(12); doc.setTextColor(30, 30, 30);
+            let currentY = startY + 20; 
+            doc.text("DATE & TIME", 90, currentY); doc.text("CATEGORY", 270, currentY); doc.text("AMOUNT", 450, currentY);
+            currentY += lineSpacing;
+            doc.setFont("courier", "normal");
+
+            for (let i = 0; i < transactions.length; i++) {
+                let item = transactions[i];
+                if (currentY > pageHeight - 30) {
+                    doc.addPage(); doc.setFillColor(253, 251, 247); doc.rect(0, 0, pageWidth, pageHeight, 'F');
+                    doc.setDrawColor(231, 76, 60); doc.setLineWidth(1.5); doc.line(80, 0, 80, pageHeight);
+                    doc.setDrawColor(169, 204, 227); doc.setLineWidth(1);
+                    for (let y = 30; y < pageHeight; y += lineSpacing) { doc.line(0, y, pageWidth, y); }
+                    currentY = 30 + 20; 
+                }
+                
+                // Displays full Date AND Time in the PDF
+                doc.text(item.date, 90, currentY);
+                
+                let catText = item.category.length > 18 ? item.category.substring(0, 18) + "..." : item.category;
+                doc.text(catText, 270, currentY);
+                
+                if(item.type === 'income') {
+                    doc.setTextColor(39, 174, 96); doc.text(`+ Rs. ${item.amount.toFixed(2)}`, 450, currentY);
+                } else {
+                    doc.setTextColor(231, 76, 60); doc.text(`- Rs. ${item.amount.toFixed(2)}`, 450, currentY);
+                }
+                doc.setTextColor(30, 30, 30); 
+                currentY += lineSpacing; 
+            }
+            doc.save('My_Family_Ledger.pdf');
+        }
+    </script>
+</body>
+</html>
