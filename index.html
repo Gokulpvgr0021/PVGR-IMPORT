@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Family Finance Manager - Pro Edition</title>
+    <title>Family Finance Manager - Ultimate Edition</title>
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- PDF Generation Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <!-- Chart.js for Pie Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         /* --- THEME VARIABLES --- */
@@ -58,25 +60,31 @@
         @keyframes discoBorder { 0% { border-color: #00ff00; box-shadow: 0 0 15px #00ff00; } 50% { border-color: #ff00ff; box-shadow: 0 0 25px #ff00ff; } 100% { border-color: #00ffff; box-shadow: 0 0 15px #00ffff; } }
         [data-theme="disco"] body { animation: discoBg 0.5s infinite alternate; }
         [data-theme="disco"] .module-btn { animation: discoBg 0.7s infinite alternate-reverse, discoBorder 0.4s infinite; border-width: 3px; }
-        [data-theme="disco"] .total-box { animation: discoBg 0.3s infinite; border: 3px solid #fff; }
-        [data-theme="disco"] h1, [data-theme="disco"] h2, [data-theme="disco"] .module-icon { animation: discoText 0.4s infinite; }
-        [data-theme="disco"] .widget-card { animation: discoBorder 0.6s infinite alternate; }
+        [data-theme="disco"] .total-box, [data-theme="disco"] .chart-box, [data-theme="disco"] .id-card { animation: discoBg 0.3s infinite; border: 3px solid #fff; }
+        [data-theme="disco"] h1, [data-theme="disco"] h2, [data-theme="disco"] .module-icon, [data-theme="disco"] .id-name { animation: discoText 0.4s infinite; }
         [data-theme="disco"] .sidebar { animation: discoBorder 1s infinite alternate; }
+
+        /* --- CUSTOM CURSOR EFFECTS --- */
+        * { cursor: none !important; }
+        #cursor-dot { position: fixed; width: 8px; height: 8px; background-color: var(--text-accent); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); transition: background-color 0.3s, transform 0.1s; box-shadow: 0 0 10px var(--text-accent); }
+        #cursor-ring { position: fixed; width: 30px; height: 30px; border: 2px solid var(--text-accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: left 0.1s ease-out, top 0.1s ease-out, transform 0.2s ease, border-color 0.3s, opacity 0.2s; box-shadow: 0 0 15px rgba(0,0,0,0.2); }
+        body.clicking #cursor-ring { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+        body.clicking #cursor-dot { transform: translate(-50%, -50%) scale(0.5); }
+        @media (pointer: coarse) { * { cursor: auto !important; } #cursor-dot, #cursor-ring { display: none !important; } }
 
         /* --- BASE STYLES --- */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-body); display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; transition: background-color 0.4s ease; overflow: hidden; }
-        .app-window { background-color: var(--bg-app); width: 95vw; max-width: 1100px; height: 90vh; border-radius: 12px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); display: flex; position: relative; overflow: hidden; transition: all 0.4s ease; }
+        .app-window { background-color: var(--bg-app); width: 95vw; max-width: 1150px; height: 90vh; border-radius: 12px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); display: flex; position: relative; overflow: hidden; transition: all 0.4s ease; }
 
         /* --- SIDEBAR --- */
         .sidebar { width: 200px; background-color: var(--bg-sidebar); display: flex; flex-direction: column; justify-content: space-between; padding: 20px; border-right: 1px solid var(--border-color); z-index: 10; transition: all 0.3s ease; }
         .menu-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-        .menu-btn { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 10px 15px; color: var(--text-main); font-weight: 600; font-size: 13px; text-align: left; cursor: pointer; box-shadow: 2px 2px 8px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 10px; transition: all 0.2s ease; position: relative; }
+        .menu-btn { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 10px 15px; color: var(--text-main); font-weight: 600; font-size: 13px; text-align: left; box-shadow: 2px 2px 8px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 10px; transition: all 0.2s ease; position: relative; }
         .menu-btn i { color: #f39c12; font-size: 14px; width: 20px; text-align: center; }
         .menu-btn:hover, .menu-btn.active { background-color: var(--hover-color); transform: translateY(-2px); border-color: var(--text-main); }
         .btn-cycle { background-color: var(--total-box); color: white; border: none; margin-top: 15px;}
         .btn-cycle i { color: white; }
-        .btn-cycle:hover { filter: brightness(1.2); border-color: transparent;}
         .menu-btn.danger { color: var(--danger); margin-top: 10px; }
         .menu-btn.danger i { color: var(--danger); }
         .menu-btn.danger:hover { background-color: transparent; border-color: var(--danger); }
@@ -90,16 +98,48 @@
 
         /* --- DASHBOARD VIEW --- */
         #dashboard-page { flex-direction: row; padding: 0; }
-        .center-col { width: 280px; display: flex; flex-direction: column; align-items: center; padding: 20px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); overflow-y: auto; }
+        .center-col { width: 300px; display: flex; flex-direction: column; align-items: center; padding: 20px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); overflow-y: auto; }
+        .center-col::-webkit-scrollbar { width: 5px; }
+        .center-col::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 10px; }
+        
         .logo-container { text-align: center; margin-bottom: 20px; }
         .logo-container h1 { color: var(--text-main); font-size: 30px; font-weight: 900; letter-spacing: 1px; border-bottom: 3px solid var(--text-main); display: inline-block; margin-bottom: 5px; }
         .logo-container h2 { color: var(--text-accent); font-size: 13px; font-weight: bold; }
+
+        /* --- PROFILE ID CARD --- */
+        .id-card {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 15px; width: 100%; padding: 15px; margin-bottom: 15px;
+            box-shadow: 2px 5px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column;
+            align-items: center; gap: 8px; position: relative; overflow: hidden;
+            text-align: center; transition: all 0.3s;
+        }
+        .id-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 50px;
+            background: linear-gradient(135deg, var(--text-main), var(--text-accent)); z-index: 0;
+        }
+        .btn-edit-profile {
+            position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.3); color: white;
+            border: none; width: 26px; height: 26px; border-radius: 50%; z-index: 5;
+            display: flex; align-items: center; justify-content: center; font-size: 12px; transition: 0.3s;
+        }
+        .btn-edit-profile:hover { background: var(--danger); transform: scale(1.1); }
+        .id-photo {
+            width: 65px; height: 65px; border-radius: 50%; background: var(--bg-card);
+            border: 3px solid var(--bg-card); display: flex; justify-content: center; align-items: center;
+            font-size: 35px; color: var(--text-main); z-index: 1; margin-top: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden;
+        }
+        .id-name { font-size: 18px; font-weight: 900; color: var(--text-main); letter-spacing: 1px; z-index: 1;}
+        .id-role { font-size: 11px; font-weight: bold; color: var(--text-accent); z-index: 1; background: var(--bg-card-alt); padding: 4px 10px; border-radius: 10px; border: 1px solid var(--border-color);}
+        .id-info { display: flex; gap: 15px; font-size: 11px; color: var(--text-muted); z-index: 1; margin-top: 5px; font-weight: 600;}
 
         /* --- FINANCIAL SUMMARY BOX --- */
         .total-box {
             background: var(--total-box); border-radius: 15px; width: 100%; padding: 15px;
             text-align: center; color: white; box-shadow: 2px 5px 15px rgba(0,0,0,0.2);
-            margin-top: auto; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px;
+            border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px;
+            margin-bottom: 15px;
         }
         .balance-main { border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; }
         .balance-main h3 { font-size: 13px; font-weight: normal; margin-bottom: 5px; opacity: 0.9; }
@@ -111,20 +151,30 @@
         .split-item .amt.inc { color: #4ade80; font-weight: bold; font-size: 14px;}
         .split-item .amt.exp { color: #ff6b6b; font-weight: bold; font-size: 14px;}
 
+        /* --- CHART BOX --- */
+        .chart-box {
+            background: var(--bg-card); border-radius: 15px; width: 100%; padding: 15px;
+            border: 1px solid var(--border-color); box-shadow: 2px 5px 15px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 220px; position: relative; margin-bottom: 20px;
+        }
+        .chart-title { font-size: 12px; font-weight: bold; color: var(--text-main); margin-bottom: 10px; width: 100%; text-align: left; }
+        .chart-container { width: 100%; height: 100%; position: relative; }
+
         /* --- CATEGORY GRID & TOGGLE --- */
         .grid-wrapper { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
         .type-toggle-container { display: flex; justify-content: center; padding: 20px 20px 0; width: 100%; }
         .type-toggle { display: flex; background: var(--bg-card); border-radius: 30px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); width: 100%; max-width: 400px; }
-        .toggle-btn { flex: 1; padding: 12px; text-align: center; cursor: pointer; font-weight: bold; font-size: 14px; color: var(--text-muted); transition: all 0.3s; }
+        .toggle-btn { flex: 1; padding: 12px; text-align: center; font-weight: bold; font-size: 14px; color: var(--text-muted); transition: all 0.3s; }
         .toggle-btn.active.inc { background: var(--text-accent); color: white; box-shadow: 0 2px 10px rgba(39,174,96,0.3); }
         .toggle-btn.active.exp { background: var(--danger); color: white; box-shadow: 0 2px 10px rgba(231,76,60,0.3); }
 
         .grid-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 20px 0; width: 100%; }
         .grid-header h3 { color: var(--text-main); font-size: 16px; margin: 0; }
-        .btn-edit-toggle { background: var(--text-main); color: white; border: none; padding: 6px 14px; border-radius: 15px; cursor: pointer; font-weight: bold; font-size: 12px; transition: all 0.2s; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .btn-edit-toggle { background: var(--text-main); color: white; border: none; padding: 6px 14px; border-radius: 15px; font-weight: bold; font-size: 12px; transition: all 0.2s; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         
         .grid-container { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 110px; gap: 15px; padding: 20px; align-content: start; }
-        .module-btn { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 15px; box-shadow: 2px 2px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: all 0.2s ease; position: relative; }
+        .module-btn { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 15px; box-shadow: 2px 2px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: center; align-items: center; transition: all 0.2s ease; position: relative; }
         .module-btn:hover { transform: scale(1.05); box-shadow: 2px 5px 15px rgba(0,0,0,0.15); border-color: var(--text-main); }
         .module-icon { font-size: 32px; margin-bottom: 12px; transition: transform 0.2s; }
         .module-text { font-size: 12px; font-weight: 700; color: var(--text-muted); text-align: center; padding: 0 5px; line-height: 1.2;}
@@ -134,26 +184,29 @@
 
         .c-blue { color: #3498db; } .c-red { color: #e74c3c; } .c-yellow { color: #f1c40f; } .c-orange { color: #e67e22; } .c-dark { color: #8e44ad; } .c-green { color: #27ae60; } .c-purple { color: #9b59b6; }
 
-        /* --- CATEGORY EDIT MODAL --- */
+        /* --- MODALS --- */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(3px); }
         .modal-overlay.active { display: flex; }
         .modal-content { background: var(--bg-app); width: 90%; max-width: 400px; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 15px; border: 1px solid var(--border-color); color: var(--text-main); }
-        .modal-header { font-size: 18px; font-weight: bold; margin-bottom: 5px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .modal-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-size: 16px; outline: none; }
+        .modal-header { font-size: 18px; font-weight: bold; margin-bottom: 5px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; text-align: center; }
+        .modal-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-size: 14px; outline: none; }
         .modal-input:focus { border-color: var(--text-accent); box-shadow: 0 0 5px rgba(39, 174, 96, 0.3);}
+        
         .selection-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; max-height: 160px; overflow-y: auto; padding: 5px; }
-        .select-item { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid transparent; background: var(--bg-card); box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: all 0.2s; font-size: 16px;}
+        .select-item { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid transparent; background: var(--bg-card); box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: all 0.2s; font-size: 16px;}
         .select-item:hover { transform: scale(1.1); }
         .select-item.selected { border-color: var(--text-main); background: var(--hover-color); transform: scale(1.1); }
-        .color-item { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.2s;}
+        .color-item { width: 30px; height: 30px; border-radius: 50%; border: 2px solid transparent; transition: all 0.2s;}
         .color-item.selected { border-color: var(--text-main); transform: scale(1.2); box-shadow: 0 0 8px rgba(0,0,0,0.3);}
+        
         .modal-actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 10px; }
-        .btn-modal { flex: 1; padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; font-size:14px; display:flex; justify-content:center; align-items:center; gap:5px;}
+        .btn-modal { flex: 1; padding: 12px; border-radius: 8px; border: none; font-weight: bold; transition: 0.2s; font-size:14px; display:flex; justify-content:center; align-items:center; gap:5px;}
         .btn-save { background: var(--text-main); color: white; }
         .btn-cancel { background: var(--bg-card-alt); color: var(--text-muted); border: 1px solid var(--border-color); }
         .btn-delete { background: var(--danger); color: white; flex: 0.3;}
         .btn-modal:hover { filter: brightness(1.1); }
-        
+
+        .profile-upload-area { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; }
         .selection-grid::-webkit-scrollbar { width: 6px; }
         .selection-grid::-webkit-scrollbar-track { background: var(--bg-card-alt); border-radius: 10px; }
         .selection-grid::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
@@ -176,7 +229,7 @@
         /* --- THEMES PAGE --- */
         #themes-page { flex-direction: column; align-items: center; padding-top: 30px;}
         .theme-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px; width: 100%; overflow-y: auto; padding-bottom: 20px; }
-        .theme-card { background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .theme-card { background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 12px; padding: 15px; text-align: center; transition: all 0.3s; }
         .theme-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: var(--text-main); }
         .theme-preview { width: 100%; height: 50px; border-radius: 6px; margin-bottom: 10px; border: 1px solid rgba(0,0,0,0.1); }
         .theme-name { font-weight: bold; color: var(--text-main); font-size: 13px;}
@@ -184,16 +237,16 @@
         /* --- EXPORT VIEW (INTERACTIVE NOTEBOOK) --- */
         #export-page { display: none; align-items: center; justify-content: center; perspective: 1500px; background-color: #dcdde1; padding: 20px;}
         .book-container { width: 100%; max-width: 450px; height: 500px; position: relative; transform-style: preserve-3d; margin: 0 auto; }
-        .book-cover { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--total-box); border-radius: 5px 15px 15px 5px; box-shadow: inset 4px 0 10px rgba(0,0,0,0.2), 5px 5px 15px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; transform-origin: left center; transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1); z-index: 5; cursor: pointer; border-left: 15px solid rgba(0,0,0,0.2); }
+        .book-cover { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--total-box); border-radius: 5px 15px 15px 5px; box-shadow: inset 4px 0 10px rgba(0,0,0,0.2), 5px 5px 15px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; transform-origin: left center; transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1); z-index: 5; border-left: 15px solid rgba(0,0,0,0.2); cursor: pointer;}
         .book-cover i { font-size: 60px; margin-bottom: 20px; color: var(--text-accent); }
-        .book-cover h2 { margin-bottom: 10px; letter-spacing: 2px;}
+        .book-cover h2 { margin-bottom: 10px; letter-spacing: 2px; text-align:center;}
         .book-cover p { font-size: 14px; opacity: 0.8; margin-bottom: 30px; }
         .click-to-open { animation: bounce 2s infinite; font-weight: bold; background: rgba(0,0,0,0.2); padding: 10px 20px; border-radius: 20px;}
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .book-inside { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #fdfbf7; border-radius: 5px 15px 15px 5px; box-shadow: inset 4px 0 10px rgba(0,0,0,0.1), 5px 5px 15px rgba(0,0,0,0.2); padding: 40px 30px 40px 60px; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background-image: linear-gradient(#a9cce3 1px, transparent 1px); background-size: 100% 30px; line-height: 30px; }
         .book-inside::before { content: ''; position: absolute; top: 0; bottom: 0; left: 40px; width: 2px; background-color: #e74c3c; opacity: 0.6; }
         .book-inside h3 { color: #2c3e50; margin-bottom: 20px; font-family: 'Courier New', Courier, monospace; z-index: 2;}
-        .btn-large { background: var(--text-accent); color: white; border: none; padding: 15px 30px; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: all 0.2s; display: inline-flex; align-items: center; gap: 10px; z-index: 2; margin-top: 20px; }
+        .btn-large { background: var(--text-accent); color: white; border: none; padding: 15px 30px; border-radius: 30px; font-size: 16px; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: all 0.2s; display: inline-flex; align-items: center; gap: 10px; z-index: 2; margin-top: 20px; }
         .btn-large:hover { filter: brightness(0.9); transform: translateY(-2px); }
         .book-cover.open { transform: rotateY(-130deg); }
 
@@ -226,6 +279,10 @@
 </head>
 <body>
 
+    <!-- CUSTOM CURSOR DOM ELEMENTS -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
     <div class="app-window">
         
         <!-- SIDEBAR -->
@@ -255,7 +312,7 @@
             <div class="footer-info">
                 <div>Status: Active</div>
                 <div>Storage: LocalDB</div>
-                <div>Version: 12.0 Final Pro</div>
+                <div>Version: 17.0 Profile Complete</div>
             </div>
         </div>
 
@@ -265,11 +322,27 @@
             <!-- DASHBOARD PAGE -->
             <div id="dashboard-page" class="page active">
                 
-                <!-- Center Column (Summary) -->
+                <!-- Center Column (Summary & Chart) -->
                 <div class="center-col">
+                    
                     <div class="logo-container">
                         <h1>TRACKER</h1>
                         <h2>Family Finance</h2>
+                    </div>
+
+                    <!-- PROFILE ID CARD -->
+                    <div class="id-card">
+                        <button class="btn-edit-profile" onclick="openProfileModal()"><i class="fas fa-pen"></i></button>
+                        <div class="id-photo" id="profile-photo-container">
+                            <i class="fas fa-user-tie" id="profile-icon"></i>
+                            <img id="profile-img" src="" style="display:none; width:100%; height:100%; border-radius:50%; object-fit:cover;">
+                        </div>
+                        <div class="id-name" id="profile-name">GOKUL</div>
+                        <div class="id-role" id="profile-role">Influencer & Petrol Bunk Staff</div>
+                        <div class="id-info">
+                            <span><i class="fas fa-id-badge"></i> ID: <span id="profile-id">TVGR</span></span>
+                            <span><i class="fas fa-ruler-vertical"></i> Ht: <span id="profile-ht">5'4"</span></span>
+                        </div>
                     </div>
 
                     <!-- TOTAL BOX WITH INCOME/EXPENSE SPLIT -->
@@ -287,6 +360,14 @@
                                 <span>Expenses</span>
                                 <div class="amt exp" id="total-expense">-₹0.00</div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- DYNAMIC PIE CHART CONTAINER -->
+                    <div class="chart-box">
+                        <div class="chart-title" id="chart-title-text">Expense Breakdown</div>
+                        <div class="chart-container">
+                            <canvas id="financeChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -336,7 +417,7 @@
             <!-- THEMES PAGE -->
             <div id="themes-page" class="page">
                 <div class="page-header" style="width:100%;"><span>Select a Theme</span></div>
-                <p style="color: var(--text-muted);">Pick from 13 unique colour schemes.</p>
+                <p style="color: var(--text-muted);">Pick from 13 unique colour schemes. Colors naturally sync to cursor and chart!</p>
                 <div class="theme-grid" id="theme-grid-container"></div>
             </div>
 
@@ -354,7 +435,7 @@
                     </div>
                     <div class="book-cover" id="bookCover" onclick="turnPage()">
                         <i class="fas fa-book-open"></i>
-                        <h2>FAMILY LEDGER</h2>
+                        <h2 id="export-cover-title">FAMILY LEDGER</h2>
                         <p>Income & Expenses</p>
                         <div class="click-to-open">Tap to Open</div>
                     </div>
@@ -385,8 +466,117 @@
         </div>
     </div>
 
+    <!-- PROFILE EDITOR MODAL -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">Edit Profile</div>
+            
+            <div class="profile-upload-area">
+                <img id="modal-profile-preview" src="" style="display:none; width:80px; height:80px; border-radius:50%; object-fit:cover; margin:0 auto; border:3px solid var(--text-accent);">
+                <i class="fas fa-user-circle" id="modal-profile-icon" style="font-size: 70px; color: var(--text-muted); text-align:center; display:block;"></i>
+                
+                <input type="file" id="profile-image-upload" accept="image/*" onchange="handleImageUpload(event)" style="display:none;">
+                
+                <div style="display:flex; gap:10px; margin-top:10px; width: 100%;">
+                    <button class="btn-modal btn-save" style="flex:1; font-size:12px;" onclick="document.getElementById('profile-image-upload').click()"><i class="fas fa-upload"></i> Upload</button>
+                    <button class="btn-modal btn-cancel" style="flex:1; font-size:12px;" onclick="removeProfileImage()"><i class="fas fa-times"></i> Remove</button>
+                </div>
+            </div>
+            
+            <input type="text" id="modal-prof-name" class="modal-input" placeholder="Name">
+            <input type="text" id="modal-prof-role" class="modal-input" placeholder="Role / Job Title">
+            
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="modal-prof-id" class="modal-input" placeholder="ID Number">
+                <input type="text" id="modal-prof-ht" class="modal-input" placeholder="Height (e.g. 5'4&quot;)">
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-modal btn-cancel" onclick="closeProfileModal()">Cancel</button>
+                <button class="btn-modal btn-save" onclick="saveProfile()">Save Profile</button>
+            </div>
+        </div>
+    </div>
+
     <!-- JAVASCRIPT LOGIC -->
     <script>
+        // --- CUSTOM CURSOR ENGINE ---
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorRing = document.getElementById('cursor-ring');
+
+        document.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = e.clientX + 'px'; cursorDot.style.top = e.clientY + 'px';
+            cursorRing.style.left = e.clientX + 'px'; cursorRing.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mousedown', () => document.body.classList.add('clicking'));
+        document.addEventListener('mouseup', () => document.body.classList.remove('clicking'));
+
+        // --- PROFILE ENGINE ---
+        const defaultProfile = { name: "GOKUL", role: "Influencer & Petrol Bunk Staff", idStr: "TVGR", height: "5'4\"", image: null };
+        let userProfile = JSON.parse(localStorage.getItem('userProfile')) || defaultProfile;
+        let tempBase64Image = null;
+
+        function renderProfile() {
+            document.getElementById('profile-name').innerText = userProfile.name.toUpperCase();
+            document.getElementById('profile-role').innerText = userProfile.role;
+            document.getElementById('profile-id').innerText = userProfile.idStr;
+            document.getElementById('profile-ht').innerText = userProfile.height;
+            document.getElementById('export-cover-title').innerText = `${userProfile.name.toUpperCase()}'S LEDGER`;
+            
+            const imgEl = document.getElementById('profile-img');
+            const iconEl = document.getElementById('profile-icon');
+            
+            if (userProfile.image) {
+                imgEl.src = userProfile.image; imgEl.style.display = 'block'; iconEl.style.display = 'none';
+            } else {
+                imgEl.style.display = 'none'; iconEl.style.display = 'block';
+            }
+        }
+
+        function openProfileModal() {
+            document.getElementById('profileModal').classList.add('active');
+            document.getElementById('modal-prof-name').value = userProfile.name;
+            document.getElementById('modal-prof-role').value = userProfile.role;
+            document.getElementById('modal-prof-id').value = userProfile.idStr;
+            document.getElementById('modal-prof-ht').value = userProfile.height;
+            tempBase64Image = userProfile.image;
+            updateModalProfilePreview();
+        }
+
+        function closeProfileModal() { document.getElementById('profileModal').classList.remove('active'); }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) { tempBase64Image = e.target.result; updateModalProfilePreview(); }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeProfileImage() { tempBase64Image = null; updateModalProfilePreview(); }
+
+        function updateModalProfilePreview() {
+            const previewImg = document.getElementById('modal-profile-preview');
+            const previewIcon = document.getElementById('modal-profile-icon');
+            if (tempBase64Image) {
+                previewImg.src = tempBase64Image; previewImg.style.display = 'block'; previewIcon.style.display = 'none';
+            } else {
+                previewImg.style.display = 'none'; previewIcon.style.display = 'block';
+            }
+        }
+
+        function saveProfile() {
+            userProfile.name = document.getElementById('modal-prof-name').value.trim() || 'User';
+            userProfile.role = document.getElementById('modal-prof-role').value.trim() || 'Role';
+            userProfile.idStr = document.getElementById('modal-prof-id').value.trim() || 'ID';
+            userProfile.height = document.getElementById('modal-prof-ht').value.trim() || 'Ht';
+            userProfile.image = tempBase64Image;
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+            renderProfile(); closeProfileModal();
+        }
+
         // --- CATEGORIES (INCOME & EXPENSE) ---
         const defaultCategories = [
             { name: "My Salary (Petrol Bunk)", icon: "fas fa-gas-pump", color: "c-green", type: "income" },
@@ -414,7 +604,9 @@
             document.getElementById('tab-expense').className = `toggle-btn ${type === 'expense' ? 'active exp' : ''}`;
             document.getElementById('tab-income').className = `toggle-btn ${type === 'income' ? 'active inc' : ''}`;
             document.getElementById('grid-title').innerText = type === 'expense' ? 'Expense Categories' : 'Income Sources';
+            
             renderCategories();
+            updateChart(); // Make chart dynamic based on tab
         }
 
         function renderCategories() {
@@ -552,8 +744,16 @@
         if(currentThemeIndex === -1) currentThemeIndex = 0;
         document.documentElement.setAttribute('data-theme', themeList[currentThemeIndex].id);
 
-        function setTheme(themeId) { document.documentElement.setAttribute('data-theme', themeId); localStorage.setItem('appTheme', themeId); currentThemeIndex = themeList.findIndex(t => t.id === themeId); }
-        function cycleTheme() { currentThemeIndex = (currentThemeIndex + 1) % themeList.length; setTheme(themeList[currentThemeIndex].id); }
+        function setTheme(themeId) { 
+            document.documentElement.setAttribute('data-theme', themeId); 
+            localStorage.setItem('appTheme', themeId); 
+            currentThemeIndex = themeList.findIndex(t => t.id === themeId); 
+            updateChart(); 
+        }
+        function cycleTheme() { 
+            currentThemeIndex = (currentThemeIndex + 1) % themeList.length; 
+            setTheme(themeList[currentThemeIndex].id); 
+        }
 
         const themeGrid = document.getElementById('theme-grid-container');
         themeList.forEach(theme => {
@@ -566,13 +766,9 @@
 
         // --- CORE APPLICATION LOGIC (Transactions) ---
         let transactions = JSON.parse(localStorage.getItem('transactionsDB')) || [];
-        let legacyExpenses = JSON.parse(localStorage.getItem('expensesDB'));
-        if (legacyExpenses && transactions.length === 0) {
-            transactions = legacyExpenses.map(item => ({...item, type: 'expense'}));
-            localStorage.removeItem('expensesDB'); saveData();
-        }
-
+        
         initModalGrids();
+        renderProfile();
         updateUI(); 
         renderCategories();
 
@@ -590,6 +786,7 @@
             document.getElementById(`${pageName}-page`).classList.add('active');
             if(pageName !== 'reset' && pageName !== 'cycle') document.getElementById(`btn-${pageName}`).classList.add('active');
             if(pageName === 'history') renderHistoryTable();
+            if(pageName === 'dashboard') updateChart();
             if(isEditMode && pageName !== 'dashboard') toggleEditMode();
         }
 
@@ -611,6 +808,77 @@
         function resetData() { if (confirm("WARNING: Are you sure you want to delete ALL transaction records permanently?")) { transactions = []; saveData(); updateUI(); renderHistoryTable(); switchPage('dashboard'); } }
         function saveData() { localStorage.setItem('transactionsDB', JSON.stringify(transactions)); }
         
+        // --- DYNAMIC CHART ENGINE WITH PERCENTAGES ---
+        let myPieChart = null;
+
+        function updateChart() {
+            const ctx = document.getElementById('financeChart').getContext('2d');
+            
+            // DYNAMIC: Filter data based on the currently selected tab (Expense or Income)
+            const chartData = transactions.filter(t => t.type === currentGridType);
+            const catTotals = {};
+            chartData.forEach(t => { catTotals[t.category] = (catTotals[t.category] || 0) + t.amount; });
+
+            const labels = Object.keys(catTotals);
+            const data = Object.values(catTotals);
+            const chartColors = ['#e74c3c', '#3498db', '#f1c40f', '#e67e22', '#9b59b6', '#27ae60', '#1abc9c', '#34495e', '#e91e63'];
+
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-theme') === 'cyberpunk' || document.documentElement.getAttribute('data-theme') === 'disco';
+            const textColor = isDark ? '#aaaaaa' : '#7f8c8d';
+
+            // DYNAMIC: Update Title based on tab
+            document.getElementById('chart-title-text').innerText = currentGridType === 'expense' ? 'Expense Breakdown' : 'Income Breakdown';
+
+            if (myPieChart) {
+                myPieChart.data.labels = labels.length ? labels : [`No ${currentGridType === 'expense' ? 'Expenses' : 'Income'} Yet`];
+                myPieChart.data.datasets[0].data = data.length ? data : [1];
+                myPieChart.data.datasets[0].backgroundColor = data.length ? chartColors : ['#e0e0e0'];
+                myPieChart.options.plugins.legend.labels.color = textColor;
+                myPieChart.update();
+            } else {
+                myPieChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels.length ? labels : [`No ${currentGridType === 'expense' ? 'Expenses' : 'Income'} Yet`],
+                        datasets: [{
+                            data: data.length ? data : [1],
+                            backgroundColor: data.length ? chartColors : ['#e0e0e0'],
+                            borderWidth: 2,
+                            borderColor: 'transparent',
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '65%',
+                        plugins: {
+                            legend: { 
+                                display: true, 
+                                position: 'right',
+                                labels: { color: textColor, font: { size: 10, family: "'Segoe UI', sans-serif" }, boxWidth: 10 }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        if(!data.length) return ' ₹0.00';
+                                        
+                                        // Calculate Percentage
+                                        let sum = 0;
+                                        let dataArr = context.chart.data.datasets[0].data;
+                                        dataArr.map(data => { sum += data; });
+                                        let percentage = (context.raw * 100 / sum).toFixed(1) + "%";
+                                        
+                                        return ' ₹' + context.raw.toFixed(2) + ' (' + percentage + ')';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
         function updateUI() {
             let totalIncome = transactions.filter(t => t.type === 'income').reduce((sum, item) => sum + item.amount, 0);
             let totalExpense = transactions.filter(t => t.type === 'expense').reduce((sum, item) => sum + item.amount, 0);
@@ -620,6 +888,8 @@
             document.getElementById('total-income').innerText = '+₹' + totalIncome.toFixed(2);
             document.getElementById('total-expense').innerText = '-₹' + totalExpense.toFixed(2);
             document.getElementById('history-count').innerText = `${transactions.length} Entries`;
+            
+            updateChart();
         }
 
         function renderHistoryTable() {
@@ -658,7 +928,7 @@
             for (let y = startY; y < pageHeight; y += lineSpacing) { doc.line(0, y, pageWidth, y); }
 
             doc.setFont("courier", "bold"); doc.setFontSize(22); doc.setTextColor(44, 62, 80); 
-            doc.text("GOKUL'S FAMILY LEDGER", 100, 60);
+            doc.text(`${userProfile.name.toUpperCase()}'S LEDGER`, 100, 60);
             doc.setFontSize(12); doc.setTextColor(100, 100, 100); doc.text(`Printed: ${new Date().toLocaleString('en-GB')}`, 100, 80);
             
             let totalInc = transactions.filter(t => t.type === 'income').reduce((sum, item) => sum + item.amount, 0);
@@ -683,9 +953,7 @@
                     currentY = 30 + 20; 
                 }
                 
-                // Displays full Date AND Time in the PDF
                 doc.text(item.date, 90, currentY);
-                
                 let catText = item.category.length > 18 ? item.category.substring(0, 18) + "..." : item.category;
                 doc.text(catText, 270, currentY);
                 
@@ -697,7 +965,7 @@
                 doc.setTextColor(30, 30, 30); 
                 currentY += lineSpacing; 
             }
-            doc.save('My_Family_Ledger.pdf');
+            doc.save(`${userProfile.name}_Ledger.pdf`);
         }
     </script>
 </body>
