@@ -143,24 +143,27 @@ print("Icons successfully created!")
             width: 100%; padding: 15px; margin-bottom: 15px; box-shadow: 2px 5px 15px rgba(0,0,0,0.05);
             transition: all 0.3s;
         }
-        .digital-clock-container {
-            text-align: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);
-        }
-        .digit-time {
-            font-size: 28px; font-weight: 900; color: var(--text-main); font-family: 'Courier New', Courier, monospace; letter-spacing: 2px;
-        }
-        .digit-date {
-            font-size: 11px; font-weight: bold; color: var(--text-accent); text-transform: uppercase; letter-spacing: 1px; margin-top: 5px;
-        }
+        .digital-clock-container { text-align: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .digit-time { font-size: 28px; font-weight: 900; color: var(--text-main); font-family: 'Courier New', Courier, monospace; letter-spacing: 2px; }
+        .digit-date { font-size: 11px; font-weight: bold; color: var(--text-accent); text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
         .calendar-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: var(--text-main); font-size: 13px; margin-bottom: 8px; }
         .calendar-header button { background: none; border: none; cursor: pointer; color: var(--text-accent); font-weight: bold; font-size: 14px; padding: 0 5px; transition: 0.2s;}
         .calendar-header button:hover { transform: scale(1.2); }
         .calendar-days { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 10px; color: var(--text-muted); margin-bottom: 5px; font-weight: bold; }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 11px; gap: 2px; }
-        .cal-day { padding: 4px 0; border-radius: 4px; cursor: default; color: var(--text-main); transition: background 0.2s;}
+        
+        .cal-day { padding: 4px 0; border-radius: 4px; cursor: pointer; color: var(--text-main); transition: background 0.2s; position: relative;}
         .cal-day.today { background-color: var(--text-accent); color: white; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         .cal-day:hover:not(.empty) { background-color: var(--hover-color); }
-        .cal-day.empty { background: transparent; }
+        .cal-day.empty { background: transparent; cursor: default; }
+        
+        /* Holiday/Festival Dot Indicators */
+        .cal-day.holiday { color: var(--danger); font-weight: bold; }
+        .cal-day.holiday::after {
+            content: ''; position: absolute; bottom: 2px; left: 50%;
+            transform: translateX(-50%); width: 4px; height: 4px;
+            border-radius: 50%; background-color: var(--danger);
+        }
 
         /* --- PROFILE ID CARD --- */
         .id-card {
@@ -368,7 +371,7 @@ print("Icons successfully created!")
             <div class="footer-info">
                 <div>Status: Active</div>
                 <div>Storage: LocalDB</div>
-                <div>Version: Final Ultra App</div>
+                <div>Version: 18.1 Final Edit</div>
             </div>
         </div>
 
@@ -573,9 +576,17 @@ print("Icons successfully created!")
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // --- CLOCK & CALENDAR ENGINE ---
+        // --- CLOCK & CALENDAR ENGINE (WITH HOLIDAYS) ---
         let currentCalDate = new Date(); 
         const actualToday = new Date(); 
+
+        // 2026 Tamil Nadu Holidays / Festivals Database
+        const holidays2026 = {
+            "1-1": "New Year", "1-13": "Bhogi", "1-14": "Pongal", "1-15": "Thiruvalluvar Day",
+            "1-16": "Kaanum Pongal", "1-26": "Republic Day", "2-20": "Ramzan", "4-14": "Tamil New Year",
+            "5-1": "May Day", "8-15": "Independence Day", "10-2": "Gandhi Jayanti",
+            "10-19": "Saraswati Pooja", "10-20": "Ayudha Pooja", "11-8": "Diwali", "12-25": "Christmas"
+        };
 
         function startDigitalClock() {
             setInterval(() => {
@@ -607,7 +618,14 @@ print("Icons successfully created!")
             for (let i = 0; i < firstDay; i++) grid.innerHTML += `<div class="cal-day empty"></div>`;
             for (let i = 1; i <= daysInMonth; i++) {
                 let isToday = (i === actualToday.getDate() && month === actualToday.getMonth() && year === actualToday.getFullYear()) ? 'today' : '';
-                grid.innerHTML += `<div class="cal-day ${isToday}">${i}</div>`;
+                
+                // Holiday Logic
+                let dateKey = `${month + 1}-${i}`;
+                let holidayName = (year === 2026 && holidays2026[dateKey]) ? holidays2026[dateKey] : null;
+                let isHolidayClass = holidayName ? 'holiday' : '';
+                let tooltip = holidayName ? `title="${holidayName}"` : '';
+
+                grid.innerHTML += `<div class="cal-day ${isToday} ${isHolidayClass}" ${tooltip}>${i}</div>`;
             }
         }
 
