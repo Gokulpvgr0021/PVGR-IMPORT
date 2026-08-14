@@ -25,6 +25,16 @@ print("Icons successfully created!")
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Family Finance Manager - Ultimate Edition</title>
+    
+    <!-- SINGLE FILE APP TRICK: iOS & Android Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PVGR Finance">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#005A9E">
+    <!-- Encoded Mini-Manifest to force Standalone Mode -->
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiUFZHUiBGaW5hbmNlIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJ0aGVtZV9jb2xvciI6IiMwMDVBOUUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzAwNUE5RSJ9">
+
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- PDF Generation Libraries -->
@@ -81,8 +91,8 @@ print("Icons successfully created!")
         @keyframes discoBorder { 0% { border-color: #00ff00; box-shadow: 0 0 15px #00ff00; } 50% { border-color: #ff00ff; box-shadow: 0 0 25px #ff00ff; } 100% { border-color: #00ffff; box-shadow: 0 0 15px #00ffff; } }
         [data-theme="disco"] body { animation: discoBg 0.5s infinite alternate; }
         [data-theme="disco"] .module-btn { animation: discoBg 0.7s infinite alternate-reverse, discoBorder 0.4s infinite; border-width: 3px; }
-        [data-theme="disco"] .total-box, [data-theme="disco"] .chart-box, [data-theme="disco"] .id-card { animation: discoBg 0.3s infinite; border: 3px solid #fff; }
-        [data-theme="disco"] h1, [data-theme="disco"] h2, [data-theme="disco"] .module-icon, [data-theme="disco"] .id-name { animation: discoText 0.4s infinite; }
+        [data-theme="disco"] .total-box, [data-theme="disco"] .chart-box, [data-theme="disco"] .id-card, [data-theme="disco"] .calendar-widget { animation: discoBg 0.3s infinite; border: 3px solid #fff; }
+        [data-theme="disco"] h1, [data-theme="disco"] h2, [data-theme="disco"] .module-icon, [data-theme="disco"] .id-name, [data-theme="disco"] .digit-time { animation: discoText 0.4s infinite; }
         [data-theme="disco"] .sidebar { animation: discoBorder 1s infinite alternate; }
 
         /* --- CUSTOM CURSOR EFFECTS --- */
@@ -127,33 +137,58 @@ print("Icons successfully created!")
         .logo-container h1 { color: var(--text-main); font-size: 30px; font-weight: 900; letter-spacing: 1px; border-bottom: 3px solid var(--text-main); display: inline-block; margin-bottom: 5px; }
         .logo-container h2 { color: var(--text-accent); font-size: 13px; font-weight: bold; }
 
+        /* --- CALENDAR & DIGITAL CLOCK --- */
+        .calendar-widget {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 15px;
+            width: 100%; padding: 15px; margin-bottom: 15px; box-shadow: 2px 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        .digital-clock-container {
+            text-align: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);
+        }
+        .digit-time {
+            font-size: 28px; font-weight: 900; color: var(--text-main); font-family: 'Courier New', Courier, monospace; letter-spacing: 2px;
+        }
+        .digit-date {
+            font-size: 11px; font-weight: bold; color: var(--text-accent); text-transform: uppercase; letter-spacing: 1px; margin-top: 5px;
+        }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: var(--text-main); font-size: 13px; margin-bottom: 8px; }
+        .calendar-header button { background: none; border: none; cursor: pointer; color: var(--text-accent); font-weight: bold; font-size: 14px; padding: 0 5px; transition: 0.2s;}
+        .calendar-header button:hover { transform: scale(1.2); }
+        .calendar-days { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 10px; color: var(--text-muted); margin-bottom: 5px; font-weight: bold; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 11px; gap: 2px; }
+        .cal-day { padding: 4px 0; border-radius: 4px; cursor: default; color: var(--text-main); transition: background 0.2s;}
+        .cal-day.today { background-color: var(--text-accent); color: white; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .cal-day:hover:not(.empty) { background-color: var(--hover-color); }
+        .cal-day.empty { background: transparent; }
+
         /* --- PROFILE ID CARD --- */
         .id-card {
             background: var(--bg-card); border: 1px solid var(--border-color);
             border-radius: 15px; width: 100%; padding: 15px; margin-bottom: 15px;
             box-shadow: 2px 5px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column;
-            align-items: center; gap: 8px; position: relative; overflow: hidden;
+            align-items: center; gap: 6px; position: relative; overflow: hidden;
             text-align: center; transition: all 0.3s;
         }
         .id-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 50px;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 40px;
             background: linear-gradient(135deg, var(--text-main), var(--text-accent)); z-index: 0;
         }
         .btn-edit-profile {
-            position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.3); color: white;
-            border: none; width: 26px; height: 26px; border-radius: 50%; z-index: 5;
-            display: flex; align-items: center; justify-content: center; font-size: 12px; transition: 0.3s; cursor: pointer;
+            position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.3); color: white;
+            border: none; width: 24px; height: 24px; border-radius: 50%; z-index: 5;
+            display: flex; align-items: center; justify-content: center; font-size: 10px; transition: 0.3s; cursor: pointer;
         }
         .btn-edit-profile:hover { background: var(--danger); transform: scale(1.1); }
         .id-photo {
-            width: 65px; height: 65px; border-radius: 50%; background: var(--bg-card);
-            border: 3px solid var(--bg-card); display: flex; justify-content: center; align-items: center;
-            font-size: 35px; color: var(--text-main); z-index: 1; margin-top: 5px;
+            width: 50px; height: 50px; border-radius: 50%; background: var(--bg-card);
+            border: 2px solid var(--bg-card); display: flex; justify-content: center; align-items: center;
+            font-size: 25px; color: var(--text-main); z-index: 1; margin-top: 5px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden;
         }
-        .id-name { font-size: 18px; font-weight: 900; color: var(--text-main); letter-spacing: 1px; z-index: 1;}
-        .id-role { font-size: 11px; font-weight: bold; color: var(--text-accent); z-index: 1; background: var(--bg-card-alt); padding: 4px 10px; border-radius: 10px; border: 1px solid var(--border-color);}
-        .id-info { display: flex; gap: 15px; font-size: 11px; color: var(--text-muted); z-index: 1; margin-top: 5px; font-weight: 600;}
+        .id-name { font-size: 16px; font-weight: 900; color: var(--text-main); letter-spacing: 1px; z-index: 1;}
+        .id-role { font-size: 10px; font-weight: bold; color: var(--text-accent); z-index: 1; background: var(--bg-card-alt); padding: 3px 8px; border-radius: 10px; border: 1px solid var(--border-color);}
+        .id-info { display: flex; gap: 10px; font-size: 10px; color: var(--text-muted); z-index: 1; margin-top: 3px; font-weight: 600;}
 
         /* --- FINANCIAL SUMMARY BOX --- */
         .total-box {
@@ -333,7 +368,7 @@ print("Icons successfully created!")
             <div class="footer-info">
                 <div>Status: Active</div>
                 <div>Storage: LocalDB</div>
-                <div>Version: 20.0 Clean PWA</div>
+                <div>Version: Final Ultra App</div>
             </div>
         </div>
 
@@ -349,6 +384,23 @@ print("Icons successfully created!")
                     <div class="logo-container">
                         <h1>TRACKER</h1>
                         <h2>Family Finance</h2>
+                    </div>
+
+                    <!-- CALENDAR & DIGITAL CLOCK WIDGET -->
+                    <div class="calendar-widget">
+                        <div class="digital-clock-container">
+                            <div class="digit-time" id="digit-time">00:00:00</div>
+                            <div class="digit-date" id="digit-date">LOADING...</div>
+                        </div>
+                        <div class="calendar-header">
+                            <button onclick="changeMonth(-1)">&lt;</button>
+                            <span id="calendar-month-year">Month Year</span>
+                            <button onclick="changeMonth(1)">&gt;</button>
+                        </div>
+                        <div class="calendar-days">
+                            <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                        </div>
+                        <div class="calendar-grid" id="calendar-grid"></div>
                     </div>
 
                     <!-- PROFILE ID CARD -->
@@ -521,6 +573,51 @@ print("Icons successfully created!")
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
+        // --- CLOCK & CALENDAR ENGINE ---
+        let currentCalDate = new Date(); 
+        const actualToday = new Date(); 
+
+        function startDigitalClock() {
+            setInterval(() => {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString('en-GB'); 
+                const dateOptions = { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' };
+                const dateStr = now.toLocaleDateString('en-GB', dateOptions);
+                
+                const timeEl = document.getElementById('digit-time');
+                const dateEl = document.getElementById('digit-date');
+                if(timeEl) timeEl.innerText = timeStr;
+                if(dateEl) dateEl.innerText = dateStr.toUpperCase();
+            }, 1000);
+        }
+
+        function renderCalendar() {
+            const monthYearText = document.getElementById('calendar-month-year');
+            const grid = document.getElementById('calendar-grid');
+            if (!grid) return;
+            grid.innerHTML = ''; 
+            const year = currentCalDate.getFullYear();
+            const month = currentCalDate.getMonth();
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            monthYearText.innerText = `${monthNames[month]} ${year}`;
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            for (let i = 0; i < firstDay; i++) grid.innerHTML += `<div class="cal-day empty"></div>`;
+            for (let i = 1; i <= daysInMonth; i++) {
+                let isToday = (i === actualToday.getDate() && month === actualToday.getMonth() && year === actualToday.getFullYear()) ? 'today' : '';
+                grid.innerHTML += `<div class="cal-day ${isToday}">${i}</div>`;
+            }
+        }
+
+        function changeMonth(direction) {
+            currentCalDate.setMonth(currentCalDate.getMonth() + direction);
+            renderCalendar();
+        }
+
+        startDigitalClock();
+
         // --- CUSTOM CURSOR ENGINE ---
         const cursorDot = document.getElementById('cursor-dot');
         const cursorRing = document.getElementById('cursor-ring');
@@ -723,7 +820,7 @@ print("Icons successfully created!")
         // --- CORE APPLICATION LOGIC (Transactions) ---
         let transactions = JSON.parse(localStorage.getItem('transactionsDB')) || [];
         
-        initModalGrids(); renderProfile(); updateUI(); renderCategories();
+        initModalGrids(); renderProfile(); renderCalendar(); updateUI(); renderCategories();
 
         function switchPage(pageName) {
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
@@ -754,13 +851,14 @@ print("Icons successfully created!")
         function resetData() { if (confirm("WARNING: Are you sure you want to delete ALL transaction records permanently?")) { transactions = []; saveData(); updateUI(); renderHistoryTable(); switchPage('dashboard'); } }
         function saveData() { localStorage.setItem('transactionsDB', JSON.stringify(transactions)); }
         
-        // --- DYNAMIC CHART ENGINE ---
+        // --- DYNAMIC CHART ENGINE (100% RELIABLE METHOD WITH PERCENTAGES) ---
         let myPieChart = null;
 
         function updateChart() {
             if (typeof Chart === 'undefined') return; 
             
             const ctx = document.getElementById('financeChart').getContext('2d');
+            
             const chartData = transactions.filter(t => t.type === currentGridType);
             const catTotals = {};
             chartData.forEach(t => { catTotals[t.category] = (catTotals[t.category] || 0) + t.amount; });
