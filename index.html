@@ -2,422 +2,892 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gokul's Attendance & Salary Tracker</title>
-    <!-- Include html2pdf library -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gokul's Master Hub: Work & Wealth</title>
+    
+    <!-- PWA & Mobile Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gokul Hub">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0d0c11">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=MedievalSharp&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PDF Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <!-- Include Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
     <style>
+        /* --- GLOBAL THEME SYSTEM --- */
         :root {
-            --primary: #6366f1; /* Indigo */
-            --primary-dark: #4f46e5;
-            --secondary: #ec4899; /* Pink */
-            --accent-1: #10b981; /* Emerald */
-            --accent-2: #f97316; /* Orange */
-            --bg: #f3f4f6;
-            --text-dark: #1f2937;
-            --text-light: #f9fafb;
-            --white: #ffffff;
-            --danger: #ef4444;
+            --bg-body: #005A9E; --bg-app: #f4f7f6; --bg-sidebar: #ffffff; --bg-card: #ffffff; --bg-card-alt: #f8f9fa; 
+            --text-main: #1c4587; --text-muted: #7f8c8d; --text-accent: #27ae60; --border-color: #e0e0e0; 
+            --total-box: #1c4587; --hover-color: #e8eff5; --danger: #e74c3c;
+            --hp-font-header: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --hp-font-body: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text-dark);
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            margin: 0;
+        *:focus-visible { outline: 3px solid var(--text-main) !important; outline-offset: 3px !important; border-radius: 8px; box-shadow: 0 0 15px var(--text-main) !important; }
+
+        /* --- THE HOGWARTS MAGIC THEME --- */
+        [data-theme="harrypotter"] {
+            --bg-body: #08060c; --bg-app: rgba(18, 14, 26, 0.94); --bg-sidebar: rgba(13, 10, 18, 0.97);
+            --bg-card: rgba(28, 22, 38, 0.92); --bg-card-alt: rgba(38, 30, 52, 0.92);
+            --text-main: #f0c75e; --text-muted: #b8a990; --text-accent: #8b0000; 
+            --border-color: #997528; --total-box: linear-gradient(135deg, #570000 0%, #10381e 35%, #0a1b38 70%, #997528 100%);
+            --hover-color: rgba(65, 48, 86, 0.85); --danger: #ff4757;
         }
-
-        .container {
-            background-color: var(--white);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            width: 100%;
-            max-width: 1100px;
+        [data-theme="harrypotter"] body { background: radial-gradient(ellipse at bottom, #1f1435 0%, #08060c 100%); }
+        [data-theme="harrypotter"] body::after {
+            content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: radial-gradient(1.5px 1.5px at 20px 30px, #f0c75e, rgba(0,0,0,0)), radial-gradient(1px 1px at 75px 120px, #ffffff, rgba(0,0,0,0)), radial-gradient(1.5px 1.5px at 160px 80px, #f0c75e, rgba(0,0,0,0));
+            background-repeat: repeat; background-size: 400px 400px; opacity: 0.35; z-index: -1; pointer-events: none;
         }
+        [data-theme="harrypotter"] * { font-family: var(--hp-font-body); }
+        [data-theme="harrypotter"] h1, [data-theme="harrypotter"] h2, [data-theme="harrypotter"] h3, 
+        [data-theme="harrypotter"] .digit-time, [data-theme="harrypotter"] .id-name, [data-theme="harrypotter"] .page-header { font-family: var(--hp-font-header) !important; letter-spacing: 1.5px; text-shadow: 0 0 10px rgba(240, 199, 94, 0.45); }
+        [data-theme="harrypotter"] .calendar-widget, [data-theme="harrypotter"] .id-card, [data-theme="harrypotter"] .total-box, [data-theme="harrypotter"] .chart-box, [data-theme="harrypotter"] .sidebar, [data-theme="harrypotter"] .att-card, [data-theme="harrypotter"] .att-entry-form { border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(240, 199, 94, 0.08); }
 
-        h2, h3 { text-align: center; color: var(--primary-dark); font-weight: 800; }
-        h2 { margin-bottom: 25px; font-size: 2em;}
-        h3 { margin-top: 30px; margin-bottom: 15px; font-size: 1.5em; border-bottom: 2px solid var(--primary); padding-bottom: 10px; display: inline-block;}
+        /* --- OTHER THEMES --- */
+        [data-theme="dark"] { --bg-body: #121212; --bg-app: #1e1e1e; --bg-sidebar: #252525; --bg-card: #2d2d2d; --bg-card-alt: #333333; --text-main: #e0e0e0; --text-muted: #aaaaaa; --text-accent: #4ade80; --border-color: #444444; --total-box: #1a1a1a; --hover-color: #3a3a3a; --danger: #ff6b6b; }
+        [data-theme="cyberpunk"] { --bg-body: #0d0221; --bg-app: #150a2b; --bg-sidebar: #1a0b2e; --bg-card: #241142; --bg-card-alt: #2a1452; --text-main: #00ffcc; --text-muted: #b829ea; --text-accent: #ff007f; --border-color: #00ffcc; --total-box: #100624; --hover-color: #3d1b6b; --danger: #ff003c; }
 
-        /* Modern Dashboard/Summary Cards */
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
+        /* --- BASE STYLES --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg-body); display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; transition: background-color 0.4s ease; overflow: hidden; color: var(--text-main); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+        .app-window { background-color: var(--bg-app); width: 95vw; max-width: 1300px; height: 92vh; border-radius: 14px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7); display: flex; position: relative; overflow: hidden; transition: all 0.4s ease; backdrop-filter: blur(12px); }
+        button { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; cursor: pointer; }
 
-        .card {
-            background: var(--white);
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            border: 2px solid transparent;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
+        /* --- SIDEBAR --- */
+        .sidebar { width: 230px; background-color: var(--bg-sidebar); display: flex; flex-direction: column; justify-content: space-between; padding: 20px; border-right: 1px solid var(--border-color); z-index: 10; flex-shrink: 0;}
+        .menu-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .menu-btn { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px 15px; color: var(--text-main); font-weight: bold; font-size: 13px; text-align: left; box-shadow: 2px 2px 8px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 12px; position: relative; overflow: hidden; }
+        .menu-btn i { font-size: 16px; width: 22px; text-align: center; color: var(--text-accent);}
+        .menu-btn:hover, .menu-btn.active { background-color: var(--hover-color); transform: translateX(5px); border-color: var(--text-main); }
+        .menu-btn.active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background-color: var(--text-main); }
+        .footer-info { font-size: 11px; color: var(--text-muted); font-weight: 600; line-height: 1.6; display: flex; flex-direction: column; gap: 4px; margin-top: 20px;}
 
-        .card:hover {
-            transform: translateY(-5px);
-        }
+        /* --- MAIN CONTENT AREAS --- */
+        .main-content { flex: 1; display: flex; position: relative; overflow: hidden; background: transparent;}
+        .page { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 25px; animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); flex-direction: column;}
+        .page.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .page-header { font-size: 28px; font-weight: 900; color: var(--text-main); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; width: 100%;}
 
-        .card i { font-size: 2.5em; margin-bottom: 10px; }
-        .card .value { font-size: 2.2em; font-weight: 800; color: var(--text-dark); }
-        .card .label { font-size: 1em; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; }
-
-        .card-days    { border-color: var(--primary); color: var(--primary); }
-        .card-reg-hrs { border-color: var(--accent-1); color: var(--accent-1); }
-        .card-ot-hrs  { border-color: var(--accent-2); color: var(--accent-2); }
-        .card-salary  { border-color: var(--secondary); color: var(--secondary); background: linear-gradient(135deg, #fce7f3 0%, #ffffff 100%); }
-        .card-salary .value { color: var(--secondary); }
-
-        /* Modern Table styling */
-        .table-container { overflow-x: auto; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;}
+        /* --- VAULT DASHBOARD SPECIFICS --- */
+        #vault-dashboard-page { flex-direction: row; padding: 0; }
+        .center-col { width: 330px; display: flex; flex-direction: column; align-items: center; padding: 20px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); overflow-y: auto; flex-shrink: 0;}
+        .grid-wrapper { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 20px;}
+        .logo-container { text-align: center; margin-bottom: 18px; width: 100%; }
+        .logo-container h1 { font-size: 26px; font-weight: 900; border-bottom: 2px solid var(--text-main); display: inline-block; }
         
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-            min-width: 900px;
-        }
-        th, td { padding: 15px; text-align: center; border-bottom: 1px solid #e5e7eb; }
-        th { background-color: #f9fafb; color: #4b5563; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;}
+        .id-card, .total-box, .chart-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 15px; width: 100%; padding: 15px; margin-bottom: 15px; box-shadow: 2px 5px 15px rgba(0,0,0,0.05); }
+        .total-box { background: var(--total-box); color: white; border: none;}
+        .total-box h2 { font-size: 28px; font-weight: bold; margin: 10px 0;}
         
-        /* Highlight Net Hrs and Total Earned */
-        td.net-hrs { font-weight: bold; color: var(--primary-dark); }
-        td.total-earned { font-weight: 800; color: var(--white); background-color: var(--accent-1); border-radius: 6px; }
+        .id-photo { width: 60px; height: 60px; border-radius: 50%; background: var(--bg-card-alt); border: 2px solid var(--text-main); display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 10px; overflow: hidden; }
+        .id-name { font-size: 18px; font-weight: 900; text-align: center;}
+        .id-role { font-size: 11px; color: var(--text-accent); text-align: center; margin-bottom: 10px;}
 
-        tr:nth-child(even) { background-color: #f9fafb; }
-        tr:hover { background-color: #f3f4f6; }
-
-        /* Input Form styling */
-        .entry-form {
-            background-color: #f9fafb;
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid #e5e7eb;
-            margin-top: 20px;
-        }
+        /* Grid Items & Edit Mode */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding-top: 5px;}
+        .module-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 15px; padding: 20px 10px; display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--text-muted); font-weight: bold; font-size: 12px; text-align: center; position: relative;}
+        .module-btn:hover { border-color: var(--text-main); color: var(--text-main); transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.1);}
+        .module-btn i { font-size: 28px; color: var(--text-accent); }
         
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-        }
+        /* Edit Mode Animations */
+        .module-btn.edit-mode { border: 2px dashed var(--danger); animation: jiggle 0.5s infinite alternate; }
+        @keyframes jiggle { 0% { transform: rotate(-1deg); } 100% { transform: rotate(1deg); } }
+        .edit-badge { position: absolute; top: -8px; right: -8px; background: var(--danger); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); pointer-events: none; border: 2px solid var(--bg-card);}
+        .module-btn.add-btn { border: 2px dashed var(--text-muted); background: rgba(0,0,0,0.02); box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
 
-        .form-group { display: flex; flex-direction: column; gap: 8px; }
-        .form-group label { font-size: 14px; font-weight: 600; color: #4b5563; display: flex; align-items: center; gap: 8px; }
-        .form-group label i { color: var(--primary); }
+        /* Icon Grid in Modal */
+        .selection-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-height: 150px; overflow-y: auto; padding: 10px; background: var(--bg-card-alt); border-radius: 12px; border: 1px inset var(--border-color); margin-top: 10px;}
+        .select-item { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid transparent; background: var(--bg-card); box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 18px; cursor: pointer; color: var(--text-muted); }
+        .select-item.selected { border-color: var(--text-main); background: var(--text-main); color: var(--bg-app); transform: scale(1.1); }
 
-        input {
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: border-color 0.2s;
-        }
-        input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); }
-
-        .rates-config {
-            grid-column: 1 / -1;
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px dashed #d1d5db;
-        }
-
-        /* Standardized colorful buttons */
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            justify-content: center;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        /* --- ATTENDANCE TRACKER SPECIFICS --- */
+        .att-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .att-card { background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .att-card i { font-size: 2em; margin-bottom: 10px; color: var(--text-accent); }
+        .att-card .value { font-size: 2em; font-weight: 900; color: var(--text-main); }
+        .att-card .label { font-size: 0.9em; font-weight: bold; color: var(--text-muted); text-transform: uppercase; }
         
-        .btn-primary { background-color: var(--primary); color: var(--white); }
-        .btn-primary:hover { background-color: var(--primary-dark); transform: translateY(-2px); }
+        .att-table-container { overflow-x: auto; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid var(--border-color); background: var(--bg-card);}
+        .att-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 800px; }
+        .att-table th, .att-table td { padding: 12px 15px; text-align: center; border-bottom: 1px solid var(--border-color); }
+        .att-table th { background-color: var(--bg-card-alt); color: var(--text-main); font-weight: 800; text-transform: uppercase; }
+        .att-table tr:hover { background-color: var(--hover-color); }
         
-        .btn-accent { background-color: var(--accent-1); color: var(--white); }
-        .btn-accent:hover { background-color: #059669; transform: translateY(-2px); }
+        .att-entry-form { background-color: var(--bg-card-alt); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 25px; display: flex; flex-wrap: wrap; gap: 15px;}
+        .form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 140px; }
+        .form-group label { font-size: 13px; font-weight: bold; color: var(--text-main); }
+        .form-control { padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-card); color: var(--text-main); font-size: 14px; outline: none; width: 100%;}
+        .form-control:focus { border-color: var(--text-accent); box-shadow: 0 0 8px rgba(0,0,0,0.1); }
         
-        .btn-danger { background-color: var(--danger); color: var(--white); }
-        .btn-danger:hover { background-color: #b91c1c; transform: translateY(-2px); }
-        
-        .action-center {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
+        .att-btn { padding: 12px 20px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.2s;}
+        .att-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .btn-add { background: var(--text-accent); flex: 1; min-width: 150px; align-self: flex-end;}
+        .btn-dl { background: var(--text-main); }
+        .btn-del { background: var(--danger); }
 
-        /* PDF Styles - Make sure it still looks clean for download */
-        @media print {
-            body { background: white; padding: 0; }
-            .container { box-shadow: none; border: none; padding: 0; }
-            .entry-form, .action-center, hr, h3 { display: none !important; }
-            table { font-size: 12px; }
-            th { background-color: #f3f4f6 !important; -webkit-print-color-adjust: exact; }
-            td.total-earned { background-color: #10b981 !important; color: white !important; -webkit-print-color-adjust: exact; }
-        }
+        /* --- TABLE SPECIFICS (HISTORY) --- */
+        .history-table { width: 100%; border-collapse: collapse; min-width: 500px; background: var(--bg-card);}
+        .history-table th, .history-table td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        .history-table th { background-color: var(--bg-card-alt); color: var(--text-main); position: sticky; top: 0;}
+        .amt-cell.inc { color: var(--text-accent); font-weight: bold; }
+        .amt-cell.exp { color: var(--danger); font-weight: bold; }
+        
+        /* Auto-Sync Badge */
+        .sync-badge { font-size: 10px; background: var(--bg-card-alt); border: 1px solid var(--border-color); padding: 3px 6px; border-radius: 6px; margin-left: 8px; color: var(--text-muted); font-weight: bold;}
+
+        /* --- THEMES PAGE --- */
+        .theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .theme-card { background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 12px; padding: 15px; text-align: center; cursor: pointer;}
+        .theme-card:hover { border-color: var(--text-main); transform: translateY(-5px); }
+        .theme-preview { height: 50px; border-radius: 8px; margin-bottom: 10px; border: 1px solid rgba(0,0,0,0.1); }
+
+        /* --- MODALS --- */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: var(--bg-app); width: 90%; max-width: 420px; border-radius: 15px; padding: 25px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 15px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Printable Content -->
-    <div id="ledger-content">
-        <h2>Gokul's Monthly Ledger</h2>
+    <div class="app-window">
         
-        <!-- Modern Colorful Dashboard -->
-        <div class="dashboard">
-            <div class="card card-days">
-                <i class="fas fa-calendar-check"></i>
-                <div class="value" id="total-days">0</div>
-                <div class="label">Days Worked</div>
-            </div>
-            <div class="card card-reg-hrs">
-                <i class="fas fa-clock"></i>
-                <div class="value" id="total-reg-hours">0</div>
-                <div class="label">Regular Hrs</div>
-            </div>
-            <div class="card card-ot-hrs">
-                <i class="fas fa-user-clock"></i>
-                <div class="value" id="total-ot-hours">0</div>
-                <div class="label">OT Hrs</div>
-            </div>
-            <div class="card card-salary">
-                <i class="fas fa-money-bill-wave"></i>
-                <div class="value">₹<span id="total-salary">0.00</span></div>
-                <div class="label">Total Salary</div>
-            </div>
-        </div>
-
-        <div class="table-container">
-            <table id="attendance-table">
-                <thead>
-                    <tr>
-                        <th style="text-align: left;">Date</th>
-                        <th>Time (In - Out)</th>
-                        <th>Total Hrs</th>
-                        <th style="color: var(--danger);">Break (Hrs)</th>
-                        <th>Net Hrs</th>
-                        <th style="color: var(--accent-2);">OT Hrs</th>
-                        <th>Base Pay (₹)</th>
-                        <th>OT Pay (₹)</th>
-                        <th>Total (₹)</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                    <!-- Entries appear here -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <hr style="margin: 40px 0; border: none; border-top: 1px solid #e5e7eb;">
-
-    <div style="text-align: center;"><h3>Add Daily Shift</h3></div>
-    
-    <div class="entry-form">
-        <div class="form-grid">
-            <!-- Rates Config -->
-            <div class="rates-config">
-                <div class="form-group">
-                    <label for="baseSalary"><i class="fas fa-hand-holding-usd"></i> Base Salary (for 8 hrs) ₹</label>
-                    <input type="number" id="baseSalary" placeholder="500" onchange="saveRates()" required>
+        <!-- SIDEBAR NAVIGATION -->
+        <div class="sidebar">
+            <div>
+                <div style="font-weight: 900; font-size: 18px; color: var(--text-main); text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+                    GOKUL HUB
                 </div>
-                <div class="form-group">
-                    <label for="otRate"><i class="fas fa-plus-circle"></i> OT Rate (per hour) ₹</label>
-                    <input type="number" id="otRate" placeholder="100" onchange="saveRates()" required>
+                <div class="menu-list">
+                    <button class="menu-btn active" onclick="switchPage('vault-dashboard')" id="btn-vault-dashboard">
+                        <i class="fas fa-coins"></i> <span>Vault Dashboard</span>
+                    </button>
+                    <button class="menu-btn" onclick="switchPage('attendance')" id="btn-attendance">
+                        <i class="fas fa-business-time"></i> <span>Work & Salary</span>
+                    </button>
+                    <button class="menu-btn" onclick="switchPage('history')" id="btn-history">
+                        <i class="fas fa-scroll"></i> <span>Ledger Records</span>
+                    </button>
+                    <button class="menu-btn" onclick="switchPage('themes')" id="btn-themes">
+                        <i class="fas fa-wand-magic-sparkles"></i> <span>Themes</span>
+                    </button>
                 </div>
             </div>
+            <div class="footer-info">
+                <div>Identity: TVGR Vault</div>
+                <div>Status: <span style="color: var(--text-accent);">Auto-Sync Active</span></div>
+                <button class="menu-btn" onclick="openProfileModal()" style="padding: 8px; justify-content: center; margin-top: 10px; font-size: 11px;">
+                    <i class="fas fa-user-edit"></i> Edit Profile
+                </button>
+            </div>
+        </div>
 
-            <!-- Daily Entry -->
-            <div class="form-group">
-                <label for="date"><i class="fas fa-calendar-day"></i> Date</label>
-                <input type="date" id="date" required>
+        <!-- MAIN CONTENT AREA -->
+        <div class="main-content">
+
+            <!-- 1. VAULT DASHBOARD PAGE -->
+            <div id="vault-dashboard-page" class="page active">
+                <div class="center-col">
+                    <div class="logo-container">
+                        <h1>VAULT SUMMARY</h1>
+                    </div>
+
+                    <!-- Profile Card -->
+                    <div class="id-card">
+                        <div class="id-photo" id="profile-photo-container">
+                            <i class="fas fa-user-tie" id="profile-icon"></i>
+                            <img id="profile-img" src="" style="display:none; width:100%; height:100%; object-fit:cover;">
+                        </div>
+                        <div class="id-name" id="profile-name">GOKUL</div>
+                        <div class="id-role" id="profile-role">Influencer & Petrol Bunk Worker</div>
+                        <div style="font-size: 11px; font-weight: bold; color: var(--text-muted);">
+                            ID: <span id="profile-id">TVGR</span> | Ht: <span id="profile-ht">5'4"</span>
+                        </div>
+                    </div>
+
+                    <!-- Total Balance -->
+                    <div class="total-box">
+                        <div style="font-size: 12px; opacity: 0.9;">Total Wealth Balance</div>
+                        <h2 id="total-balance">₹0.00</h2>
+                        <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: bold;">
+                            <span style="color: #55efc4;" id="total-income">In: +₹0.00</span>
+                            <span style="color: #ff7675;" id="total-expense">Out: -₹0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Chart -->
+                    <div class="chart-box">
+                        <div style="font-size: 12px; font-weight: bold; margin-bottom: 10px;">Expense Distribution</div>
+                        <div style="height: 140px; width: 100%;"><canvas id="financeChart"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Transaction Categories -->
+                <div class="grid-wrapper">
+                    <div class="page-header" style="border: none; margin-bottom: 10px; align-items: center;">
+                        <span id="grid-title">Quick Log Expense</span>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <button id="btn-toggle-edit" onclick="toggleEditMode()" style="background: var(--bg-card-alt); color: var(--text-main); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s;"><i class="fas fa-pencil-alt"></i> Edit Labels</button>
+                            <div style="width: 1px; height: 25px; background: var(--border-color); margin: 0 5px;"></div>
+                            <button onclick="switchGridType('expense')" id="tab-expense" style="padding: 8px 15px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--danger); color: white; font-weight: bold;">Out</button>
+                            <button onclick="switchGridType('income')" id="tab-income" style="padding: 8px 15px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-weight: bold;">In</button>
+                        </div>
+                    </div>
+                    <div class="grid-container" id="category-grid"></div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="inTime"><i class="fas fa-sign-in-alt"></i> In Time</label>
-                <input type="time" id="inTime" value="09:30" required>
+
+            <!-- 2. ATTENDANCE & SALARY PAGE -->
+            <div id="attendance-page" class="page">
+                <div id="attendance-ledger-content">
+                    <div class="page-header">
+                        <span>Work & Salary Tracker</span>
+                        <span style="font-size: 14px; color: var(--text-accent);"><i class="fas fa-link"></i> Linked to Vault</span>
+                    </div>
+                    
+                    <div class="att-dashboard">
+                        <div class="att-card">
+                            <i class="fas fa-calendar-check"></i>
+                            <div class="value" id="att-total-days">0</div>
+                            <div class="label">Days Worked</div>
+                        </div>
+                        <div class="att-card">
+                            <i class="fas fa-clock"></i>
+                            <div class="value" id="att-total-reg-hours">0</div>
+                            <div class="label">Regular Hrs</div>
+                        </div>
+                        <div class="att-card">
+                            <i class="fas fa-user-clock"></i>
+                            <div class="value" id="att-total-ot-hours">0</div>
+                            <div class="label">OT Hrs</div>
+                        </div>
+                        <div class="att-card" style="border-color: var(--text-accent);">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <div class="value" style="color: var(--text-accent);">₹<span id="att-total-salary">0.00</span></div>
+                            <div class="label">Total Salary</div>
+                        </div>
+                    </div>
+
+                    <div class="att-table-container">
+                        <table class="att-table" id="attendance-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Date</th>
+                                    <th>Job Profile</th>
+                                    <th>Time (In - Out)</th>
+                                    <th>Total Hrs</th>
+                                    <th style="color: var(--danger);">Break</th>
+                                    <th>Net Hrs</th>
+                                    <th style="color: var(--text-main);">OT Hrs</th>
+                                    <th>Base Pay (₹)</th>
+                                    <th>OT Pay (₹)</th>
+                                    <th>Total (₹)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="att-table-body">
+                                <!-- Entries injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="att-entry-form">
+                    <div style="width: 100%; border-bottom: 1px dashed var(--border-color); padding-bottom: 15px; margin-bottom: 5px; display: flex; gap: 15px; flex-wrap: wrap;">
+                        <div class="form-group" style="min-width: 250px;">
+                            <label style="display: flex; justify-content: space-between;">
+                                <span><i class="fas fa-briefcase"></i> Select Job Profile</span>
+                                <span style="color: var(--text-accent); cursor: pointer;" onclick="openJobModal()"><i class="fas fa-pencil-alt"></i> Edit Jobs</span>
+                            </label>
+                            <select id="att-jobType" class="form-control">
+                                <!-- Populated dynamically via JS -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Base Salary (for 8 hrs) ₹</label>
+                            <input type="number" id="att-baseSalary" class="form-control" placeholder="e.g., 500" onchange="saveAttRates()">
+                        </div>
+                        <div class="form-group">
+                            <label>OT Rate (per hour) ₹</label>
+                            <input type="number" id="att-otRate" class="form-control" placeholder="e.g., 100" onchange="saveAttRates()">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="att-date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>In Time</label>
+                        <input type="time" id="att-inTime" class="form-control" value="09:30">
+                    </div>
+                    <div class="form-group">
+                        <label>Out Time</label>
+                        <input type="time" id="att-outTime" class="form-control" value="18:00">
+                    </div>
+                    <button class="att-btn btn-add" onclick="addAttendanceEntry()"><i class="fas fa-coins"></i> Log & Sync to Vault</button>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-top: 25px;">
+                    <button class="att-btn btn-dl" onclick="downloadAttendancePDF()"><i class="fas fa-download"></i> Download Timesheet</button>
+                    <button class="att-btn btn-del" onclick="clearAttendanceData()"><i class="fas fa-trash"></i> Clear Shift Data</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="outTime"><i class="fas fa-sign-out-alt"></i> Out Time</label>
-                <input type="time" id="outTime" value="18:00" required>
+
+            <!-- 3. LEDGER HISTORY PAGE -->
+            <div id="history-page" class="page">
+                <div class="page-header">
+                    <span>Vault Ledger Records</span>
+                    <span id="history-count" style="font-size: 16px; font-weight: normal; color: var(--text-muted);">0 Records</span>
+                </div>
+                <div style="overflow-x: auto; border: 1px solid var(--border-color); border-radius: 12px;">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Category / Job Source</th>
+                                <th>Type</th>
+                                <th>Amount (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body"></tbody>
+                    </table>
+                </div>
             </div>
-            <div class="form-group" style="justify-content: flex-end;">
-                <button class="btn btn-primary" onclick="addEntry()"><i class="fas fa-plus"></i> Add Shift</button>
+
+            <!-- 4. THEMES PAGE -->
+            <div id="themes-page" class="page">
+                <div class="page-header">Application Themes</div>
+                <p style="margin-bottom: 20px; color: var(--text-muted);">Select a theme. This will automatically style both your Vault and your Attendance Tracker.</p>
+                <div class="theme-grid" id="theme-grid-container"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- PROFILE EDIT MODAL -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-content">
+            <h3 style="text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Edit Profile</h3>
+            <input type="text" id="modal-prof-name" class="form-control" placeholder="Name">
+            <input type="text" id="modal-prof-role" class="form-control" placeholder="Job Title">
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="modal-prof-id" class="form-control" placeholder="ID (e.g., TVGR)">
+                <input type="text" id="modal-prof-ht" class="form-control" placeholder="Height">
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button class="att-btn" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); flex: 1;" onclick="closeProfileModal()">Cancel</button>
+                <button class="att-btn btn-add" style="flex: 1;" onclick="saveProfile()">Save Details</button>
             </div>
         </div>
     </div>
 
-    <div class="action-center">
-        <button class="btn btn-accent" onclick="downloadPDF()"><i class="fas fa-file-download"></i> Download Ledger PDF</button>
-        <button class="btn btn-danger" onclick="clearData()"><i class="fas fa-trash-alt"></i> Clear All Data</button>
+    <!-- CATEGORY EDIT MODAL -->
+    <div class="modal-overlay" id="categoryModal">
+        <div class="modal-content">
+            <h3 style="text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;" id="cat-modal-title">Edit Category</h3>
+            <input type="text" id="modal-cat-name" class="form-control" placeholder="Category Name" autocomplete="off">
+            <div style="font-size:13px; font-weight:bold; color:var(--text-muted); margin-top:5px;">Select Icon:</div>
+            <div class="selection-grid" id="modal-icon-grid"></div>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="att-btn btn-del" id="modal-btn-delete" style="flex: 0.3; display: none;" onclick="deleteCategoryFromModal()"><i class="fas fa-trash"></i></button>
+                <button class="att-btn" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); flex: 1;" onclick="closeCategoryModal()">Cancel</button>
+                <button class="att-btn btn-add" style="flex: 1;" onclick="saveCategoryFromModal()">Save</button>
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-    let records = JSON.parse(localStorage.getItem('ledgerRecordsVColorful')) || [];
-    
-    // Load saved rates on startup
-    document.getElementById('baseSalary').value = localStorage.getItem('savedBaseSalary') || '';
-    document.getElementById('otRate').value = localStorage.getItem('savedOTRate') || '';
-    
-    // Auto-fill today's date
-    document.getElementById('date').valueAsDate = new Date();
+    <!-- JOB PROFILE MODAL -->
+    <div class="modal-overlay" id="jobModal">
+        <div class="modal-content">
+            <h3 style="text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Manage Job Profiles</h3>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="new-job-input" class="form-control" placeholder="New Job Profile Name" autocomplete="off">
+                <button class="att-btn btn-add" style="min-width: 60px;" onclick="addJobProfile()"><i class="fas fa-plus"></i></button>
+            </div>
+            <div id="job-list-container" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                <!-- Dynamically populated job lists -->
+            </div>
+            <div style="display: flex; margin-top: 15px;">
+                <button class="att-btn" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); width: 100%;" onclick="closeJobModal()">Close Editor</button>
+            </div>
+        </div>
+    </div>
 
-    updateUI();
-
-    function saveRates() {
-        localStorage.setItem('savedBaseSalary', document.getElementById('baseSalary').value);
-        localStorage.setItem('savedOTRate', document.getElementById('otRate').value);
-    }
-
-    function formatTimeAMPM(timeString) {
-        const [hourString, minute] = timeString.split(":");
-        const hour = +hourString % 24;
-        return (hour % 12 || 12) + ":" + minute + (hour < 12 ? "am" : "pm");
-    }
-
-    function calculateShiftDetails(inTime, outTime) {
-        const start = new Date(`1970-01-01T${inTime}:00`);
-        let end = new Date(`1970-01-01T${outTime}:00`);
-        
-        if (end < start) end.setDate(end.getDate() + 1); // Overnight shift
-
-        const grossHours = (end - start) / (1000 * 60 * 60); 
-        let breakHours = 0;
-        
-        // Deduct 30 minutes (0.5 hrs) break if they worked more than 4 hours
-        if (grossHours > 4) {
-            breakHours = 0.5; 
-        }
-        
-        let netHours = grossHours - breakHours;
-        if (netHours < 0) netHours = 0;
-
-        // Split into regular (max 8) and OT hours
-        const regHours = Math.min(netHours, 8);
-        const otHours = Math.max(0, netHours - 8);
-
-        return { grossHours, breakHours, netHours, regHours, otHours };
-    }
-
-    function addEntry() {
-        const date = document.getElementById('date').value;
-        const inTime = document.getElementById('inTime').value;
-        const outTime = document.getElementById('outTime').value;
-        const baseSalary = parseFloat(document.getElementById('baseSalary').value);
-        const otRate = parseFloat(document.getElementById('otRate').value);
-
-        if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) {
-            alert("Please fill in all fields including Salary and OT rates.");
-            return;
-        }
-
-        saveRates();
-
-        const { grossHours, breakHours, netHours, regHours, otHours } = calculateShiftDetails(inTime, outTime);
-        
-        const baseEarned = (regHours / 8) * baseSalary; 
-        const otEarned = otHours * otRate;
-        const totalEarned = baseEarned + otEarned;
-
-        records.push({ 
-            date, inTime, outTime, grossHours, breakHours, netHours, regHours, otHours, baseEarned, otEarned, totalEarned 
-        });
-        
-        records.sort((a, b) => new Date(a.date) - new Date(b.date));
-        
-        saveData();
-        updateUI();
-
-        document.getElementById('inTime').value = '09:30';
-        document.getElementById('outTime').value = '18:00';
-    }
-
-    function updateUI() {
-        const tbody = document.getElementById('table-body');
-        tbody.innerHTML = '';
-        
-        let totalSalary = 0;
-        let totalRegHours = 0;
-        let totalOtHours = 0;
-
-        records.forEach(record => {
-            totalSalary += record.totalEarned;
-            totalRegHours += record.regHours;
-            totalOtHours += record.otHours;
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ==========================================
+        // 1. GLOBAL UI & NAVIGATION
+        // ==========================================
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
             
-            const timeStr = `${formatTimeAMPM(record.inTime)} - ${formatTimeAMPM(record.outTime)}`;
-
-            const row = `<tr>
-                            <td style="text-align: left; font-weight: 600;">${record.date}</td>
-                            <td>${timeStr}</td>
-                            <td>${record.grossHours.toFixed(1)}</td>
-                            <td style="color: var(--danger); font-weight: bold;">-${record.breakHours.toFixed(1)}</td>
-                            <td class="net-hrs">${record.netHours.toFixed(1)}</td>
-                            <td style="color: var(--accent-2); font-weight: 600;">${record.otHours.toFixed(1)}</td>
-                            <td>₹${record.baseEarned.toFixed(2)}</td>
-                            <td>₹${record.otEarned.toFixed(2)}</td>
-                            <td class="total-earned">₹${record.totalEarned.toFixed(2)}</td>
-                         </tr>`;
-            tbody.innerHTML += row;
-        });
-
-        document.getElementById('total-days').innerText = records.length;
-        document.getElementById('total-reg-hours').innerText = totalRegHours.toFixed(1);
-        document.getElementById('total-ot-hours').innerText = totalOtHours.toFixed(1);
-        document.getElementById('total-salary').innerText = totalSalary.toFixed(2);
-    }
-
-    function saveData() {
-        localStorage.setItem('ledgerRecordsVColorful', JSON.stringify(records));
-    }
-
-    function clearData() {
-        if (confirm("Are you sure you want to delete all attendance data? This cannot be undone.")) {
-            records = [];
-            saveData();
-            updateUI();
+            document.getElementById(`${pageId}-page`).classList.add('active');
+            document.getElementById(`btn-${pageId}`).classList.add('active');
+            
+            if(pageId === 'vault-dashboard') updateVaultChart();
+            if(pageId !== 'vault-dashboard' && isEditMode) toggleEditMode(); 
         }
-    }
 
-    function downloadPDF() {
-        const element = document.getElementById('ledger-content');
-        const opt = {
-            margin:       10,
-            filename:     'Gokul_Monthly_Ledger.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2 },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+        // ==========================================
+        // 2. USER PROFILE ENGINE
+        // ==========================================
+        const defaultProfile = { name: "GOKUL", role: "Influencer & Petrol Bunk Worker", idStr: "TVGR", height: "5'4\"" };
+        let userProfile = JSON.parse(localStorage.getItem('gokulProfile')) || defaultProfile;
+
+        function renderProfile() {
+            document.getElementById('profile-name').innerText = userProfile.name.toUpperCase();
+            document.getElementById('profile-role').innerText = userProfile.role;
+            document.getElementById('profile-id').innerText = userProfile.idStr;
+            document.getElementById('profile-ht').innerText = userProfile.height;
+        }
+
+        function openProfileModal() {
+            document.getElementById('profileModal').classList.add('active');
+            document.getElementById('modal-prof-name').value = userProfile.name;
+            document.getElementById('modal-prof-role').value = userProfile.role;
+            document.getElementById('modal-prof-id').value = userProfile.idStr;
+            document.getElementById('modal-prof-ht').value = userProfile.height;
+        }
+
+        function closeProfileModal() { document.getElementById('profileModal').classList.remove('active'); }
+
+        function saveProfile() {
+            userProfile.name = document.getElementById('modal-prof-name').value.trim() || 'Gokul';
+            userProfile.role = document.getElementById('modal-prof-role').value.trim();
+            userProfile.idStr = document.getElementById('modal-prof-id').value.trim();
+            userProfile.height = document.getElementById('modal-prof-ht').value.trim();
+            localStorage.setItem('gokulProfile', JSON.stringify(userProfile));
+            renderProfile(); closeProfileModal();
+        }
+
+        // ==========================================
+        // 3. THEME ENGINE
+        // ==========================================
+        const themeList = [
+            { id: 'default', name: 'Standard Light', color: '#005A9E' },
+            { id: 'dark', name: 'Midnight Dark', color: '#121212' },
+            { id: 'harrypotter', name: 'Hogwarts Magic', color: '#d3a625' },
+            { id: 'cyberpunk', name: 'Cyberpunk Neon', color: '#0d0221' }
+        ];
+
+        let currentTheme = localStorage.getItem('gokulTheme') || 'default';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        function setTheme(themeId) {
+            document.documentElement.setAttribute('data-theme', themeId);
+            localStorage.setItem('gokulTheme', themeId);
+            currentTheme = themeId;
+            updateVaultChart();
+        }
+
+        function renderThemeGrid() {
+            const grid = document.getElementById('theme-grid-container');
+            themeList.forEach(theme => {
+                const btn = document.createElement('button');
+                btn.className = 'theme-card';
+                btn.onclick = () => setTheme(theme.id);
+                btn.innerHTML = `<div class="theme-preview" style="background: ${theme.color};"></div><div style="font-weight: bold; color: var(--text-main);">${theme.name}</div>`;
+                grid.appendChild(btn);
+            });
+        }
+
+        // ==========================================
+        // 4. VAULT (FINANCE) LOGIC & CATEGORY EDITOR
+        // ==========================================
+        const defaultCategories = [
+            { name: "Food & Snacks", icon: "fas fa-utensils", type: "expense" },
+            { name: "Fuel & Transport", icon: "fas fa-motorcycle", type: "expense" },
+            { name: "Mobile Recharge", icon: "fas fa-mobile-alt", type: "expense" },
+            { name: "Shopping", icon: "fas fa-shopping-bag", type: "expense" },
+            { name: "Movies & Media", icon: "fas fa-film", type: "expense" },
+            { name: "Family & Home", icon: "fas fa-home", type: "expense" }
+        ];
+        
+        let vaultCategories = JSON.parse(localStorage.getItem('gokulVaultCats')) || defaultCategories;
+        let vaultTransactions = JSON.parse(localStorage.getItem('gokulVaultTx')) || [];
+        let currentVaultType = 'expense';
+        let vaultChart = null;
+        let isEditMode = false;
+
+        const iconLibrary = ['fas fa-gas-pump', 'fas fa-utensils', 'fas fa-motorcycle', 'fas fa-mobile-alt', 'fas fa-shopping-bag', 'fas fa-camera-retro', 'fas fa-wallet', 'fas fa-film', 'fas fa-heart', 'fas fa-home', 'fas fa-car', 'fas fa-gift', 'fas fa-briefcase', 'fas fa-tshirt', 'fas fa-coffee', 'fas fa-music', 'fas fa-gamepad', 'fas fa-plane'];
+
+        function switchGridType(type) {
+            currentVaultType = type;
+            document.getElementById('tab-expense').style.background = type === 'expense' ? 'var(--danger)' : 'var(--bg-card)';
+            document.getElementById('tab-expense').style.color = type === 'expense' ? 'white' : 'var(--text-main)';
+            document.getElementById('tab-income').style.background = type === 'income' ? 'var(--text-accent)' : 'var(--bg-card)';
+            document.getElementById('tab-income').style.color = type === 'income' ? 'white' : 'var(--text-main)';
+            document.getElementById('grid-title').innerText = type === 'expense' ? 'Quick Log Expense' : 'Quick Log Income';
+            renderVaultCategories(); updateVaultChart();
+        }
+
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            const btn = document.getElementById('btn-toggle-edit');
+            if (isEditMode) {
+                btn.innerHTML = '<i class="fas fa-check"></i> Done Editing';
+                btn.style.background = 'var(--text-main)';
+                btn.style.color = 'var(--bg-card)';
+            } else {
+                btn.innerHTML = '<i class="fas fa-pencil-alt"></i> Edit Labels';
+                btn.style.background = 'var(--bg-card-alt)';
+                btn.style.color = 'var(--text-main)';
+            }
+            renderVaultCategories();
+        }
+
+        function renderVaultCategories() {
+            const grid = document.getElementById('category-grid');
+            grid.innerHTML = '';
+            
+            vaultCategories.forEach((cat, index) => {
+                if (cat.type === currentVaultType) {
+                    let extraClass = isEditMode ? 'edit-mode' : '';
+                    let badge = isEditMode ? '<div class="edit-badge"><i class="fas fa-pencil-alt"></i></div>' : '';
+                    grid.innerHTML += `<button class="module-btn ${extraClass}" onclick="handleCategoryClick(${index})">
+                        <i class="${cat.icon}"></i><span>${cat.name}</span>${badge}
+                    </button>`;
+                }
+            });
+
+            if (isEditMode) {
+                grid.innerHTML += `<button class="module-btn add-btn" onclick="openCategoryModal(null)">
+                    <i class="fas fa-plus" style="color:var(--text-muted); font-size: 24px;"></i>
+                    <span style="color:var(--text-muted)">Add New</span>
+                </button>`;
+            }
+        }
+
+        function handleCategoryClick(index) {
+            if (isEditMode) {
+                openCategoryModal(index);
+            } else {
+                addVaultTransaction(vaultCategories[index].name, vaultCategories[index].type, false);
+            }
+        }
+
+        let editingCategoryIndex = null;
+        let selectedIcon = '';
+
+        function initIconGrid() {
+            const grid = document.getElementById('modal-icon-grid');
+            grid.innerHTML = iconLibrary.map(icon => 
+                `<div class="select-item" onclick="selectModalIcon('${icon}')" data-icon="${icon}"><i class="${icon}"></i></div>`
+            ).join('');
+        }
+
+        function selectModalIcon(icon) {
+            selectedIcon = icon;
+            document.querySelectorAll('#modal-icon-grid .select-item').forEach(el => el.classList.remove('selected'));
+            document.querySelector(`#modal-icon-grid .select-item[data-icon="${icon}"]`).classList.add('selected');
+        }
+
+        function openCategoryModal(index) {
+            editingCategoryIndex = index;
+            document.getElementById('categoryModal').classList.add('active');
+            initIconGrid();
+            
+            if (index !== null) { 
+                let cat = vaultCategories[index]; 
+                document.getElementById('cat-modal-title').innerText = "Edit Label"; 
+                document.getElementById('modal-cat-name').value = cat.name; 
+                document.getElementById('modal-btn-delete').style.display = 'flex';
+                selectModalIcon(iconLibrary.includes(cat.icon) ? cat.icon : iconLibrary[0]);
+            } else { 
+                document.getElementById('cat-modal-title').innerText = `New ${currentVaultType === 'income' ? 'Income' : 'Expense'} Label`; 
+                document.getElementById('modal-cat-name').value = ''; 
+                document.getElementById('modal-btn-delete').style.display = 'none';
+                selectModalIcon(iconLibrary[0]);
+            }
+            document.getElementById('modal-cat-name').focus();
+        }
+
+        function closeCategoryModal() { document.getElementById('categoryModal').classList.remove('active'); }
+
+        function saveCategoryFromModal() {
+            let name = document.getElementById('modal-cat-name').value.trim();
+            if (!name) { alert("Please enter a category name."); return; }
+            
+            if (editingCategoryIndex !== null) { 
+                vaultCategories[editingCategoryIndex].name = name; 
+                vaultCategories[editingCategoryIndex].icon = selectedIcon; 
+            } else { 
+                vaultCategories.push({ name: name, icon: selectedIcon, type: currentVaultType }); 
+            }
+            
+            localStorage.setItem('gokulVaultCats', JSON.stringify(vaultCategories));
+            renderVaultCategories(); 
+            closeCategoryModal();
+        }
+
+        function deleteCategoryFromModal() { 
+            if (confirm("Delete this label permanently?")) { 
+                vaultCategories.splice(editingCategoryIndex, 1); 
+                localStorage.setItem('gokulVaultCats', JSON.stringify(vaultCategories));
+                renderVaultCategories(); 
+                closeCategoryModal(); 
+            } 
+        }
+
+        function addVaultTransaction(category, type, isAutoSync = false, amountParam = 0) {
+            let amount = isAutoSync ? amountParam : parseFloat(prompt(`Enter ₹ amount for ${category}:`));
+            
+            if (!isNaN(amount) && amount > 0) {
+                vaultTransactions.push({ 
+                    date: new Date().toLocaleString('en-GB'), 
+                    category, 
+                    type, 
+                    amount,
+                    source: isAutoSync ? 'attendance' : 'manual' 
+                });
+                localStorage.setItem('gokulVaultTx', JSON.stringify(vaultTransactions));
+                updateVaultUI();
+            }
+        }
+
+        function updateVaultUI() {
+            let inc = vaultTransactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
+            let exp = vaultTransactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+            
+            document.getElementById('total-balance').innerText = '₹' + (inc - exp).toFixed(2);
+            document.getElementById('total-income').innerText = 'In: +₹' + inc.toFixed(2);
+            document.getElementById('total-expense').innerText = 'Out: -₹' + exp.toFixed(2);
+            document.getElementById('history-count').innerText = `${vaultTransactions.length} Records`;
+            
+            // Update History Table
+            const tbody = document.getElementById('history-table-body');
+            tbody.innerHTML = '';
+            [...vaultTransactions].reverse().forEach(t => {
+                let isInc = t.type === 'income';
+                let syncBadge = t.source === 'attendance' ? '<span class="sync-badge"><i class="fas fa-link"></i> WORK SYNC</span>' : '';
+                tbody.innerHTML += `<tr>
+                    <td>${t.date}</td>
+                    <td style="font-weight: 600;">${t.category} ${syncBadge}</td>
+                    <td style="text-transform: capitalize;">${t.type}</td>
+                    <td class="amt-cell ${isInc?'inc':'exp'}">${isInc?'+':'-'}₹${t.amount.toFixed(2)}</td>
+                </tr>`;
+            });
+            
+            updateVaultChart();
+        }
+
+        function updateVaultChart() {
+            if (typeof Chart === 'undefined') return;
+            const ctx = document.getElementById('financeChart').getContext('2d');
+            const dataToChart = vaultTransactions.filter(t => t.type === currentVaultType);
+            const totals = {};
+            dataToChart.forEach(t => { 
+                let baseCategory = t.category.split(' (Shift')[0]; // Clean chart labels
+                totals[baseCategory] = (totals[baseCategory] || 0) + t.amount; 
+            });
+
+            if (vaultChart) vaultChart.destroy();
+            vaultChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(totals).length ? Object.keys(totals) : ['No Data'],
+                    datasets: [{
+                        data: Object.values(totals).length ? Object.values(totals) : [1],
+                        backgroundColor: ['#e74c3c', '#3498db', '#f1c40f', '#2ecc71', '#9b59b6', '#e67e22', '#1abc9c', '#34495e'],
+                        borderWidth: 1, borderColor: '#ffffff'
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'right', labels: { color: 'gray', font: {size: 10} } } } }
+            });
+        }
+
+        // ==========================================
+        // 5. ATTENDANCE & DYNAMIC JOB PROFILES
+        // ==========================================
+        let attRecords = JSON.parse(localStorage.getItem('gokulAttRecords')) || [];
+        
+        const defaultJobs = ["Petrol Bunk Worker", "Instagram Influencer", "Freelance Gig"];
+        let jobProfiles = JSON.parse(localStorage.getItem('gokulJobProfiles')) || defaultJobs;
+
+        function renderJobDropdown() {
+            const select = document.getElementById('att-jobType');
+            select.innerHTML = '';
+            jobProfiles.forEach(job => {
+                select.innerHTML += `<option value="${job}">${job}</option>`;
+            });
+        }
+
+        function openJobModal() {
+            document.getElementById('jobModal').classList.add('active');
+            renderJobList();
+        }
+        
+        function closeJobModal() { document.getElementById('jobModal').classList.remove('active'); }
+
+        function renderJobList() {
+            const container = document.getElementById('job-list-container');
+            container.innerHTML = '';
+            jobProfiles.forEach((job, index) => {
+                container.innerHTML += `
+                <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card-alt); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <span style="font-weight: bold;">${job}</span>
+                    <button class="att-btn btn-del" style="padding: 6px 12px; min-width: unset; height: auto;" onclick="deleteJobProfile(${index})"><i class="fas fa-trash"></i></button>
+                </div>`;
+            });
+        }
+
+        function addJobProfile() {
+            const val = document.getElementById('new-job-input').value.trim();
+            if(val) {
+                jobProfiles.push(val);
+                localStorage.setItem('gokulJobProfiles', JSON.stringify(jobProfiles));
+                document.getElementById('new-job-input').value = '';
+                renderJobList();
+                renderJobDropdown();
+            }
+        }
+
+        function deleteJobProfile(index) {
+            if(confirm("Are you sure you want to delete this job profile?")) {
+                jobProfiles.splice(index, 1);
+                localStorage.setItem('gokulJobProfiles', JSON.stringify(jobProfiles));
+                renderJobList();
+                renderJobDropdown();
+            }
+        }
+
+        document.getElementById('att-baseSalary').value = localStorage.getItem('gokulSavedBase') || '';
+        document.getElementById('att-otRate').value = localStorage.getItem('gokulSavedOT') || '';
+        document.getElementById('att-date').valueAsDate = new Date();
+
+        function saveAttRates() {
+            localStorage.setItem('gokulSavedBase', document.getElementById('att-baseSalary').value);
+            localStorage.setItem('gokulSavedOT', document.getElementById('att-otRate').value);
+        }
+
+        function formatTimeAMPM(timeString) {
+            const [hourString, minute] = timeString.split(":");
+            const hour = +hourString % 24;
+            return (hour % 12 || 12) + ":" + minute + (hour < 12 ? "am" : "pm");
+        }
+
+        function addAttendanceEntry() {
+            const date = document.getElementById('att-date').value;
+            const inTime = document.getElementById('att-inTime').value;
+            const outTime = document.getElementById('att-outTime').value;
+            const baseSalary = parseFloat(document.getElementById('att-baseSalary').value);
+            const otRate = parseFloat(document.getElementById('att-otRate').value);
+            const jobType = document.getElementById('att-jobType').value; 
+
+            if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate) || !jobType) {
+                alert("Please fill all shift and salary fields, and ensure a job profile is selected."); return;
+            }
+            saveAttRates();
+
+            const start = new Date(`1970-01-01T${inTime}:00`);
+            let end = new Date(`1970-01-01T${outTime}:00`);
+            if (end < start) end.setDate(end.getDate() + 1); 
+
+            const grossHours = (end - start) / (1000 * 60 * 60); 
+            let breakHours = grossHours > 4 ? 0.5 : 0;
+            let netHours = Math.max(0, grossHours - breakHours);
+            
+            const regHours = Math.min(netHours, 8);
+            const otHours = Math.max(0, netHours - 8);
+
+            const baseEarned = (regHours / 8) * baseSalary; 
+            const otEarned = otHours * otRate;
+            const totalEarned = baseEarned + otEarned;
+
+            // 1. Save to Attendance System
+            attRecords.push({ date, jobType, inTime, outTime, grossHours, breakHours, netHours, regHours, otHours, baseEarned, otEarned, totalEarned });
+            attRecords.sort((a, b) => new Date(a.date) - new Date(b.date));
+            localStorage.setItem('gokulAttRecords', JSON.stringify(attRecords));
+            updateAttendanceUI();
+
+            // 2. STRICT AUTO-SYNC TO VAULT DASHBOARD
+            addVaultTransaction(`${jobType} (Shift: ${date})`, 'income', true, totalEarned);
+
+            document.getElementById('att-inTime').value = '09:30';
+            document.getElementById('att-outTime').value = '18:00';
+            
+            alert(`Shift logged successfully!\n₹${totalEarned.toFixed(2)} has been permanently synced to your Vault Dashboard under ${jobType}.`);
+        }
+
+        function updateAttendanceUI() {
+            const tbody = document.getElementById('att-table-body');
+            tbody.innerHTML = '';
+            
+            let totalSalary = 0, totalRegHours = 0, totalOtHours = 0;
+
+            attRecords.forEach(record => {
+                totalSalary += record.totalEarned;
+                totalRegHours += record.regHours;
+                totalOtHours += record.otHours;
+                
+                const timeStr = `${formatTimeAMPM(record.inTime)} - ${formatTimeAMPM(record.outTime)}`;
+                tbody.innerHTML += `<tr>
+                    <td style="text-align: left; font-weight: 600;">${record.date}</td>
+                    <td style="color: var(--text-muted); font-size: 12px; font-weight: bold;">${record.jobType}</td>
+                    <td>${timeStr}</td>
+                    <td>${record.grossHours.toFixed(1)}</td>
+                    <td style="color: var(--danger); font-weight: bold;">-${record.breakHours.toFixed(1)}</td>
+                    <td style="font-weight: bold; color: var(--text-main);">${record.netHours.toFixed(1)}</td>
+                    <td style="color: var(--text-accent); font-weight: 600;">${record.otHours.toFixed(1)}</td>
+                    <td>₹${record.baseEarned.toFixed(2)}</td>
+                    <td>₹${record.otEarned.toFixed(2)}</td>
+                    <td style="font-weight: 900; background: rgba(0,0,0,0.05);">₹${record.totalEarned.toFixed(2)}</td>
+                </tr>`;
+            });
+
+            document.getElementById('att-total-days').innerText = attRecords.length;
+            document.getElementById('att-total-reg-hours').innerText = totalRegHours.toFixed(1);
+            document.getElementById('att-total-ot-hours').innerText = totalOtHours.toFixed(1);
+            document.getElementById('att-total-salary').innerText = totalSalary.toFixed(2);
+        }
+
+        function clearAttendanceData() {
+            if (confirm("Are you sure you want to delete all attendance timesheet records?\n\n(Note: Your money logged in the Vault will not be deleted, so your financial history stays safe).")) {
+                attRecords = [];
+                localStorage.setItem('gokulAttRecords', JSON.stringify(attRecords));
+                updateAttendanceUI();
+            }
+        }
+
+        function downloadAttendancePDF() {
+            const element = document.getElementById('attendance-ledger-content');
+            const opt = {
+                margin: 10, filename: 'Gokul_Monthly_Timesheet.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+        window.onload = () => {
+            renderProfile();
+            renderThemeGrid();
+            renderVaultCategories();
+            renderJobDropdown();
+            updateVaultUI();
+            updateAttendanceUI();
         };
-
-        html2pdf().set(opt).from(element).save();
-    }
-</script>
-
+    </script>
 </body>
 </html>
