@@ -76,6 +76,12 @@
         .menu-btn i { font-size: 16px; width: 22px; text-align: center; color: var(--text-accent);}
         .menu-btn:hover, .menu-btn.active { background-color: var(--hover-color); transform: translateX(5px); border-color: var(--text-main); }
         .menu-btn.active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background-color: var(--text-main); }
+        
+        .menu-btn.danger { border: 1px dashed var(--danger); color: var(--danger); margin-top: 15px; background: transparent;}
+        .menu-btn.danger i { color: var(--danger); }
+        .menu-btn.danger:hover { background-color: var(--danger); color: #fff; border-color: var(--danger); }
+        .menu-btn.danger:hover i { color: #fff; }
+
         .footer-info { font-size: 11px; color: var(--text-muted); font-weight: 600; line-height: 1.6; display: flex; flex-direction: column; gap: 4px; margin-top: 20px;}
 
         /* --- MAIN CONTENT AREAS --- */
@@ -186,6 +192,9 @@
                     </button>
                     <button class="menu-btn" onclick="switchPage('themes')" id="btn-themes">
                         <i class="fas fa-wand-magic-sparkles"></i> <span>Themes</span>
+                    </button>
+                    <button class="menu-btn danger" onclick="monthlyReset()">
+                        <i class="fas fa-calendar-times"></i> <span>Monthly Reset</span>
                     </button>
                 </div>
             </div>
@@ -344,8 +353,8 @@
                 </div>
 
                 <div style="display: flex; gap: 15px; margin-top: 25px;">
-                    <button class="att-btn btn-dl" onclick="downloadAttendancePDF()"><i class="fas fa-download"></i> Download Timesheet</button>
-                    <button class="att-btn btn-del" onclick="clearAttendanceData()"><i class="fas fa-trash"></i> Clear Shift Data</button>
+                    <button class="att-btn btn-dl" onclick="downloadAttendancePDF()"><i class="fas fa-download"></i> Download Timesheet PDF</button>
+                    <button class="att-btn btn-del" onclick="clearAttendanceData()"><i class="fas fa-eraser"></i> Clear Shifts Only</button>
                 </div>
             </div>
 
@@ -863,6 +872,23 @@
                 attRecords = [];
                 localStorage.setItem('gokulAttRecords', JSON.stringify(attRecords));
                 updateAttendanceUI();
+            }
+        }
+
+        // ==========================================
+        // 6. MONTHLY RESET 
+        // ==========================================
+        function monthlyReset() {
+            if (confirm("⚠️ Start a New Month?\n\nThis will permanently delete ALL Vault Transactions and Logged Shifts. \n\n(Your Profile, Job Types, Themes, and Categories will NOT be deleted).")) {
+                vaultTransactions = [];
+                localStorage.setItem('gokulVaultTx', JSON.stringify(vaultTransactions));
+                updateVaultUI();
+
+                attRecords = [];
+                localStorage.setItem('gokulAttRecords', JSON.stringify(attRecords));
+                updateAttendanceUI();
+
+                alert("✨ Reset Successful! You are ready for a new month.");
             }
         }
 
