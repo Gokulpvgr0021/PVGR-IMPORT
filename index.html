@@ -5,31 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gokul's Master Hub: Work & Wealth</title>
     
-    <!-- PWA & Mobile Web App Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gokul Hub">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0d0c11">
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=MedievalSharp&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- PDF Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    
-    <!-- Chart.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     
     <style>
-        /* --- GLOBAL THEME SYSTEM --- */
         :root {
             --bg-body: #005A9E; --bg-app: #f4f7f6; --bg-sidebar: #ffffff; --bg-card: #ffffff; --bg-card-alt: #f8f9fa; 
             --text-main: #1c4587; --text-muted: #7f8c8d; --text-accent: #27ae60; --border-color: #e0e0e0; 
@@ -40,7 +33,6 @@
 
         *:focus-visible { outline: 3px solid var(--text-main) !important; outline-offset: 3px !important; border-radius: 8px; box-shadow: 0 0 15px var(--text-main) !important; }
 
-        /* --- THE HOGWARTS MAGIC THEME --- */
         [data-theme="harrypotter"] {
             --bg-body: #08060c; --bg-app: rgba(18, 14, 26, 0.94); --bg-sidebar: rgba(13, 10, 18, 0.97);
             --bg-card: rgba(28, 22, 38, 0.92); --bg-card-alt: rgba(38, 30, 52, 0.92);
@@ -57,19 +49,16 @@
         [data-theme="harrypotter"] * { font-family: var(--hp-font-body); }
         [data-theme="harrypotter"] h1, [data-theme="harrypotter"] h2, [data-theme="harrypotter"] h3, 
         [data-theme="harrypotter"] .digit-time, [data-theme="harrypotter"] .id-name, [data-theme="harrypotter"] .page-header { font-family: var(--hp-font-header) !important; letter-spacing: 1.5px; text-shadow: 0 0 10px rgba(240, 199, 94, 0.45); }
-        [data-theme="harrypotter"] .calendar-widget, [data-theme="harrypotter"] .id-card, [data-theme="harrypotter"] .total-box, [data-theme="harrypotter"] .chart-box, [data-theme="harrypotter"] .sidebar, [data-theme="harrypotter"] .att-card, [data-theme="harrypotter"] .att-entry-form { border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(240, 199, 94, 0.08); }
+        [data-theme="harrypotter"] .calendar-widget, [data-theme="harrypotter"] .id-card, [data-theme="harrypotter"] .total-box, [data-theme="harrypotter"] .chart-box, [data-theme="harrypotter"] .sidebar, [data-theme="harrypotter"] .att-card, [data-theme="harrypotter"] .att-entry-form, [data-theme="harrypotter"] .archive-card { border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(240, 199, 94, 0.08); }
 
-        /* --- OTHER THEMES --- */
         [data-theme="dark"] { --bg-body: #121212; --bg-app: #1e1e1e; --bg-sidebar: #252525; --bg-card: #2d2d2d; --bg-card-alt: #333333; --text-main: #e0e0e0; --text-muted: #aaaaaa; --text-accent: #4ade80; --border-color: #444444; --total-box: #1a1a1a; --hover-color: #3a3a3a; --danger: #ff6b6b; }
         [data-theme="cyberpunk"] { --bg-body: #0d0221; --bg-app: #150a2b; --bg-sidebar: #1a0b2e; --bg-card: #241142; --bg-card-alt: #2a1452; --text-main: #00ffcc; --text-muted: #b829ea; --text-accent: #ff007f; --border-color: #00ffcc; --total-box: #100624; --hover-color: #3d1b6b; --danger: #ff003c; }
 
-        /* --- BASE STYLES --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: var(--bg-body); display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; transition: background-color 0.4s ease; overflow: hidden; color: var(--text-main); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
         .app-window { background-color: var(--bg-app); width: 95vw; max-width: 1300px; height: 92vh; border-radius: 14px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7); display: flex; position: relative; overflow: hidden; transition: all 0.4s ease; backdrop-filter: blur(12px); }
         button { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; cursor: pointer; }
 
-        /* --- SIDEBAR --- */
         .sidebar { width: 230px; background-color: var(--bg-sidebar); display: flex; flex-direction: column; justify-content: space-between; padding: 20px; border-right: 1px solid var(--border-color); z-index: 10; flex-shrink: 0;}
         .menu-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
         .menu-btn { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px 15px; color: var(--text-main); font-weight: bold; font-size: 13px; text-align: left; box-shadow: 2px 2px 8px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 12px; position: relative; overflow: hidden; }
@@ -77,65 +66,59 @@
         .menu-btn:hover, .menu-btn.active { background-color: var(--hover-color); transform: translateX(5px); border-color: var(--text-main); }
         .menu-btn.active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background-color: var(--text-main); }
         
-        .menu-btn.danger { border: 1px dashed var(--danger); color: var(--danger); margin-top: 15px; background: transparent;}
+        .menu-btn.action-btn { border: 1px dashed var(--text-accent); color: var(--text-accent); margin-top: 15px; background: transparent;}
+        .menu-btn.action-btn:hover { background-color: var(--text-accent); color: #fff; }
+        .menu-btn.action-btn:hover i { color: #fff; }
+        
+        .menu-btn.danger { border: 1px dashed var(--danger); color: var(--danger); margin-top: 5px; background: transparent;}
         .menu-btn.danger i { color: var(--danger); }
-        .menu-btn.danger:hover { background-color: var(--danger); color: #fff; border-color: var(--danger); }
+        .menu-btn.danger:hover { background-color: var(--danger); color: #fff; }
         .menu-btn.danger:hover i { color: #fff; }
 
         .footer-info { font-size: 11px; color: var(--text-muted); font-weight: 600; line-height: 1.6; display: flex; flex-direction: column; gap: 4px; margin-top: 20px;}
 
-        /* --- MAIN CONTENT AREAS --- */
         .main-content { flex: 1; display: flex; position: relative; overflow: hidden; background: transparent;}
         .page { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 25px; animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); flex-direction: column;}
         .page.active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .page-header { font-size: 28px; font-weight: 900; color: var(--text-main); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; width: 100%;}
 
-        /* --- VAULT DASHBOARD SPECIFICS --- */
+        /* Vault */
         #vault-dashboard-page { flex-direction: row; padding: 0; }
         .center-col { width: 330px; display: flex; flex-direction: column; align-items: center; padding: 20px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); overflow-y: auto; flex-shrink: 0;}
         .grid-wrapper { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 20px;}
         .logo-container { text-align: center; margin-bottom: 18px; width: 100%; }
         .logo-container h1 { font-size: 26px; font-weight: 900; border-bottom: 2px solid var(--text-main); display: inline-block; }
-        
         .id-card, .total-box, .chart-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 15px; width: 100%; padding: 15px; margin-bottom: 15px; box-shadow: 2px 5px 15px rgba(0,0,0,0.05); }
         .total-box { background: var(--total-box); color: white; border: none;}
         .total-box h2 { font-size: 28px; font-weight: bold; margin: 10px 0;}
-        
         .id-photo { width: 60px; height: 60px; border-radius: 50%; background: var(--bg-card-alt); border: 2px solid var(--text-main); display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 10px; overflow: hidden; }
         .id-name { font-size: 18px; font-weight: 900; text-align: center;}
         .id-role { font-size: 11px; color: var(--text-accent); text-align: center; margin-bottom: 10px;}
-
-        /* Grid Items & Edit Mode */
         .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding-top: 5px;}
         .module-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 15px; padding: 20px 10px; display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--text-muted); font-weight: bold; font-size: 12px; text-align: center; position: relative;}
         .module-btn:hover { border-color: var(--text-main); color: var(--text-main); transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.1);}
         .module-btn i { font-size: 28px; color: var(--text-accent); }
-        
-        /* Edit Mode Animations */
         .module-btn.edit-mode { border: 2px dashed var(--danger); animation: jiggle 0.5s infinite alternate; }
         @keyframes jiggle { 0% { transform: rotate(-1deg); } 100% { transform: rotate(1deg); } }
         .edit-badge { position: absolute; top: -8px; right: -8px; background: var(--danger); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); pointer-events: none; border: 2px solid var(--bg-card);}
         .module-btn.add-btn { border: 2px dashed var(--text-muted); background: rgba(0,0,0,0.02); box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
 
-        /* Icon Grid in Modal */
         .selection-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-height: 150px; overflow-y: auto; padding: 10px; background: var(--bg-card-alt); border-radius: 12px; border: 1px inset var(--border-color); margin-top: 10px;}
         .select-item { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid transparent; background: var(--bg-card); box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 18px; cursor: pointer; color: var(--text-muted); }
         .select-item.selected { border-color: var(--text-main); background: var(--text-main); color: var(--bg-app); transform: scale(1.1); }
 
-        /* --- ATTENDANCE TRACKER SPECIFICS --- */
+        /* Attendance Tracker */
         .att-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
         .att-card { background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .att-card i { font-size: 2em; margin-bottom: 10px; color: var(--text-accent); }
         .att-card .value { font-size: 2em; font-weight: 900; color: var(--text-main); }
         .att-card .label { font-size: 0.9em; font-weight: bold; color: var(--text-muted); text-transform: uppercase; }
-        
         .att-table-container { overflow-x: auto; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid var(--border-color); background: var(--bg-card);}
         .att-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 800px; }
         .att-table th, .att-table td { padding: 12px 15px; text-align: center; border-bottom: 1px solid var(--border-color); }
         .att-table th { background-color: var(--bg-card-alt); color: var(--text-main); font-weight: 800; text-transform: uppercase; }
         .att-table tr:hover { background-color: var(--hover-color); }
-        
         .att-entry-form { background-color: var(--bg-card-alt); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 25px; display: flex; flex-wrap: wrap; gap: 15px;}
         .form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 140px; }
         .form-group label { font-size: 13px; font-weight: bold; color: var(--text-main); }
@@ -148,23 +131,29 @@
         .btn-dl { background: var(--text-main); }
         .btn-del { background: var(--danger); }
 
-        /* --- TABLE SPECIFICS (HISTORY) --- */
+        /* History Table */
         .history-table { width: 100%; border-collapse: collapse; min-width: 500px; background: var(--bg-card);}
         .history-table th, .history-table td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
         .history-table th { background-color: var(--bg-card-alt); color: var(--text-main); position: sticky; top: 0;}
         .amt-cell.inc { color: var(--text-accent); font-weight: bold; }
         .amt-cell.exp { color: var(--danger); font-weight: bold; }
-        
-        /* Auto-Sync Badge */
         .sync-badge { font-size: 10px; background: var(--bg-card-alt); border: 1px solid var(--border-color); padding: 3px 6px; border-radius: 6px; margin-left: 8px; color: var(--text-muted); font-weight: bold;}
 
-        /* --- THEMES PAGE --- */
+        /* Themes */
         .theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
         .theme-card { background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 12px; padding: 15px; text-align: center; cursor: pointer;}
         .theme-card:hover { border-color: var(--text-main); transform: translateY(-5px); }
         .theme-preview { height: 50px; border-radius: 8px; margin-bottom: 10px; border: 1px solid rgba(0,0,0,0.1); }
 
-        /* --- MODALS --- */
+        /* Archives (New) */
+        .archives-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .archive-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 10px;}
+        .archive-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 5px;}
+        .archive-title { font-size: 18px; font-weight: 900; color: var(--text-main); }
+        .archive-stats { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+        .archive-actions { display: flex; gap: 10px; margin-top: auto; padding-top: 10px; }
+
+        /* Modals */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
         .modal-overlay.active { display: flex; }
         .modal-content { background: var(--bg-app); width: 90%; max-width: 420px; border-radius: 15px; padding: 25px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 15px; }
@@ -190,11 +179,19 @@
                     <button class="menu-btn" onclick="switchPage('history')" id="btn-history">
                         <i class="fas fa-scroll"></i> <span>Ledger Records</span>
                     </button>
+                    <button class="menu-btn" onclick="switchPage('archives')" id="btn-archives">
+                        <i class="fas fa-archive"></i> <span>Past Months</span>
+                    </button>
                     <button class="menu-btn" onclick="switchPage('themes')" id="btn-themes">
                         <i class="fas fa-wand-magic-sparkles"></i> <span>Themes</span>
                     </button>
-                    <button class="menu-btn danger" onclick="monthlyReset()">
-                        <i class="fas fa-calendar-times"></i> <span>Monthly Reset</span>
+
+                    <!-- Monthly / Yearly Operations -->
+                    <button class="menu-btn action-btn" onclick="completeMonth()">
+                        <i class="fas fa-calendar-check"></i> <span>Complete Month</span>
+                    </button>
+                    <button class="menu-btn danger" onclick="yearlyReset()">
+                        <i class="fas fa-skull"></i> <span>Yearly Reset</span>
                     </button>
                 </div>
             </div>
@@ -216,8 +213,6 @@
                     <div class="logo-container">
                         <h1>VAULT SUMMARY</h1>
                     </div>
-
-                    <!-- Profile Card -->
                     <div class="id-card">
                         <div class="id-photo" id="profile-photo-container">
                             <i class="fas fa-user-tie" id="profile-icon"></i>
@@ -229,8 +224,6 @@
                             ID: <span id="profile-id">TVGR</span> | Ht: <span id="profile-ht">5'4"</span>
                         </div>
                     </div>
-
-                    <!-- Total Balance -->
                     <div class="total-box">
                         <div style="font-size: 12px; opacity: 0.9;">Total Wealth Balance</div>
                         <h2 id="total-balance">₹0.00</h2>
@@ -239,15 +232,12 @@
                             <span style="color: #ff7675;" id="total-expense">Out: -₹0.00</span>
                         </div>
                     </div>
-
-                    <!-- Chart -->
                     <div class="chart-box">
                         <div style="font-size: 12px; font-weight: bold; margin-bottom: 10px;">Expense Distribution</div>
                         <div style="height: 140px; width: 100%;"><canvas id="financeChart"></canvas></div>
                     </div>
                 </div>
 
-                <!-- Transaction Categories -->
                 <div class="grid-wrapper">
                     <div class="page-header" style="border: none; margin-bottom: 10px; align-items: center;">
                         <span id="grid-title">Quick Log Expense</span>
@@ -309,9 +299,7 @@
                                     <th>Total (₹)</th>
                                 </tr>
                             </thead>
-                            <tbody id="att-table-body">
-                                <!-- Entries injected by JS -->
-                            </tbody>
+                            <tbody id="att-table-body"></tbody>
                         </table>
                     </div>
                 </div>
@@ -323,9 +311,7 @@
                                 <span><i class="fas fa-briefcase"></i> Select Job Profile</span>
                                 <span style="color: var(--text-accent); cursor: pointer;" onclick="openJobModal()"><i class="fas fa-pencil-alt"></i> Edit Jobs</span>
                             </label>
-                            <select id="att-jobType" class="form-control">
-                                <!-- Populated dynamically via JS -->
-                            </select>
+                            <select id="att-jobType" class="form-control"></select>
                         </div>
                         <div class="form-group">
                             <label>Base Salary (for 8 hrs) ₹</label>
@@ -351,10 +337,8 @@
                     </div>
                     <button class="att-btn btn-add" onclick="addAttendanceEntry()"><i class="fas fa-coins"></i> Log & Sync to Vault</button>
                 </div>
-
                 <div style="display: flex; gap: 15px; margin-top: 25px;">
-                    <button class="att-btn btn-dl" onclick="downloadAttendancePDF()"><i class="fas fa-download"></i> Download Timesheet PDF</button>
-                    <button class="att-btn btn-del" onclick="clearAttendanceData()"><i class="fas fa-eraser"></i> Clear Shifts Only</button>
+                    <button class="att-btn btn-dl" onclick="downloadAttendancePDF()"><i class="fas fa-download"></i> Download Timesheet</button>
                 </div>
             </div>
 
@@ -379,7 +363,18 @@
                 </div>
             </div>
 
-            <!-- 4. THEMES PAGE -->
+            <!-- 4. PAST MONTHS (ARCHIVES) PAGE -->
+            <div id="archives-page" class="page">
+                <div class="page-header">
+                    <span>Archived Months</span>
+                </div>
+                <p style="margin-bottom: 20px; color: var(--text-muted);">View and manage your completed monthly files. These files are safely separated from your active trackers.</p>
+                <div class="archives-grid" id="archives-grid-container">
+                    <!-- Archives injected here -->
+                </div>
+            </div>
+
+            <!-- 5. THEMES PAGE -->
             <div id="themes-page" class="page">
                 <div class="page-header">Application Themes</div>
                 <p style="margin-bottom: 20px; color: var(--text-muted);">Select a theme. This will automatically style both your Vault and your Attendance Tracker.</p>
@@ -429,9 +424,7 @@
                 <input type="text" id="new-job-input" class="form-control" placeholder="New Job Profile Name" autocomplete="off">
                 <button class="att-btn btn-add" style="min-width: 60px;" onclick="addJobProfile()"><i class="fas fa-plus"></i></button>
             </div>
-            <div id="job-list-container" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
-                <!-- Dynamically populated job lists -->
-            </div>
+            <div id="job-list-container" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-top: 15px;"></div>
             <div style="display: flex; margin-top: 15px;">
                 <button class="att-btn" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); width: 100%;" onclick="closeJobModal()">Close Editor</button>
             </div>
@@ -448,7 +441,8 @@
             document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
             
             document.getElementById(`${pageId}-page`).classList.add('active');
-            document.getElementById(`btn-${pageId}`).classList.add('active');
+            let navBtn = document.getElementById(`btn-${pageId}`);
+            if (navBtn) navBtn.classList.add('active');
             
             if(pageId === 'vault-dashboard') updateVaultChart();
             if(pageId !== 'vault-dashboard' && isEditMode) toggleEditMode(); 
@@ -565,41 +559,28 @@
         function renderVaultCategories() {
             const grid = document.getElementById('category-grid');
             grid.innerHTML = '';
-            
             vaultCategories.forEach((cat, index) => {
                 if (cat.type === currentVaultType) {
                     let extraClass = isEditMode ? 'edit-mode' : '';
                     let badge = isEditMode ? '<div class="edit-badge"><i class="fas fa-pencil-alt"></i></div>' : '';
-                    grid.innerHTML += `<button class="module-btn ${extraClass}" onclick="handleCategoryClick(${index})">
-                        <i class="${cat.icon}"></i><span>${cat.name}</span>${badge}
-                    </button>`;
+                    grid.innerHTML += `<button class="module-btn ${extraClass}" onclick="handleCategoryClick(${index})"><i class="${cat.icon}"></i><span>${cat.name}</span>${badge}</button>`;
                 }
             });
-
             if (isEditMode) {
-                grid.innerHTML += `<button class="module-btn add-btn" onclick="openCategoryModal(null)">
-                    <i class="fas fa-plus" style="color:var(--text-muted); font-size: 24px;"></i>
-                    <span style="color:var(--text-muted)">Add New</span>
-                </button>`;
+                grid.innerHTML += `<button class="module-btn add-btn" onclick="openCategoryModal(null)"><i class="fas fa-plus" style="color:var(--text-muted); font-size: 24px;"></i><span style="color:var(--text-muted)">Add New</span></button>`;
             }
         }
 
         function handleCategoryClick(index) {
-            if (isEditMode) {
-                openCategoryModal(index);
-            } else {
-                addVaultTransaction(vaultCategories[index].name, vaultCategories[index].type, false);
-            }
+            if (isEditMode) openCategoryModal(index);
+            else addVaultTransaction(vaultCategories[index].name, vaultCategories[index].type, false);
         }
 
         let editingCategoryIndex = null;
         let selectedIcon = '';
 
         function initIconGrid() {
-            const grid = document.getElementById('modal-icon-grid');
-            grid.innerHTML = iconLibrary.map(icon => 
-                `<div class="select-item" onclick="selectModalIcon('${icon}')" data-icon="${icon}"><i class="${icon}"></i></div>`
-            ).join('');
+            document.getElementById('modal-icon-grid').innerHTML = iconLibrary.map(icon => `<div class="select-item" onclick="selectModalIcon('${icon}')" data-icon="${icon}"><i class="${icon}"></i></div>`).join('');
         }
 
         function selectModalIcon(icon) {
@@ -612,7 +593,6 @@
             editingCategoryIndex = index;
             document.getElementById('categoryModal').classList.add('active');
             initIconGrid();
-            
             if (index !== null) { 
                 let cat = vaultCategories[index]; 
                 document.getElementById('cat-modal-title').innerText = "Edit Label"; 
@@ -632,39 +612,31 @@
 
         function saveCategoryFromModal() {
             let name = document.getElementById('modal-cat-name').value.trim();
-            if (!name) { alert("Please enter a category name."); return; }
-            
+            if (!name) return alert("Please enter a category name.");
             if (editingCategoryIndex !== null) { 
                 vaultCategories[editingCategoryIndex].name = name; 
                 vaultCategories[editingCategoryIndex].icon = selectedIcon; 
             } else { 
                 vaultCategories.push({ name: name, icon: selectedIcon, type: currentVaultType }); 
             }
-            
             localStorage.setItem('gokulVaultCats', JSON.stringify(vaultCategories));
-            renderVaultCategories(); 
-            closeCategoryModal();
+            renderVaultCategories(); closeCategoryModal();
         }
 
         function deleteCategoryFromModal() { 
             if (confirm("Delete this label permanently?")) { 
                 vaultCategories.splice(editingCategoryIndex, 1); 
                 localStorage.setItem('gokulVaultCats', JSON.stringify(vaultCategories));
-                renderVaultCategories(); 
-                closeCategoryModal(); 
+                renderVaultCategories(); closeCategoryModal(); 
             } 
         }
 
         function addVaultTransaction(category, type, isAutoSync = false, amountParam = 0) {
             let amount = isAutoSync ? amountParam : parseFloat(prompt(`Enter ₹ amount for ${category}:`));
-            
             if (!isNaN(amount) && amount > 0) {
                 vaultTransactions.push({ 
                     date: new Date().toLocaleString('en-GB'), 
-                    category, 
-                    type, 
-                    amount,
-                    source: isAutoSync ? 'attendance' : 'manual' 
+                    category, type, amount, source: isAutoSync ? 'attendance' : 'manual' 
                 });
                 localStorage.setItem('gokulVaultTx', JSON.stringify(vaultTransactions));
                 updateVaultUI();
@@ -680,20 +652,13 @@
             document.getElementById('total-expense').innerText = 'Out: -₹' + exp.toFixed(2);
             document.getElementById('history-count').innerText = `${vaultTransactions.length} Records`;
             
-            // Update History Table
             const tbody = document.getElementById('history-table-body');
             tbody.innerHTML = '';
             [...vaultTransactions].reverse().forEach(t => {
                 let isInc = t.type === 'income';
                 let syncBadge = t.source === 'attendance' ? '<span class="sync-badge"><i class="fas fa-link"></i> WORK SYNC</span>' : '';
-                tbody.innerHTML += `<tr>
-                    <td>${t.date}</td>
-                    <td style="font-weight: 600;">${t.category} ${syncBadge}</td>
-                    <td style="text-transform: capitalize;">${t.type}</td>
-                    <td class="amt-cell ${isInc?'inc':'exp'}">${isInc?'+':'-'}₹${t.amount.toFixed(2)}</td>
-                </tr>`;
+                tbody.innerHTML += `<tr><td>${t.date}</td><td style="font-weight: 600;">${t.category} ${syncBadge}</td><td style="text-transform: capitalize;">${t.type}</td><td class="amt-cell ${isInc?'inc':'exp'}">${isInc?'+':'-'}₹${t.amount.toFixed(2)}</td></tr>`;
             });
-            
             updateVaultChart();
         }
 
@@ -703,7 +668,7 @@
             const dataToChart = vaultTransactions.filter(t => t.type === currentVaultType);
             const totals = {};
             dataToChart.forEach(t => { 
-                let baseCategory = t.category.split(' (Shift')[0]; // Clean chart labels
+                let baseCategory = t.category.split(' (Shift')[0];
                 totals[baseCategory] = (totals[baseCategory] || 0) + t.amount; 
             });
 
@@ -726,54 +691,37 @@
         // 5. ATTENDANCE & DYNAMIC JOB PROFILES
         // ==========================================
         let attRecords = JSON.parse(localStorage.getItem('gokulAttRecords')) || [];
-        
         const defaultJobs = ["Petrol Bunk Worker", "Instagram Influencer", "Freelance Gig"];
         let jobProfiles = JSON.parse(localStorage.getItem('gokulJobProfiles')) || defaultJobs;
 
         function renderJobDropdown() {
-            const select = document.getElementById('att-jobType');
-            select.innerHTML = '';
-            jobProfiles.forEach(job => {
-                select.innerHTML += `<option value="${job}">${job}</option>`;
-            });
+            const select = document.getElementById('att-jobType'); select.innerHTML = '';
+            jobProfiles.forEach(job => { select.innerHTML += `<option value="${job}">${job}</option>`; });
         }
 
-        function openJobModal() {
-            document.getElementById('jobModal').classList.add('active');
-            renderJobList();
-        }
-        
+        function openJobModal() { document.getElementById('jobModal').classList.add('active'); renderJobList(); }
         function closeJobModal() { document.getElementById('jobModal').classList.remove('active'); }
 
         function renderJobList() {
-            const container = document.getElementById('job-list-container');
-            container.innerHTML = '';
+            const container = document.getElementById('job-list-container'); container.innerHTML = '';
             jobProfiles.forEach((job, index) => {
-                container.innerHTML += `
-                <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card-alt); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
-                    <span style="font-weight: bold;">${job}</span>
-                    <button class="att-btn btn-del" style="padding: 6px 12px; min-width: unset; height: auto;" onclick="deleteJobProfile(${index})"><i class="fas fa-trash"></i></button>
-                </div>`;
+                container.innerHTML += `<div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card-alt); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);"><span style="font-weight: bold;">${job}</span><button class="att-btn btn-del" style="padding: 6px 12px; min-width: unset; height: auto;" onclick="deleteJobProfile(${index})"><i class="fas fa-trash"></i></button></div>`;
             });
         }
 
         function addJobProfile() {
             const val = document.getElementById('new-job-input').value.trim();
             if(val) {
-                jobProfiles.push(val);
-                localStorage.setItem('gokulJobProfiles', JSON.stringify(jobProfiles));
+                jobProfiles.push(val); localStorage.setItem('gokulJobProfiles', JSON.stringify(jobProfiles));
                 document.getElementById('new-job-input').value = '';
-                renderJobList();
-                renderJobDropdown();
+                renderJobList(); renderJobDropdown();
             }
         }
 
         function deleteJobProfile(index) {
             if(confirm("Are you sure you want to delete this job profile?")) {
-                jobProfiles.splice(index, 1);
-                localStorage.setItem('gokulJobProfiles', JSON.stringify(jobProfiles));
-                renderJobList();
-                renderJobDropdown();
+                jobProfiles.splice(index, 1); localStorage.setItem('gokulJobProfiles', JSON.stringify(jobProfiles));
+                renderJobList(); renderJobDropdown();
             }
         }
 
@@ -787,9 +735,8 @@
         }
 
         function formatTimeAMPM(timeString) {
-            const [hourString, minute] = timeString.split(":");
-            const hour = +hourString % 24;
-            return (hour % 12 || 12) + ":" + minute + (hour < 12 ? "am" : "pm");
+            const [h, m] = timeString.split(":"); const hour = +h % 24;
+            return (hour % 12 || 12) + ":" + m + (hour < 12 ? "am" : "pm");
         }
 
         function addAttendanceEntry() {
@@ -800,9 +747,7 @@
             const otRate = parseFloat(document.getElementById('att-otRate').value);
             const jobType = document.getElementById('att-jobType').value; 
 
-            if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate) || !jobType) {
-                alert("Please fill all shift and salary fields, and ensure a job profile is selected."); return;
-            }
+            if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate) || !jobType) return alert("Please fill all fields.");
             saveAttRates();
 
             const start = new Date(`1970-01-01T${inTime}:00`);
@@ -812,53 +757,29 @@
             const grossHours = (end - start) / (1000 * 60 * 60); 
             let breakHours = grossHours > 4 ? 0.5 : 0;
             let netHours = Math.max(0, grossHours - breakHours);
-            
-            const regHours = Math.min(netHours, 8);
-            const otHours = Math.max(0, netHours - 8);
+            const regHours = Math.min(netHours, 8); const otHours = Math.max(0, netHours - 8);
 
-            const baseEarned = (regHours / 8) * baseSalary; 
-            const otEarned = otHours * otRate;
-            const totalEarned = baseEarned + otEarned;
+            const baseEarned = (regHours / 8) * baseSalary; const otEarned = otHours * otRate; const totalEarned = baseEarned + otEarned;
 
-            // 1. Save to Attendance System
             attRecords.push({ date, jobType, inTime, outTime, grossHours, breakHours, netHours, regHours, otHours, baseEarned, otEarned, totalEarned });
             attRecords.sort((a, b) => new Date(a.date) - new Date(b.date));
             localStorage.setItem('gokulAttRecords', JSON.stringify(attRecords));
             updateAttendanceUI();
 
-            // 2. STRICT AUTO-SYNC TO VAULT DASHBOARD
             addVaultTransaction(`${jobType} (Shift: ${date})`, 'income', true, totalEarned);
 
-            document.getElementById('att-inTime').value = '09:30';
-            document.getElementById('att-outTime').value = '18:00';
-            
-            alert(`Shift logged successfully!\n₹${totalEarned.toFixed(2)} has been permanently synced to your Vault Dashboard under ${jobType}.`);
+            document.getElementById('att-inTime').value = '09:30'; document.getElementById('att-outTime').value = '18:00';
+            alert(`Shift logged!\n₹${totalEarned.toFixed(2)} synced to Vault under ${jobType}.`);
         }
 
         function updateAttendanceUI() {
-            const tbody = document.getElementById('att-table-body');
-            tbody.innerHTML = '';
-            
+            const tbody = document.getElementById('att-table-body'); tbody.innerHTML = '';
             let totalSalary = 0, totalRegHours = 0, totalOtHours = 0;
 
             attRecords.forEach(record => {
-                totalSalary += record.totalEarned;
-                totalRegHours += record.regHours;
-                totalOtHours += record.otHours;
-                
+                totalSalary += record.totalEarned; totalRegHours += record.regHours; totalOtHours += record.otHours;
                 const timeStr = `${formatTimeAMPM(record.inTime)} - ${formatTimeAMPM(record.outTime)}`;
-                tbody.innerHTML += `<tr>
-                    <td style="text-align: left; font-weight: 600;">${record.date}</td>
-                    <td style="color: var(--text-muted); font-size: 12px; font-weight: bold;">${record.jobType}</td>
-                    <td>${timeStr}</td>
-                    <td>${record.grossHours.toFixed(1)}</td>
-                    <td style="color: var(--danger); font-weight: bold;">-${record.breakHours.toFixed(1)}</td>
-                    <td style="font-weight: bold; color: var(--text-main);">${record.netHours.toFixed(1)}</td>
-                    <td style="color: var(--text-accent); font-weight: 600;">${record.otHours.toFixed(1)}</td>
-                    <td>₹${record.baseEarned.toFixed(2)}</td>
-                    <td>₹${record.otEarned.toFixed(2)}</td>
-                    <td style="font-weight: 900; background: rgba(0,0,0,0.05);">₹${record.totalEarned.toFixed(2)}</td>
-                </tr>`;
+                tbody.innerHTML += `<tr><td style="text-align: left; font-weight: 600;">${record.date}</td><td style="color: var(--text-muted); font-size: 12px; font-weight: bold;">${record.jobType}</td><td>${timeStr}</td><td>${record.grossHours.toFixed(1)}</td><td style="color: var(--danger); font-weight: bold;">-${record.breakHours.toFixed(1)}</td><td style="font-weight: bold; color: var(--text-main);">${record.netHours.toFixed(1)}</td><td style="color: var(--text-accent); font-weight: 600;">${record.otHours.toFixed(1)}</td><td>₹${record.baseEarned.toFixed(2)}</td><td>₹${record.otEarned.toFixed(2)}</td><td style="font-weight: 900; background: rgba(0,0,0,0.05);">₹${record.totalEarned.toFixed(2)}</td></tr>`;
             });
 
             document.getElementById('att-total-days').innerText = attRecords.length;
@@ -867,40 +788,121 @@
             document.getElementById('att-total-salary').innerText = totalSalary.toFixed(2);
         }
 
-        function clearAttendanceData() {
-            if (confirm("Are you sure you want to delete all attendance timesheet records?\n\n(Note: Your money logged in the Vault will not be deleted, so your financial history stays safe).")) {
-                attRecords = [];
-                localStorage.setItem('gokulAttRecords', JSON.stringify(attRecords));
-                updateAttendanceUI();
-            }
-        }
-
-        // ==========================================
-        // 6. MONTHLY RESET 
-        // ==========================================
-        function monthlyReset() {
-            if (confirm("⚠️ Start a New Month?\n\nThis will permanently delete ALL Vault Transactions and Logged Shifts. \n\n(Your Profile, Job Types, Themes, and Categories will NOT be deleted).")) {
-                vaultTransactions = [];
-                localStorage.setItem('gokulVaultTx', JSON.stringify(vaultTransactions));
-                updateVaultUI();
-
-                attRecords = [];
-                localStorage.setItem('gokulAttRecords', JSON.stringify(attRecords));
-                updateAttendanceUI();
-
-                alert("✨ Reset Successful! You are ready for a new month.");
-            }
-        }
-
         function downloadAttendancePDF() {
             const element = document.getElementById('attendance-ledger-content');
-            const opt = {
-                margin: 10, filename: 'Gokul_Monthly_Timesheet.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+            html2pdf().set({ margin: 10, filename: 'Gokul_Monthly_Timesheet.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' } }).from(element).save();
+        }
+
+        // ==========================================
+        // 6. MONTHLY ARCHIVE & YEARLY AUTOMATION
+        // ==========================================
+        let archives = JSON.parse(localStorage.getItem('gokulArchives')) || [];
+
+        function completeMonth() {
+            if (vaultTransactions.length === 0 && attRecords.length === 0) return alert("You have no active data to archive yet.");
+            
+            // Suggest the current month/year
+            const defaultName = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+            let monthName = prompt("Name this archived month (e.g. August 2026):", defaultName);
+            if (!monthName) return;
+
+            // Calculate quick stats for the archive card
+            let inc = vaultTransactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
+            let exp = vaultTransactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+
+            let archiveObj = {
+                id: Date.now(),
+                name: monthName,
+                totalEarned: inc,
+                totalSpent: exp,
+                shifts: attRecords.length,
+                vaultTx: [...vaultTransactions],
+                attRecs: [...attRecords]
             };
-            html2pdf().set(opt).from(element).save();
+
+            // Save to archives
+            archives.push(archiveObj);
+            localStorage.setItem('gokulArchives', JSON.stringify(archives));
+
+            // Wipe Active trackers
+            vaultTransactions = []; localStorage.setItem('gokulVaultTx', JSON.stringify(vaultTransactions));
+            attRecords = []; localStorage.setItem('gokulAttRecords', JSON.stringify(attRecords));
+            
+            updateVaultUI(); updateAttendanceUI(); renderArchivesPage();
+            
+            alert(`Success! '${monthName}' has been bundled and saved in 'Past Months'. Your active dashboard is now clean.`);
+            switchPage('archives');
+        }
+
+        function renderArchivesPage() {
+            const container = document.getElementById('archives-grid-container');
+            container.innerHTML = '';
+            
+            if (archives.length === 0) {
+                container.innerHTML = '<div style="color: var(--text-muted);">No completed months archived yet.</div>';
+                return;
+            }
+
+            // Reverse to show newest first
+            [...archives].reverse().forEach(arch => {
+                let netBal = arch.totalEarned - arch.totalSpent;
+                container.innerHTML += `
+                <div class="archive-card">
+                    <div class="archive-header">
+                        <span class="archive-title">${arch.name}</span>
+                        <span style="font-weight:bold; color: ${netBal >= 0 ? 'var(--text-accent)' : 'var(--danger)'}">₹${netBal.toFixed(2)}</span>
+                    </div>
+                    <div class="archive-stats">
+                        <div><i class="fas fa-briefcase"></i> Total Shifts: <b>${arch.shifts}</b></div>
+                        <div><i class="fas fa-arrow-up" style="color: var(--text-accent);"></i> Income: <b>₹${arch.totalEarned.toFixed(2)}</b></div>
+                        <div><i class="fas fa-arrow-down" style="color: var(--danger);"></i> Expenses: <b>₹${arch.totalSpent.toFixed(2)}</b></div>
+                        <div><i class="fas fa-scroll"></i> Total Records: <b>${arch.vaultTx.length}</b></div>
+                    </div>
+                    <div class="archive-actions">
+                        <button class="att-btn btn-del" style="width: 100%;" onclick="deleteArchive(${arch.id})"><i class="fas fa-trash"></i> Delete Separated File</button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        function deleteArchive(id) {
+            if (confirm("Are you sure you want to permanently delete this archived month? This action cannot be undone.")) {
+                archives = archives.filter(a => a.id !== id);
+                localStorage.setItem('gokulArchives', JSON.stringify(archives));
+                renderArchivesPage();
+            }
+        }
+
+        function yearlyReset() {
+            if (confirm("🚨 WARNING: YEARLY RESET 🚨\n\nThis will permanently delete ALL active records AND ALL archived Past Months.\n\nOnly click OK if you are starting a completely fresh year. Your custom job profiles and themes will be kept.")) {
+                archives = []; localStorage.setItem('gokulArchives', JSON.stringify(archives));
+                vaultTransactions = []; localStorage.setItem('gokulVaultTx', JSON.stringify(vaultTransactions));
+                attRecords = []; localStorage.setItem('gokulAttRecords', JSON.stringify(attRecords));
+                
+                // Update tracker
+                localStorage.setItem('gokulCurrentYear', new Date().getFullYear());
+                
+                updateVaultUI(); updateAttendanceUI(); renderArchivesPage();
+                alert("Yearly Reset Complete. Happy New Year!");
+                switchPage('vault-dashboard');
+            }
+        }
+
+        function checkYearlyAutomation() {
+            let savedYear = localStorage.getItem('gokulCurrentYear');
+            let currentYear = new Date().getFullYear();
+            
+            if (!savedYear) {
+                localStorage.setItem('gokulCurrentYear', currentYear);
+            } else if (currentYear > savedYear) {
+                // It is a new year! Prompt automation.
+                if (confirm(`🎉 Welcome to ${currentYear}, Gokul! 🎉\n\nIt looks like a new year has started. Would you like to perform the Automated Yearly Reset? \n\nThis will clear last year's Active Data and Archives to give you a fresh start for ${currentYear}.`)) {
+                    yearlyReset();
+                } else {
+                    // They declined, but update the clock so we don't ask every single time they open the app
+                    localStorage.setItem('gokulCurrentYear', currentYear);
+                }
+            }
         }
 
         // ==========================================
@@ -913,6 +915,10 @@
             renderJobDropdown();
             updateVaultUI();
             updateAttendanceUI();
+            renderArchivesPage();
+            
+            // Run yearly automation check on boot
+            checkYearlyAutomation();
         };
     </script>
 </body>
