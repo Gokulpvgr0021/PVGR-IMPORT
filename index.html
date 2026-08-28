@@ -146,7 +146,6 @@
         .loan-detail-row span:last-child { font-weight: bold; color: var(--text-main); }
         .progress-container { width: 100%; background: var(--bg-card-alt); border-radius: 10px; height: 12px; overflow: hidden; border: 1px solid var(--border-color); margin-top: 5px;}
         .progress-bar { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); width: 0%; transition: width 0.5s;}
-
         .seek-input { background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); padding: 10px; text-align: center; font-weight: bold; width: 60px; outline: none; }
         .seek-input:focus { border-color: var(--text-accent); }
 
@@ -192,12 +191,63 @@
         .checkbox-container { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.05); border: 1px solid var(--border-color);}
         .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer;}
         .checkbox-container label { font-size: 13px; font-weight: bold; color: var(--text-main); margin: 0; cursor: pointer;}
+
+        /* =========================================
+           MOBILE RESPONSIVENESS & ASPECT RATIOS
+           ========================================= */
+        @media (max-width: 800px) {
+            body { padding: 0; background: var(--bg-body); }
+            .app-window { width: 100vw; height: 100dvh; max-width: none; border-radius: 0; flex-direction: column; box-shadow: none; }
+            
+            /* Bottom App Navigation */
+            .sidebar { order: 2; width: 100%; height: auto; padding: 5px; border-right: none; border-top: 1px solid var(--border-color); flex-direction: row; flex-shrink: 0; z-index: 1000;}
+            .sidebar > div:first-child { width: 100%; }
+            .sidebar > div:first-child > div:first-child { display: none; } /* Hide Title */
+            .menu-list { flex-direction: row; margin: 0; gap: 2px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 0; justify-content: flex-start;}
+            .menu-btn { flex: 0 0 72px; flex-direction: column; padding: 8px 4px; gap: 6px; border: none; background: transparent; box-shadow: none; margin: 0 !important; border-radius: 10px; justify-content: center;}
+            .menu-btn i { font-size: 20px; width: 100%; }
+            .menu-btn span { font-size: 10px; display: block; text-align: center; white-space: normal; line-height: 1.1; }
+            .menu-btn.active { background: var(--hover-color); transform: none; }
+            .menu-btn.active::before { display: none; }
+            .footer-info { display: none; } /* Hide footer profile/status */
+
+            /* Main Area */
+            .main-content { order: 1; flex: 1; height: auto; }
+            .page { padding: 15px; }
+            .page-header { font-size: 20px; flex-direction: column; align-items: flex-start; gap: 8px; }
+            
+            /* Vault Dashboard adjustments */
+            #vault-dashboard-page { flex-direction: column; overflow-y: auto; display: none;}
+            #vault-dashboard-page.active { display: flex; }
+            .center-col { width: 100%; border-right: none; border-bottom: 2px dashed var(--border-color); overflow: visible; padding: 10px 0 20px 0; }
+            .grid-wrapper { padding: 20px 0; overflow: visible; }
+            .grid-container { grid-template-columns: repeat(2, 1fr); }
+            
+            /* Tracker adjustments */
+            .att-dashboard { grid-template-columns: repeat(2, 1fr); }
+            .att-card { padding: 15px 10px; }
+            .att-card i { font-size: 1.5em; }
+            .att-card .value { font-size: 1.5em; }
+            .att-entry-form { flex-direction: column; }
+            .form-group { width: 100%; min-width: 100%; }
+            .att-btn { width: 100%; }
+            
+            /* Loan adjustments */
+            .loan-calc-container { flex-direction: column; }
+            .loan-inputs { border-right: none; border-bottom: 1px solid var(--border-color); min-width: 100%; padding: 15px;}
+            .loan-results { min-width: 100%; padding: 15px;}
+            
+            /* Modals */
+            .modal-content { width: 95%; padding: 20px; }
+            .selection-grid { grid-template-columns: repeat(4, 1fr); }
+        }
     </style>
 </head>
 <body>
 
     <div class="app-window">
         
+        <!-- SIDEBAR NAVIGATION -->
         <div class="sidebar">
             <div>
                 <div style="font-weight: 900; font-size: 18px; color: var(--text-main); text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
@@ -205,32 +255,33 @@
                 </div>
                 <div class="menu-list">
                     <button class="menu-btn active" onclick="switchPage('vault-dashboard')" id="btn-vault-dashboard">
-                        <i class="fas fa-coins"></i> <span>Vault Dashboard</span>
+                        <i class="fas fa-coins"></i> <span>Vault</span>
                     </button>
                     <button class="menu-btn" onclick="switchPage('attendance')" id="btn-attendance">
-                        <i class="fas fa-business-time"></i> <span>Work & Salary</span>
+                        <i class="fas fa-business-time"></i> <span>Work</span>
                     </button>
                     <button class="menu-btn" onclick="switchPage('loans')" id="btn-loans">
-                        <i class="fas fa-hand-holding-usd"></i> <span>Loans & EMI</span>
+                        <i class="fas fa-hand-holding-usd"></i> <span>Loans</span>
                     </button>
                     <button class="menu-btn" onclick="switchPage('history')" id="btn-history">
-                        <i class="fas fa-scroll"></i> <span>Ledger Records</span>
+                        <i class="fas fa-scroll"></i> <span>Ledger</span>
                     </button>
                     <button class="menu-btn" onclick="switchPage('archives')" id="btn-archives">
-                        <i class="fas fa-archive"></i> <span>Past Months</span>
+                        <i class="fas fa-archive"></i> <span>Archives</span>
                     </button>
                     <button class="menu-btn" onclick="switchPage('ai-advisor')" id="btn-ai-advisor">
-                        <i class="fas fa-brain"></i> <span>AI Advisor</span>
+                        <i class="fas fa-brain"></i> <span>AI</span>
                     </button>
                     <button class="menu-btn" onclick="switchPage('themes')" id="btn-themes">
                         <i class="fas fa-wand-magic-sparkles"></i> <span>Themes</span>
                     </button>
 
+                    <!-- Monthly / Yearly Operations -->
                     <button class="menu-btn action-btn" onclick="completeMonth()">
-                        <i class="fas fa-calendar-check"></i> <span>Complete Month</span>
+                        <i class="fas fa-calendar-check"></i> <span>End Month</span>
                     </button>
                     <button class="menu-btn danger" onclick="yearlyReset()">
-                        <i class="fas fa-skull"></i> <span>Yearly Reset</span>
+                        <i class="fas fa-skull"></i> <span>Reset Year</span>
                     </button>
                 </div>
             </div>
@@ -243,8 +294,10 @@
             </div>
         </div>
 
+        <!-- MAIN CONTENT AREA -->
         <div class="main-content">
 
+            <!-- 1. VAULT DASHBOARD PAGE -->
             <div id="vault-dashboard-page" class="page active">
                 <div class="center-col">
                     <div class="logo-container">
@@ -289,6 +342,7 @@
                 </div>
             </div>
 
+            <!-- 2. ATTENDANCE & SALARY PAGE -->
             <div id="attendance-page" class="page">
                 <div id="attendance-ledger-content">
                     <div class="page-header">
@@ -378,12 +432,14 @@
                 </div>
             </div>
 
+            <!-- 3. LOANS & EMI PAGE -->
             <div id="loans-page" class="page">
                 <div class="page-header">
                     <span>Loan & EMI Manager</span>
                     <span style="font-size: 14px; color: var(--text-accent);"><i class="fas fa-link"></i> Vault Sync Active</span>
                 </div>
                 
+                <!-- Calculator -->
                 <div class="loan-calc-container">
                     <div class="loan-inputs">
                         <h3 style="margin-bottom: 15px; color: var(--text-main);"><i class="fas fa-calculator"></i> EMI Calculator</h3>
@@ -410,13 +466,14 @@
                             <input type="number" id="loan-due-date" class="form-control" placeholder="5" min="1" max="31">
                         </div>
                         
+                        <!-- Automation Options -->
                         <div class="checkbox-container">
                             <input type="checkbox" id="loan-add-principal" checked>
-                            <label for="loan-add-principal">Deposit Principal Amount to Vault as Income now?</label>
+                            <label for="loan-add-principal">Deposit Principal to Vault as Income?</label>
                         </div>
                         <div class="checkbox-container">
                             <input type="checkbox" id="loan-autopay" checked>
-                            <label for="loan-autopay">Auto-Pay EMI from Vault every month on Due Date</label>
+                            <label for="loan-autopay">Auto-Pay EMI from Vault on Due Date</label>
                         </div>
 
                     </div>
@@ -440,11 +497,14 @@
                     </div>
                 </div>
 
+                <!-- Active Loans Grid -->
                 <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Active Loans</h3>
                 <div class="loans-grid" id="loans-grid-container">
-                    </div>
+                    <!-- Loans injected here -->
+                </div>
             </div>
 
+            <!-- 4. LEDGER HISTORY PAGE -->
             <div id="history-page" class="page">
                 <div class="page-header">
                     <span>Vault Ledger Records</span>
@@ -465,15 +525,18 @@
                 </div>
             </div>
 
+            <!-- 5. PAST MONTHS (ARCHIVES) PAGE -->
             <div id="archives-page" class="page">
                 <div class="page-header">
                     <span>Archived Months</span>
                 </div>
                 <p style="margin-bottom: 20px; color: var(--text-muted);">View and manage your completed monthly files. These files are safely separated from your active trackers.</p>
                 <div class="archives-grid" id="archives-grid-container">
-                    </div>
+                    <!-- Archives injected here -->
+                </div>
             </div>
 
+            <!-- 6. AI ADVISOR PAGE -->
             <div id="ai-advisor-page" class="page">
                 <div class="page-header">
                     <span><i class="fas fa-brain"></i> AI Financial Advisor</span>
@@ -506,6 +569,7 @@
                 </div>
             </div>
 
+            <!-- 7. THEMES PAGE -->
             <div id="themes-page" class="page">
                 <div class="page-header">Application Themes</div>
                 <p style="margin-bottom: 20px; color: var(--text-muted);">Select a theme. This will automatically style both your Vault and your Attendance Tracker.</p>
@@ -515,6 +579,7 @@
         </div>
     </div>
 
+    <!-- PROFILE EDIT MODAL -->
     <div class="modal-overlay" id="profileModal">
         <div class="modal-content">
             <h3 style="text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Edit Profile</h3>
@@ -531,6 +596,7 @@
         </div>
     </div>
 
+    <!-- CATEGORY EDIT MODAL -->
     <div class="modal-overlay" id="categoryModal">
         <div class="modal-content">
             <h3 style="text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;" id="cat-modal-title">Edit Category</h3>
@@ -545,6 +611,7 @@
         </div>
     </div>
 
+    <!-- JOB PROFILE MODAL -->
     <div class="modal-overlay" id="jobModal">
         <div class="modal-content">
             <h3 style="text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Manage Job Profiles</h3>
@@ -559,6 +626,7 @@
         </div>
     </div>
 
+    <!-- JAVASCRIPT LOGIC -->
     <script>
         // ==========================================
         // 1. GLOBAL UI & NAVIGATION
