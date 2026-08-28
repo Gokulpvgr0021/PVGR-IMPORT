@@ -117,70 +117,14 @@
             -webkit-user-select: none; 
         }
 
-        @keyframes ambientGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        .video-background { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100vh; 
-            object-fit: cover; 
-            z-index: -2; 
-            pointer-events: none; 
-            opacity: 0.95;
-        }
+        .video-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -2; pointer-events: none; opacity: 0.95; }
+        .video-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, rgba(13, 10, 18, 0.25) 0%, rgba(8, 6, 12, 0.75) 100%); z-index: -1; pointer-events: none; opacity: var(--video-dimmer); transition: opacity 0.3s ease; }
 
-        .video-overlay { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100vh; 
-            background: radial-gradient(circle at center, rgba(13, 10, 18, 0.25) 0%, rgba(8, 6, 12, 0.75) 100%); 
-            z-index: -1; 
-            pointer-events: none; 
-            opacity: var(--video-dimmer);
-            transition: opacity 0.3s ease;
-        }
+        .app-shell { width: 100%; height: 100%; max-width: 1400px; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background-color 0.3s ease; }
 
-        .app-shell { 
-            width: 100%; 
-            height: 100%; 
-            max-width: 1400px; 
-            background-color: var(--bg-app); 
-            display: flex; 
-            position: relative; 
-            overflow: hidden; 
-            backdrop-filter: blur(16px); 
-            -webkit-backdrop-filter: blur(16px); 
-            transition: background-color 0.3s ease;
-        }
-
-        .mobile-header { 
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: calc(56px + var(--safe-top)); 
-            padding-top: var(--safe-top); 
-            background: var(--bg-sidebar); 
-            border-bottom: 1px solid var(--border-color); 
-            z-index: 100; 
-            align-items: center; 
-            justify-content: space-between; 
-            padding-left: 16px; 
-            padding-right: 16px; 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            transition: background-color 0.3s ease;
-        }
-
+        .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(56px + var(--safe-top)); padding-top: var(--safe-top); background: var(--bg-sidebar); border-bottom: 1px solid var(--border-color); z-index: 100; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: background-color 0.3s ease; }
         .mobile-header .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 16px; color: var(--text-main); font-family: var(--header-font); }
         .mobile-header .brand img { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border-color); object-fit: cover; }
 
@@ -306,6 +250,7 @@
             <span>GOKUL HUB</span>
         </div>
         <div style="display: flex; gap: 8px;">
+            <!-- THE DOWNLOAD APP BUTTON -->
             <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="downloadAppDirectly()"><i class="fas fa-download"></i> App</button>
             <button class="btn btn-primary" style="padding: 6px 10px; font-size: 13px;" onclick="openMenuSheet()"><i class="fas fa-ellipsis-v"></i></button>
         </div>
@@ -342,6 +287,8 @@
                     
                     <button class="nav-btn action-btn" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
                     <button class="nav-btn danger-btn" onclick="yearlyReset()"><i class="fas fa-skull"></i> <span>Yearly Reset</span></button>
+                    
+                    <!-- THE DOWNLOAD APP BUTTON -->
                     <button class="nav-btn" style="background: var(--text-accent); color: #fff; margin-top: 6px;" onclick="downloadAppDirectly()"><i class="fas fa-download" style="color:#fff;"></i> <span>Download / Install App</span></button>
                 </div>
             </div>
@@ -638,6 +585,27 @@
         </div>
     </div>
 
+    <!-- EXPLICIT INSTALL INSTRUCTION MODAL -->
+    <div class="modal-mask" id="installGuideModal">
+        <div class="modal-sheet" style="text-align: center; max-width: 340px;">
+            <div style="font-size: 42px; color: var(--text-accent); margin-bottom: 10px;"><i class="fas fa-check-circle"></i></div>
+            <h3 style="color: var(--text-main); font-family: var(--header-font); margin-bottom: 15px;">App Downloaded!</h3>
+            
+            <div style="text-align: left; background: var(--bg-card-alt); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 15px;">
+                <p style="font-size: 13px; color: var(--danger); font-weight: bold; margin-bottom: 10px;">
+                    <i class="fas fa-exclamation-triangle"></i> To bypass Android security blocks and make this a real App:
+                </p>
+                <ol style="font-size: 13px; color: var(--text-muted); line-height: 1.8; padding-left: 20px; margin-bottom: 0; font-weight: bold;">
+                    <li>Open <b>Gokul_Hub_App.html</b> from your phone's notification bar or Downloads folder.</li>
+                    <li>Tap your Chrome browser menu <b>(⋮)</b>.</li>
+                    <li>Tap <b>"Add to Home screen"</b>.</li>
+                </ol>
+            </div>
+            
+            <button class="btn btn-success" style="width: 100%;" onclick="closeModal('installGuideModal')">Got It</button>
+        </div>
+    </div>
+
     <script>
         // ==========================================
         // 0. DOWNLOAD & INSTALL ENGINE
@@ -649,20 +617,21 @@
                 return;
             }
 
-            // Direct standalone file download
+            // Direct standalone file download trigger
             const htmlContent = document.documentElement.outerHTML;
             const blob = new Blob([htmlContent], { type: 'text/html' });
             const downloadUrl = URL.createObjectURL(blob);
             
             const tempLink = document.createElement('a');
             tempLink.href = downloadUrl;
-            tempLink.download = 'Gokul_Hub.html';
+            tempLink.download = 'Gokul_Hub_App.html';
             document.body.appendChild(tempLink);
             tempLink.click();
             document.body.removeChild(tempLink);
             URL.revokeObjectURL(downloadUrl);
 
-            alert("Download initiated! You can open 'Gokul_Hub.html' from your downloads or tap Chrome's menu (⋮) -> 'Add to Home screen'.");
+            // Pop up the guide immediately after download triggers
+            openModal('installGuideModal');
         }
 
         function updateGlassOpacity(val) {
