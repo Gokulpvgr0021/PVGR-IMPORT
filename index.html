@@ -34,16 +34,17 @@
     
     <style>
         :root {
-            --bg-body: #08060c;
-            --bg-app: #120e1a;
-            --bg-sidebar: #0d0a12;
-            --bg-card: #1c1626;
-            --bg-card-alt: #261e34;
+            /* Adjusted for video background - increased transparency */
+            --bg-body: transparent;
+            --bg-app: rgba(18, 14, 26, 0.75);
+            --bg-sidebar: rgba(13, 10, 18, 0.85);
+            --bg-card: rgba(28, 22, 38, 0.85);
+            --bg-card-alt: rgba(38, 30, 52, 0.85);
             --text-main: #f0c75e;
             --text-muted: #b8a990;
             --text-accent: #27ae60;
-            --border-color: #997528;
-            --total-box: linear-gradient(135deg, #570000 0%, #10381e 50%, #0a1b38 100%);
+            --border-color: rgba(153, 117, 40, 0.5);
+            --total-box: linear-gradient(135deg, rgba(87, 0, 0, 0.9) 0%, rgba(16, 56, 30, 0.9) 50%, rgba(10, 27, 56, 0.9) 100%);
             --hover-color: rgba(65, 48, 86, 0.85);
             --danger: #ff4757;
             --safe-top: env(safe-area-inset-top, 0px);
@@ -53,49 +54,46 @@
         }
 
         [data-theme="default"] {
-            --bg-body: #003a66;
-            --bg-app: #f4f7f6;
-            --bg-sidebar: #ffffff;
-            --bg-card: #ffffff;
-            --bg-card-alt: #f0f4f8;
+            --bg-app: rgba(244, 247, 246, 0.85);
+            --bg-sidebar: rgba(255, 255, 255, 0.9);
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --bg-card-alt: rgba(240, 244, 248, 0.9);
             --text-main: #1c4587;
             --text-muted: #64748b;
             --text-accent: #16a34a;
-            --border-color: #cbd5e1;
-            --total-box: linear-gradient(135deg, #1e3a8a, #0284c7);
-            --hover-color: #e2e8f0;
+            --border-color: rgba(203, 213, 225, 0.7);
+            --total-box: linear-gradient(135deg, rgba(30, 58, 138, 0.9), rgba(2, 132, 199, 0.9));
+            --hover-color: rgba(226, 232, 240, 0.9);
             --danger: #dc2626;
             --header-font: 'Plus Jakarta Sans', sans-serif;
         }
 
         [data-theme="dark"] {
-            --bg-body: #09090b;
-            --bg-app: #18181b;
-            --bg-sidebar: #121215;
-            --bg-card: #27272a;
-            --bg-card-alt: #3f3f46;
+            --bg-app: rgba(24, 24, 27, 0.85);
+            --bg-sidebar: rgba(18, 18, 21, 0.9);
+            --bg-card: rgba(39, 39, 42, 0.85);
+            --bg-card-alt: rgba(63, 63, 70, 0.85);
             --text-main: #fafafa;
             --text-muted: #a1a1aa;
             --text-accent: #22c55e;
-            --border-color: #3f3f46;
-            --total-box: linear-gradient(135deg, #18181b, #27272a);
-            --hover-color: #3f3f46;
+            --border-color: rgba(63, 63, 70, 0.7);
+            --total-box: linear-gradient(135deg, rgba(24, 24, 27, 0.9), rgba(39, 39, 42, 0.9));
+            --hover-color: rgba(63, 63, 70, 0.9);
             --danger: #ef4444;
             --header-font: 'Plus Jakarta Sans', sans-serif;
         }
 
         [data-theme="cyberpunk"] {
-            --bg-body: #05010d;
-            --bg-app: #0e0322;
-            --bg-sidebar: #13042d;
-            --bg-card: #1f0745;
-            --bg-card-alt: #2a0b5c;
+            --bg-app: rgba(14, 3, 34, 0.80);
+            --bg-sidebar: rgba(19, 4, 45, 0.9);
+            --bg-card: rgba(31, 7, 69, 0.85);
+            --bg-card-alt: rgba(42, 11, 92, 0.85);
             --text-main: #00ffcc;
             --text-muted: #e056fd;
             --text-accent: #ff007f;
-            --border-color: #00ffcc;
-            --total-box: linear-gradient(135deg, #1f0745, #ff007f);
-            --hover-color: #330d70;
+            --border-color: rgba(0, 255, 204, 0.5);
+            --total-box: linear-gradient(135deg, rgba(31, 7, 69, 0.9), rgba(255, 0, 127, 0.9));
+            --hover-color: rgba(51, 13, 112, 0.9);
             --danger: #ff0055;
             --header-font: 'Plus Jakarta Sans', sans-serif;
         }
@@ -109,7 +107,7 @@
         }
 
         body {
-            background-color: var(--bg-body);
+            background-color: #000; /* Fallback for video */
             color: var(--text-main);
             height: 100vh;
             width: 100vw;
@@ -121,6 +119,30 @@
             -webkit-user-select: none;
         }
 
+        /* --- NEW VIDEO BACKGROUND CSS --- */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover; /* Ensures video fills screen without stretching */
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.4); /* Darkens the video slightly so text is readable */
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* App Shell with Glassmorphism */
         .app-shell {
             width: 100%;
             height: 100%;
@@ -129,6 +151,8 @@
             display: flex;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(15px); /* Creates the beautiful frosted glass effect over the video */
+            -webkit-backdrop-filter: blur(15px);
         }
 
         /* Top Mobile Header */
@@ -147,6 +171,7 @@
             justify-content: space-between;
             padding-left: 16px;
             padding-right: 16px;
+            backdrop-filter: blur(10px);
         }
 
         .mobile-header .brand {
@@ -245,11 +270,13 @@
         .nav-btn.action-btn {
             border: 1px dashed var(--text-accent);
             color: var(--text-accent);
+            background: transparent;
         }
 
         .nav-btn.danger-btn {
             border: 1px dashed var(--danger);
             color: var(--danger);
+            background: transparent;
         }
         .nav-btn.danger-btn i { color: var(--danger); }
 
@@ -278,6 +305,7 @@
             justify-content: space-around;
             align-items: center;
             box-shadow: 0 -4px 16px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
         }
 
         .tab-item {
@@ -729,6 +757,15 @@
     </style>
 </head>
 <body>
+
+    <!-- VIDEO BACKGROUND -->
+    <!-- You can replace the 'src' link with 'background.mp4' once you have your own video file downloaded -->
+    <video class="video-background" autoplay loop muted playsinline>
+        <source src="https://cdn.pixabay.com/video/2020/05/25/40134-424916845_large.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="video-overlay"></div>
+
 
     <!-- Mobile Top Navigation Bar -->
     <div class="mobile-header">
@@ -1338,7 +1375,7 @@
                     datasets: [{
                         data: Object.values(totals).length ? Object.values(totals) : [1],
                         backgroundColor: ['#e74c3c', '#3498db', '#f1c40f', '#2ecc71', '#9b59b6', '#e67e22', '#1abc9c'],
-                        borderWidth: 1, borderColor: '#08060c'
+                        borderWidth: 1, borderColor: '#08060c' /* Border color fits the glassmorphism dark vibe */
                     }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { display: false } } }
@@ -1554,7 +1591,7 @@
                         <div style="font-size: 11px; color: var(--text-muted); text-align: right;">${l.paid}/${l.tenure} Months Paid</div>
 
                         <div style="display: flex; gap: 8px; align-items: center; margin-top: 6px;">
-                            <input type="number" id="seek-${l.id}" class="seek-input" value="1" min="1" max="${rem}" style="width: 50px;">
+                            <input type="number" id="seek-${l.id}" class="form-control" value="1" min="1" max="${rem}" style="width: 60px; text-align: center; padding: 8px;">
                             <button class="btn btn-success" style="flex: 1;" onclick="payLoanEMI(${l.id})" ${rem === 0 ? 'disabled' : ''}>
                                 ${rem === 0 ? 'Fully Paid' : 'Pay EMI & Sync'}
                             </button>
