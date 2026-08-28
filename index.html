@@ -147,6 +147,9 @@
         .progress-container { width: 100%; background: var(--bg-card-alt); border-radius: 10px; height: 12px; overflow: hidden; border: 1px solid var(--border-color); margin-top: 5px;}
         .progress-bar { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); width: 0%; transition: width 0.5s;}
 
+        .seek-input { background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); padding: 10px; text-align: center; font-weight: bold; width: 60px; outline: none; }
+        .seek-input:focus { border-color: var(--text-accent); }
+
         /* History Table */
         .history-table { width: 100%; border-collapse: collapse; min-width: 500px; background: var(--bg-card);}
         .history-table th, .history-table td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
@@ -173,13 +176,16 @@
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
         .modal-overlay.active { display: flex; }
         .modal-content { background: var(--bg-app); width: 90%; max-width: 420px; border-radius: 15px; padding: 25px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 15px; }
+        
+        .checkbox-container { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.05); border: 1px solid var(--border-color);}
+        .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer;}
+        .checkbox-container label { font-size: 13px; font-weight: bold; color: var(--text-main); margin: 0; cursor: pointer;}
     </style>
 </head>
 <body>
 
     <div class="app-window">
         
-        <!-- SIDEBAR NAVIGATION -->
         <div class="sidebar">
             <div>
                 <div style="font-weight: 900; font-size: 18px; color: var(--text-main); text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
@@ -205,7 +211,6 @@
                         <i class="fas fa-wand-magic-sparkles"></i> <span>Themes</span>
                     </button>
 
-                    <!-- Monthly / Yearly Operations -->
                     <button class="menu-btn action-btn" onclick="completeMonth()">
                         <i class="fas fa-calendar-check"></i> <span>Complete Month</span>
                     </button>
@@ -223,10 +228,8 @@
             </div>
         </div>
 
-        <!-- MAIN CONTENT AREA -->
         <div class="main-content">
 
-            <!-- 1. VAULT DASHBOARD PAGE -->
             <div id="vault-dashboard-page" class="page active">
                 <div class="center-col">
                     <div class="logo-container">
@@ -271,7 +274,6 @@
                 </div>
             </div>
 
-            <!-- 2. ATTENDANCE & SALARY PAGE -->
             <div id="attendance-page" class="page">
                 <div id="attendance-ledger-content">
                     <div class="page-header">
@@ -361,14 +363,12 @@
                 </div>
             </div>
 
-            <!-- 3. LOANS & EMI PAGE (NEW) -->
             <div id="loans-page" class="page">
                 <div class="page-header">
                     <span>Loan & EMI Manager</span>
                     <span style="font-size: 14px; color: var(--text-accent);"><i class="fas fa-link"></i> Vault Sync Active</span>
                 </div>
                 
-                <!-- Calculator -->
                 <div class="loan-calc-container">
                     <div class="loan-inputs">
                         <h3 style="margin-bottom: 15px; color: var(--text-main);"><i class="fas fa-calculator"></i> EMI Calculator</h3>
@@ -390,10 +390,20 @@
                                 <input type="number" id="loan-tenure" class="form-control" placeholder="24" oninput="calculateEMI()">
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="margin-bottom: 15px;">
                             <label>Monthly Due Date (1-31)</label>
                             <input type="number" id="loan-due-date" class="form-control" placeholder="5" min="1" max="31">
                         </div>
+                        
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="loan-add-principal" checked>
+                            <label for="loan-add-principal">Deposit Principal Amount to Vault as Income now?</label>
+                        </div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="loan-autopay" checked>
+                            <label for="loan-autopay">Auto-Pay EMI from Vault every month on Due Date</label>
+                        </div>
+
                     </div>
                     
                     <div class="loan-results">
@@ -415,14 +425,11 @@
                     </div>
                 </div>
 
-                <!-- Active Loans Grid -->
                 <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Active Loans</h3>
                 <div class="loans-grid" id="loans-grid-container">
-                    <!-- Loans injected here -->
-                </div>
+                    </div>
             </div>
 
-            <!-- 4. LEDGER HISTORY PAGE -->
             <div id="history-page" class="page">
                 <div class="page-header">
                     <span>Vault Ledger Records</span>
@@ -443,18 +450,15 @@
                 </div>
             </div>
 
-            <!-- 5. PAST MONTHS (ARCHIVES) PAGE -->
             <div id="archives-page" class="page">
                 <div class="page-header">
                     <span>Archived Months</span>
                 </div>
                 <p style="margin-bottom: 20px; color: var(--text-muted);">View and manage your completed monthly files. These files are safely separated from your active trackers.</p>
                 <div class="archives-grid" id="archives-grid-container">
-                    <!-- Archives injected here -->
-                </div>
+                    </div>
             </div>
 
-            <!-- 6. THEMES PAGE -->
             <div id="themes-page" class="page">
                 <div class="page-header">Application Themes</div>
                 <p style="margin-bottom: 20px; color: var(--text-muted);">Select a theme. This will automatically style both your Vault and your Attendance Tracker.</p>
@@ -464,7 +468,6 @@
         </div>
     </div>
 
-    <!-- PROFILE EDIT MODAL -->
     <div class="modal-overlay" id="profileModal">
         <div class="modal-content">
             <h3 style="text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Edit Profile</h3>
@@ -481,7 +484,6 @@
         </div>
     </div>
 
-    <!-- CATEGORY EDIT MODAL -->
     <div class="modal-overlay" id="categoryModal">
         <div class="modal-content">
             <h3 style="text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;" id="cat-modal-title">Edit Category</h3>
@@ -496,7 +498,6 @@
         </div>
     </div>
 
-    <!-- JOB PROFILE MODAL -->
     <div class="modal-overlay" id="jobModal">
         <div class="modal-content">
             <h3 style="text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Manage Job Profiles</h3>
@@ -511,7 +512,6 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
     <script>
         // ==========================================
         // 1. GLOBAL UI & NAVIGATION
@@ -748,7 +748,8 @@
             const dataToChart = vaultTransactions.filter(t => t.type === currentVaultType);
             const totals = {};
             dataToChart.forEach(t => { 
-                let baseCategory = t.category.split(' (Shift')[0].split(' EMI:')[0];
+                // Simplify labels for chart if they are auto-synced
+                let baseCategory = t.category.split(' (Shift')[0].split(' (')[0].split(' EMI:')[0].trim();
                 totals[baseCategory] = (totals[baseCategory] || 0) + t.amount; 
             });
 
@@ -874,7 +875,7 @@
         }
 
         // ==========================================
-        // 6. LOANS & EMI MANAGER (NEW)
+        // 6. LOANS & AUTOMATED EMI MANAGER
         // ==========================================
         let loans = JSON.parse(localStorage.getItem('gokulLoans')) || [];
 
@@ -906,22 +907,31 @@
         function saveLoan() {
             let name = document.getElementById('loan-name').value || "Unnamed Loan";
             let dueDate = document.getElementById('loan-due-date').value || "5"; 
+            let addPrincipal = document.getElementById('loan-add-principal').checked;
+            let autoPay = document.getElementById('loan-autopay').checked;
 
             if(!window.tempCalculatedLoan) { alert("Please enter valid loan details to calculate first."); return; }
 
             let newLoan = {
                 id: Date.now(),
                 name: name,
-                dueDate: dueDate,
+                dueDate: parseInt(dueDate),
                 emi: window.tempCalculatedLoan.emi,
                 principal: window.tempCalculatedLoan.p,
                 tenure: window.tempCalculatedLoan.n,
-                paidInstallments: 0
+                paidInstallments: 0,
+                autoPay: autoPay,
+                lastPaidMonth: "" // Will track YYYY-MM
             };
 
             loans.push(newLoan);
             localStorage.setItem('gokulLoans', JSON.stringify(loans));
             renderLoans();
+            
+            // Add principal to vault if requested
+            if (addPrincipal) {
+                addVaultTransaction(`Loan Disbursed: ${name}`, 'income', true, newLoan.principal);
+            }
             
             // Clear form
             document.getElementById('loan-name').value = '';
@@ -934,26 +944,64 @@
             alert(`"${name}" has been saved to your active loans!`);
         }
 
+        function updatePayEMIButton(loanId, emi) {
+            let monthsInput = document.getElementById(`pay-months-${loanId}`);
+            let btn = document.getElementById(`pay-btn-${loanId}`);
+            if(!monthsInput || !btn) return;
+            
+            let months = parseInt(monthsInput.value) || 0;
+            if (months < 1) {
+                btn.innerHTML = `<i class="fas fa-ban"></i> Invalid`;
+                btn.disabled = true;
+            } else {
+                let total = emi * months;
+                btn.innerHTML = `<i class="fas fa-check-circle"></i> Pay ₹${total.toLocaleString('en-IN')}`;
+                btn.disabled = false;
+            }
+        }
+
         function payEMI(loanId) {
             let loan = loans.find(l => l.id === loanId);
             if(!loan) return;
             
-            if(loan.paidInstallments >= loan.tenure) {
-                alert("This loan is already fully paid!"); return;
+            let monthsInput = document.getElementById(`pay-months-${loanId}`);
+            let monthsToPay = parseInt(monthsInput.value) || 1;
+            
+            if(monthsToPay < 1) return alert("Please enter a valid number of months.");
+            
+            if(loan.paidInstallments + monthsToPay > loan.tenure) {
+                return alert(`You only have ${loan.tenure - loan.paidInstallments} installments remaining!`);
             }
 
+            let totalPayment = loan.emi * monthsToPay;
+            let monthLabel = monthsToPay > 1 ? `${monthsToPay} Months` : `1 Month`;
+
             // Sync to vault
-            addVaultTransaction(`EMI: ${loan.name}`, 'expense', true, loan.emi);
+            addVaultTransaction(`EMI: ${loan.name} (${monthLabel})`, 'expense', true, totalPayment);
             
-            loan.paidInstallments++;
+            loan.paidInstallments += monthsToPay;
+            
+            // Log that we paid this month so the automated system doesn't double charge
+            let today = new Date();
+            loan.lastPaidMonth = today.getFullYear() + '-' + (today.getMonth() + 1);
+            
             localStorage.setItem('gokulLoans', JSON.stringify(loans));
             renderLoans();
-            alert(`Success! Paid ₹${loan.emi.toLocaleString('en-IN')} for ${loan.name}.\nThis amount has been deducted from your Vault.`);
+            alert(`Success! Paid ₹${totalPayment.toLocaleString('en-IN')} for ${loan.name} (${monthLabel}).\nThis amount has been deducted from your Vault.`);
         }
 
         function deleteLoan(loanId) {
             if(confirm("Are you sure you want to delete this loan record? Vault transactions for past EMIs will remain intact.")) {
                 loans = loans.filter(l => l.id !== loanId);
+                localStorage.setItem('gokulLoans', JSON.stringify(loans));
+                renderLoans();
+            }
+        }
+
+        function toggleAutoPay(loanId) {
+            let loan = loans.find(l => l.id === loanId);
+            if(loan) {
+                loan.autoPay = !loan.autoPay;
                 localStorage.setItem('gokulLoans', JSON.stringify(loans));
                 renderLoans();
             }
@@ -972,12 +1020,19 @@
                 let progressPct = (loan.paidInstallments / loan.tenure) * 100;
                 let remaining = loan.tenure - loan.paidInstallments;
                 let isComplete = remaining === 0;
+                let autoPayStatus = loan.autoPay ? '<span style="color: var(--text-accent); font-size: 10px; font-weight: bold;"><i class="fas fa-robot"></i> Auto-Pay: ON</span>' : '<span style="color: var(--text-muted); font-size: 10px; font-weight: bold;"><i class="fas fa-hand-paper"></i> Auto-Pay: OFF</span>';
 
                 container.innerHTML += `
                 <div class="loan-card">
                     <div class="loan-card-header">
-                        <h3><i class="fas fa-file-invoice-dollar"></i> ${loan.name}</h3>
-                        <button class="att-btn btn-del" style="padding: 4px 8px; min-width: unset; font-size: 12px;" onclick="deleteLoan(${loan.id})"><i class="fas fa-trash"></i></button>
+                        <div>
+                            <h3 style="margin-bottom: 2px;"><i class="fas fa-file-invoice-dollar"></i> ${loan.name}</h3>
+                            ${autoPayStatus}
+                        </div>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="att-btn" style="background: var(--bg-card-alt); color: var(--text-main); padding: 4px 8px; border: 1px solid var(--border-color); font-size: 12px; min-width: unset;" onclick="toggleAutoPay(${loan.id})" title="Toggle Auto-Pay"><i class="fas fa-power-off"></i></button>
+                            <button class="att-btn btn-del" style="padding: 4px 8px; min-width: unset; font-size: 12px;" onclick="deleteLoan(${loan.id})"><i class="fas fa-trash"></i></button>
+                        </div>
                     </div>
                     
                     <div class="loan-detail-row"><span>Monthly EMI:</span> <span style="font-size: 18px; color: var(--danger);">₹${loan.emi.toLocaleString('en-IN')}</span></div>
@@ -994,11 +1049,44 @@
                         </div>
                     </div>
                     
-                    <button class="att-btn btn-add" style="width: 100%; margin-top: 10px; opacity: ${isComplete ? '0.5' : '1'}; cursor: ${isComplete ? 'not-allowed' : 'pointer'}" onclick="payEMI(${loan.id})" ${isComplete ? 'disabled' : ''}>
-                        <i class="fas fa-check-circle"></i> Pay EMI & Sync to Vault
-                    </button>
+                    <div style="display: flex; gap: 10px; margin-top: 15px; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <label style="font-size: 12px; font-weight: bold; color: var(--text-muted);">Seek:</label>
+                            <input type="number" id="pay-months-${loan.id}" class="seek-input" value="1" min="1" max="${remaining}" oninput="updatePayEMIButton(${loan.id}, ${loan.emi})" ${isComplete ? 'disabled' : ''} title="How many months to advance?">
+                        </div>
+                        <button class="att-btn btn-add" id="pay-btn-${loan.id}" style="flex: 1; opacity: ${isComplete ? '0.5' : '1'}; cursor: ${isComplete ? 'not-allowed' : 'pointer'}" onclick="payEMI(${loan.id})" ${isComplete ? 'disabled' : ''}>
+                            <i class="fas fa-check-circle"></i> Pay ₹${loan.emi.toLocaleString('en-IN')}
+                        </button>
+                    </div>
                 </div>`;
             });
+        }
+
+        // The Automated Background System for EMIs
+        function runAutoEMIProcessor() {
+            let today = new Date();
+            let currentMonthKey = today.getFullYear() + '-' + (today.getMonth() + 1);
+            let currentDay = today.getDate();
+            let emisProcessed = 0;
+
+            loans.forEach(loan => {
+                if (loan.autoPay && loan.paidInstallments < loan.tenure) {
+                    // If today is past the due date AND we haven't paid this month yet
+                    if (currentDay >= loan.dueDate && loan.lastPaidMonth !== currentMonthKey) {
+                        
+                        addVaultTransaction(`Auto EMI: ${loan.name}`, 'expense', true, loan.emi);
+                        loan.paidInstallments++;
+                        loan.lastPaidMonth = currentMonthKey;
+                        emisProcessed++;
+                    }
+                }
+            });
+
+            if (emisProcessed > 0) {
+                localStorage.setItem('gokulLoans', JSON.stringify(loans));
+                renderLoans();
+                alert(`Vault Automation:\n\n${emisProcessed} Automated EMI(s) were just processed because their due dates passed. The money has been deducted from your Vault.`);
+            }
         }
 
         // ==========================================
@@ -1116,9 +1204,10 @@
             updateVaultUI();
             updateAttendanceUI();
             renderArchivesPage();
-            renderLoans(); // Load loans
+            renderLoans(); 
             
             checkYearlyAutomation();
+            runAutoEMIProcessor(); // Check if any EMIs are due today
         };
     </script>
 </body>
