@@ -49,7 +49,7 @@
         [data-theme="harrypotter"] * { font-family: var(--hp-font-body); }
         [data-theme="harrypotter"] h1, [data-theme="harrypotter"] h2, [data-theme="harrypotter"] h3, 
         [data-theme="harrypotter"] .digit-time, [data-theme="harrypotter"] .id-name, [data-theme="harrypotter"] .page-header { font-family: var(--hp-font-header) !important; letter-spacing: 1.5px; text-shadow: 0 0 10px rgba(240, 199, 94, 0.45); }
-        [data-theme="harrypotter"] .calendar-widget, [data-theme="harrypotter"] .id-card, [data-theme="harrypotter"] .total-box, [data-theme="harrypotter"] .chart-box, [data-theme="harrypotter"] .sidebar, [data-theme="harrypotter"] .att-card, [data-theme="harrypotter"] .att-entry-form, [data-theme="harrypotter"] .archive-card { border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(240, 199, 94, 0.08); }
+        [data-theme="harrypotter"] .calendar-widget, [data-theme="harrypotter"] .id-card, [data-theme="harrypotter"] .total-box, [data-theme="harrypotter"] .chart-box, [data-theme="harrypotter"] .sidebar, [data-theme="harrypotter"] .att-card, [data-theme="harrypotter"] .att-entry-form, [data-theme="harrypotter"] .archive-card, [data-theme="harrypotter"] .loan-calc-container, [data-theme="harrypotter"] .loan-card { border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(240, 199, 94, 0.08); }
 
         [data-theme="dark"] { --bg-body: #121212; --bg-app: #1e1e1e; --bg-sidebar: #252525; --bg-card: #2d2d2d; --bg-card-alt: #333333; --text-main: #e0e0e0; --text-muted: #aaaaaa; --text-accent: #4ade80; --border-color: #444444; --total-box: #1a1a1a; --hover-color: #3a3a3a; --danger: #ff6b6b; }
         [data-theme="cyberpunk"] { --bg-body: #0d0221; --bg-app: #150a2b; --bg-sidebar: #1a0b2e; --bg-card: #241142; --bg-card-alt: #2a1452; --text-main: #00ffcc; --text-muted: #b829ea; --text-accent: #ff007f; --border-color: #00ffcc; --total-box: #100624; --hover-color: #3d1b6b; --danger: #ff003c; }
@@ -131,6 +131,22 @@
         .btn-dl { background: var(--text-main); }
         .btn-del { background: var(--danger); }
 
+        /* Loans & EMI System */
+        .loan-calc-container { display: flex; flex-wrap: wrap; background: var(--bg-card); border-radius: 15px; border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);}
+        .loan-inputs { flex: 1; min-width: 300px; padding: 25px; background: var(--bg-card-alt); border-right: 1px solid var(--border-color);}
+        .loan-results { flex: 1; min-width: 300px; padding: 25px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 15px;}
+        .result-amount { font-size: 32px; font-weight: 900; color: var(--text-main); margin-bottom: 5px;}
+        .result-box { width: 100%; padding: 15px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);}
+        
+        .loans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+        .loan-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 12px; position: relative;}
+        .loan-card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--border-color); padding-bottom: 10px;}
+        .loan-card-header h3 { font-size: 18px; color: var(--text-main); margin: 0;}
+        .loan-detail-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted);}
+        .loan-detail-row span:last-child { font-weight: bold; color: var(--text-main); }
+        .progress-container { width: 100%; background: var(--bg-card-alt); border-radius: 10px; height: 12px; overflow: hidden; border: 1px solid var(--border-color); margin-top: 5px;}
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); width: 0%; transition: width 0.5s;}
+
         /* History Table */
         .history-table { width: 100%; border-collapse: collapse; min-width: 500px; background: var(--bg-card);}
         .history-table th, .history-table td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
@@ -145,7 +161,7 @@
         .theme-card:hover { border-color: var(--text-main); transform: translateY(-5px); }
         .theme-preview { height: 50px; border-radius: 8px; margin-bottom: 10px; border: 1px solid rgba(0,0,0,0.1); }
 
-        /* Archives (New) */
+        /* Archives */
         .archives-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
         .archive-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 10px;}
         .archive-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 5px;}
@@ -175,6 +191,9 @@
                     </button>
                     <button class="menu-btn" onclick="switchPage('attendance')" id="btn-attendance">
                         <i class="fas fa-business-time"></i> <span>Work & Salary</span>
+                    </button>
+                    <button class="menu-btn" onclick="switchPage('loans')" id="btn-loans">
+                        <i class="fas fa-hand-holding-usd"></i> <span>Loans & EMI</span>
                     </button>
                     <button class="menu-btn" onclick="switchPage('history')" id="btn-history">
                         <i class="fas fa-scroll"></i> <span>Ledger Records</span>
@@ -342,7 +361,68 @@
                 </div>
             </div>
 
-            <!-- 3. LEDGER HISTORY PAGE -->
+            <!-- 3. LOANS & EMI PAGE (NEW) -->
+            <div id="loans-page" class="page">
+                <div class="page-header">
+                    <span>Loan & EMI Manager</span>
+                    <span style="font-size: 14px; color: var(--text-accent);"><i class="fas fa-link"></i> Vault Sync Active</span>
+                </div>
+                
+                <!-- Calculator -->
+                <div class="loan-calc-container">
+                    <div class="loan-inputs">
+                        <h3 style="margin-bottom: 15px; color: var(--text-main);"><i class="fas fa-calculator"></i> EMI Calculator</h3>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label>Loan Name / Purpose</label>
+                            <input type="text" id="loan-name" class="form-control" placeholder="e.g., Bike Loan">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label>Principal Amount (₹)</label>
+                            <input type="number" id="loan-principal" class="form-control" placeholder="100000" oninput="calculateEMI()">
+                        </div>
+                        <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                            <div class="form-group">
+                                <label>Interest Rate (% p.a.)</label>
+                                <input type="number" id="loan-rate" class="form-control" placeholder="12" step="0.1" oninput="calculateEMI()">
+                            </div>
+                            <div class="form-group">
+                                <label>Tenure (Months)</label>
+                                <input type="number" id="loan-tenure" class="form-control" placeholder="24" oninput="calculateEMI()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Monthly Due Date (1-31)</label>
+                            <input type="number" id="loan-due-date" class="form-control" placeholder="5" min="1" max="31">
+                        </div>
+                    </div>
+                    
+                    <div class="loan-results">
+                        <div class="result-box">
+                            <div style="font-size: 13px; font-weight: bold; color: var(--text-muted); text-transform: uppercase;">Monthly EMI</div>
+                            <div class="result-amount" id="calc-emi-result">₹0</div>
+                        </div>
+                        <div style="display: flex; gap: 15px; width: 100%;">
+                            <div class="result-box" style="flex: 1; padding: 10px;">
+                                <div style="font-size: 11px; color: var(--text-muted);">Total Interest</div>
+                                <div style="font-weight: bold; color: var(--danger);" id="calc-total-int">₹0</div>
+                            </div>
+                            <div class="result-box" style="flex: 1; padding: 10px;">
+                                <div style="font-size: 11px; color: var(--text-muted);">Total Payable</div>
+                                <div style="font-weight: bold; color: var(--text-main);" id="calc-total-pay">₹0</div>
+                            </div>
+                        </div>
+                        <button class="att-btn btn-add" style="width: 100%; margin-top: 10px;" onclick="saveLoan()"><i class="fas fa-save"></i> Save as Active Loan</button>
+                    </div>
+                </div>
+
+                <!-- Active Loans Grid -->
+                <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Active Loans</h3>
+                <div class="loans-grid" id="loans-grid-container">
+                    <!-- Loans injected here -->
+                </div>
+            </div>
+
+            <!-- 4. LEDGER HISTORY PAGE -->
             <div id="history-page" class="page">
                 <div class="page-header">
                     <span>Vault Ledger Records</span>
@@ -353,7 +433,7 @@
                         <thead>
                             <tr>
                                 <th>Date & Time</th>
-                                <th>Category / Job Source</th>
+                                <th>Category / Source</th>
                                 <th>Type</th>
                                 <th>Amount (₹)</th>
                             </tr>
@@ -363,7 +443,7 @@
                 </div>
             </div>
 
-            <!-- 4. PAST MONTHS (ARCHIVES) PAGE -->
+            <!-- 5. PAST MONTHS (ARCHIVES) PAGE -->
             <div id="archives-page" class="page">
                 <div class="page-header">
                     <span>Archived Months</span>
@@ -374,7 +454,7 @@
                 </div>
             </div>
 
-            <!-- 5. THEMES PAGE -->
+            <!-- 6. THEMES PAGE -->
             <div id="themes-page" class="page">
                 <div class="page-header">Application Themes</div>
                 <p style="margin-bottom: 20px; color: var(--text-muted);">Select a theme. This will automatically style both your Vault and your Attendance Tracker.</p>
@@ -636,7 +716,7 @@
             if (!isNaN(amount) && amount > 0) {
                 vaultTransactions.push({ 
                     date: new Date().toLocaleString('en-GB'), 
-                    category, type, amount, source: isAutoSync ? 'attendance' : 'manual' 
+                    category, type, amount, source: isAutoSync ? 'system' : 'manual' 
                 });
                 localStorage.setItem('gokulVaultTx', JSON.stringify(vaultTransactions));
                 updateVaultUI();
@@ -656,7 +736,7 @@
             tbody.innerHTML = '';
             [...vaultTransactions].reverse().forEach(t => {
                 let isInc = t.type === 'income';
-                let syncBadge = t.source === 'attendance' ? '<span class="sync-badge"><i class="fas fa-link"></i> WORK SYNC</span>' : '';
+                let syncBadge = t.source === 'system' ? '<span class="sync-badge"><i class="fas fa-link"></i> AUTO-SYNC</span>' : '';
                 tbody.innerHTML += `<tr><td>${t.date}</td><td style="font-weight: 600;">${t.category} ${syncBadge}</td><td style="text-transform: capitalize;">${t.type}</td><td class="amt-cell ${isInc?'inc':'exp'}">${isInc?'+':'-'}₹${t.amount.toFixed(2)}</td></tr>`;
             });
             updateVaultChart();
@@ -668,7 +748,7 @@
             const dataToChart = vaultTransactions.filter(t => t.type === currentVaultType);
             const totals = {};
             dataToChart.forEach(t => { 
-                let baseCategory = t.category.split(' (Shift')[0];
+                let baseCategory = t.category.split(' (Shift')[0].split(' EMI:')[0];
                 totals[baseCategory] = (totals[baseCategory] || 0) + t.amount; 
             });
 
@@ -794,19 +874,145 @@
         }
 
         // ==========================================
-        // 6. MONTHLY ARCHIVE & YEARLY AUTOMATION
+        // 6. LOANS & EMI MANAGER (NEW)
+        // ==========================================
+        let loans = JSON.parse(localStorage.getItem('gokulLoans')) || [];
+
+        function calculateEMI() {
+            let p = parseFloat(document.getElementById('loan-principal').value);
+            let r_annual = parseFloat(document.getElementById('loan-rate').value);
+            let n = parseInt(document.getElementById('loan-tenure').value);
+
+            if(!p || !r_annual || !n) {
+                document.getElementById('calc-emi-result').innerText = '₹0';
+                document.getElementById('calc-total-int').innerText = '₹0';
+                document.getElementById('calc-total-pay').innerText = '₹0';
+                window.tempCalculatedLoan = null;
+                return;
+            }
+
+            let r = r_annual / 12 / 100;
+            let emi = Math.round(p * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1));
+            let totalPay = emi * n;
+            let totalInt = totalPay - p;
+
+            document.getElementById('calc-emi-result').innerText = '₹' + emi.toLocaleString('en-IN');
+            document.getElementById('calc-total-int').innerText = '₹' + totalInt.toLocaleString('en-IN');
+            document.getElementById('calc-total-pay').innerText = '₹' + totalPay.toLocaleString('en-IN');
+
+            window.tempCalculatedLoan = { emi, totalInt, totalPay, p, r_annual, n };
+        }
+
+        function saveLoan() {
+            let name = document.getElementById('loan-name').value || "Unnamed Loan";
+            let dueDate = document.getElementById('loan-due-date').value || "5"; 
+
+            if(!window.tempCalculatedLoan) { alert("Please enter valid loan details to calculate first."); return; }
+
+            let newLoan = {
+                id: Date.now(),
+                name: name,
+                dueDate: dueDate,
+                emi: window.tempCalculatedLoan.emi,
+                principal: window.tempCalculatedLoan.p,
+                tenure: window.tempCalculatedLoan.n,
+                paidInstallments: 0
+            };
+
+            loans.push(newLoan);
+            localStorage.setItem('gokulLoans', JSON.stringify(loans));
+            renderLoans();
+            
+            // Clear form
+            document.getElementById('loan-name').value = '';
+            document.getElementById('loan-principal').value = '';
+            document.getElementById('loan-rate').value = '';
+            document.getElementById('loan-tenure').value = '';
+            document.getElementById('loan-due-date').value = '';
+            calculateEMI();
+            
+            alert(`"${name}" has been saved to your active loans!`);
+        }
+
+        function payEMI(loanId) {
+            let loan = loans.find(l => l.id === loanId);
+            if(!loan) return;
+            
+            if(loan.paidInstallments >= loan.tenure) {
+                alert("This loan is already fully paid!"); return;
+            }
+
+            // Sync to vault
+            addVaultTransaction(`EMI: ${loan.name}`, 'expense', true, loan.emi);
+            
+            loan.paidInstallments++;
+            localStorage.setItem('gokulLoans', JSON.stringify(loans));
+            renderLoans();
+            alert(`Success! Paid ₹${loan.emi.toLocaleString('en-IN')} for ${loan.name}.\nThis amount has been deducted from your Vault.`);
+        }
+
+        function deleteLoan(loanId) {
+            if(confirm("Are you sure you want to delete this loan record? Vault transactions for past EMIs will remain intact.")) {
+                loans = loans.filter(l => l.id !== loanId);
+                localStorage.setItem('gokulLoans', JSON.stringify(loans));
+                renderLoans();
+            }
+        }
+
+        function renderLoans() {
+            const container = document.getElementById('loans-grid-container');
+            container.innerHTML = '';
+            
+            if(loans.length === 0) {
+                container.innerHTML = '<div style="color: var(--text-muted); font-size: 14px;">No active loans. Calculate and save a loan to see it here.</div>';
+                return;
+            }
+
+            loans.forEach(loan => {
+                let progressPct = (loan.paidInstallments / loan.tenure) * 100;
+                let remaining = loan.tenure - loan.paidInstallments;
+                let isComplete = remaining === 0;
+
+                container.innerHTML += `
+                <div class="loan-card">
+                    <div class="loan-card-header">
+                        <h3><i class="fas fa-file-invoice-dollar"></i> ${loan.name}</h3>
+                        <button class="att-btn btn-del" style="padding: 4px 8px; min-width: unset; font-size: 12px;" onclick="deleteLoan(${loan.id})"><i class="fas fa-trash"></i></button>
+                    </div>
+                    
+                    <div class="loan-detail-row"><span>Monthly EMI:</span> <span style="font-size: 18px; color: var(--danger);">₹${loan.emi.toLocaleString('en-IN')}</span></div>
+                    <div class="loan-detail-row"><span>Principal Amount:</span> <span>₹${loan.principal.toLocaleString('en-IN')}</span></div>
+                    <div class="loan-detail-row"><span>Due Date:</span> <span>${loan.dueDate} of every month</span></div>
+                    
+                    <div style="margin-top: 10px;">
+                        <div class="loan-detail-row" style="margin-bottom: 5px;">
+                            <span>Progress (${loan.paidInstallments}/${loan.tenure})</span>
+                            <span style="color: ${isComplete ? 'var(--text-accent)' : 'var(--text-main)'}">${isComplete ? 'Completed!' : remaining + ' left'}</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: ${progressPct}%;"></div>
+                        </div>
+                    </div>
+                    
+                    <button class="att-btn btn-add" style="width: 100%; margin-top: 10px; opacity: ${isComplete ? '0.5' : '1'}; cursor: ${isComplete ? 'not-allowed' : 'pointer'}" onclick="payEMI(${loan.id})" ${isComplete ? 'disabled' : ''}>
+                        <i class="fas fa-check-circle"></i> Pay EMI & Sync to Vault
+                    </button>
+                </div>`;
+            });
+        }
+
+        // ==========================================
+        // 7. MONTHLY ARCHIVE & YEARLY AUTOMATION
         // ==========================================
         let archives = JSON.parse(localStorage.getItem('gokulArchives')) || [];
 
         function completeMonth() {
             if (vaultTransactions.length === 0 && attRecords.length === 0) return alert("You have no active data to archive yet.");
             
-            // Suggest the current month/year
             const defaultName = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
             let monthName = prompt("Name this archived month (e.g. August 2026):", defaultName);
             if (!monthName) return;
 
-            // Calculate quick stats for the archive card
             let inc = vaultTransactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
             let exp = vaultTransactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
 
@@ -820,11 +1026,9 @@
                 attRecs: [...attRecords]
             };
 
-            // Save to archives
             archives.push(archiveObj);
             localStorage.setItem('gokulArchives', JSON.stringify(archives));
 
-            // Wipe Active trackers
             vaultTransactions = []; localStorage.setItem('gokulVaultTx', JSON.stringify(vaultTransactions));
             attRecords = []; localStorage.setItem('gokulAttRecords', JSON.stringify(attRecords));
             
@@ -843,7 +1047,6 @@
                 return;
             }
 
-            // Reverse to show newest first
             [...archives].reverse().forEach(arch => {
                 let netBal = arch.totalEarned - arch.totalSpent;
                 container.innerHTML += `
@@ -874,12 +1077,11 @@
         }
 
         function yearlyReset() {
-            if (confirm("🚨 WARNING: YEARLY RESET 🚨\n\nThis will permanently delete ALL active records AND ALL archived Past Months.\n\nOnly click OK if you are starting a completely fresh year. Your custom job profiles and themes will be kept.")) {
+            if (confirm("🚨 WARNING: YEARLY RESET 🚨\n\nThis will permanently delete ALL active records AND ALL archived Past Months.\n\nOnly click OK if you are starting a completely fresh year. Your custom job profiles, loans, and themes will be kept.")) {
                 archives = []; localStorage.setItem('gokulArchives', JSON.stringify(archives));
                 vaultTransactions = []; localStorage.setItem('gokulVaultTx', JSON.stringify(vaultTransactions));
                 attRecords = []; localStorage.setItem('gokulAttRecords', JSON.stringify(attRecords));
                 
-                // Update tracker
                 localStorage.setItem('gokulCurrentYear', new Date().getFullYear());
                 
                 updateVaultUI(); updateAttendanceUI(); renderArchivesPage();
@@ -895,11 +1097,9 @@
             if (!savedYear) {
                 localStorage.setItem('gokulCurrentYear', currentYear);
             } else if (currentYear > savedYear) {
-                // It is a new year! Prompt automation.
                 if (confirm(`🎉 Welcome to ${currentYear}, Gokul! 🎉\n\nIt looks like a new year has started. Would you like to perform the Automated Yearly Reset? \n\nThis will clear last year's Active Data and Archives to give you a fresh start for ${currentYear}.`)) {
                     yearlyReset();
                 } else {
-                    // They declined, but update the clock so we don't ask every single time they open the app
                     localStorage.setItem('gokulCurrentYear', currentYear);
                 }
             }
@@ -916,8 +1116,8 @@
             updateVaultUI();
             updateAttendanceUI();
             renderArchivesPage();
+            renderLoans(); // Load loans
             
-            // Run yearly automation check on boot
             checkYearlyAutomation();
         };
     </script>
