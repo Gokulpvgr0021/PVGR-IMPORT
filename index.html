@@ -748,7 +748,6 @@
             const dataToChart = vaultTransactions.filter(t => t.type === currentVaultType);
             const totals = {};
             dataToChart.forEach(t => { 
-                // Simplify labels for chart if they are auto-synced
                 let baseCategory = t.category.split(' (Shift')[0].split(' (')[0].split(' EMI:')[0].trim();
                 totals[baseCategory] = (totals[baseCategory] || 0) + t.amount; 
             });
@@ -921,19 +920,17 @@
                 tenure: window.tempCalculatedLoan.n,
                 paidInstallments: 0,
                 autoPay: autoPay,
-                lastPaidMonth: "" // Will track YYYY-MM
+                lastPaidMonth: "" 
             };
 
             loans.push(newLoan);
             localStorage.setItem('gokulLoans', JSON.stringify(loans));
             renderLoans();
             
-            // Add principal to vault if requested
             if (addPrincipal) {
                 addVaultTransaction(`Loan Disbursed: ${name}`, 'income', true, newLoan.principal);
             }
             
-            // Clear form
             document.getElementById('loan-name').value = '';
             document.getElementById('loan-principal').value = '';
             document.getElementById('loan-rate').value = '';
@@ -976,12 +973,10 @@
             let totalPayment = loan.emi * monthsToPay;
             let monthLabel = monthsToPay > 1 ? `${monthsToPay} Months` : `1 Month`;
 
-            // Sync to vault
             addVaultTransaction(`EMI: ${loan.name} (${monthLabel})`, 'expense', true, totalPayment);
             
             loan.paidInstallments += monthsToPay;
             
-            // Log that we paid this month so the automated system doesn't double charge
             let today = new Date();
             loan.lastPaidMonth = today.getFullYear() + '-' + (today.getMonth() + 1);
             
@@ -1021,6 +1016,8 @@
                 let remaining = loan.tenure - loan.paidInstallments;
                 let isComplete = remaining === 0;
                 let autoPayStatus = loan.autoPay ? '<span style="color: var(--text-accent); font-size: 10px; font-weight: bold;"><i class="fas fa-robot"></i> Auto-Pay: ON</span>' : '<span style="color: var(--text-muted); font-size: 10px; font-weight: bold;"><i class="fas fa-hand-paper"></i> Auto-Pay: OFF</span>';
+                
+                let balanceAmount = remaining * loan.emi;
 
                 container.innerHTML += `
                 <div class="loan-card">
@@ -1037,6 +1034,7 @@
                     
                     <div class="loan-detail-row"><span>Monthly EMI:</span> <span style="font-size: 18px; color: var(--danger);">₹${loan.emi.toLocaleString('en-IN')}</span></div>
                     <div class="loan-detail-row"><span>Principal Amount:</span> <span>₹${loan.principal.toLocaleString('en-IN')}</span></div>
+                    <div class="loan-detail-row"><span>Remaining Balance:</span> <span style="color: var(--text-main); font-weight: 900;">₹${balanceAmount.toLocaleString('en-IN')}</span></div>
                     <div class="loan-detail-row"><span>Due Date:</span> <span>${loan.dueDate} of every month</span></div>
                     
                     <div style="margin-top: 10px;">
@@ -1062,7 +1060,6 @@
             });
         }
 
-        // The Automated Background System for EMIs
         function runAutoEMIProcessor() {
             let today = new Date();
             let currentMonthKey = today.getFullYear() + '-' + (today.getMonth() + 1);
@@ -1071,9 +1068,7 @@
 
             loans.forEach(loan => {
                 if (loan.autoPay && loan.paidInstallments < loan.tenure) {
-                    // If today is past the due date AND we haven't paid this month yet
                     if (currentDay >= loan.dueDate && loan.lastPaidMonth !== currentMonthKey) {
-                        
                         addVaultTransaction(`Auto EMI: ${loan.name}`, 'expense', true, loan.emi);
                         loan.paidInstallments++;
                         loan.lastPaidMonth = currentMonthKey;
@@ -1207,7 +1202,7 @@
             renderLoans(); 
             
             checkYearlyAutomation();
-            runAutoEMIProcessor(); // Check if any EMIs are due today
+            runAutoEMIProcessor(); 
         };
     </script>
 </body>
