@@ -34,7 +34,6 @@
     
     <style>
         :root {
-            /* Transparency Engine Variables */
             --glass-alpha: 0.75;
             --video-dimmer: 1;
 
@@ -103,7 +102,6 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: var(--app-font); }
 
-        /* Animated Ambient Fallback Layer */
         body { 
             background: linear-gradient(135deg, #090414, #1b0d2d, #081a24, #1f0b18);
             background-size: 300% 300%;
@@ -125,7 +123,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Persistent Video Background */
         .video-background { 
             position: fixed; 
             top: 0; 
@@ -296,7 +293,6 @@
 <body>
 
     <!-- REPAIRED PERSISTENT VIDEO BACKGROUND -->
-    <!-- Swap the pixabay URL for "background.mp4" when you have your own video ready -->
     <video id="app-bg-video" class="video-background" autoplay muted loop playsinline webkit-playsinline preload="auto">
         <source src="background.mp4" type="video/mp4">
         <source src="https://cdn.pixabay.com/video/2020/05/25/40134-424916845_large.mp4" type="video/mp4">
@@ -310,7 +306,7 @@
             <span>GOKUL HUB</span>
         </div>
         <div style="display: flex; gap: 8px;">
-            <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="promptInstall()"><i class="fas fa-download"></i> App</button>
+            <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="downloadAppDirectly()"><i class="fas fa-download"></i> App</button>
             <button class="btn btn-primary" style="padding: 6px 10px; font-size: 13px;" onclick="openMenuSheet()"><i class="fas fa-ellipsis-v"></i></button>
         </div>
     </div>
@@ -346,7 +342,7 @@
                     
                     <button class="nav-btn action-btn" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
                     <button class="nav-btn danger-btn" onclick="yearlyReset()"><i class="fas fa-skull"></i> <span>Yearly Reset</span></button>
-                    <button class="nav-btn" style="background: var(--text-accent); color: #fff; margin-top: 6px;" onclick="promptInstall()"><i class="fas fa-download" style="color:#fff;"></i> <span>Install App</span></button>
+                    <button class="nav-btn" style="background: var(--text-accent); color: #fff; margin-top: 6px;" onclick="downloadAppDirectly()"><i class="fas fa-download" style="color:#fff;"></i> <span>Download / Install App</span></button>
                 </div>
             </div>
 
@@ -553,7 +549,6 @@
             <section id="themes-view" class="view-panel">
                 <div class="panel-heading"><span>Themes & Appearance</span></div>
                 
-                <!-- NEW OPACITY AND VIDEO DIMMER SETTINGS -->
                 <div class="form-card" style="margin-bottom: 25px; flex-direction: column;">
                     <div style="font-weight: 900; font-size: 16px; color: var(--text-main); margin-bottom: 10px;">
                         <i class="fas fa-layer-group"></i> Glass UI Transparency
@@ -637,37 +632,39 @@
             <button class="nav-btn action-btn" onclick="completeMonth(); closeModal('menuSheetModal')"><i class="fas fa-calendar-check"></i> Complete Month</button>
             <button class="nav-btn danger-btn" onclick="yearlyReset(); closeModal('menuSheetModal')"><i class="fas fa-skull"></i> Yearly Reset</button>
             
-            <button class="btn btn-success" style="width: 100%; margin-top: 6px;" onclick="promptInstall(); closeModal('menuSheetModal')"><i class="fas fa-download"></i> Install App to Phone</button>
+            <button class="btn btn-success" style="width: 100%; margin-top: 6px;" onclick="downloadAppDirectly(); closeModal('menuSheetModal')"><i class="fas fa-download"></i> Download / Install App</button>
             
             <button class="btn btn-primary" style="margin-top: 8px;" onclick="closeModal('menuSheetModal')">Close</button>
         </div>
     </div>
 
-    <!-- EXPLICIT INSTALL INSTRUCTION MODAL -->
-    <div class="modal-mask" id="installGuideModal">
-        <div class="modal-sheet" style="text-align: center; max-width: 340px;">
-            <div style="font-size: 42px; color: var(--text-accent); margin-bottom: 10px;"><i class="fas fa-download"></i></div>
-            <h3 style="color: var(--text-main); font-family: var(--header-font); margin-bottom: 15px;">How to Install</h3>
-            
-            <div style="text-align: left; background: var(--bg-card-alt); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 15px;">
-                <p style="font-size: 13px; color: var(--danger); font-weight: bold; margin-bottom: 10px;">
-                    <i class="fas fa-exclamation-triangle"></i> Android blocks automatic downloads from local files.
-                </p>
-                <p style="font-size: 14px; color: var(--text-main); font-weight: bold; margin-bottom: 8px;">Follow these 2 steps:</p>
-                <ol style="font-size: 13px; color: var(--text-muted); line-height: 1.8; padding-left: 20px; margin-bottom: 0;">
-                    <li>Tap the <b>three dots (⋮)</b> in the top right corner of your Chrome browser.</li>
-                    <li>Tap <b>"Add to Home screen"</b>.</li>
-                </ol>
-            </div>
-            
-            <button class="btn btn-success" style="width: 100%;" onclick="closeModal('installGuideModal')">Got It</button>
-        </div>
-    </div>
-
     <script>
         // ==========================================
-        // 0. OPACITY & APPEARANCE ENGINE
+        // 0. DOWNLOAD & INSTALL ENGINE
         // ==========================================
+        function downloadAppDirectly() {
+            if (pwaEvent) {
+                pwaEvent.prompt();
+                pwaEvent.userChoice.then(() => { pwaEvent = null; });
+                return;
+            }
+
+            // Direct standalone file download
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const downloadUrl = URL.createObjectURL(blob);
+            
+            const tempLink = document.createElement('a');
+            tempLink.href = downloadUrl;
+            tempLink.download = 'Gokul_Hub.html';
+            document.body.appendChild(tempLink);
+            tempLink.click();
+            document.body.removeChild(tempLink);
+            URL.revokeObjectURL(downloadUrl);
+
+            alert("Download initiated! You can open 'Gokul_Hub.html' from your downloads or tap Chrome's menu (⋮) -> 'Add to Home screen'.");
+        }
+
         function updateGlassOpacity(val) {
             document.documentElement.style.setProperty('--glass-alpha', val);
             localStorage.setItem('gokulGlassAlpha', val);
@@ -724,15 +721,6 @@
             e.preventDefault();
             pwaEvent = e;
         });
-
-        function promptInstall() {
-            if (pwaEvent) {
-                pwaEvent.prompt();
-                pwaEvent.userChoice.then(() => { pwaEvent = null; });
-            } else {
-                openModal('installGuideModal');
-            }
-        }
 
         function initVideoPlayback() {
             const video = document.getElementById('app-bg-video');
@@ -1407,7 +1395,7 @@
 
             if (geminiKey) document.getElementById('ai-key-card').style.display = 'none';
 
-            loadAppearanceSettings(); // NEW: Loads Opacity & Dimmer
+            loadAppearanceSettings();
             renderProfile();
             renderCategoryGrid();
             updateVaultStats();
