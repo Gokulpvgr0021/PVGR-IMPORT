@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gokul's Master Hub: Work & Wealth</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Gokul's Hub</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gokul Hub">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0d0c11">
+    
+    <link rel="manifest" id="pwa-manifest" href="">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=MedievalSharp&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -56,7 +57,7 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: var(--bg-body); display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; transition: background-color 0.4s ease; overflow: hidden; color: var(--text-main); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
-        .app-window { background-color: var(--bg-app); width: 95vw; max-width: 1300px; height: 92vh; border-radius: 14px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7); display: flex; position: relative; overflow: hidden; transition: all 0.4s ease; backdrop-filter: blur(12px); }
+        .app-window { background-color: var(--bg-app); width: 100vw; max-width: 1300px; height: 100vh; border-radius: 0; box-shadow: none; display: flex; position: relative; overflow: hidden; transition: all 0.4s ease; backdrop-filter: blur(12px); }
         button { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; cursor: pointer; }
 
         .sidebar { width: 230px; background-color: var(--bg-sidebar); display: flex; flex-direction: column; justify-content: space-between; padding: 20px; border-right: 1px solid var(--border-color); z-index: 10; flex-shrink: 0;}
@@ -65,17 +66,17 @@
         .menu-btn i { font-size: 16px; width: 22px; text-align: center; color: var(--text-accent);}
         .menu-btn:hover, .menu-btn.active { background-color: var(--hover-color); transform: translateX(5px); border-color: var(--text-main); }
         .menu-btn.active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background-color: var(--text-main); }
-        
         .menu-btn.action-btn { border: 1px dashed var(--text-accent); color: var(--text-accent); margin-top: 15px; background: transparent;}
         .menu-btn.action-btn:hover { background-color: var(--text-accent); color: #fff; }
         .menu-btn.action-btn:hover i { color: #fff; }
-        
         .menu-btn.danger { border: 1px dashed var(--danger); color: var(--danger); margin-top: 5px; background: transparent;}
         .menu-btn.danger i { color: var(--danger); }
         .menu-btn.danger:hover { background-color: var(--danger); color: #fff; }
         .menu-btn.danger:hover i { color: #fff; }
-
         .footer-info { font-size: 11px; color: var(--text-muted); font-weight: 600; line-height: 1.6; display: flex; flex-direction: column; gap: 4px; margin-top: 20px;}
+
+        /* Mobile Bottom Nav */
+        .mobile-nav { display: none; }
 
         .main-content { flex: 1; display: flex; position: relative; overflow: hidden; background: transparent;}
         .page { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 25px; animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); flex-direction: column;}
@@ -188,14 +189,59 @@
         /* Modals */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
         .modal-overlay.active { display: flex; }
-        .modal-content { background: var(--bg-app); width: 90%; max-width: 420px; border-radius: 15px; padding: 25px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 15px; }
+        .modal-content { background: var(--bg-app); width: 90%; max-width: 420px; border-radius: 15px; padding: 25px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 15px; max-height: 90vh; overflow-y: auto;}
         
         .checkbox-container { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.05); border: 1px solid var(--border-color);}
         .checkbox-container input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer;}
         .checkbox-container label { font-size: 13px; font-weight: bold; color: var(--text-main); margin: 0; cursor: pointer;}
+
+        /* MOBILE APP RESPONSIVENESS */
+        @media (max-width: 768px) {
+            .app-window { border-radius: 0; }
+            .sidebar { display: none; }
+            .mobile-nav { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-card); z-index: 1000; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); justify-content: space-around; padding: 10px 5px; padding-bottom: env(safe-area-inset-bottom, 10px); border-top: 1px solid var(--border-color); }
+            .mobile-nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; background: none; border: none; color: var(--text-muted); font-size: 11px; gap: 5px; padding: 5px 0;}
+            .mobile-nav-btn.active { color: var(--text-accent); }
+            .mobile-nav-btn i { font-size: 22px; transition: transform 0.2s;}
+            .mobile-nav-btn.active i { transform: translateY(-3px) scale(1.1); }
+            
+            .main-content { padding-bottom: 80px; height: 100vh; }
+            .page { padding: 15px; }
+            #vault-dashboard-page { flex-direction: column; overflow-y: auto; }
+            .center-col { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); padding: 15px; flex-shrink: 0; }
+            .grid-wrapper { overflow: visible; padding-right: 0; padding: 15px;}
+            .grid-container { grid-template-columns: repeat(2, 1fr); padding-top: 15px; }
+            .theme-grid { grid-template-columns: repeat(2, 1fr); }
+            .selection-grid { grid-template-columns: repeat(5, 1fr) !important; }
+            .att-dashboard { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
 <body>
+
+    <div class="mobile-nav">
+        <button class="mobile-nav-btn active" onclick="switchPage('vault-dashboard')" id="mbtn-vault-dashboard"><i class="fas fa-coins"></i><span>Vault</span></button>
+        <button class="mobile-nav-btn" onclick="switchPage('attendance')" id="mbtn-attendance"><i class="fas fa-business-time"></i><span>Work</span></button>
+        <button class="mobile-nav-btn" onclick="switchPage('loans')" id="mbtn-loans"><i class="fas fa-hand-holding-usd"></i><span>Loans</span></button>
+        <button class="mobile-nav-btn" onclick="switchPage('ai-advisor')" id="mbtn-ai-advisor"><i class="fas fa-brain"></i><span>AI</span></button>
+        <button class="mobile-nav-btn" onclick="openMobileMenu()"><i class="fas fa-bars"></i><span>Menu</span></button>
+    </div>
+
+    <div class="modal-overlay" id="mobileMenuModal">
+        <div class="modal-content" style="margin-bottom: 70px; margin-top: auto;">
+            <h3 style="text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">More Options</h3>
+            <button class="menu-btn" onclick="switchPage('history'); closeMobileMenu()"><i class="fas fa-scroll"></i> Ledger Records</button>
+            <button class="menu-btn" onclick="switchPage('archives'); closeMobileMenu()"><i class="fas fa-archive"></i> Past Months</button>
+            <button class="menu-btn" onclick="switchPage('themes'); closeMobileMenu()"><i class="fas fa-wand-magic-sparkles"></i> Themes</button>
+            <button class="menu-btn" onclick="openProfileModal(); closeMobileMenu()"><i class="fas fa-user-edit"></i> Edit Profile</button>
+            <button class="menu-btn action-btn" onclick="completeMonth(); closeMobileMenu()"><i class="fas fa-calendar-check"></i> Complete Month</button>
+            <button class="menu-btn danger" onclick="yearlyReset(); closeMobileMenu()"><i class="fas fa-skull"></i> Yearly Reset</button>
+            
+            <button class="menu-btn" id="install-app-btn" onclick="installApp()" style="display:none; background: var(--text-accent); color: white; margin-top: 10px;"><i class="fas fa-download"></i> Install App to Home Screen</button>
+            
+            <button class="att-btn" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); margin-top: 10px;" onclick="closeMobileMenu()">Close</button>
+        </div>
+    </div>
 
     <div class="app-window">
         
@@ -233,6 +279,7 @@
                     <button class="menu-btn danger" onclick="yearlyReset()">
                         <i class="fas fa-skull"></i> <span>Yearly Reset</span>
                     </button>
+                    <button class="menu-btn" id="desktop-install-app-btn" onclick="installApp()" style="display:none; background: var(--text-accent); color: white; margin-top: 10px;"><i class="fas fa-download"></i> Install App</button>
                 </div>
             </div>
             <div class="footer-info">
@@ -277,7 +324,7 @@
                 </div>
 
                 <div class="grid-wrapper">
-                    <div class="page-header" style="border: none; margin-bottom: 10px; align-items: center;">
+                    <div class="page-header" style="border: none; margin-bottom: 10px; align-items: center; flex-wrap: wrap; gap: 10px;">
                         <span id="grid-title">Quick Log Expense</span>
                         <div style="display: flex; gap: 10px; align-items: center;">
                             <button id="btn-toggle-edit" onclick="toggleEditMode()" style="background: var(--bg-card-alt); color: var(--text-main); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s;"><i class="fas fa-pencil-alt"></i> Edit Labels</button>
@@ -293,8 +340,8 @@
             <div id="attendance-page" class="page">
                 <div id="attendance-ledger-content">
                     <div class="page-header">
-                        <span>Work & Salary Tracker</span>
-                        <span style="font-size: 14px; color: var(--text-accent);"><i class="fas fa-link"></i> Linked to Vault</span>
+                        <span>Work Tracker</span>
+                        <span style="font-size: 14px; color: var(--text-accent);"><i class="fas fa-link"></i> Vault Sync Active</span>
                     </div>
                     
                     <div class="att-dashboard">
@@ -372,16 +419,16 @@
                         <label>Out Time</label>
                         <input type="time" id="att-outTime" class="form-control" value="18:00">
                     </div>
-                    <button class="att-btn btn-add" onclick="addAttendanceEntry()"><i class="fas fa-coins"></i> Log & Sync to Vault</button>
+                    <button class="att-btn btn-add" onclick="addAttendanceEntry()" style="margin-top: 15px; width: 100%;"><i class="fas fa-coins"></i> Log & Sync to Vault</button>
                 </div>
                 <div style="display: flex; gap: 15px; margin-top: 25px;">
-                    <button class="att-btn btn-dl" onclick="downloadAttendancePDF()"><i class="fas fa-download"></i> Download Timesheet</button>
+                    <button class="att-btn btn-dl" onclick="downloadAttendancePDF()" style="width: 100%;"><i class="fas fa-download"></i> Download Timesheet</button>
                 </div>
             </div>
 
             <div id="loans-page" class="page">
                 <div class="page-header">
-                    <span>Loan & EMI Manager</span>
+                    <span>Loan Manager</span>
                     <span style="font-size: 14px; color: var(--text-accent);"><i class="fas fa-link"></i> Vault Sync Active</span>
                 </div>
                 
@@ -419,7 +466,6 @@
                             <input type="checkbox" id="loan-autopay" checked>
                             <label for="loan-autopay">Auto-Pay EMI from Vault every month on Due Date</label>
                         </div>
-
                     </div>
                     
                     <div class="loan-results">
@@ -442,8 +488,7 @@
                 </div>
 
                 <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Active Loans</h3>
-                <div class="loans-grid" id="loans-grid-container">
-                    </div>
+                <div class="loans-grid" id="loans-grid-container"></div>
             </div>
 
             <div id="history-page" class="page">
@@ -467,12 +512,9 @@
             </div>
 
             <div id="archives-page" class="page">
-                <div class="page-header">
-                    <span>Archived Months</span>
-                </div>
+                <div class="page-header"><span>Archived Months</span></div>
                 <p style="margin-bottom: 20px; color: var(--text-muted);">View and manage your completed monthly files. These files are safely separated from your active trackers.</p>
-                <div class="archives-grid" id="archives-grid-container">
-                    </div>
+                <div class="archives-grid" id="archives-grid-container"></div>
             </div>
 
             <div id="ai-advisor-page" class="page">
@@ -562,19 +604,74 @@
 
     <script>
         // ==========================================
+        // 0. PWA & APP INSTALL LOGIC
+        // ==========================================
+        const manifestJSON = {
+            "name": "Gokul's Hub",
+            "short_name": "GokulHub",
+            "start_url": window.location.href,
+            "display": "standalone",
+            "background_color": "#0d0c11",
+            "theme_color": "#d3a625",
+            "icons": [
+                {
+                    "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzBkMGMxMSIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQwIiBmaWxsPSIjZjBjNzVlIi8+PC9zdmc+",
+                    "sizes": "192x192",
+                    "type": "image/svg+xml",
+                    "purpose": "any maskable"
+                },
+                {
+                    "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzBkMGMxMSIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQwIiBmaWxsPSIjZjBjNzVlIi8+PC9zdmc+",
+                    "sizes": "512x512",
+                    "type": "image/svg+xml",
+                    "purpose": "any maskable"
+                }
+            ]
+        };
+        const manifestBlob = new Blob([JSON.stringify(manifestJSON)], {type: 'application/json'});
+        document.getElementById('pwa-manifest').setAttribute('href', URL.createObjectURL(manifestBlob));
+
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('install-app-btn').style.display = 'block';
+            document.getElementById('desktop-install-app-btn').style.display = 'flex';
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    deferredPrompt = null;
+                    document.getElementById('install-app-btn').style.display = 'none';
+                    document.getElementById('desktop-install-app-btn').style.display = 'none';
+                });
+            } else {
+                alert("To install as an App: Tap your browser menu (⋮) and select 'Add to Home screen' or 'Install App'.");
+            }
+        }
+
+        // ==========================================
         // 1. GLOBAL UI & NAVIGATION
         // ==========================================
         function switchPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.menu-btn, .mobile-nav-btn').forEach(b => b.classList.remove('active'));
             
             document.getElementById(`${pageId}-page`).classList.add('active');
             let navBtn = document.getElementById(`btn-${pageId}`);
             if (navBtn) navBtn.classList.add('active');
             
+            let mnavBtn = document.getElementById(`mbtn-${pageId}`);
+            if (mnavBtn) mnavBtn.classList.add('active');
+            
             if(pageId === 'vault-dashboard') updateVaultChart();
             if(pageId !== 'vault-dashboard' && isEditMode) toggleEditMode(); 
         }
+
+        function openMobileMenu() { document.getElementById('mobileMenuModal').classList.add('active'); }
+        function closeMobileMenu() { document.getElementById('mobileMenuModal').classList.remove('active'); }
 
         // ==========================================
         // 2. USER PROFILE ENGINE
@@ -1165,20 +1262,17 @@
             
             const chatHistory = document.getElementById('chat-history');
             
-            // 1. Immediately update UI and lock inputs to prevent spam
             chatHistory.innerHTML += `<div class="chat-bubble chat-user">${message}</div>`;
             inputField.value = '';
             inputField.disabled = true;
             if(sendBtn) sendBtn.disabled = true;
             chatHistory.scrollTop = chatHistory.scrollHeight;
 
-            // 2. Insert a lightweight loading indicator
             const loadingId = 'loading-' + Date.now();
             chatHistory.innerHTML += `<div class="chat-bubble chat-ai" id="${loadingId}"><em>Analyzing your vault... <i class="fas fa-spinner fa-spin"></i></em></div>`;
             chatHistory.scrollTop = chatHistory.scrollHeight;
 
             try {
-                // 3. Context Compression
                 let inc = vaultTransactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
                 let exp = vaultTransactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
                 let bal = inc - exp;
@@ -1186,7 +1280,6 @@
                 let context = `System: You are a fast, expert financial advisor for Gokul. Keep answers under 2 short paragraphs. Use basic HTML (<b>, <br>) for formatting. Do NOT use markdown.
                 Context: Vault Balance: ₹${bal}. Total Income: ₹${inc}. Total Expenses: ₹${exp}. Active Loans: ${loans.length}.`;
 
-                // 4. Asynchronous Fetch using the lightning-fast 2.5-flash model
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1207,13 +1300,11 @@
                 const data = await response.json();
                 const aiMessage = data.candidates[0].content.parts[0].text;
                 
-                // 5. Update the DOM instantly
                 document.getElementById(loadingId).innerHTML = `<strong>Gringotts AI:</strong><br><br>${aiMessage}`;
                 
             } catch (error) {
                 document.getElementById(loadingId).innerHTML = `<strong>Gringotts AI:</strong><br><span style="color: #ffcccc;">Connection Error. Please check your internet connection or API key.</span>`;
             } finally {
-                // 6. Release UI locks regardless of success or failure
                 inputField.disabled = false;
                 if(sendBtn) sendBtn.disabled = false;
                 inputField.focus();
