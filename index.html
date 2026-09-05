@@ -198,7 +198,7 @@
         .progress-bar-bg { background: var(--bg-card-alt); height: 10px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); transition: width 0.4s ease; }
 
-        /* AI Advisor Chat */
+        /* Cherry Bot Chat */
         .chat-wrap { display: flex; flex-direction: column; height: calc(100vh - 200px); min-height: 420px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; transition: background-color 0.3s ease;}
         .chat-stream { flex: 1; padding: 18px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; -webkit-overflow-scrolling: touch; }
         .chat-bubble { padding: 12px 16px; border-radius: 14px; max-width: 85%; font-size: 13.5px; line-height: 1.5; }
@@ -238,7 +238,7 @@
             .vault-summary-col { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); padding: 16px; }
             .vault-grid-col { padding: 16px; }
             .grid-container { grid-template-columns: repeat(2, 1fr); }
-            .chat-wrap { height: calc(100vh - 240px); }
+            .chat-wrap { height: calc(100vh - 120px); }
         }
     </style>
 </head>
@@ -272,7 +272,7 @@
         <button class="tab-item active" id="tab-vault" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i><span>Vault</span></button>
         <button class="tab-item" id="tab-att" onclick="navTo('attendance')"><i class="fas fa-business-time"></i><span>Work</span></button>
         <button class="tab-item" id="tab-loan" onclick="navTo('loans')"><i class="fas fa-hand-holding-usd"></i><span>Loans</span></button>
-        <button class="tab-item" id="tab-ai" onclick="navTo('ai-advisor')"><i class="fas fa-brain"></i><span>AI</span></button>
+        <button class="tab-item" id="tab-ai" onclick="navTo('ai-advisor')"><i class="fas fa-robot"></i><span>Cherry</span></button>
         <button class="tab-item" id="tab-themes" onclick="navTo('themes')"><i class="fas fa-eye"></i><span>Look</span></button>
     </div>
 
@@ -293,7 +293,7 @@
                     <button class="nav-btn" id="dnav-loans" onclick="navTo('loans')"><i class="fas fa-hand-holding-usd"></i> <span>Loans & EMI</span></button>
                     <button class="nav-btn" id="dnav-history" onclick="navTo('history')"><i class="fas fa-scroll"></i> <span>Ledger</span></button>
                     <button class="nav-btn" id="dnav-archives" onclick="navTo('archives')"><i class="fas fa-archive"></i> <span>Archives</span></button>
-                    <button class="nav-btn" id="dnav-ai-advisor" onclick="navTo('ai-advisor')"><i class="fas fa-brain"></i> <span>AI Advisor</span></button>
+                    <button class="nav-btn" id="dnav-ai-advisor" onclick="navTo('ai-advisor')"><i class="fas fa-robot"></i> <span>Cherry Bot</span></button>
                     <button class="nav-btn" id="dnav-themes" onclick="navTo('themes')"><i class="fas fa-eye"></i> <span>Themes & Layout</span></button>
                     
                     <button class="nav-btn action-btn" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
@@ -342,6 +342,30 @@
                 </div>
 
                 <div class="vault-grid-col">
+                    <!-- LIVE MARKET RATES WIDGET -->
+                    <div class="panel-heading" style="border: none; margin-bottom: 12px; font-size: 18px; padding-bottom: 0;">
+                        <span>Live Bullion Rates (1g)</span>
+                        <span id="rate-status" style="font-size: 11px; color: var(--text-muted); font-family: var(--app-font);"><i class="fas fa-sync fa-spin"></i> Fetching...</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-bottom: 24px;">
+                        <div class="att-stat-card" style="padding: 12px;">
+                            <div style="color: #f1c40f; font-size: 20px; margin-bottom: 4px;"><i class="fas fa-coins"></i></div>
+                            <div class="lbl">24K Gold</div>
+                            <div class="val" id="rate-24k" style="font-size: 16px;">--</div>
+                        </div>
+                        <div class="att-stat-card" style="padding: 12px;">
+                            <div style="color: #f39c12; font-size: 20px; margin-bottom: 4px;"><i class="fas fa-coins"></i></div>
+                            <div class="lbl">22K Gold</div>
+                            <div class="val" id="rate-22k" style="font-size: 16px;">--</div>
+                        </div>
+                        <div class="att-stat-card" style="padding: 12px;">
+                            <div style="color: #bdc3c7; font-size: 20px; margin-bottom: 4px;"><i class="fas fa-cubes"></i></div>
+                            <div class="lbl">Silver</div>
+                            <div class="val" id="rate-silver" style="font-size: 16px;">--</div>
+                        </div>
+                    </div>
+
+                    <!-- QUICK LOG EXPENSE -->
                     <div class="panel-heading" style="border: none; margin-bottom: 12px;">
                         <span id="grid-mode-title">Quick Log Expense</span>
                         <div style="display: flex; gap: 8px; align-items: center;">
@@ -440,7 +464,7 @@
                             </div>
                         </div>
                         <div class="form-group" style="margin-bottom: 15px;">
-                            <label>Monthly Due Date (1-31)</label>
+                            <label>Monthly Due Date (Day 1-31)</label>
                             <input type="number" id="loan-due-input" class="form-control" placeholder="5" min="1" max="31">
                         </div>
                         
@@ -501,30 +525,28 @@
                 <div class="loans-grid" id="archives-grid"></div>
             </section>
 
-            <!-- 6. AI ADVISOR VIEW -->
+            <!-- 6. OFFLINE CHERRY BOT VIEW -->
             <section id="ai-advisor-view" class="view-panel">
                 <div class="panel-heading">
-                    <span>AI Wealth Advisor</span>
-                    <span style="font-size: 12px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-bolt"></i> Gemini Flash</span>
-                </div>
-                
-                <div class="form-card" id="ai-key-card" style="margin-bottom: 12px;">
-                    <div style="font-size: 12px; font-weight: 700;">Google Gemini API Key</div>
-                    <div style="display: flex; gap: 8px; width: 100%;">
-                        <input type="password" id="gemini-key-input" class="form-control" placeholder="Paste AIzaSy... API Key">
-                        <button class="btn btn-success" onclick="saveGeminiKey()">Save</button>
-                    </div>
+                    <span>Cherry Bot 🍒</span>
+                    <span style="font-size: 12px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-lock"></i> 100% Local Offline</span>
                 </div>
 
                 <div class="chat-wrap">
                     <div class="chat-stream" id="chat-stream">
                         <div class="chat-bubble chat-bot">
-                            Hello Gokul! I have access to your live Vault balance, shifts, and loans. Ask me anything about your finances or savings strategies.
+                            Hello Gokul! I am <b>Cherry Bot</b> 🍒, your personal offline assistant.<br><br>
+                            I don't need the internet to help you. You can chat with me naturally!<br><br>
+                            Try saying:<br>
+                            - "What is my total balance?"<br>
+                            - "How much have I spent so far?"<br>
+                            - "Tell me a joke."<br>
+                            - "What time is it?"
                         </div>
                     </div>
                     <div class="chat-controls">
-                        <input type="text" id="chat-user-input" class="form-control" placeholder="Ask financial question..." onkeypress="if(event.key==='Enter') executeAIChat()">
-                        <button class="btn btn-success" id="ai-send-btn" onclick="executeAIChat()"><i class="fas fa-paper-plane"></i></button>
+                        <input type="text" id="chat-user-input" class="form-control" placeholder="Ask Cherry Bot something..." onkeypress="if(event.key==='Enter') executeOfflineChat()">
+                        <button class="btn btn-success" id="ai-send-btn" onclick="executeOfflineChat()"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
             </section>
@@ -674,6 +696,7 @@
                 badge.style.display = 'block';
             } else {
                 badge.style.display = 'none';
+                fetchBullionRates(); 
             }
         }
         window.addEventListener('offline', updateNetworkStatus);
@@ -1294,23 +1317,9 @@
         }
 
         // ==========================================
-        // 8. HIGH-PERFORMANCE AI ADVISOR
+        // 8. CHERRY BOT 🍒 (OFFLINE CHATBOT ENGINE)
         // ==========================================
-        let geminiKey = localStorage.getItem('gokulGeminiKey') || '';
-
-        function saveGeminiKey() {
-            const k = document.getElementById('gemini-key-input').value.trim();
-            if (k) {
-                geminiKey = k;
-                localStorage.setItem('gokulGeminiKey', k);
-                document.getElementById('ai-key-card').style.display = 'none';
-                alert("AI Key Connected!");
-            }
-        }
-
-        async function executeAIChat() {
-            if (!navigator.onLine) return alert("AI Advisor requires an active internet connection.");
-            if (!geminiKey) return alert("Set Gemini API key first");
+        function executeOfflineChat() {
             const input = document.getElementById('chat-user-input');
             const msg = input.value.trim();
             if (!msg) return;
@@ -1321,34 +1330,95 @@
             stream.scrollTop = stream.scrollHeight;
 
             const loadId = `load-${Date.now()}`;
-            stream.innerHTML += `<div class="chat-bubble chat-bot" id="${loadId}">Analyzing your vault data...</div>`;
+            stream.innerHTML += `<div class="chat-bubble chat-bot" id="${loadId}">Thinking...</div>`;
             stream.scrollTop = stream.scrollHeight;
 
-            try {
+            // Simulate a fast, local thinking delay
+            setTimeout(() => {
                 const inc = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
                 const exp = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
-                const context = `System: You are a sharp financial advisor for Gokul. Keep answers under 2 paragraphs. Use basic HTML like <b> for bold.
-                Context: Vault Balance: ₹${inc - exp}. Total In: ₹${inc}. Total Out: ₹${exp}. Active Loans: ${loans.length}.`;
+                const bal = inc - exp;
+                
+                let reply = "";
+                const lowerMsg = msg.toLowerCase();
+                
+                // Random picker helper
+                const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [
-                            { role: "user", parts: [{ text: context }] },
-                            { role: "user", parts: [{ text: msg }] }
-                        ],
-                        generationConfig: { temperature: 0.4, maxOutputTokens: 250 }
-                    })
-                });
+                if (lowerMsg.match(/\b(hello|hi|hey|greetings|morning|evening)\b/)) {
+                    reply = pick([
+                        "Hello there! Cherry Bot at your service. 🍒 How can I help you today?",
+                        "Hey Gokul! Need a quick finance check?",
+                        "Hi! I'm Cherry Bot. Ask me about your balance, shifts, or loans!"
+                    ]);
+                }
+                else if (lowerMsg.includes("who are you") || lowerMsg.includes("your name")) {
+                    reply = "I am <b>Cherry Bot</b> 🍒, your personal offline assistant built right into Gokul Hub. I help you track your money and work without needing the internet!";
+                }
+                else if (lowerMsg.includes("balance") || lowerMsg.includes("how much") || lowerMsg.includes("total") || lowerMsg.includes("left")) {
+                    reply = pick([
+                        `Your current Vault balance sits at <b>₹${bal.toFixed(2)}</b>.`,
+                        `You have <b>₹${bal.toFixed(2)}</b> remaining in your Vault right now.`,
+                        `Let's see... you've earned ₹${inc.toFixed(2)} and spent ₹${exp.toFixed(2)}, leaving you with <b>₹${bal.toFixed(2)}</b>.`
+                    ]);
+                } 
+                else if (lowerMsg.includes("expense") || lowerMsg.includes("spent") || lowerMsg.includes("out") || lowerMsg.includes("spending")) {
+                    reply = pick([
+                        `You have spent a total of <b>₹${exp.toFixed(2)}</b>. Check your Dashboard for a detailed breakdown.`,
+                        `Your total expenses amount to <b>₹${exp.toFixed(2)}</b> so far.`
+                    ]);
+                } 
+                else if (lowerMsg.includes("income") || lowerMsg.includes("earned") || lowerMsg.includes("salary") || lowerMsg.includes("in")) {
+                    reply = pick([
+                        `Your total recorded income is <b>₹${inc.toFixed(2)}</b>. Keep up the great work, Gokul!`,
+                        `You've brought in <b>₹${inc.toFixed(2)}</b> total. Nice job!`
+                    ]);
+                } 
+                else if (lowerMsg.includes("loan") || lowerMsg.includes("emi") || lowerMsg.includes("debt")) {
+                    if (loans.length === 0) {
+                        reply = "You currently have no active loans! Enjoy the debt-free life. 🍒";
+                    } else {
+                        reply = `You currently have <b>${loans.length}</b> active loan(s). Make sure you keep enough vault balance to cover upcoming EMIs!`;
+                    }
+                } 
+                else if (lowerMsg.includes("shift") || lowerMsg.includes("work") || lowerMsg.includes("attendance")) {
+                    reply = `You have logged <b>${shifts.length}</b> work shifts so far. You can download your full timesheet from the Work tab.`;
+                } 
+                else if (lowerMsg.match(/\b(thanks|thank you|thx)\b/)) {
+                    reply = pick([
+                        "You're very welcome, Gokul!",
+                        "Anytime! That's what I'm here for. 🍒",
+                        "Glad I could help!"
+                    ]);
+                }
+                else if (lowerMsg.match(/\b(bye|goodbye|see ya|quit)\b/)) {
+                    reply = pick([
+                        "Goodbye, Gokul! Have a great day.",
+                        "See you later! Stay productive.",
+                        "Bye! I'll be right here when you need me. 🍒"
+                    ]);
+                }
+                else if (lowerMsg.includes("joke") || lowerMsg.includes("funny")) {
+                    reply = pick([
+                        "Why did the smartphone need glasses? Because it lost its contacts!",
+                        "Why don't scientists trust atoms? Because they make up everything!",
+                        "I would tell you a joke about money, but it makes no cents."
+                    ]);
+                }
+                else if (lowerMsg.includes("time") || lowerMsg.includes("date") || lowerMsg.includes("today")) {
+                    const now = new Date();
+                    reply = `Right now it's <b>${now.toLocaleTimeString()}</b> on ${now.toLocaleDateString()}. Make today count!`;
+                }
+                else {
+                    reply = pick([
+                        "I'm currently in <b>Offline Mode</b> 🍒, so I only know what's saved on this device. Try asking 'What is my balance?' or 'How many shifts did I work?'.",
+                        "Hmm, I didn't quite catch that. Try asking me about your <b>balance</b>, <b>expenses</b>, <b>loans</b>, or <b>shifts</b>!"
+                    ]);
+                }
 
-                const data = await res.json();
-                document.getElementById(loadId).innerHTML = data.candidates[0].content.parts[0].text;
-            } catch (err) {
-                document.getElementById(loadId).innerHTML = "Connection error. Verify API key and network.";
-            } finally {
+                document.getElementById(loadId).innerHTML = `<strong>Cherry Bot 🍒:</strong><br><br>${reply}`;
                 stream.scrollTop = stream.scrollHeight;
-            }
+            }, 600); 
         }
 
         // ==========================================
@@ -1443,13 +1513,55 @@
         }
 
         // ==========================================
+        // 11. LIVE BULLION RATES API
+        // ==========================================
+        async function fetchBullionRates() {
+            try {
+                const exRes = await fetch('https://open.er-api.com/v6/latest/USD');
+                const exData = await exRes.json();
+                const inrRate = exData.rates.INR; 
+
+                const metalRes = await fetch('https://www.chartgoldprice.com/api/data');
+                if (!metalRes.ok) throw new Error("Metal API down");
+                const metalData = await metalRes.json();
+                
+                const goldUsd = metalData.prices.gold.gram; 
+                const silverUsd = metalData.prices.silver.gram;
+
+                const indiaMultiplier = 1.32; 
+
+                const g24 = goldUsd * inrRate * indiaMultiplier;
+                const g22 = g24 * (22 / 24);
+                const s = silverUsd * inrRate * indiaMultiplier;
+
+                document.getElementById('rate-24k').innerText = '₹' + g24.toFixed(0);
+                document.getElementById('rate-22k').innerText = '₹' + g22.toFixed(0);
+                document.getElementById('rate-silver').innerText = '₹' + s.toFixed(0);
+                document.getElementById('rate-status').innerHTML = '<i class="fas fa-circle" style="color: var(--text-accent); font-size: 8px;"></i> Live Updates';
+
+                localStorage.setItem('gokulLastRates', JSON.stringify({g24, g22, s}));
+            } catch(err) {
+                const saved = JSON.parse(localStorage.getItem('gokulLastRates'));
+                if(saved) {
+                    document.getElementById('rate-24k').innerText = '₹' + saved.g24.toFixed(0);
+                    document.getElementById('rate-22k').innerText = '₹' + saved.g22.toFixed(0);
+                    document.getElementById('rate-silver').innerText = '₹' + saved.s.toFixed(0);
+                    document.getElementById('rate-status').innerHTML = '<i class="fas fa-wifi-slash" style="color: var(--danger); font-size: 8px;"></i> Offline (Cached)';
+                } else {
+                    document.getElementById('rate-24k').innerText = '₹15693';
+                    document.getElementById('rate-22k').innerText = '₹14385';
+                    document.getElementById('rate-silver').innerText = '₹255';
+                    document.getElementById('rate-status').innerHTML = '<i class="fas fa-wifi-slash" style="color: var(--danger); font-size: 8px;"></i> Offline';
+                }
+            }
+        }
+
+        // ==========================================
         // INITIALIZATION
         // ==========================================
         window.onload = () => {
             const savedTheme = localStorage.getItem('gokulTheme') || 'harrypotter';
             document.documentElement.setAttribute('data-theme', savedTheme);
-
-            if (geminiKey) document.getElementById('ai-key-card').style.display = 'none';
 
             loadAppearanceSettings();
             renderProfile();
@@ -1464,6 +1576,7 @@
             initVideoPlayback();
             preCacheAssets();
             updateNetworkStatus();
+            fetchBullionRates();
         };
     </script>
 </body>
