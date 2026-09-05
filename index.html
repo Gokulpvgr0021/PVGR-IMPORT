@@ -159,7 +159,6 @@
         
         .panel-heading { font-size: 24px; font-weight: 900; color: var(--text-main); font-family: var(--header-font); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 
-        /* High Level Profile Badge Standard */
         .profile-badge { 
             background: linear-gradient(135deg, var(--bg-card), var(--bg-card-alt));
             border: 1px solid var(--border-color); 
@@ -1385,6 +1384,9 @@
             }
         }
 
+        // ==========================================
+        // HIGH LEVEL OFFICE PDF EXPORT WITH PROFILE PHOTO
+        // ==========================================
         function downloadPDF() {
             if (shifts.length === 0) return alert("No shifts to export!");
             
@@ -1412,15 +1414,23 @@
             doc.setFontSize(10);
             doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
             
+            // Draw Profile Avatar in PDF if available
+            try {
+                if (profile.avatar && profile.avatar.startsWith('data:image')) {
+                    doc.addImage(profile.avatar, 'JPEG', 14, 45, 20, 20);
+                }
+            } catch(e) {}
+
             doc.setTextColor(darkText[0], darkText[1], darkText[2]);
             doc.setFontSize(12);
             doc.setFont("helvetica", "bold");
-            doc.text("EMPLOYEE DETAILS", 14, 50);
+            doc.text("EMPLOYEE DETAILS", profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14, 50);
             doc.setFontSize(10);
             doc.setFont("helvetica", "normal");
-            doc.text(`Name: ${profile.name}`, 14, 58);
-            doc.text(`ID: ${profile.idStr}`, 14, 64);
-            doc.text(`Role: ${profile.role}`, 14, 70);
+            const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14;
+            doc.text(`Name: ${profile.name}`, textStartX, 58);
+            doc.text(`ID: ${profile.idStr}`, textStartX, 64);
+            doc.text(`Role: ${profile.role}`, textStartX, 70);
             
             let totalPay = 0, totalHrs = 0, totalOT = 0;
             shifts.forEach(s => {
