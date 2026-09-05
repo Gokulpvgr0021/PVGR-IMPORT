@@ -220,6 +220,7 @@
         .translator-inputs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; width: 100%; }
         .translator-select { padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-size: 12px; font-weight: 700; outline: none; cursor: pointer; flex: 1 1 min(100%, 100px); min-width: 0; }
         #trans-input { flex: 2 1 min(100%, 180px); min-width: 0; }
+        .trans-btn-wrap { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; }
 
         .chat-stream { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; -webkit-overflow-scrolling: touch; width: 100%; }
         .chat-bubble { padding: 12px 16px; border-radius: 14px; max-width: 85%; font-size: 13.5px; line-height: 1.5; word-wrap: break-word; }
@@ -233,6 +234,7 @@
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: var(--text-accent); cursor: pointer; margin-top: -7px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: var(--bg-card); border-radius: 3px; border: 1px solid var(--border-color); }
 
+        /* Modals */
         .modal-mask { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 16px; }
         .modal-mask.active { display: flex; }
         .modal-sheet { background: var(--bg-app); width: 100%; max-width: 440px; max-height: 85vh; border-radius: 20px; border: 1px solid var(--border-color); padding: 22px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; transition: background-color 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
@@ -241,6 +243,7 @@
         .select-item { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid transparent; background: var(--bg-card); box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 18px; cursor: pointer; color: var(--text-muted); margin: 0 auto; }
         .select-item.selected { border-color: var(--text-main); background: var(--text-main); color: var(--text-main); transform: scale(1.1); }
 
+        /* OFFLINE BADGE */
         #offline-badge {
             display: none; position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
             background: var(--danger); color: #fff; padding: 6px 16px; border-radius: 20px;
@@ -546,6 +549,28 @@
                 <div class="panel-heading"><span>Settings & Appearance</span></div>
                 
                 <div class="loans-grid" style="margin-bottom: 25px;">
+                    
+                    <!-- App Installation & Data Backup -->
+                    <div class="loan-card" style="justify-content: flex-start; border-color: var(--text-accent);">
+                        <div style="font-weight: 900; font-size: 16px; color: var(--text-main); margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                            <i class="fas fa-mobile-alt"></i> App Installation & Backup
+                        </div>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Install this app directly to your phone's home screen, or backup/restore your data.</p>
+                        
+                        <button class="btn btn-success" style="margin-bottom: 10px;" onclick="installAppMode()"><i class="fas fa-plus-square"></i> Install App to Home Screen</button>
+                        
+                        <div class="btn-flex-row" style="margin-bottom: 10px;">
+                            <button class="btn btn-primary" onclick="downloadAppDirectly()"><i class="fas fa-file-code"></i> Download HTML</button>
+                            <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-download"></i> Backup Data</button>
+                        </div>
+                        
+                        <div style="background: var(--bg-card-alt); padding: 10px; border-radius: 8px; border: 1px dashed var(--border-color);">
+                            <label style="font-size: 12px; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 6px;">Restore Data Backup</label>
+                            <input type="file" id="import-file" accept=".json" style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; width: 100%;">
+                            <button class="btn btn-danger" onclick="importData()"><i class="fas fa-upload"></i> Restore Data</button>
+                        </div>
+                    </div>
+
                     <!-- Translator Settings -->
                     <div class="loan-card" style="justify-content: flex-start;">
                         <div style="font-weight: 900; font-size: 16px; color: var(--text-main); margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
@@ -692,9 +717,8 @@
         </div>
     </div>
 
-    <!-- UPDATED INSTALL INSTRUCTION MODAL -->
     <div class="modal-mask" id="installGuideModal">
-        <div class="modal-sheet" style="text-align: center; max-width: 340px;">
+        <div class="modal-sheet" style="text-align: center;">
             <div style="font-size: 42px; color: var(--text-accent); margin-bottom: 10px;"><i class="fas fa-expand-arrows-alt"></i></div>
             <h3 style="color: var(--text-main); font-family: var(--header-font); margin-bottom: 15px;">App Mode Activated!</h3>
             
@@ -746,13 +770,76 @@
         window.addEventListener('offline', updateNetworkStatus);
         window.addEventListener('online', updateNetworkStatus);
 
-        // NEW: Force Fullscreen App Mode
+        function downloadAppDirectly() {
+            if (pwaEvent) {
+                pwaEvent.prompt();
+                pwaEvent.userChoice.then(() => { pwaEvent = null; });
+                return;
+            }
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const downloadUrl = URL.createObjectURL(blob);
+            
+            const tempLink = document.createElement('a');
+            tempLink.href = downloadUrl;
+            tempLink.download = 'Gokul_Hub.html';
+            document.body.appendChild(tempLink);
+            tempLink.click();
+            document.body.removeChild(tempLink);
+            URL.revokeObjectURL(downloadUrl);
+        }
+
+        function exportData() {
+            const data = {
+                profile: JSON.parse(localStorage.getItem('gokulProfile') || 'null'),
+                categories: JSON.parse(localStorage.getItem('gokulVaultCats') || 'null'),
+                transactions: JSON.parse(localStorage.getItem('gokulVaultTx') || '[]'),
+                shifts: JSON.parse(localStorage.getItem('gokulAttRecords') || '[]'),
+                jobProfiles: JSON.parse(localStorage.getItem('gokulJobProfiles') || 'null'),
+                loans: JSON.parse(localStorage.getItem('gokulLoans') || '[]'),
+                archives: JSON.parse(localStorage.getItem('gokulArchives') || '[]')
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Gokul_Data_Backup.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            alert("Data Backup Downloaded Successfully!");
+        }
+
+        function importData() {
+            const fileInput = document.getElementById('import-file');
+            if (!fileInput.files.length) return alert("Please select a backup JSON file first.");
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.profile) localStorage.setItem('gokulProfile', JSON.stringify(data.profile));
+                    if (data.categories) localStorage.setItem('gokulVaultCats', JSON.stringify(data.categories));
+                    if (data.transactions) localStorage.setItem('gokulVaultTx', JSON.stringify(data.transactions));
+                    if (data.shifts) localStorage.setItem('gokulAttRecords', JSON.stringify(data.shifts));
+                    if (data.jobProfiles) localStorage.setItem('gokulJobProfiles', JSON.stringify(data.jobProfiles));
+                    if (data.loans) localStorage.setItem('gokulLoans', JSON.stringify(data.loans));
+                    if (data.archives) localStorage.setItem('gokulArchives', JSON.stringify(data.archives));
+                    
+                    alert("Data Successfully Restored! The app will now reload.");
+                    window.location.reload();
+                } catch (err) {
+                    alert("Invalid backup file.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
         function installAppMode() {
             if (pwaEvent) {
                 pwaEvent.prompt();
                 pwaEvent.userChoice.then(() => { pwaEvent = null; });
             } else {
-                // Request Full Screen to mimic a real App instantly
                 if (!document.fullscreenElement) {
                     if (document.documentElement.requestFullscreen) {
                         document.documentElement.requestFullscreen();
@@ -766,9 +853,6 @@
             }
         }
 
-        // ==========================================
-        // APP SETTINGS CONTROLLER
-        // ==========================================
         function saveAppConfig() {
             const transSrc = document.getElementById('setting-trans-src').value;
             const transDst = document.getElementById('setting-trans-dst').value;
