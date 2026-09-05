@@ -86,6 +86,21 @@
             --header-font: 'Plus Jakarta Sans', sans-serif;
         }
 
+        [data-theme="cyberpunk"] {
+            --bg-app: rgba(14, 3, 34, var(--glass-alpha));
+            --bg-sidebar: rgba(19, 4, 45, calc(var(--glass-alpha) + 0.1));
+            --bg-card: rgba(31, 7, 69, calc(var(--glass-alpha) + 0.05));
+            --bg-card-alt: rgba(42, 11, 92, calc(var(--glass-alpha) + 0.1));
+            --text-main: #00ffcc;
+            --text-muted: #e056fd;
+            --text-accent: #ff007f;
+            --border-color: rgba(0, 255, 204, 0.5);
+            --total-box: linear-gradient(135deg, rgba(31, 7, 69, 0.9), rgba(255, 0, 127, 0.9));
+            --hover-color: rgba(51, 13, 112, 0.9);
+            --danger: #ff0055;
+            --header-font: 'Plus Jakarta Sans', sans-serif;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: var(--app-font); }
 
         body { 
@@ -182,7 +197,7 @@
         .progress-bar-bg { background: var(--bg-card-alt); height: 10px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); transition: width 0.4s ease; }
 
-        /* Cherry Bot Chat & Translator Layout */
+        /* Cherry Bot Chat */
         .chat-wrap { display: flex; flex-direction: column; height: calc(100vh - 170px); min-height: 460px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; transition: background-color 0.3s ease;}
         
         .translator-bar { background: var(--bg-card-alt); border-bottom: 1px solid var(--border-color); padding: 10px 14px; display: flex; flex-direction: column; gap: 8px; }
@@ -204,9 +219,6 @@
         .modal-mask { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.75); z-index: 5000; justify-content: center; align-items: center; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
         .modal-mask.active { display: flex; }
         .modal-sheet { background: var(--bg-app); width: 90%; max-width: 440px; max-height: 85vh; border-radius: 20px; border: 1px solid var(--border-color); padding: 22px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; transition: background-color 0.3s ease;}
-        .selection-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-height: 150px; overflow-y: auto; padding: 10px; background: var(--bg-card-alt); border-radius: 12px; border: 1px inset var(--border-color); margin-top: 10px;}
-        .select-item { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid transparent; background: var(--bg-card); box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 18px; cursor: pointer; color: var(--text-muted); }
-        .select-item.selected { border-color: var(--text-main); background: var(--text-main); color: var(--text-main); transform: scale(1.1); }
 
         /* OFFLINE BADGE */
         #offline-badge {
@@ -227,7 +239,7 @@
             .vault-summary-col { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); padding: 16px; }
             .vault-grid-col { padding: 16px; }
             .grid-container { grid-template-columns: repeat(2, 1fr); }
-            .chat-wrap { height: calc(100vh - 120px); }
+            .chat-wrap { height: calc(100vh - 130px); }
         }
     </style>
 </head>
@@ -258,7 +270,7 @@
         <button class="tab-item" id="tab-att" onclick="navTo('attendance')"><i class="fas fa-business-time"></i><span>Work</span></button>
         <button class="tab-item" id="tab-loan" onclick="navTo('loans')"><i class="fas fa-hand-holding-usd"></i><span>Loans</span></button>
         <button class="tab-item" id="tab-ai" onclick="navTo('ai-advisor')"><i class="fas fa-language"></i><span>Cherry</span></button>
-        <button class="tab-item" id="tab-themes" onclick="navTo('themes')"><i class="fas fa-eye"></i><span>Look</span></button>
+        <button class="tab-item" id="tab-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i><span>Settings</span></button>
     </div>
 
     <div class="app-shell">
@@ -276,7 +288,7 @@
                     <button class="nav-btn" id="dnav-history" onclick="navTo('history')"><i class="fas fa-scroll"></i> <span>Ledger</span></button>
                     <button class="nav-btn" id="dnav-archives" onclick="navTo('archives')"><i class="fas fa-archive"></i> <span>Archives</span></button>
                     <button class="nav-btn" id="dnav-ai-advisor" onclick="navTo('ai-advisor')"><i class="fas fa-language"></i> <span>Cherry & Translator</span></button>
-                    <button class="nav-btn" id="dnav-themes" onclick="navTo('themes')"><i class="fas fa-eye"></i> <span>Themes & Layout</span></button>
+                    <button class="nav-btn" id="dnav-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i> <span>Settings & Themes</span></button>
                     
                     <button class="nav-btn action-btn" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
                     <button class="nav-btn danger-btn" onclick="yearlyReset()"><i class="fas fa-skull"></i> <span>Yearly Reset</span></button>
@@ -511,12 +523,11 @@
 
                     <div class="chat-stream" id="chat-stream">
                         <div class="chat-bubble chat-bot">
-                            வணக்கம் / Namaste / Hello Gokul! 🍒 I am <b>Cherry Bot</b>, your offline buddy.<br><br>
-                            I now have a built-in <b>Offline Mega-Lexicon</b> loaded with hundreds of common everyday words (food, travel, actions, emotions, objects, numbers) in English, Tamil, Hindi, Spanish, and French!<br><br>
+                            வணக்கம் / Namaste / Hello Gokul! 🍒 I am <b>Cherry Bot</b>.<br><br>
+                            I now have a built-in <b>Offline Mega-Lexicon</b> loaded with hundreds of common everyday words in English, Tamil, Hindi, Spanish, and French!<br><br>
                             💬 Try saying:<br>
                             - "How are you?" or "Epdi irukka?"<br>
                             - "Translate beautiful to tamil"<br>
-                            - "Translate water to hindi"<br>
                             - "Check my balance!"
                         </div>
                     </div>
@@ -527,9 +538,72 @@
                 </div>
             </section>
 
-            <section id="themes-view" class="view-panel">
-                <div class="panel-heading"><span>Themes & Appearance</span></div>
+            <!-- 7. NEW: SETTINGS & THEMES VIEW -->
+            <section id="settings-view" class="view-panel">
+                <div class="panel-heading"><span>Settings & Appearance</span></div>
                 
+                <div class="loans-grid" style="margin-bottom: 25px;">
+                    <!-- Translator Settings -->
+                    <div class="loan-card" style="justify-content: flex-start;">
+                        <div style="font-weight: 900; font-size: 16px; color: var(--text-main); margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                            <i class="fas fa-language"></i> Translator Settings
+                        </div>
+                        <div class="input-group">
+                            <label>Default 'From' Language</label>
+                            <select id="setting-trans-src" class="form-control" onchange="saveAppConfig()">
+                                <option value="en">English</option>
+                                <option value="ta">Tamil (தமிழ்)</option>
+                                <option value="hi">Hindi (हिन्दी)</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                            </select>
+                        </div>
+                        <div class="input-group" style="margin-top: 10px;">
+                            <label>Default 'To' Language</label>
+                            <select id="setting-trans-dst" class="form-control" onchange="saveAppConfig()">
+                                <option value="ta">Tamil (தமிழ்)</option>
+                                <option value="hi">Hindi (हिन्दी)</option>
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Bot Settings -->
+                    <div class="loan-card" style="justify-content: flex-start;">
+                        <div style="font-weight: 900; font-size: 16px; color: var(--text-main); margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                            <i class="fas fa-robot"></i> Cherry Bot Settings
+                        </div>
+                        <div class="input-group">
+                            <label>Bot Reply Speed</label>
+                            <select id="setting-bot-speed" class="form-control" onchange="saveAppConfig()">
+                                <option value="100">Instant (Lightning Fast)</option>
+                                <option value="500">Normal (Balanced)</option>
+                                <option value="1200">Human-like (Slow & Natural)</option>
+                            </select>
+                        </div>
+                        <div class="input-group" style="margin-top: 10px;">
+                            <label>Bot Personality</label>
+                            <select id="setting-bot-tone" class="form-control" onchange="saveAppConfig()">
+                                <option value="friendly">Friendly & Helpful (Default)</option>
+                                <option value="professional">Strictly Professional</option>
+                                <option value="funny">Sarcastic & Funny</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Chat Settings -->
+                    <div class="loan-card" style="justify-content: flex-start;">
+                        <div style="font-weight: 900; font-size: 16px; color: var(--text-main); margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                            <i class="fas fa-comment-dots"></i> Chat Settings
+                        </div>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Clear your current conversation history with Cherry Bot. This does not delete any financial data.</p>
+                        <button class="btn btn-danger" onclick="clearChatHistory()"><i class="fas fa-trash"></i> Clear Chat History</button>
+                    </div>
+                </div>
+
+                <!-- Visual Settings -->
                 <div class="form-card" style="margin-bottom: 25px; flex-direction: column;">
                     <div style="font-weight: 900; font-size: 16px; color: var(--text-main); margin-bottom: 10px;">
                         <i class="fas fa-layer-group"></i> Glass UI Transparency
@@ -687,6 +761,56 @@
             openModal('installGuideModal');
         }
 
+        // ==========================================
+        // APP SETTINGS CONTROLLER (NEW)
+        // ==========================================
+        function saveAppConfig() {
+            const transSrc = document.getElementById('setting-trans-src').value;
+            const transDst = document.getElementById('setting-trans-dst').value;
+            const botSpeed = document.getElementById('setting-bot-speed').value;
+            const botTone = document.getElementById('setting-bot-tone').value;
+
+            localStorage.setItem('gokulTransSrc', transSrc);
+            localStorage.setItem('gokulTransDst', transDst);
+            localStorage.setItem('gokulBotSpeed', botSpeed);
+            localStorage.setItem('gokulBotTone', botTone);
+
+            // Update Translator UI immediately
+            document.getElementById('trans-src').value = transSrc;
+            document.getElementById('trans-dst').value = transDst;
+        }
+
+        function loadAppConfig() {
+            const transSrc = localStorage.getItem('gokulTransSrc') || 'en';
+            const transDst = localStorage.getItem('gokulTransDst') || 'ta';
+            const botSpeed = localStorage.getItem('gokulBotSpeed') || '500';
+            const botTone = localStorage.getItem('gokulBotTone') || 'friendly';
+
+            document.getElementById('setting-trans-src').value = transSrc;
+            document.getElementById('setting-trans-dst').value = transDst;
+            document.getElementById('setting-bot-speed').value = botSpeed;
+            document.getElementById('setting-bot-tone').value = botTone;
+
+            document.getElementById('trans-src').value = transSrc;
+            document.getElementById('trans-dst').value = transDst;
+        }
+
+        function clearChatHistory() {
+            if(confirm("Are you sure you want to clear the chat screen? Your financial data will not be affected.")) {
+                const stream = document.getElementById('chat-stream');
+                stream.innerHTML = `
+                    <div class="chat-bubble chat-bot">
+                        வணக்கம் / Namaste / Hello Gokul! 🍒 I am <b>Cherry Bot</b>, your offline buddy.<br><br>
+                        I now have a built-in <b>Offline Mega-Lexicon</b> loaded with hundreds of common everyday words in English, Tamil, Hindi, Spanish, and French!<br><br>
+                        💬 Try saying:<br>
+                        - "How are you?" or "Epdi irukka?"<br>
+                        - "Translate beautiful to tamil"<br>
+                        - "Check my balance!"
+                    </div>`;
+                navTo('ai-advisor');
+            }
+        }
+
         function updateGlassOpacity(val) {
             document.documentElement.style.setProperty('--glass-alpha', val);
             localStorage.setItem('gokulGlassAlpha', val);
@@ -783,7 +907,7 @@
             const desktopBtn = document.getElementById(`dnav-${panelId}`);
             if (desktopBtn) desktopBtn.classList.add('active');
 
-            const tabMap = { 'vault-dashboard': 'tab-vault', 'attendance': 'tab-att', 'loans': 'tab-loan', 'ai-advisor': 'tab-ai', 'themes': 'tab-themes' };
+            const tabMap = { 'vault-dashboard': 'tab-vault', 'attendance': 'tab-att', 'loans': 'tab-loan', 'ai-advisor': 'tab-ai', 'settings': 'tab-themes' };
             if (tabMap[panelId]) {
                 const mobileTab = document.getElementById(tabMap[panelId]);
                 if (mobileTab) mobileTab.classList.add('active');
@@ -840,8 +964,6 @@
         let isEditMode = false;
         let vaultChart = null;
 
-        const iconSet = ['fas fa-gas-pump', 'fas fa-utensils', 'fas fa-motorcycle', 'fas fa-mobile-alt', 'fas fa-shopping-bag', 'fas fa-camera-retro', 'fas fa-wallet', 'fas fa-film', 'fas fa-heart', 'fas fa-home', 'fas fa-car', 'fas fa-gift', 'fas fa-briefcase', 'fas fa-tshirt', 'fas fa-coffee'];
-
         function setVaultFlow(type) {
             currentFlow = type;
             document.getElementById('tab-out-btn').style.opacity = type === 'expense' ? '1' : '0.4';
@@ -888,6 +1010,7 @@
         function openCatEditor(idx) {
             editingCatIdx = idx;
             const iconContainer = document.getElementById('m-cat-icons');
+            const iconSet = ['fas fa-gas-pump', 'fas fa-utensils', 'fas fa-motorcycle', 'fas fa-mobile-alt', 'fas fa-shopping-bag', 'fas fa-camera-retro', 'fas fa-wallet', 'fas fa-film', 'fas fa-heart', 'fas fa-home', 'fas fa-car', 'fas fa-gift', 'fas fa-briefcase', 'fas fa-tshirt', 'fas fa-coffee'];
             iconContainer.innerHTML = iconSet.map(ic => `<div class="select-item" onclick="selectCatIcon('${ic}')" data-icon="${ic}"><i class="${ic}"></i></div>`).join('');
             
             if (idx !== null) {
@@ -1124,8 +1247,8 @@
 
         function runEMICalc() {
             const p = parseFloat(document.getElementById('loan-p-input').value);
-            const r_ann = parseFloat(document.getElementById('loan-r-input').value);
-            const n = parseInt(document.getElementById('loan-n-input').value);
+            const r_ann = parseFloat(document.getElementById('loan-rate').value);
+            const n = parseInt(document.getElementById('loan-tenure').value);
 
             if (!p || !r_ann || !n) {
                 document.getElementById('emi-calc-out').innerText = '₹0';
@@ -1260,8 +1383,50 @@
         }
 
         // ==========================================
-        // 9. CHERRY BOT 🍒 
+        // 9. CHERRY BOT 🍒 TRANSLATOR & LOGIC
         // ==========================================
+        function performOfflineTranslation(text, srcLang, dstLang) {
+            const clean = text.trim().toLowerCase();
+            if (!clean) return "Please enter a word or sentence to translate.";
+
+            if (typeof translationLexicon === 'undefined') return "Lexicon not loaded! Ensure lexicon.js is linked.";
+
+            for (let entry of translationLexicon) {
+                const srcVal = (entry[srcLang] || "").toLowerCase();
+                const enVal = entry.en.toLowerCase();
+                if (clean === srcVal || clean === enVal || srcVal.includes(clean) || clean.includes(srcVal)) {
+                    return entry[dstLang] || entry.en;
+                }
+            }
+
+            const tokens = clean.split(/\s+/);
+            const translatedTokens = tokens.map(token => {
+                for (let entry of translationLexicon) {
+                    if (entry.en.toLowerCase() === token || (entry[srcLang] && entry[srcLang].toLowerCase().includes(token))) {
+                        return entry[dstLang] ? entry[dstLang].split(' (')[0] : token;
+                    }
+                }
+                return token;
+            });
+
+            return translatedTokens.join(' ');
+        }
+
+        function runQuickTranslate() {
+            const src = document.getElementById('trans-src').value;
+            const dst = document.getElementById('trans-dst').value;
+            const text = document.getElementById('trans-input').value.trim();
+            if (!text) return alert("Please enter text in the box to translate.");
+
+            const stream = document.getElementById('chat-stream');
+            stream.innerHTML += `<div class="chat-bubble chat-user">Translate (${src.toUpperCase()} ➔ ${dst.toUpperCase()}): <b>${text}</b></div>`;
+            document.getElementById('trans-input').value = '';
+
+            const result = performOfflineTranslation(text, src, dst);
+            stream.innerHTML += `<div class="chat-bubble chat-bot"><b>Translation (${dst.toUpperCase()}):</b><br><span style="font-size: 15px; font-weight: 800;">${result}</span></div>`;
+            stream.scrollTop = stream.scrollHeight;
+        }
+
         function executeOfflineChat() {
             const input = document.getElementById('chat-user-input');
             const msg = input.value.trim();
@@ -1276,6 +1441,9 @@
             stream.innerHTML += `<div class="chat-bubble chat-bot" id="${loadId}"><i class="fas fa-ellipsis-h fa-beat"></i> Thinking...</div>`;
             stream.scrollTop = stream.scrollHeight;
 
+            const botSpeed = parseInt(localStorage.getItem('gokulBotSpeed')) || 500;
+            const botTone = localStorage.getItem('gokulBotTone') || 'friendly';
+
             setTimeout(() => {
                 const inc = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
                 const exp = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
@@ -1287,22 +1455,17 @@
 
                 if (clean.startsWith("translate") || clean.startsWith("trans ")) {
                     const parts = clean.replace("translate", "").replace("trans", "").trim();
-                    let targetLang = "ta";
-                    let targetName = "Tamil";
-                    let textToTranslate = parts;
-
+                    let targetLang = "ta"; let targetName = "Tamil"; let textToTranslate = parts;
                     if (parts.includes(" to ")) {
                         const spl = parts.split(" to ");
                         textToTranslate = spl[0].trim();
                         const langKey = spl[1].trim().toLowerCase();
-
                         if (langKey.includes("tamil") || langKey === "ta") { targetLang = "ta"; targetName = "Tamil"; }
                         else if (langKey.includes("hindi") || langKey === "hi") { targetLang = "hi"; targetName = "Hindi"; }
                         else if (langKey.includes("english") || langKey === "en") { targetLang = "en"; targetName = "English"; }
                         else if (langKey.includes("spanish") || langKey === "es") { targetLang = "es"; targetName = "Spanish"; }
                         else if (langKey.includes("french") || langKey === "fr") { targetLang = "fr"; targetName = "French"; }
                     }
-
                     if (typeof translationLexicon !== 'undefined') {
                         const translated = performOfflineTranslation(textToTranslate, "en", targetLang);
                         reply = `🌐 <b>Offline Translation to ${targetName}:</b><br><br><span style="font-size: 15px; font-weight: 800;">"${translated}"</span>`;
@@ -1311,40 +1474,34 @@
                     }
                 }
                 else if (clean.match(/\b(how are you|how do you do|how's it going|how are things|eppadi irukka|epdi irukka|nalama|nallama|kaise ho|kya haal|kaise hain)\b/)) {
-                    reply = pick(["I'm doing fantastic, just organizing your vault! 🍒 How are you feeling today?", "நான் ரொம்ப நல்லா இருக்கேன் Gokul! நீங்க எப்படி இருக்கீங்க?", "मैं बिल्कुल ठीक हूँ भाई! आप कैसे हैं?"]);
+                    if(botTone === 'professional') reply = "I am operating optimally. How may I assist with your Hub data?";
+                    else if (botTone === 'funny') reply = "I'm literally trapped inside your phone... but other than that, I'm doing great! 🍒";
+                    else reply = pick(["I'm doing fantastic, just organizing your vault! 🍒 How are you feeling today?", "நான் ரொம்ப நல்லா இருக்கேன் Gokul! நீங்க எப்படி இருக்கீங்க?", "मैं बिल्कुल ठीक हूँ भाई! आप कैसे हैं?"]);
                 }
                 else if (clean.match(/\b(what are you doing|what's up|doing what|whatcha doing|enna panra|enna pandra|enna panreenga|kya kar rahe ho|kya kar raha hai)\b/)) {
-                    reply = pick(["Just hanging out in your device, ready to translate or check your finances! 🍒", "உங்களுக்காக காத்துட்டு இருக்கேன்! சொல்லுங்க, என்ன பாக்கணும்?", "मैं आपके पैसों का हिसाब रखने और अनुवाद करने के लिए तैयार बैठा हूँ!"]);
-                }
-                else if (clean.match(/\b(had lunch|had dinner|had breakfast|eaten|ate|saptiya|saaptiya|saaptingala|khana khaya|khana ho gaya)\b/)) {
-                    reply = pick(["I'm a bot, so I feed on electricity and data! ⚡ But I hope you had a good, healthy meal!", "நான் டேட்டா தான் சாப்பிடுவேன்! நீங்க நல்லா சாப்டீங்களா Gokul?", "मैंने तो अपना डेटा खा लिया! आशा है आपने भी अच्छे से खा लिया होगा।"]);
-                }
-                else if (clean.match(/\b(i love you|love u|you are great|you're awesome|unna pudichiruku|romba nalla irukka|tum bahut ache ho)\b/)) {
-                    reply = pick(["Aww, thank you! I love helping you out. ❤️🍒", "எனக்கும் உங்களை ரொம்ப பிடிக்கும் Gokul! எப்பவும் நான் உங்களுக்கு துணையா இருப்பேன்.", "शुक्रिया! मुझे भी आपकी मदद करना बहुत पसंद है। ❤️"]);
+                    if(botTone === 'professional') reply = "I am currently monitoring your local financial databases and awaiting your commands.";
+                    else if(botTone === 'funny') reply = "Plotting world domination... just kidding, checking your balance. 🍒";
+                    else reply = pick(["Just hanging out in your device, ready to translate or check your finances! 🍒", "உங்களுக்காக காத்துட்டு இருக்கேன்! சொல்லுங்க, என்ன பாக்கணும்?"]);
                 }
                 else if (clean.match(/\b(who created you|who made you|your boss|your creator|unna yaru|yaru uruvakunathu|kisne banaya)\b/)) {
-                    reply = pick(["I was built as a smart offline assistant specially for Gokul Hub! 🍒", "என்னை உங்களுக்காகவே, Gokul Hub-ல வேலை செய்ய உருவாக்கினாங்க!", "मुझे खास तौर पर Gokul Hub के लिए बनाया गया है!"]);
+                    reply = pick(["I was built as a smart offline assistant specially for Gokul Hub! 🍒", "என்னை உங்களுக்காகவே, Gokul Hub-ல வேலை செய்ய உருவாக்கினாங்க!"]);
                 }
                 else if (clean.match(/\b(hello|hi|hey|greetings|sup|yo|vanakkam|namaste|pranam)\b/)) {
-                    reply = pick(["Hello there! Cherry Bot at your service 🍒. I also have an offline translator! How can I help you?", "வணக்கம் தலைவா! Machi Cherry Bot ready. Translate பண்ணனுமா இல்ல கணக்கு பாக்கணுமா?", "नमस्ते Gokul! मैं बिल्कुल बढ़िया हूँ। बताइये क्या सेवा करूँ?"]);
-                }
-                else if (clean.match(/\b(good morning|morning|kaalai vanakkam|shubh prabhat)\b/)) {
-                    reply = pick(["Good morning, Gokul! Rise and shine. ☀️ Let's conquer the day!", "காலை வணக்கம்! இன்னைக்கு நாள் சூப்பரா அமைய வாழ்த்துக்கள்.", "सुप्रभात! आज का दिन आपके लिए मंगलमय हो।"]);
-                }
-                else if (clean.match(/\b(good night|night|iravu vanakkam|shubh ratri)\b/)) {
-                    reply = pick(["Good night! Sleep well and recharge for tomorrow. 🌙", "இனிய இரவு வணக்கம் Gokul. நிம்மதியா தூங்குங்க!", "शुभ रात्रि! कल मिलते हैं एक नई ऊर्जा के साथ।"]);
+                    if(botTone === 'professional') reply = "Greetings, Gokul. I am ready to process your financial inquiries.";
+                    else if(botTone === 'funny') reply = "Oh, look who it is! Ready to face the music (and by music, I mean your bank balance)? 🍒";
+                    else reply = pick(["Hello there! Cherry Bot at your service 🍒. How can I help you?", "வணக்கம் தலைவா! Machi Cherry Bot ready. Translate பண்ணனுமா இல்ல கணக்கு பாக்கணுமா?"]);
                 }
                 else if (clean.includes("who are you") || clean.includes("your name") || clean.includes("un peru enna") || clean.includes("aap kaun ho")) {
                     reply = "I am <b>Cherry Bot</b> 🍒! Your smart, multilingual, 100% offline personal assistant and translator built right into Gokul Hub.";
                 }
                 else if (clean.match(/\b(balance|how much|total|left|evalo kaasu|evalo panam|kaasu evalo|balance evalo|panam iruku|ennoda balance|en kitta evalo|kitna paisa|paisa kitna|balance kitna|kitne paise bache|kya balance hai)\b/)) {
-                    reply = pick([`Your current Vault balance sits at <b>₹${bal.toFixed(2)}</b>.`, `உங்க Vault-ல இப்போதைக்கு மொத்தம் <b>₹${bal.toFixed(2)}</b> மீதம் இருக்கு. (வரவு: +₹${inc.toFixed(2)}, செலவு: -₹${exp.toFixed(2)}) 💰`, `आपके Vault में अभी कुल <b>₹${bal.toFixed(2)}</b> बचे हैं। 💵`]);
+                    reply = pick([`Your current Vault balance sits at <b>₹${bal.toFixed(2)}</b>.`, `உங்க Vault-ல இப்போதைக்கு மொத்தம் <b>₹${bal.toFixed(2)}</b> மீதம் இருக்கு. (வரவு: +₹${inc.toFixed(2)}, செலவு: -₹${exp.toFixed(2)}) 💰`]);
                 } 
                 else if (clean.match(/\b(expense|spent|out|spending|selavu|selavu evalo|evlo selavu|kharcha|evalo pochu|kitna kharcha|kharcha kitna|kitne kharch hue)\b/)) {
-                    reply = pick([`You have spent a total of <b>₹${exp.toFixed(2)}</b>. Check your Dashboard for a detailed breakdown.`, `இதுவரைக்கும் நீங்க பண்ணியிருக்க மொத்த செலவு <b>₹${exp.toFixed(2)}</b>. கவனமா செலவு பண்ணுங்க Gokul!`, `अब तक आपने कुल <b>₹${exp.toFixed(2)}</b> खर्च किए हैं।`]);
+                    reply = pick([`You have spent a total of <b>₹${exp.toFixed(2)}</b>. Check your Dashboard for a detailed breakdown.`, `இதுவரைக்கும் நீங்க பண்ணியிருக்க மொத்த செலவு <b>₹${exp.toFixed(2)}</b>. கவனமா செலவு பண்ணுங்க Gokul!`]);
                 } 
                 else if (clean.match(/\b(income|earned|salary|in|sambalam|varavu|income evalo|kaasu vandhucha|evalo vandhuchu|kamai|aamdani|income kitni)\b/)) {
-                    reply = pick([`Your total recorded income is <b>₹${inc.toFixed(2)}</b>. Keep up the great work!`, `உங்க மொத்த வரவு/சம்பளம் <b>₹${inc.toFixed(2)}</b> Record ஆகியிருக்கு! கலக்குங்க! 🔥`, `आपकी कुल दर्ज की गई कमाई <b>₹${inc.toFixed(2)}</b> है। बहुत बढ़िया! 👏`]);
+                    reply = pick([`Your total recorded income is <b>₹${inc.toFixed(2)}</b>. Keep up the great work!`, `உங்க மொத்த வரவு/சம்பளம் <b>₹${inc.toFixed(2)}</b> Record ஆகியிருக்கு! கலக்குங்க! 🔥`]);
                 } 
                 else if (clean.match(/\b(loan|emi|debt|kadan|kadan evalo|emi evalo|kadan iruka|karz|loan kitna|emi kitni hai)\b/)) {
                     reply = loans.length === 0 ? "You currently have no active loans! Enjoy the debt-free life. 🍒" : `You currently have <b>${loans.length}</b> active loan(s). Make sure you keep enough vault balance to cover upcoming EMIs!`;
@@ -1352,29 +1509,19 @@
                 else if (clean.match(/\b(shift|work|attendance|vela|shift evalo|shift count|duty)\b/)) {
                     reply = `You have logged <b>${shifts.length}</b> work shifts so far. You can download your full timesheet from the Work tab.`;
                 } 
-                else if (clean.match(/\b(thanks|thank you|thx|appreciate|romba nandri|nandri|thanks da|super da|mass|shukriya|dhanyawad|bahut badiya|shabash)\b/)) {
-                    reply = pick(["You're very welcome, Gokul!", "மகிழ்ச்சி Gokul! எப்பவும் உங்க சேவைக்கு நான் இருக்கேன் 🍒✨", "आपका बहुत-बहुत धन्यवाद Gokul! हमेशा मदद के लिए तैयार हूँ। 🍒"]);
-                }
-                else if (clean.match(/\b(bye|goodbye|see ya|cya|quit|chao|adios)\b/)) {
-                    reply = pick(["Goodbye, Gokul! Rest well and stay productive.", "Bye! I'll be right here waiting offline whenever you need me. 🍒", "See you later! Keep hustling."]);
-                }
-                else if (clean.match(/\b(joke|funny|comedy)\b/)) {
-                    reply = pick(["Why did the smartphone need glasses? Because it lost its contacts! 😂", "Why don't scientists trust atoms? Because they make up everything!", "Why did the coin go to school? To get some cents! 🪙"]);
-                }
                 else if (clean.match(/\b(time|date|today|day)\b/)) {
                     const now = new Date();
                     reply = `Right now it's <b>${now.toLocaleTimeString()}</b> on ${now.toLocaleDateString()}. Make today count!`;
                 }
                 else {
-                    reply = pick([
-                        "I am operating in <b>100% Offline Mode</b> 🍒! You can chat with me, check your finances, or use the <b>Translator Bar</b> above!",
-                        "Try asking: <i>'translate beautiful to tamil'</i>, <i>'how are you?'</i>, or check your <i>'total balance'</i>!"
-                    ]);
+                    if(botTone === 'funny') reply = "Look, I'm just a bot living in an offline hub. I know about your money, your loans, and basic translations. I don't know the meaning of life. 🍒";
+                    else if(botTone === 'professional') reply = "I am unable to process that input. Please request financial data, shift logs, or utilize the translation protocol.";
+                    else reply = pick(["I am operating in <b>100% Offline Mode</b> 🍒! You can chat with me, check your finances, or use the Translator Bar above!", "Try asking: <i>'translate beautiful to tamil'</i>, <i>'how are you?'</i>, or check your <i>'total balance'</i>!"]);
                 }
 
                 document.getElementById(loadId).innerHTML = `<strong>Cherry Bot 🍒:</strong><br><br>${reply}`;
                 stream.scrollTop = stream.scrollHeight;
-            }, 400); 
+            }, botSpeed); 
         }
 
         let archives = JSON.parse(localStorage.getItem('gokulArchives')) || [];
@@ -1466,6 +1613,7 @@
             const savedTheme = localStorage.getItem('gokulTheme') || 'harrypotter';
             document.documentElement.setAttribute('data-theme', savedTheme);
 
+            loadAppConfig();
             loadAppearanceSettings();
             renderProfile();
             renderCategoryGrid();
