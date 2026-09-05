@@ -26,7 +26,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- External Engines -->
+    <!-- External Engines & Separated Lexicon -->
+    <script src="lexicon.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
@@ -82,21 +83,6 @@
             --total-box: linear-gradient(135deg, rgba(24, 24, 27, 0.9), rgba(39, 39, 42, 0.9));
             --hover-color: rgba(63, 63, 70, 0.9);
             --danger: #ef4444;
-            --header-font: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        [data-theme="cyberpunk"] {
-            --bg-app: rgba(14, 3, 34, var(--glass-alpha));
-            --bg-sidebar: rgba(19, 4, 45, calc(var(--glass-alpha) + 0.1));
-            --bg-card: rgba(31, 7, 69, calc(var(--glass-alpha) + 0.05));
-            --bg-card-alt: rgba(42, 11, 92, calc(var(--glass-alpha) + 0.1));
-            --text-main: #00ffcc;
-            --text-muted: #e056fd;
-            --text-accent: #ff007f;
-            --border-color: rgba(0, 255, 204, 0.5);
-            --total-box: linear-gradient(135deg, rgba(31, 7, 69, 0.9), rgba(255, 0, 127, 0.9));
-            --hover-color: rgba(51, 13, 112, 0.9);
-            --danger: #ff0055;
             --header-font: 'Plus Jakarta Sans', sans-serif;
         }
 
@@ -169,8 +155,6 @@
         .module-btn i { font-size: 26px; color: var(--text-accent); }
         .module-btn.edit-mode { border: 2px dashed var(--danger); animation: jiggle 0.4s infinite alternate; }
         @keyframes jiggle { 0% { transform: rotate(-1.5deg); } 100% { transform: rotate(1.5deg); } }
-        .edit-badge { position: absolute; top: -8px; right: -8px; background: var(--danger); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); pointer-events: none; border: 2px solid var(--bg-card); }
-        .module-btn.add-btn { border: 2px dashed var(--text-muted); background: rgba(0,0,0,0.02); box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
 
         /* Attendance & Work Cards */
         .att-stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
@@ -198,9 +182,14 @@
         .progress-bar-bg { background: var(--bg-card-alt); height: 10px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); transition: width 0.4s ease; }
 
-        /* Cherry Bot Chat */
-        .chat-wrap { display: flex; flex-direction: column; height: calc(100vh - 200px); min-height: 420px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; transition: background-color 0.3s ease;}
-        .chat-stream { flex: 1; padding: 18px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; -webkit-overflow-scrolling: touch; }
+        /* Cherry Bot Chat & Translator Layout */
+        .chat-wrap { display: flex; flex-direction: column; height: calc(100vh - 170px); min-height: 460px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; transition: background-color 0.3s ease;}
+        
+        .translator-bar { background: var(--bg-card-alt); border-bottom: 1px solid var(--border-color); padding: 10px 14px; display: flex; flex-direction: column; gap: 8px; }
+        .translator-inputs { display: flex; gap: 8px; align-items: center; }
+        .translator-select { padding: 7px 10px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-size: 12px; font-weight: 700; outline: none; cursor: pointer; }
+
+        .chat-stream { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; -webkit-overflow-scrolling: touch; }
         .chat-bubble { padding: 12px 16px; border-radius: 14px; max-width: 85%; font-size: 13.5px; line-height: 1.5; }
         .chat-user { background: var(--bg-card-alt); border: 1px solid var(--border-color); align-self: flex-end; border-bottom-right-radius: 2px; }
         .chat-bot { background: linear-gradient(135deg, var(--text-main), var(--text-accent)); color: #08060c; font-weight: 600; align-self: flex-start; border-bottom-left-radius: 2px; }
@@ -247,39 +236,32 @@
     <!-- OFFLINE INDICATOR -->
     <div id="offline-badge"><i class="fas fa-wifi-slash"></i> Offline Mode: Data saving locally</div>
 
-    <!-- REPAIRED PERSISTENT VIDEO BACKGROUND -->
     <video id="app-bg-video" class="video-background" autoplay muted loop playsinline webkit-playsinline preload="auto">
         <source src="background.mp4" type="video/mp4">
         <source src="https://cdn.pixabay.com/video/2020/05/25/40134-424916845_large.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
 
-    <!-- Mobile Top Navigation Bar -->
     <div class="mobile-header">
         <div class="brand">
             <img src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'">
             <span>GOKUL HUB</span>
         </div>
         <div style="display: flex; gap: 8px;">
-            <!-- THE DOWNLOAD APP BUTTON -->
             <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;" onclick="downloadAppDirectly()"><i class="fas fa-download"></i> App</button>
             <button class="btn btn-primary" style="padding: 6px 10px; font-size: 13px;" onclick="openMenuSheet()"><i class="fas fa-ellipsis-v"></i></button>
         </div>
     </div>
 
-    <!-- Mobile Bottom Navigation Bar -->
     <div class="mobile-tab-bar">
         <button class="tab-item active" id="tab-vault" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i><span>Vault</span></button>
         <button class="tab-item" id="tab-att" onclick="navTo('attendance')"><i class="fas fa-business-time"></i><span>Work</span></button>
         <button class="tab-item" id="tab-loan" onclick="navTo('loans')"><i class="fas fa-hand-holding-usd"></i><span>Loans</span></button>
-        <button class="tab-item" id="tab-ai" onclick="navTo('ai-advisor')"><i class="fas fa-robot"></i><span>Cherry</span></button>
+        <button class="tab-item" id="tab-ai" onclick="navTo('ai-advisor')"><i class="fas fa-language"></i><span>Cherry</span></button>
         <button class="tab-item" id="tab-themes" onclick="navTo('themes')"><i class="fas fa-eye"></i><span>Look</span></button>
     </div>
 
-    <!-- Application Shell -->
     <div class="app-shell">
-
-        <!-- Desktop Sidebar -->
         <aside class="sidebar">
             <div>
                 <div class="sidebar-brand">
@@ -293,13 +275,12 @@
                     <button class="nav-btn" id="dnav-loans" onclick="navTo('loans')"><i class="fas fa-hand-holding-usd"></i> <span>Loans & EMI</span></button>
                     <button class="nav-btn" id="dnav-history" onclick="navTo('history')"><i class="fas fa-scroll"></i> <span>Ledger</span></button>
                     <button class="nav-btn" id="dnav-archives" onclick="navTo('archives')"><i class="fas fa-archive"></i> <span>Archives</span></button>
-                    <button class="nav-btn" id="dnav-ai-advisor" onclick="navTo('ai-advisor')"><i class="fas fa-robot"></i> <span>Cherry Bot</span></button>
+                    <button class="nav-btn" id="dnav-ai-advisor" onclick="navTo('ai-advisor')"><i class="fas fa-language"></i> <span>Cherry & Translator</span></button>
                     <button class="nav-btn" id="dnav-themes" onclick="navTo('themes')"><i class="fas fa-eye"></i> <span>Themes & Layout</span></button>
                     
                     <button class="nav-btn action-btn" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
                     <button class="nav-btn danger-btn" onclick="yearlyReset()"><i class="fas fa-skull"></i> <span>Yearly Reset</span></button>
                     
-                    <!-- THE DOWNLOAD APP BUTTON -->
                     <button class="nav-btn" style="background: var(--text-accent); color: #fff; margin-top: 6px;" onclick="downloadAppDirectly()"><i class="fas fa-download" style="color:#fff;"></i> <span>Download / Install App</span></button>
                 </div>
             </div>
@@ -311,10 +292,7 @@
             </div>
         </aside>
 
-        <!-- Main Workspace Viewport -->
         <main class="main-stage">
-
-            <!-- 1. VAULT VIEW -->
             <section id="vault-dashboard-view" class="view-panel active">
                 <div class="vault-summary-col">
                     <div class="profile-badge">
@@ -342,30 +320,6 @@
                 </div>
 
                 <div class="vault-grid-col">
-                    <!-- LIVE MARKET RATES WIDGET -->
-                    <div class="panel-heading" style="border: none; margin-bottom: 12px; font-size: 18px; padding-bottom: 0;">
-                        <span>Live Bullion Rates (1g)</span>
-                        <span id="rate-status" style="font-size: 11px; color: var(--text-muted); font-family: var(--app-font);"><i class="fas fa-sync fa-spin"></i> Fetching...</span>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-bottom: 24px;">
-                        <div class="att-stat-card" style="padding: 12px;">
-                            <div style="color: #f1c40f; font-size: 20px; margin-bottom: 4px;"><i class="fas fa-coins"></i></div>
-                            <div class="lbl">24K Gold</div>
-                            <div class="val" id="rate-24k" style="font-size: 16px;">--</div>
-                        </div>
-                        <div class="att-stat-card" style="padding: 12px;">
-                            <div style="color: #f39c12; font-size: 20px; margin-bottom: 4px;"><i class="fas fa-coins"></i></div>
-                            <div class="lbl">22K Gold</div>
-                            <div class="val" id="rate-22k" style="font-size: 16px;">--</div>
-                        </div>
-                        <div class="att-stat-card" style="padding: 12px;">
-                            <div style="color: #bdc3c7; font-size: 20px; margin-bottom: 4px;"><i class="fas fa-cubes"></i></div>
-                            <div class="lbl">Silver</div>
-                            <div class="val" id="rate-silver" style="font-size: 16px;">--</div>
-                        </div>
-                    </div>
-
-                    <!-- QUICK LOG EXPENSE -->
                     <div class="panel-heading" style="border: none; margin-bottom: 12px;">
                         <span id="grid-mode-title">Quick Log Expense</span>
                         <div style="display: flex; gap: 8px; align-items: center;">
@@ -378,7 +332,6 @@
                 </div>
             </section>
 
-            <!-- 2. ATTENDANCE / WORK VIEW -->
             <section id="attendance-view" class="view-panel">
                 <div id="timesheet-export-area">
                     <div class="panel-heading">
@@ -435,7 +388,6 @@
                 </div>
             </section>
 
-            <!-- 3. LOANS VIEW -->
             <section id="loans-view" class="view-panel">
                 <div class="panel-heading">
                     <span>Loan Manager</span>
@@ -497,7 +449,6 @@
                 <div class="loans-grid" id="active-loans-grid"></div>
             </section>
 
-            <!-- 4. LEDGER VIEW -->
             <section id="history-view" class="view-panel">
                 <div class="panel-heading">
                     <span>Ledger Records</span>
@@ -518,7 +469,6 @@
                 </div>
             </section>
 
-            <!-- 5. ARCHIVES VIEW -->
             <section id="archives-view" class="view-panel">
                 <div class="panel-heading"><span>Past Months Archive</span></div>
                 <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">Completed months stored as separate historical files.</p>
@@ -529,29 +479,54 @@
             <section id="ai-advisor-view" class="view-panel">
                 <div class="panel-heading">
                     <span>Cherry Bot 🍒</span>
-                    <span style="font-size: 12px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-lock"></i> 100% Local Offline</span>
+                    <span style="font-size: 12px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-globe"></i> Multi-lingual Offline</span>
                 </div>
 
                 <div class="chat-wrap">
+                    <div class="translator-bar">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 12px; font-weight: 800; color: var(--text-main);"><i class="fas fa-language"></i> Mega-Lexicon Translator</span>
+                            <span style="font-size: 10px; color: var(--text-muted); font-weight: 700;">100% Offline</span>
+                        </div>
+                        <div class="translator-inputs">
+                            <select id="trans-src" class="translator-select">
+                                <option value="en">English</option>
+                                <option value="ta">Tamil (தமிழ்)</option>
+                                <option value="hi">Hindi (हिन्दी)</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                            </select>
+                            <i class="fas fa-arrow-right" style="font-size: 11px; color: var(--text-accent);"></i>
+                            <select id="trans-dst" class="translator-select">
+                                <option value="ta">Tamil (தமிழ்)</option>
+                                <option value="hi">Hindi (हिन्दी)</option>
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                            </select>
+                            <input type="text" id="trans-input" class="form-control" style="padding: 7px 10px; font-size: 12px;" placeholder="Word or sentence...">
+                            <button class="btn btn-success" style="padding: 7px 12px; font-size: 12px;" onclick="runQuickTranslate()"><i class="fas fa-check"></i></button>
+                        </div>
+                    </div>
+
                     <div class="chat-stream" id="chat-stream">
                         <div class="chat-bubble chat-bot">
-                            Hello Gokul! I am <b>Cherry Bot</b> 🍒, your personal offline assistant.<br><br>
-                            I don't need the internet to help you. You can chat with me naturally!<br><br>
-                            Try saying:<br>
-                            - "What is my total balance?"<br>
-                            - "How much have I spent so far?"<br>
-                            - "Tell me a joke."<br>
-                            - "What time is it?"
+                            வணக்கம் / Namaste / Hello Gokul! 🍒 I am <b>Cherry Bot</b>, your offline buddy.<br><br>
+                            I now have a built-in <b>Offline Mega-Lexicon</b> loaded with hundreds of common everyday words (food, travel, actions, emotions, objects, numbers) in English, Tamil, Hindi, Spanish, and French!<br><br>
+                            💬 Try saying:<br>
+                            - "How are you?" or "Epdi irukka?"<br>
+                            - "Translate beautiful to tamil"<br>
+                            - "Translate water to hindi"<br>
+                            - "Check my balance!"
                         </div>
                     </div>
                     <div class="chat-controls">
-                        <input type="text" id="chat-user-input" class="form-control" placeholder="Ask Cherry Bot something..." onkeypress="if(event.key==='Enter') executeOfflineChat()">
+                        <input type="text" id="chat-user-input" class="form-control" placeholder="Type a message (e.g. How are you?)" onkeypress="if(event.key==='Enter') executeOfflineChat()">
                         <button class="btn btn-success" id="ai-send-btn" onclick="executeOfflineChat()"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
             </section>
 
-            <!-- 7. THEMES & OPACITY VIEW -->
             <section id="themes-view" class="view-panel">
                 <div class="panel-heading"><span>Themes & Appearance</span></div>
                 
@@ -583,7 +558,6 @@
     </div>
 
     <!-- Modals -->
-    <!-- Profile Edit Modal -->
     <div class="modal-mask" id="profileModal">
         <div class="modal-sheet">
             <h3 style="color: var(--text-main); font-family: var(--header-font); text-align: center;">Edit Profile</h3>
@@ -600,7 +574,6 @@
         </div>
     </div>
 
-    <!-- Category Modal -->
     <div class="modal-mask" id="categoryModal">
         <div class="modal-sheet">
             <h3 style="color: var(--text-main); text-align: center;" id="cat-modal-title">Edit Label</h3>
@@ -615,7 +588,6 @@
         </div>
     </div>
 
-    <!-- Job Profile Manager Modal -->
     <div class="modal-mask" id="jobModal">
         <div class="modal-sheet">
             <h3 style="color: var(--text-main); text-align: center;">Job Profiles</h3>
@@ -628,7 +600,6 @@
         </div>
     </div>
 
-    <!-- Mobile More Menu Sheet -->
     <div class="modal-mask" id="menuSheetModal">
         <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom));">
             <div style="font-weight: 900; color: var(--text-main); text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">App Menu</div>
@@ -637,14 +608,11 @@
             <button class="nav-btn" onclick="openProfileModal(); closeModal('menuSheetModal')"><i class="fas fa-user-edit"></i> Edit Profile</button>
             <button class="nav-btn action-btn" onclick="completeMonth(); closeModal('menuSheetModal')"><i class="fas fa-calendar-check"></i> Complete Month</button>
             <button class="nav-btn danger-btn" onclick="yearlyReset(); closeModal('menuSheetModal')"><i class="fas fa-skull"></i> Yearly Reset</button>
-            
             <button class="btn btn-success" style="width: 100%; margin-top: 6px;" onclick="downloadAppDirectly(); closeModal('menuSheetModal')"><i class="fas fa-download"></i> Download / Install App</button>
-            
             <button class="btn btn-primary" style="margin-top: 8px;" onclick="closeModal('menuSheetModal')">Close</button>
         </div>
     </div>
 
-    <!-- EXPLICIT INSTALL INSTRUCTION MODAL -->
     <div class="modal-mask" id="installGuideModal">
         <div class="modal-sheet" style="text-align: center; max-width: 340px;">
             <div style="font-size: 42px; color: var(--text-accent); margin-bottom: 10px;"><i class="fas fa-check-circle"></i></div>
@@ -660,21 +628,18 @@
                     <li>Tap <b>"Add to Home screen"</b>.</li>
                 </ol>
             </div>
-            
             <button class="btn btn-success" style="width: 100%;" onclick="closeModal('installGuideModal')">Got It</button>
         </div>
     </div>
 
     <script>
-        // ==========================================
-        // 0. OFFLINE CACHE PRE-LOADER & NETWORK MONITOR
-        // ==========================================
         async function preCacheAssets() {
             if ('caches' in window) {
                 try {
                     const cache = await caches.open('gokul-hub-offline-v1');
                     const urlsToCache = [
                         window.location.href.split('#')[0].split('?')[0],
+                        'lexicon.js',
                         '10276.png',
                         'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js',
                         'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
@@ -696,15 +661,11 @@
                 badge.style.display = 'block';
             } else {
                 badge.style.display = 'none';
-                fetchBullionRates(); 
             }
         }
         window.addEventListener('offline', updateNetworkStatus);
         window.addEventListener('online', updateNetworkStatus);
 
-        // ==========================================
-        // 1. DOWNLOAD & INSTALL ENGINE
-        // ==========================================
         function downloadAppDirectly() {
             if (pwaEvent) {
                 pwaEvent.prompt();
@@ -748,9 +709,6 @@
             if(dimSlider) dimSlider.value = savedDimmer;
         }
 
-        // ==========================================
-        // 2. PWA & DYNAMIC SERVICE WORKER
-        // ==========================================
         const appManifest = {
             "name": "Gokul's Hub",
             "short_name": "GokulHub",
@@ -814,9 +772,6 @@
             }
         }
 
-        // ==========================================
-        // 3. NAVIGATION & UI ROUTER
-        // ==========================================
         function navTo(panelId) {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -842,9 +797,6 @@
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         function openMenuSheet() { openModal('menuSheetModal'); }
 
-        // ==========================================
-        // 4. USER PROFILE
-        // ==========================================
         const defaultProfile = { name: "GOKUL", role: "Influencer & Petrol Bunk Worker", idStr: "TVGR", height: "5'4\"" };
         let profile = JSON.parse(localStorage.getItem('gokulProfile')) || defaultProfile;
 
@@ -873,9 +825,6 @@
             closeModal('profileModal');
         }
 
-        // ==========================================
-        // 5. VAULT DASHBOARD & CATEGORY ENGINE
-        // ==========================================
         const defaultCategories = [
             { name: "Food & Snacks", icon: "fas fa-utensils", type: "expense" },
             { name: "Fuel & Travel", icon: "fas fa-motorcycle", type: "expense" },
@@ -1051,9 +1000,6 @@
             });
         }
 
-        // ==========================================
-        // 6. WORK TIMESHEET & JOBS
-        // ==========================================
         let shifts = JSON.parse(localStorage.getItem('gokulAttRecords')) || [];
         const defaultJobs = ["Petrol Bunk Worker", "Instagram Influencer", "Content Creator"];
         let jobProfiles = JSON.parse(localStorage.getItem('gokulJobProfiles')) || defaultJobs;
@@ -1173,9 +1119,6 @@
             html2pdf().set({ margin: 8, filename: 'Gokul_Timesheet.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' } }).from(el).save();
         }
 
-        // ==========================================
-        // 7. LOAN & EMI MANAGER
-        // ==========================================
         let loans = JSON.parse(localStorage.getItem('gokulLoans')) || [];
         let calculatedEMI = null;
 
@@ -1228,7 +1171,7 @@
             if (disburse) logVaultTx(`Loan Disbursed: ${name}`, 'income', true, loan.principal);
 
             document.getElementById('loan-name-input').value = '';
-            document.getElementById('loan-p-input').value = '';
+            document.getElementById('loan-principal').value = '';
             runEMICalc();
             alert(`"${name}" saved to Active Loans!`);
         }
@@ -1317,7 +1260,7 @@
         }
 
         // ==========================================
-        // 8. CHERRY BOT 🍒 (OFFLINE CHATBOT ENGINE)
+        // 9. CHERRY BOT 🍒 
         // ==========================================
         function executeOfflineChat() {
             const input = document.getElementById('chat-user-input');
@@ -1330,100 +1273,110 @@
             stream.scrollTop = stream.scrollHeight;
 
             const loadId = `load-${Date.now()}`;
-            stream.innerHTML += `<div class="chat-bubble chat-bot" id="${loadId}">Thinking...</div>`;
+            stream.innerHTML += `<div class="chat-bubble chat-bot" id="${loadId}"><i class="fas fa-ellipsis-h fa-beat"></i> Thinking...</div>`;
             stream.scrollTop = stream.scrollHeight;
 
-            // Simulate a fast, local thinking delay
             setTimeout(() => {
                 const inc = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
                 const exp = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
                 const bal = inc - exp;
                 
                 let reply = "";
-                const lowerMsg = msg.toLowerCase();
-                
-                // Random picker helper
+                const clean = msg.toLowerCase().trim();
                 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-                if (lowerMsg.match(/\b(hello|hi|hey|greetings|morning|evening)\b/)) {
-                    reply = pick([
-                        "Hello there! Cherry Bot at your service. 🍒 How can I help you today?",
-                        "Hey Gokul! Need a quick finance check?",
-                        "Hi! I'm Cherry Bot. Ask me about your balance, shifts, or loans!"
-                    ]);
-                }
-                else if (lowerMsg.includes("who are you") || lowerMsg.includes("your name")) {
-                    reply = "I am <b>Cherry Bot</b> 🍒, your personal offline assistant built right into Gokul Hub. I help you track your money and work without needing the internet!";
-                }
-                else if (lowerMsg.includes("balance") || lowerMsg.includes("how much") || lowerMsg.includes("total") || lowerMsg.includes("left")) {
-                    reply = pick([
-                        `Your current Vault balance sits at <b>₹${bal.toFixed(2)}</b>.`,
-                        `You have <b>₹${bal.toFixed(2)}</b> remaining in your Vault right now.`,
-                        `Let's see... you've earned ₹${inc.toFixed(2)} and spent ₹${exp.toFixed(2)}, leaving you with <b>₹${bal.toFixed(2)}</b>.`
-                    ]);
-                } 
-                else if (lowerMsg.includes("expense") || lowerMsg.includes("spent") || lowerMsg.includes("out") || lowerMsg.includes("spending")) {
-                    reply = pick([
-                        `You have spent a total of <b>₹${exp.toFixed(2)}</b>. Check your Dashboard for a detailed breakdown.`,
-                        `Your total expenses amount to <b>₹${exp.toFixed(2)}</b> so far.`
-                    ]);
-                } 
-                else if (lowerMsg.includes("income") || lowerMsg.includes("earned") || lowerMsg.includes("salary") || lowerMsg.includes("in")) {
-                    reply = pick([
-                        `Your total recorded income is <b>₹${inc.toFixed(2)}</b>. Keep up the great work, Gokul!`,
-                        `You've brought in <b>₹${inc.toFixed(2)}</b> total. Nice job!`
-                    ]);
-                } 
-                else if (lowerMsg.includes("loan") || lowerMsg.includes("emi") || lowerMsg.includes("debt")) {
-                    if (loans.length === 0) {
-                        reply = "You currently have no active loans! Enjoy the debt-free life. 🍒";
-                    } else {
-                        reply = `You currently have <b>${loans.length}</b> active loan(s). Make sure you keep enough vault balance to cover upcoming EMIs!`;
+                if (clean.startsWith("translate") || clean.startsWith("trans ")) {
+                    const parts = clean.replace("translate", "").replace("trans", "").trim();
+                    let targetLang = "ta";
+                    let targetName = "Tamil";
+                    let textToTranslate = parts;
+
+                    if (parts.includes(" to ")) {
+                        const spl = parts.split(" to ");
+                        textToTranslate = spl[0].trim();
+                        const langKey = spl[1].trim().toLowerCase();
+
+                        if (langKey.includes("tamil") || langKey === "ta") { targetLang = "ta"; targetName = "Tamil"; }
+                        else if (langKey.includes("hindi") || langKey === "hi") { targetLang = "hi"; targetName = "Hindi"; }
+                        else if (langKey.includes("english") || langKey === "en") { targetLang = "en"; targetName = "English"; }
+                        else if (langKey.includes("spanish") || langKey === "es") { targetLang = "es"; targetName = "Spanish"; }
+                        else if (langKey.includes("french") || langKey === "fr") { targetLang = "fr"; targetName = "French"; }
                     }
+
+                    if (typeof translationLexicon !== 'undefined') {
+                        const translated = performOfflineTranslation(textToTranslate, "en", targetLang);
+                        reply = `🌐 <b>Offline Translation to ${targetName}:</b><br><br><span style="font-size: 15px; font-weight: 800;">"${translated}"</span>`;
+                    } else {
+                        reply = "Lexicon file is missing! Please ensure 'lexicon.js' is saved in the same folder.";
+                    }
+                }
+                else if (clean.match(/\b(how are you|how do you do|how's it going|how are things|eppadi irukka|epdi irukka|nalama|nallama|kaise ho|kya haal|kaise hain)\b/)) {
+                    reply = pick(["I'm doing fantastic, just organizing your vault! 🍒 How are you feeling today?", "நான் ரொம்ப நல்லா இருக்கேன் Gokul! நீங்க எப்படி இருக்கீங்க?", "मैं बिल्कुल ठीक हूँ भाई! आप कैसे हैं?"]);
+                }
+                else if (clean.match(/\b(what are you doing|what's up|doing what|whatcha doing|enna panra|enna pandra|enna panreenga|kya kar rahe ho|kya kar raha hai)\b/)) {
+                    reply = pick(["Just hanging out in your device, ready to translate or check your finances! 🍒", "உங்களுக்காக காத்துட்டு இருக்கேன்! சொல்லுங்க, என்ன பாக்கணும்?", "मैं आपके पैसों का हिसाब रखने और अनुवाद करने के लिए तैयार बैठा हूँ!"]);
+                }
+                else if (clean.match(/\b(had lunch|had dinner|had breakfast|eaten|ate|saptiya|saaptiya|saaptingala|khana khaya|khana ho gaya)\b/)) {
+                    reply = pick(["I'm a bot, so I feed on electricity and data! ⚡ But I hope you had a good, healthy meal!", "நான் டேட்டா தான் சாப்பிடுவேன்! நீங்க நல்லா சாப்டீங்களா Gokul?", "मैंने तो अपना डेटा खा लिया! आशा है आपने भी अच्छे से खा लिया होगा।"]);
+                }
+                else if (clean.match(/\b(i love you|love u|you are great|you're awesome|unna pudichiruku|romba nalla irukka|tum bahut ache ho)\b/)) {
+                    reply = pick(["Aww, thank you! I love helping you out. ❤️🍒", "எனக்கும் உங்களை ரொம்ப பிடிக்கும் Gokul! எப்பவும் நான் உங்களுக்கு துணையா இருப்பேன்.", "शुक्रिया! मुझे भी आपकी मदद करना बहुत पसंद है। ❤️"]);
+                }
+                else if (clean.match(/\b(who created you|who made you|your boss|your creator|unna yaru|yaru uruvakunathu|kisne banaya)\b/)) {
+                    reply = pick(["I was built as a smart offline assistant specially for Gokul Hub! 🍒", "என்னை உங்களுக்காகவே, Gokul Hub-ல வேலை செய்ய உருவாக்கினாங்க!", "मुझे खास तौर पर Gokul Hub के लिए बनाया गया है!"]);
+                }
+                else if (clean.match(/\b(hello|hi|hey|greetings|sup|yo|vanakkam|namaste|pranam)\b/)) {
+                    reply = pick(["Hello there! Cherry Bot at your service 🍒. I also have an offline translator! How can I help you?", "வணக்கம் தலைவா! Machi Cherry Bot ready. Translate பண்ணனுமா இல்ல கணக்கு பாக்கணுமா?", "नमस्ते Gokul! मैं बिल्कुल बढ़िया हूँ। बताइये क्या सेवा करूँ?"]);
+                }
+                else if (clean.match(/\b(good morning|morning|kaalai vanakkam|shubh prabhat)\b/)) {
+                    reply = pick(["Good morning, Gokul! Rise and shine. ☀️ Let's conquer the day!", "காலை வணக்கம்! இன்னைக்கு நாள் சூப்பரா அமைய வாழ்த்துக்கள்.", "सुप्रभात! आज का दिन आपके लिए मंगलमय हो।"]);
+                }
+                else if (clean.match(/\b(good night|night|iravu vanakkam|shubh ratri)\b/)) {
+                    reply = pick(["Good night! Sleep well and recharge for tomorrow. 🌙", "இனிய இரவு வணக்கம் Gokul. நிம்மதியா தூங்குங்க!", "शुभ रात्रि! कल मिलते हैं एक नई ऊर्जा के साथ।"]);
+                }
+                else if (clean.includes("who are you") || clean.includes("your name") || clean.includes("un peru enna") || clean.includes("aap kaun ho")) {
+                    reply = "I am <b>Cherry Bot</b> 🍒! Your smart, multilingual, 100% offline personal assistant and translator built right into Gokul Hub.";
+                }
+                else if (clean.match(/\b(balance|how much|total|left|evalo kaasu|evalo panam|kaasu evalo|balance evalo|panam iruku|ennoda balance|en kitta evalo|kitna paisa|paisa kitna|balance kitna|kitne paise bache|kya balance hai)\b/)) {
+                    reply = pick([`Your current Vault balance sits at <b>₹${bal.toFixed(2)}</b>.`, `உங்க Vault-ல இப்போதைக்கு மொத்தம் <b>₹${bal.toFixed(2)}</b> மீதம் இருக்கு. (வரவு: +₹${inc.toFixed(2)}, செலவு: -₹${exp.toFixed(2)}) 💰`, `आपके Vault में अभी कुल <b>₹${bal.toFixed(2)}</b> बचे हैं। 💵`]);
                 } 
-                else if (lowerMsg.includes("shift") || lowerMsg.includes("work") || lowerMsg.includes("attendance")) {
+                else if (clean.match(/\b(expense|spent|out|spending|selavu|selavu evalo|evlo selavu|kharcha|evalo pochu|kitna kharcha|kharcha kitna|kitne kharch hue)\b/)) {
+                    reply = pick([`You have spent a total of <b>₹${exp.toFixed(2)}</b>. Check your Dashboard for a detailed breakdown.`, `இதுவரைக்கும் நீங்க பண்ணியிருக்க மொத்த செலவு <b>₹${exp.toFixed(2)}</b>. கவனமா செலவு பண்ணுங்க Gokul!`, `अब तक आपने कुल <b>₹${exp.toFixed(2)}</b> खर्च किए हैं।`]);
+                } 
+                else if (clean.match(/\b(income|earned|salary|in|sambalam|varavu|income evalo|kaasu vandhucha|evalo vandhuchu|kamai|aamdani|income kitni)\b/)) {
+                    reply = pick([`Your total recorded income is <b>₹${inc.toFixed(2)}</b>. Keep up the great work!`, `உங்க மொத்த வரவு/சம்பளம் <b>₹${inc.toFixed(2)}</b> Record ஆகியிருக்கு! கலக்குங்க! 🔥`, `आपकी कुल दर्ज की गई कमाई <b>₹${inc.toFixed(2)}</b> है। बहुत बढ़िया! 👏`]);
+                } 
+                else if (clean.match(/\b(loan|emi|debt|kadan|kadan evalo|emi evalo|kadan iruka|karz|loan kitna|emi kitni hai)\b/)) {
+                    reply = loans.length === 0 ? "You currently have no active loans! Enjoy the debt-free life. 🍒" : `You currently have <b>${loans.length}</b> active loan(s). Make sure you keep enough vault balance to cover upcoming EMIs!`;
+                } 
+                else if (clean.match(/\b(shift|work|attendance|vela|shift evalo|shift count|duty)\b/)) {
                     reply = `You have logged <b>${shifts.length}</b> work shifts so far. You can download your full timesheet from the Work tab.`;
                 } 
-                else if (lowerMsg.match(/\b(thanks|thank you|thx)\b/)) {
-                    reply = pick([
-                        "You're very welcome, Gokul!",
-                        "Anytime! That's what I'm here for. 🍒",
-                        "Glad I could help!"
-                    ]);
+                else if (clean.match(/\b(thanks|thank you|thx|appreciate|romba nandri|nandri|thanks da|super da|mass|shukriya|dhanyawad|bahut badiya|shabash)\b/)) {
+                    reply = pick(["You're very welcome, Gokul!", "மகிழ்ச்சி Gokul! எப்பவும் உங்க சேவைக்கு நான் இருக்கேன் 🍒✨", "आपका बहुत-बहुत धन्यवाद Gokul! हमेशा मदद के लिए तैयार हूँ। 🍒"]);
                 }
-                else if (lowerMsg.match(/\b(bye|goodbye|see ya|quit)\b/)) {
-                    reply = pick([
-                        "Goodbye, Gokul! Have a great day.",
-                        "See you later! Stay productive.",
-                        "Bye! I'll be right here when you need me. 🍒"
-                    ]);
+                else if (clean.match(/\b(bye|goodbye|see ya|cya|quit|chao|adios)\b/)) {
+                    reply = pick(["Goodbye, Gokul! Rest well and stay productive.", "Bye! I'll be right here waiting offline whenever you need me. 🍒", "See you later! Keep hustling."]);
                 }
-                else if (lowerMsg.includes("joke") || lowerMsg.includes("funny")) {
-                    reply = pick([
-                        "Why did the smartphone need glasses? Because it lost its contacts!",
-                        "Why don't scientists trust atoms? Because they make up everything!",
-                        "I would tell you a joke about money, but it makes no cents."
-                    ]);
+                else if (clean.match(/\b(joke|funny|comedy)\b/)) {
+                    reply = pick(["Why did the smartphone need glasses? Because it lost its contacts! 😂", "Why don't scientists trust atoms? Because they make up everything!", "Why did the coin go to school? To get some cents! 🪙"]);
                 }
-                else if (lowerMsg.includes("time") || lowerMsg.includes("date") || lowerMsg.includes("today")) {
+                else if (clean.match(/\b(time|date|today|day)\b/)) {
                     const now = new Date();
                     reply = `Right now it's <b>${now.toLocaleTimeString()}</b> on ${now.toLocaleDateString()}. Make today count!`;
                 }
                 else {
                     reply = pick([
-                        "I'm currently in <b>Offline Mode</b> 🍒, so I only know what's saved on this device. Try asking 'What is my balance?' or 'How many shifts did I work?'.",
-                        "Hmm, I didn't quite catch that. Try asking me about your <b>balance</b>, <b>expenses</b>, <b>loans</b>, or <b>shifts</b>!"
+                        "I am operating in <b>100% Offline Mode</b> 🍒! You can chat with me, check your finances, or use the <b>Translator Bar</b> above!",
+                        "Try asking: <i>'translate beautiful to tamil'</i>, <i>'how are you?'</i>, or check your <i>'total balance'</i>!"
                     ]);
                 }
 
                 document.getElementById(loadId).innerHTML = `<strong>Cherry Bot 🍒:</strong><br><br>${reply}`;
                 stream.scrollTop = stream.scrollHeight;
-            }, 600); 
+            }, 400); 
         }
 
-        // ==========================================
-        // 9. ARCHIVES & YEARLY RESET
-        // ==========================================
         let archives = JSON.parse(localStorage.getItem('gokulArchives')) || [];
 
         function completeMonth() {
@@ -1486,9 +1439,6 @@
             }
         }
 
-        // ==========================================
-        // 10. THEMES
-        // ==========================================
         const themeOpts = [
             { id: 'harrypotter', name: 'Hogwarts Magic' },
             { id: 'default', name: 'Corporate Clean' },
@@ -1512,53 +1462,6 @@
             renderVaultChart();
         }
 
-        // ==========================================
-        // 11. LIVE BULLION RATES API
-        // ==========================================
-        async function fetchBullionRates() {
-            try {
-                const exRes = await fetch('https://open.er-api.com/v6/latest/USD');
-                const exData = await exRes.json();
-                const inrRate = exData.rates.INR; 
-
-                const metalRes = await fetch('https://www.chartgoldprice.com/api/data');
-                if (!metalRes.ok) throw new Error("Metal API down");
-                const metalData = await metalRes.json();
-                
-                const goldUsd = metalData.prices.gold.gram; 
-                const silverUsd = metalData.prices.silver.gram;
-
-                const indiaMultiplier = 1.32; 
-
-                const g24 = goldUsd * inrRate * indiaMultiplier;
-                const g22 = g24 * (22 / 24);
-                const s = silverUsd * inrRate * indiaMultiplier;
-
-                document.getElementById('rate-24k').innerText = '₹' + g24.toFixed(0);
-                document.getElementById('rate-22k').innerText = '₹' + g22.toFixed(0);
-                document.getElementById('rate-silver').innerText = '₹' + s.toFixed(0);
-                document.getElementById('rate-status').innerHTML = '<i class="fas fa-circle" style="color: var(--text-accent); font-size: 8px;"></i> Live Updates';
-
-                localStorage.setItem('gokulLastRates', JSON.stringify({g24, g22, s}));
-            } catch(err) {
-                const saved = JSON.parse(localStorage.getItem('gokulLastRates'));
-                if(saved) {
-                    document.getElementById('rate-24k').innerText = '₹' + saved.g24.toFixed(0);
-                    document.getElementById('rate-22k').innerText = '₹' + saved.g22.toFixed(0);
-                    document.getElementById('rate-silver').innerText = '₹' + saved.s.toFixed(0);
-                    document.getElementById('rate-status').innerHTML = '<i class="fas fa-wifi-slash" style="color: var(--danger); font-size: 8px;"></i> Offline (Cached)';
-                } else {
-                    document.getElementById('rate-24k').innerText = '₹15693';
-                    document.getElementById('rate-22k').innerText = '₹14385';
-                    document.getElementById('rate-silver').innerText = '₹255';
-                    document.getElementById('rate-status').innerHTML = '<i class="fas fa-wifi-slash" style="color: var(--danger); font-size: 8px;"></i> Offline';
-                }
-            }
-        }
-
-        // ==========================================
-        // INITIALIZATION
-        // ==========================================
         window.onload = () => {
             const savedTheme = localStorage.getItem('gokulTheme') || 'harrypotter';
             document.documentElement.setAttribute('data-theme', savedTheme);
@@ -1576,7 +1479,6 @@
             initVideoPlayback();
             preCacheAssets();
             updateNetworkStatus();
-            fetchBullionRates();
         };
     </script>
 </body>
