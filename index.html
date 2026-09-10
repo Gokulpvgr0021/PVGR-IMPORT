@@ -744,21 +744,21 @@
     </div>
 
     <script>
-        // FULL SCREEN ENFORCER SCRIPT FOR MOBILE APPS
+        // AGGRESSIVE FULL SCREEN ENFORCER
         function enterFullScreen() {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen().catch(()=>{});
                 } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen();
+                    document.documentElement.webkitRequestFullscreen(); // Safari/iOS
                 } else if (document.documentElement.msRequestFullscreen) {
-                    document.documentElement.msRequestFullscreen();
+                    document.documentElement.msRequestFullscreen(); // Edge/IE
                 }
             }
         }
-        // Attaches to the first tap on the screen to trigger full screen organically
-        document.addEventListener('touchstart', enterFullScreen, { once: true, passive: true });
-        document.addEventListener('click', enterFullScreen, { once: true });
+        // Listens to EVERY tap. If the user exits full screen, their very next tap will force it back.
+        document.addEventListener('touchstart', enterFullScreen, { passive: true });
+        document.addEventListener('click', enterFullScreen);
 
 
         async function preCacheAssets() {
