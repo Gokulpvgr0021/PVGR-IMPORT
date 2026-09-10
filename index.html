@@ -17,7 +17,7 @@
     <link rel="icon" href="10276.png" type="image/png">
     <link rel="apple-touch-icon" href="10276.png">
 
-    <!-- Dynamic PWA Manifest -->
+    <!-- Dynamic PWA Manifest (Forces Full Screen) -->
     <link rel="manifest" id="pwa-manifest" href="">
 
     <!-- Fonts & Icons -->
@@ -66,9 +66,6 @@
             --text-accent: #16a34a;
             --border-color: rgba(203, 213, 225, 0.7);
             --total-box: linear-gradient(135deg, rgba(30, 58, 138, 0.9), rgba(2, 132, 199, 0.9));
-            --hover-color: rgba(226, 232, 240, 0.9);
-            --danger: #dc2626;
-            --header-font: 'Plus Jakarta Sans', sans-serif;
         }
 
         [data-theme="dark"] {
@@ -81,30 +78,18 @@
             --text-accent: #22c55e;
             --border-color: rgba(63, 63, 70, 0.7);
             --total-box: linear-gradient(135deg, rgba(24, 24, 27, 0.9), rgba(39, 39, 42, 0.9));
-            --hover-color: rgba(63, 63, 70, 0.9);
-            --danger: #ef4444;
-            --header-font: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        [data-theme="cyberpunk"] {
-            --bg-app: rgba(14, 3, 34, var(--glass-alpha));
-            --bg-sidebar: rgba(19, 4, 45, calc(var(--glass-alpha) + 0.1));
-            --bg-card: rgba(31, 7, 69, calc(var(--glass-alpha) + 0.05));
-            --bg-card-alt: rgba(42, 11, 92, calc(var(--glass-alpha) + 0.1));
-            --text-main: #00ffcc;
-            --text-muted: #e056fd;
-            --text-accent: #ff007f;
-            --border-color: rgba(0, 255, 204, 0.5);
-            --total-box: linear-gradient(135deg, rgba(31, 7, 69, 0.9), rgba(255, 0, 127, 0.9));
-            --hover-color: rgba(51, 13, 112, 0.9);
-            --danger: #ff0055;
-            --header-font: 'Plus Jakarta Sans', sans-serif;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: var(--app-font); }
         
         img, video { max-width: 100%; height: auto; }
-        input, select, textarea, button { max-width: 100%; font-family: inherit; }
+        
+        /* EXPANDED MOBILE TYPING FIX: Prevents zooming & makes space large */
+        input, select, textarea, button { 
+            max-width: 100%; 
+            font-family: inherit; 
+            font-size: 16px !important; /* Force 16px to prevent iOS auto-zoom */
+        }
 
         html, body {
             position: fixed;
@@ -128,27 +113,15 @@
 
         .app-shell { width: 100%; height: 100%; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background-color 0.3s ease; }
 
-        .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(56px + var(--safe-top)); padding-top: var(--safe-top); background: var(--bg-sidebar); border-bottom: 1px solid var(--border-color); z-index: 100; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: background-color 0.3s ease; }
-        .mobile-header .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 16px; color: var(--text-main); font-family: var(--header-font); }
-        .mobile-header .brand img { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border-color); object-fit: cover; flex-shrink: 0; }
+        .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(65px + var(--safe-top)); padding-top: var(--safe-top); background: var(--bg-sidebar); border-bottom: 1px solid var(--border-color); z-index: 100; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .mobile-header .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 18px; color: var(--text-main); font-family: var(--header-font); }
+        .mobile-header .brand img { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-color); object-fit: cover; flex-shrink: 0; }
 
-        .sidebar { width: 250px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; flex-shrink: 0; z-index: 10; backdrop-filter: blur(12px); transition: background-color 0.3s ease;}
-        .sidebar-brand { display: flex; align-items: center; gap: 12px; padding-bottom: 16px; margin-bottom: 12px; border-bottom: 2px solid var(--border-color); }
-        .sidebar-brand img { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--border-color); object-fit: cover; flex-shrink: 0; }
-        .sidebar-brand-text { font-size: 18px; font-weight: 900; color: var(--text-main); font-family: var(--header-font); letter-spacing: 0.5px; }
-
-        .nav-list { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; flex: 1; }
-        .nav-btn { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 14px; color: var(--text-main); font-weight: 700; font-size: 13px; text-align: left; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.2s ease; width: 100%; }
-        .nav-btn i { font-size: 16px; width: 20px; text-align: center; color: var(--text-accent); flex-shrink: 0; }
-        .nav-btn:hover, .nav-btn.active { background-color: var(--hover-color); border-color: var(--text-main); transform: translateX(4px); }
-        .nav-btn.action-btn { border: 1px dashed var(--text-accent); color: var(--text-accent); background: transparent; }
-        .nav-btn.danger-btn { border: 1px dashed var(--danger); color: var(--danger); background: transparent; }
-        .nav-btn.danger-btn i { color: var(--danger); }
-        .sidebar-footer { padding-top: 12px; border-top: 1px solid var(--border-color); font-size: 11px; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; }
-
-        .mobile-tab-bar { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: calc(58px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--bg-sidebar); border-top: 1px solid var(--border-color); z-index: 100; justify-content: space-around; align-items: center; box-shadow: 0 -4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: background-color 0.3s ease;}
-        .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; border: none; color: var(--text-muted); font-size: 11px; font-weight: 700; gap: 4px; height: 100%; cursor: pointer; transition: color 0.2s; }
-        .tab-item i { font-size: 18px; transition: transform 0.2s; }
+        .sidebar { width: 250px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; flex-shrink: 0; z-index: 10; backdrop-filter: blur(12px); }
+        
+        .mobile-tab-bar { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: calc(65px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--bg-sidebar); border-top: 1px solid var(--border-color); z-index: 100; justify-content: space-around; align-items: center; box-shadow: 0 -4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; border: none; color: var(--text-muted); font-size: 12px; font-weight: 700; gap: 4px; height: 100%; cursor: pointer; transition: color 0.2s; }
+        .tab-item i { font-size: 20px; transition: transform 0.2s; }
         .tab-item.active { color: var(--text-main); }
         .tab-item.active i { transform: translateY(-2px); color: var(--text-accent); }
 
@@ -159,6 +132,11 @@
         
         .panel-heading { font-size: 24px; font-weight: 900; color: var(--text-main); font-family: var(--header-font); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 
+        /* Vault Layout */
+        #vault-dashboard-panel { flex-direction: row; padding: 0; width: 100%; height: 100%; }
+        .vault-summary-col { width: 320px; max-width: 100%; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 15px; transition: background-color 0.3s ease;}
+        
+        /* High Level Profile Badge Standard */
         .profile-badge { 
             background: linear-gradient(135deg, var(--bg-card), var(--bg-card-alt));
             border: 1px solid var(--border-color); 
@@ -192,111 +170,96 @@
         }
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Vault Layout */
-        #vault-dashboard-panel { flex-direction: row; padding: 0; width: 100%; height: 100%; }
-        .vault-summary-col { width: 320px; max-width: 100%; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 15px; transition: background-color 0.3s ease;}
         .total-box { background: var(--total-box); border-radius: 16px; padding: 18px; width: 100%; color: #ffffff; box-shadow: 0 6px 16px rgba(0,0,0,0.25); }
-        .chart-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; width: 100%; transition: background-color 0.3s ease;}
+        .chart-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; width: 100%; }
         .vault-grid-col { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; width: 100%; }
-        
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr)); gap: 12px; width: 100%; }
-        .module-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-muted); font-weight: 700; font-size: 12px; text-align: center; cursor: pointer; position: relative; transition: transform 0.15s, border-color 0.15s, background-color 0.3s ease; width: 100%; }
+        
+        .module-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-muted); font-weight: 700; font-size: 12px; text-align: center; cursor: pointer; transition: transform 0.15s; width: 100%; }
         .module-btn:active { transform: scale(0.96); }
         .module-btn i { font-size: 26px; color: var(--text-accent); }
-        .module-btn.edit-mode { border: 2px dashed var(--danger); animation: jiggle 0.4s infinite alternate; }
-        @keyframes jiggle { 0% { transform: rotate(-1.5deg); } 100% { transform: rotate(1.5deg); } }
-        .module-btn.add-btn { border: 2px dashed var(--text-muted); background: rgba(0,0,0,0.02); box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
 
-        /* Attendance & Work Cards */
-        .att-stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 12px; margin-bottom: 20px; width: 100%; }
-        .att-stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: background-color 0.3s ease; width: 100%; }
-        .att-stat-card .val { font-size: 24px; font-weight: 900; color: var(--text-main); }
-        .att-stat-card .lbl { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
-        
-        .table-wrap { width: 100%; max-width: 100vw; overflow-x: auto; border-radius: 14px; border: 1px solid var(--border-color); background: var(--bg-card); margin-bottom: 20px; -webkit-overflow-scrolling: touch; transition: background-color 0.3s ease;}
+        /* Table & Lists */
+        .table-wrap { width: 100%; max-width: 100vw; overflow-x: auto; border-radius: 14px; border: 1px solid var(--border-color); background: var(--bg-card); margin-bottom: 20px; -webkit-overflow-scrolling: touch; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px; }
         th, td { padding: 12px 14px; text-align: center; border-bottom: 1px solid var(--border-color); }
         th { background: var(--bg-card-alt); color: var(--text-main); font-weight: 800; }
-        
-        .form-card { width: 100%; background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: 14px; padding: 18px; display: flex; flex-wrap: wrap; gap: 12px; transition: background-color 0.3s ease;}
-        .input-group { display: flex; flex-direction: column; gap: 6px; flex: 1 1 min(100%, 180px); min-width: 0; }
-        .input-group label { font-size: 12px; font-weight: 700; color: var(--text-main); }
-        .form-control { padding: 11px 12px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-size: 14px; outline: none; width: 100%; transition: background-color 0.3s ease;}
-        .form-control:focus { border-color: var(--text-accent); }
-        
-        .btn { padding: 12px 18px; border-radius: 10px; border: none; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: #ffffff; transition: transform 0.15s; width: 100%; max-width: 100%; }
+
+        /* LONG & SPACIOUS FORMS */
+        .form-card { width: 100%; background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+        .input-group { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+        .input-group label { font-size: 13px; font-weight: 700; color: var(--text-main); }
+        .form-control { 
+            padding: 16px 14px; /* MASSIVE PADDING FOR MOBILE TYPING */
+            border-radius: 12px; 
+            border: 1px solid var(--border-color); 
+            background: var(--bg-card); 
+            color: var(--text-main); 
+            font-size: 16px !important; /* CRITICAL FOR IOS/ANDROID NOT ZOOMING */
+            outline: none; 
+            width: 100%; 
+        }
+        .form-control:focus { border-color: var(--text-accent); box-shadow: 0 0 8px rgba(39, 174, 96, 0.3); }
+
+        /* BIG BUTTONS */
+        .btn { padding: 16px 20px; border-radius: 12px; border: none; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: #ffffff; width: 100%; }
         .btn:active { transform: scale(0.97); }
         .btn-success { background: var(--text-accent); }
         .btn-primary { background: var(--text-main); color: #08060c; }
         .btn-danger { background: var(--danger); }
-        
-        .btn-flex-row { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; }
-        .btn-flex-row .btn { flex: 1 1 auto; }
+        .btn-flex-row { display: flex; flex-direction: column; gap: 12px; width: 100%; } /* Stack buttons vertically on mobile for thumb reach */
 
         /* Loan Cards */
         .loans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; width: 100%; }
-        .loan-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 10px; transition: background-color 0.3s ease; width: 100%; }
-        .progress-bar-bg { background: var(--bg-card-alt); height: 10px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); width: 100%; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); transition: width 0.4s ease; }
+        .loan-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        .progress-bar-bg { background: var(--bg-card-alt); height: 12px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); width: 100%; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); }
 
-        .loan-inputs-row { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; width: 100%; }
-        .loan-inputs-row .form-group { flex: 1 1 min(100%, 140px); min-width: 0; }
-        .form-group { display: flex; flex-direction: column; width: 100%; }
-
-        /* Cherry Bot Chat & Translator Layout */
-        .chat-wrap { display: flex; flex-direction: column; height: calc(100vh - 170px); min-height: 400px; width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; transition: background-color 0.3s ease;}
+        /* LONG & SPACIOUS CHAT/TRANSLATOR */
+        .chat-wrap { display: flex; flex-direction: column; height: calc(100vh - 160px); min-height: 400px; width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; }
         
-        .translator-bar { background: var(--bg-card-alt); border-bottom: 1px solid var(--border-color); padding: 10px 14px; display: flex; flex-direction: column; gap: 8px; width: 100%; }
-        .translator-inputs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; width: 100%; }
-        .translator-select { padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-size: 12px; font-weight: 700; outline: none; cursor: pointer; flex: 1 1 min(100%, 100px); min-width: 0; }
-        #trans-input { flex: 2 1 min(100%, 180px); min-width: 0; }
-
+        .translator-bar { background: var(--bg-card-alt); border-bottom: 1px solid var(--border-color); padding: 14px; display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        .translator-select-row { display: flex; width: 100%; gap: 10px; align-items: center; }
+        .translator-select { flex: 1; padding: 14px; font-size: 16px !important; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); outline: none; }
+        
         .chat-stream { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; -webkit-overflow-scrolling: touch; width: 100%; }
-        .chat-bubble { padding: 12px 16px; border-radius: 14px; max-width: 85%; font-size: 13.5px; line-height: 1.5; word-wrap: break-word; }
-        .chat-user { background: var(--bg-card-alt); border: 1px solid var(--border-color); align-self: flex-end; border-bottom-right-radius: 2px; }
-        .chat-bot { background: linear-gradient(135deg, var(--text-main), var(--text-accent)); color: #08060c; font-weight: 600; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .chat-controls { display: flex; padding: 12px; background: var(--bg-card-alt); border-top: 1px solid var(--border-color); gap: 8px; width: 100%; }
-        .chat-controls input { flex: 1; min-width: 0; }
-        .chat-controls button { flex: 0 0 auto; width: auto; }
-
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: var(--text-accent); cursor: pointer; margin-top: -7px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: var(--bg-card); border-radius: 3px; border: 1px solid var(--border-color); }
+        .chat-bubble { padding: 14px 18px; border-radius: 16px; max-width: 90%; font-size: 15px; line-height: 1.6; word-wrap: break-word; }
+        .chat-user { background: var(--bg-card-alt); border: 1px solid var(--border-color); align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-bot { background: linear-gradient(135deg, var(--text-main), var(--text-accent)); color: #08060c; font-weight: 700; align-self: flex-start; border-bottom-left-radius: 4px; }
+        
+        /* EXPANDED CHAT INPUT BAR */
+        .chat-controls { display: flex; flex-direction: column; padding: 16px; background: var(--bg-card-alt); border-top: 1px solid var(--border-color); gap: 12px; width: 100%; }
+        .chat-controls input { flex: none; width: 100%; min-height: 56px; padding: 16px; font-size: 16px !important; border-radius: 12px; }
+        .chat-controls button { flex: none; width: 100%; min-height: 50px; font-size: 16px; }
 
         /* Modals */
         .modal-mask { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 16px; }
         .modal-mask.active { display: flex; }
-        .modal-sheet { background: var(--bg-app); width: 100%; max-width: 440px; max-height: 85vh; border-radius: 20px; border: 1px solid var(--border-color); padding: 22px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; transition: background-color 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .modal-sheet { background: var(--bg-app); width: 100%; max-width: 440px; max-height: 90vh; border-radius: 20px; border: 1px solid var(--border-color); padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        .selection-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(42px, 1fr)); gap: 10px; max-height: 150px; overflow-y: auto; padding: 10px; background: var(--bg-card-alt); border-radius: 12px; border: 1px inset var(--border-color); margin-top: 10px; width: 100%; }
-        .select-item { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid transparent; background: var(--bg-card); box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 18px; cursor: pointer; color: var(--text-muted); margin: 0 auto; }
-        .select-item.selected { border-color: var(--text-main); background: var(--text-main); color: var(--text-main); transform: scale(1.1); }
-
         #offline-badge {
-            display: none; position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
-            background: var(--danger); color: #fff; padding: 6px 16px; border-radius: 20px;
-            font-size: 12px; font-weight: bold; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: none; position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+            background: var(--danger); color: #fff; padding: 8px 20px; border-radius: 20px;
+            font-size: 13px; font-weight: bold; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             font-family: var(--app-font); width: max-content; max-width: 90vw;
         }
 
-        /* Responsive Mobile Specifics */
         @media (max-width: 820px) {
             .sidebar { display: none; }
             .mobile-header { display: flex; }
             .mobile-tab-bar { display: flex; }
-            .main-stage { margin-top: calc(56px + var(--safe-top)); margin-bottom: calc(58px + var(--safe-bottom)); height: calc(100vh - (114px + var(--safe-top) + var(--safe-bottom))); }
+            .main-stage { margin-top: calc(65px + var(--safe-top)); margin-bottom: calc(65px + var(--safe-bottom)); height: calc(100vh - (130px + var(--safe-top) + var(--safe-bottom))); }
             .view-panel { padding: 16px; }
             #vault-dashboard-panel { flex-direction: column; overflow-y: auto; }
             .vault-summary-col { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); padding: 16px 0; background: transparent; }
             .vault-grid-col { padding: 16px 0; }
-            .chat-wrap { height: calc(100vh - 150px); }
-            .panel-heading { font-size: 20px; }
-            .modal-sheet { padding: 18px; width: 100%; }
+            .chat-wrap { height: calc(100vh - 170px); }
         }
     </style>
 </head>
 <body>
 
+    <!-- OFFLINE INDICATOR -->
     <div id="offline-badge"><i class="fas fa-wifi-slash"></i> Offline Mode: Data saving locally</div>
 
     <video id="app-bg-video" class="video-background" autoplay muted loop playsinline webkit-playsinline preload="auto">
@@ -311,8 +274,8 @@
             <span>GOKUL HUB</span>
         </div>
         <div style="display: flex; gap: 8px;">
-            <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px; width: auto;" onclick="installAppMode()"><i class="fas fa-expand"></i> App</button>
-            <button class="btn btn-primary" style="padding: 6px 10px; font-size: 13px; width: auto;" onclick="openMenuSheet()"><i class="fas fa-ellipsis-v"></i></button>
+            <button class="btn btn-primary" style="padding: 8px 14px; font-size: 13px; width: auto;" onclick="downloadAppDirectly()"><i class="fas fa-download"></i> App</button>
+            <button class="btn btn-primary" style="padding: 8px 14px; font-size: 14px; width: auto;" onclick="openMenuSheet()"><i class="fas fa-ellipsis-v"></i></button>
         </div>
     </div>
 
@@ -344,53 +307,53 @@
                     <button class="nav-btn action-btn" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
                     <button class="nav-btn danger-btn" onclick="yearlyReset()"><i class="fas fa-skull"></i> <span>Yearly Reset</span></button>
                     
-                    <button class="nav-btn" style="background: var(--text-accent); color: #fff; margin-top: 6px;" onclick="installAppMode()"><i class="fas fa-expand" style="color:#fff;"></i> <span>Make Full Screen App</span></button>
+                    <button class="nav-btn" style="background: var(--text-accent); color: #fff; margin-top: 6px;" onclick="downloadAppDirectly()"><i class="fas fa-download" style="color:#fff;"></i> <span>Download / Install App</span></button>
                 </div>
             </div>
 
             <div class="sidebar-footer">
                 <div>Identity: <b>TVGR Vault</b></div>
                 <div>Status: <span style="color: var(--text-accent);">Auto-Sync Live</span></div>
-                <button class="btn btn-primary" style="padding: 8px; font-size: 11px; margin-top: 4px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
+                <button class="btn btn-primary" style="padding: 10px; font-size: 13px; margin-top: 6px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
             </div>
         </aside>
 
         <main class="main-stage">
             <section id="vault-dashboard-view" class="view-panel active">
-                <div id="vault-dashboard-panel" style="display: flex; width: 100%; height: 100%;">
+                <div id="vault-dashboard-panel">
                     <div class="vault-summary-col">
                         <div class="profile-badge">
                             <div class="profile-avatar">
                                 <img id="vault-avatar-img" src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'">
                             </div>
-                            <div style="font-size: 18px; font-weight: 900;" id="prof-name">GOKUL</div>
-                            <div style="font-size: 11px; color: var(--text-accent); margin-bottom: 4px;" id="prof-role">Influencer & Petrol Bunk Worker</div>
-                            <div style="font-size: 11px; color: var(--text-muted);">ID: <span id="prof-id">TVGR</span> | Ht: <span id="prof-ht">5'4"</span></div>
-                            <button class="btn btn-primary" style="padding: 4px 10px; font-size: 10px; margin-top: 6px; width: auto;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
+                            <div style="font-size: 20px; font-weight: 900; letter-spacing: 1px;" id="prof-name">GOKUL</div>
+                            <div style="font-size: 13px; color: var(--text-accent); margin-bottom: 4px; font-weight: 700;" id="prof-role">Influencer & Petrol Bunk Worker</div>
+                            <div style="font-size: 12px; color: var(--text-muted); font-weight: 600;">ID: <span id="prof-id">TVGR</span> | Ht: <span id="prof-ht">5'4"</span></div>
+                            <button class="btn btn-primary" style="padding: 8px 16px; font-size: 12px; margin-top: 10px; width: 100%; border-radius: 8px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile ID</button>
                         </div>
 
                         <div class="total-box">
-                            <div style="font-size: 12px; opacity: 0.9;">Total Balance</div>
-                            <div style="font-size: 28px; font-weight: 900; margin: 6px 0;" id="total-balance">₹0.00</div>
-                            <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700;">
+                            <div style="font-size: 13px; opacity: 0.9; font-weight: 700;">Total Balance</div>
+                            <div style="font-size: 32px; font-weight: 900; margin: 8px 0;" id="total-balance">₹0.00</div>
+                            <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 800;">
                                 <span style="color: #4ade80;" id="total-in">+₹0.00</span>
                                 <span style="color: #f87171;" id="total-out">-₹0.00</span>
                             </div>
                         </div>
 
                         <div class="chart-box">
-                            <div style="font-size: 12px; font-weight: 800; margin-bottom: 8px;">Expense Split</div>
-                            <div style="height: 140px;"><canvas id="financeChart"></canvas></div>
+                            <div style="font-size: 13px; font-weight: 800; margin-bottom: 12px;">Expense Split</div>
+                            <div style="height: 160px;"><canvas id="financeChart"></canvas></div>
                         </div>
                     </div>
 
                     <div class="vault-grid-col">
-                        <div class="panel-heading" style="border: none; margin-bottom: 12px;">
+                        <div class="panel-heading" style="border: none; margin-bottom: 16px;">
                             <span id="grid-mode-title">Quick Log Expense</span>
-                            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                                <button class="btn btn-primary" id="btn-toggle-edit" style="padding: 6px 12px; font-size: 12px; width: auto;" onclick="toggleEditMode()"><i class="fas fa-pencil-alt"></i> Edit</button>
-                                <button class="btn btn-danger" id="tab-out-btn" style="padding: 6px 12px; font-size: 12px; width: auto;" onclick="setVaultFlow('expense')">Out</button>
-                                <button class="btn btn-success" id="tab-in-btn" style="padding: 6px 12px; font-size: 12px; width: auto;" onclick="setVaultFlow('income')">In</button>
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                <button class="btn btn-primary" id="btn-toggle-edit" style="padding: 10px 16px; font-size: 13px; width: auto;" onclick="toggleEditMode()"><i class="fas fa-pencil-alt"></i> Edit Labels</button>
+                                <button class="btn btn-danger" id="tab-out-btn" style="padding: 10px 16px; font-size: 13px; width: auto;" onclick="setVaultFlow('expense')">Expense (Out)</button>
+                                <button class="btn btn-success" id="tab-in-btn" style="padding: 10px 16px; font-size: 13px; width: auto;" onclick="setVaultFlow('income')">Income (In)</button>
                             </div>
                         </div>
                         <div class="grid-container" id="category-grid"></div>
@@ -401,8 +364,8 @@
             <section id="attendance-view" class="view-panel">
                 <div id="timesheet-export-area">
                     <div class="panel-heading">
-                        <span>Work & Salary</span>
-                        <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-link"></i> Vault Linked</span>
+                        <span>Work & Salary Log</span>
+                        <span style="font-size: 14px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-link"></i> Vault Linked</span>
                     </div>
 
                     <div class="att-stats-row">
@@ -430,67 +393,73 @@
                 </div>
 
                 <div class="form-card">
-                    <div style="width: 100%; display: flex; gap: 12px; flex-wrap: wrap; border-bottom: 1px dashed var(--border-color); padding-bottom: 12px;">
-                        <div class="input-group">
-                            <label style="display: flex; justify-content: space-between;">
-                                <span>Select Profile</span>
-                                <span style="color: var(--text-accent); cursor: pointer;" onclick="openJobModal()"><i class="fas fa-edit"></i> Edit Jobs</span>
-                            </label>
-                            <select id="att-job-select" class="form-control"></select>
-                        </div>
+                    <h3 style="color: var(--text-main); font-size: 18px; margin-bottom: 10px;"><i class="fas fa-plus-circle"></i> Log New Shift</h3>
+                    <div class="input-group">
+                        <label style="display: flex; justify-content: space-between;">
+                            <span>Select Job Profile</span>
+                            <span style="color: var(--text-accent); cursor: pointer; text-decoration: underline;" onclick="openJobModal()"><i class="fas fa-edit"></i> Edit Jobs</span>
+                        </label>
+                        <select id="att-job-select" class="form-control"></select>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; width: 100%;">
                         <div class="input-group"><label>Base Rate (8h) ₹</label><input type="number" id="att-base-rate" class="form-control" onchange="saveRates()"></div>
                         <div class="input-group"><label>OT Rate/hr ₹</label><input type="number" id="att-ot-rate" class="form-control" onchange="saveRates()"></div>
                     </div>
 
                     <div class="input-group"><label>Date</label><input type="date" id="att-date" class="form-control"></div>
-                    <div class="input-group"><label>In Time</label><input type="time" id="att-in" class="form-control" value="09:30"></div>
-                    <div class="input-group"><label>Out Time</label><input type="time" id="att-out" class="form-control" value="18:00"></div>
-                    <button class="btn btn-success" style="width: 100%; margin-top: 6px;" onclick="recordShift()"><i class="fas fa-plus-circle"></i> Log Shift & Sync to Vault</button>
+                    
+                    <div style="display: flex; gap: 15px; width: 100%;">
+                        <div class="input-group"><label>In Time</label><input type="time" id="att-in" class="form-control" value="09:30"></div>
+                        <div class="input-group"><label>Out Time</label><input type="time" id="att-out" class="form-control" value="18:00"></div>
+                    </div>
+                    
+                    <button class="btn btn-success" style="margin-top: 10px;" onclick="recordShift()"><i class="fas fa-cloud-upload-alt"></i> Save Shift & Sync Money to Vault</button>
                 </div>
 
-                <div class="btn-flex-row" style="margin-top: 16px;">
-                    <button class="btn btn-primary" onclick="downloadPDF()"><i class="fas fa-download"></i> Download Timesheet</button>
-                    <button class="btn btn-danger" style="max-width: 60px;" onclick="clearShifts()"><i class="fas fa-trash"></i></button>
+                <div class="btn-flex-row" style="margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download Official Timesheet PDF</button>
+                    <button class="btn btn-danger" onclick="clearShifts()"><i class="fas fa-trash"></i> Clear Shift Records</button>
                 </div>
             </section>
 
             <section id="loans-view" class="view-panel">
                 <div class="panel-heading">
                     <span>Loan Manager</span>
-                    <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-robot"></i> Auto-Deduct Ready</span>
+                    <span style="font-size: 14px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-robot"></i> Auto-Deduct Ready</span>
                 </div>
                 
-                <div class="form-card" style="margin-bottom: 20px;">
-                    <h3 style="margin-bottom: 15px; color: var(--text-main); width: 100%;"><i class="fas fa-calculator"></i> EMI Calculator</h3>
+                <div class="form-card" style="margin-bottom: 24px;">
+                    <h3 style="margin-bottom: 15px; color: var(--text-main); width: 100%;"><i class="fas fa-calculator"></i> New EMI Calculator</h3>
                     
-                    <div class="input-group"><label>Loan Purpose</label><input type="text" id="loan-name-input" class="form-control" placeholder="e.g. Bike Loan"></div>
-                    <div class="input-group"><label>Principal (₹)</label><input type="number" id="loan-principal" class="form-control" placeholder="100000" oninput="runEMICalc()"></div>
+                    <div class="input-group"><label>Loan Name / Purpose</label><input type="text" id="loan-name-input" class="form-control" placeholder="e.g. Bike Loan"></div>
+                    <div class="input-group"><label>Principal Amount (₹)</label><input type="number" id="loan-principal" class="form-control" placeholder="100000" oninput="runEMICalc()"></div>
                     
-                    <div class="loan-inputs-row">
-                        <div class="form-group"><label style="font-size:12px; font-weight:700; color:var(--text-main); margin-bottom:6px;">Interest (% p.a.)</label><input type="number" id="loan-rate" class="form-control" placeholder="12" step="0.1" oninput="runEMICalc()"></div>
-                        <div class="form-group"><label style="font-size:12px; font-weight:700; color:var(--text-main); margin-bottom:6px;">Tenure (Months)</label><input type="number" id="loan-tenure" class="form-control" placeholder="24" oninput="runEMICalc()"></div>
+                    <div style="display: flex; gap: 15px; width: 100%;">
+                        <div class="input-group"><label>Interest Rate (% p.a.)</label><input type="number" id="loan-rate" class="form-control" placeholder="12" step="0.1" oninput="runEMICalc()"></div>
+                        <div class="input-group"><label>Tenure (Months)</label><input type="number" id="loan-tenure" class="form-control" placeholder="24" oninput="runEMICalc()"></div>
                     </div>
                     
-                    <div class="input-group"><label>Monthly Due Date (1-31)</label><input type="number" id="loan-due-input" class="form-control" placeholder="5" min="1" max="31"></div>
+                    <div class="input-group"><label>Monthly Due Date (Day 1-31)</label><input type="number" id="loan-due-input" class="form-control" placeholder="5" min="1" max="31"></div>
                     
-                    <div style="width: 100%; display: flex; flex-direction: column; gap: 8px; margin: 10px 0;">
-                        <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
-                            <input type="checkbox" id="loan-disburse-check" checked style="width: 18px; height: 18px;"> Deposit Principal to Vault as Income now?
+                    <div style="width: 100%; display: flex; flex-direction: column; gap: 12px; margin: 15px 0;">
+                        <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
+                            <input type="checkbox" id="loan-disburse-check" checked style="width: 24px; height: 24px;"> Deposit Principal to Vault as Income now?
                         </label>
-                        <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
-                            <input type="checkbox" id="loan-autopay-check" checked style="width: 18px; height: 18px;"> Auto-Pay EMI from Vault every month on Due Date
+                        <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
+                            <input type="checkbox" id="loan-autopay-check" checked style="width: 24px; height: 24px;"> Auto-Pay EMI from Vault every month on Due Date
                         </label>
                     </div>
                     
-                    <div style="width: 100%; display: flex; justify-content: space-around; background: var(--bg-card); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); text-align: center; margin-bottom: 10px;">
-                        <div><div style="font-size: 11px; color: var(--text-muted);">Monthly EMI</div><div style="font-weight: 900; font-size: 18px; color: var(--danger);" id="emi-calc-out">₹0</div></div>
-                        <div><div style="font-size: 11px; color: var(--text-muted);">Total Interest</div><div style="font-weight: 900; font-size: 18px; color: var(--text-main);" id="int-calc-out">₹0</div></div>
+                    <div style="width: 100%; display: flex; justify-content: space-around; background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; margin-bottom: 15px;">
+                        <div><div style="font-size: 13px; color: var(--text-muted); font-weight: bold; text-transform: uppercase;">Monthly EMI</div><div style="font-weight: 900; font-size: 24px; color: var(--danger);" id="emi-calc-out">₹0</div></div>
+                        <div><div style="font-size: 13px; color: var(--text-muted); font-weight: bold; text-transform: uppercase;">Total Interest</div><div style="font-weight: 900; font-size: 24px; color: var(--text-main);" id="int-calc-out">₹0</div></div>
                     </div>
 
-                    <button class="btn btn-success" style="width: 100%;" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan</button>
+                    <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan & Activate System</button>
                 </div>
 
-                <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Active Loans</h3>
+                <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Active Loans Status</h3>
                 <div class="loans-grid" id="active-loans-grid"></div>
             </section>
 
@@ -516,7 +485,7 @@
 
             <section id="archives-view" class="view-panel">
                 <div class="panel-heading"><span>Past Months Archive</span></div>
-                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">Completed months stored as separate historical files.</p>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Completed months stored as separate historical files. Keeps your active dashboard fast.</p>
                 <div class="loans-grid" id="archives-grid"></div>
             </section>
 
@@ -524,35 +493,35 @@
             <section id="ai-advisor-view" class="view-panel">
                 <div class="panel-heading">
                     <span>Cherry Bot 🍒</span>
-                    <span style="font-size: 12px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-globe"></i> Multi-lingual Offline</span>
+                    <span style="font-size: 14px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-globe"></i> Multi-lingual Offline</span>
                 </div>
 
                 <div class="chat-wrap">
                     <div class="translator-bar">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 12px; font-weight: 800; color: var(--text-main);"><i class="fas fa-language"></i> Mega-Lexicon Translator</span>
-                            <span style="font-size: 10px; color: var(--text-muted); font-weight: 700;">100% Offline</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-size: 14px; font-weight: 800; color: var(--text-main);"><i class="fas fa-language"></i> Mega-Lexicon Translator</span>
+                            <span style="font-size: 12px; color: var(--text-muted); font-weight: 700; background: rgba(0,0,0,0.5); padding: 4px 8px; border-radius: 8px;">100% Offline</span>
                         </div>
-                        <div class="translator-inputs">
+                        <div class="translator-select-row">
                             <select id="trans-src" class="translator-select">
                                 <option value="en">English</option>
-                                <option value="ta">Tamil (தமிழ்)</option>
-                                <option value="hi">Hindi (हिन्दी)</option>
+                                <option value="ta">Tamil</option>
+                                <option value="hi">Hindi</option>
                                 <option value="es">Spanish</option>
                                 <option value="fr">French</option>
                             </select>
-                            <i class="fas fa-arrow-right" style="font-size: 11px; color: var(--text-accent); padding: 0 4px;"></i>
+                            <i class="fas fa-arrow-right" style="font-size: 14px; color: var(--text-accent);"></i>
                             <select id="trans-dst" class="translator-select">
-                                <option value="ta">Tamil (தமிழ்)</option>
-                                <option value="hi">Hindi (हिन्दी)</option>
+                                <option value="ta">Tamil</option>
+                                <option value="hi">Hindi</option>
                                 <option value="en">English</option>
                                 <option value="es">Spanish</option>
                                 <option value="fr">French</option>
                             </select>
-                            <div style="display:flex; gap:8px; flex: 1 1 100%; margin-top:4px;">
-                                <input type="text" id="trans-input" class="form-control" style="padding: 7px 10px; font-size: 12px; flex:1;" placeholder="Word or sentence...">
-                                <button class="btn btn-success" style="padding: 7px 12px; font-size: 12px; width:auto;" onclick="runQuickTranslate()"><i class="fas fa-check"></i></button>
-                            </div>
+                        </div>
+                        <div style="display:flex; gap:10px; width: 100%; margin-top: 4px;">
+                            <input type="text" id="trans-input" class="form-control" style="flex:1;" placeholder="Type word to translate...">
+                            <button class="btn btn-success" style="width:auto; padding: 0 20px;" onclick="runQuickTranslate()"><i class="fas fa-check"></i></button>
                         </div>
                     </div>
 
@@ -560,15 +529,16 @@
                         <div class="chat-bubble chat-bot">
                             வணக்கம் / Namaste / Hello Gokul! 🍒 I am <b>Cherry Bot</b>, your offline buddy.<br><br>
                             My brain is connected to your local lexicon file. I understand hundreds of everyday words in English, Tamil, Hindi, Spanish, and French!<br><br>
-                            💬 Try saying:<br>
+                            💬 Try typing down below:<br>
                             - "How are you?" or "Epdi irukka?"<br>
                             - "Translate beautiful to tamil"<br>
                             - "Check my balance!"
                         </div>
                     </div>
                     <div class="chat-controls">
-                        <input type="text" id="chat-user-input" class="form-control" placeholder="Type a message..." onkeypress="if(event.key==='Enter') executeOfflineChat()">
-                        <button class="btn btn-success" id="ai-send-btn" onclick="executeOfflineChat()"><i class="fas fa-paper-plane"></i></button>
+                        <!-- EXPANDED LONG INPUT FOR CHAT -->
+                        <input type="text" id="chat-user-input" class="form-control" placeholder="Chat with Cherry Bot..." onkeypress="if(event.key==='Enter') executeOfflineChat()">
+                        <button class="btn btn-success" id="ai-send-btn" onclick="executeOfflineChat()">Send <i class="fas fa-paper-plane" style="margin-left:6px;"></i></button>
                     </div>
                 </div>
             </section>
@@ -581,29 +551,28 @@
                     
                     <!-- App Installation & Data Backup -->
                     <div class="loan-card" style="justify-content: flex-start; border-color: var(--text-accent);">
-                        <div style="font-weight: 900; font-size: 16px; color: var(--text-main); margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
-                            <i class="fas fa-mobile-alt"></i> App Installation & Backup
+                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+                            <i class="fas fa-mobile-alt"></i> App & Backup Center
                         </div>
-                        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Install this app directly to your phone's home screen, or backup/restore your data.</p>
+                        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Force Full-Screen mode, or Backup your private financial data offline.</p>
                         
-                        <button class="btn btn-success" style="margin-bottom: 10px;" onclick="installAppMode()"><i class="fas fa-expand"></i> Enter Full-Screen App Mode</button>
-                        
-                        <div class="btn-flex-row" style="margin-bottom: 10px;">
-                            <button class="btn btn-primary" onclick="downloadAppDirectly()"><i class="fas fa-file-code"></i> Download HTML</button>
-                            <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-download"></i> Backup Data</button>
+                        <div class="btn-flex-row">
+                            <button class="btn btn-success" onclick="installAppMode()"><i class="fas fa-expand"></i> Enter Full-Screen App Mode</button>
+                            <button class="btn btn-primary" onclick="downloadAppDirectly()"><i class="fas fa-file-code"></i> Download Source HTML</button>
+                            <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-download"></i> Backup Vault Data (.json)</button>
                         </div>
                         
-                        <div style="background: var(--bg-card-alt); padding: 10px; border-radius: 8px; border: 1px dashed var(--border-color);">
-                            <label style="font-size: 12px; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 6px;">Restore Data Backup</label>
-                            <input type="file" id="import-file" accept=".json" style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; width: 100%;">
+                        <div style="background: var(--bg-card-alt); padding: 15px; border-radius: 12px; border: 2px dashed var(--border-color); margin-top: 15px;">
+                            <label style="font-size: 14px; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 10px;">Restore Data Backup</label>
+                            <input type="file" id="import-file" accept=".json" style="font-size: 14px; color: var(--text-muted); margin-bottom: 12px; width: 100%; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px;">
                             <button class="btn btn-danger" onclick="importData()"><i class="fas fa-upload"></i> Restore Data</button>
                         </div>
                     </div>
 
                     <!-- Translator Settings -->
                     <div class="loan-card" style="justify-content: flex-start;">
-                        <div style="font-weight: 900; font-size: 16px; color: var(--text-main); margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
-                            <i class="fas fa-language"></i> Translator Settings
+                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+                            <i class="fas fa-language"></i> Translator Preferences
                         </div>
                         <div class="input-group">
                             <label>Default 'From' Language</label>
@@ -615,7 +584,7 @@
                                 <option value="fr">French</option>
                             </select>
                         </div>
-                        <div class="input-group" style="margin-top: 10px;">
+                        <div class="input-group" style="margin-top: 15px;">
                             <label>Default 'To' Language</label>
                             <select id="setting-trans-dst" class="form-control" onchange="saveAppConfig()">
                                 <option value="ta">Tamil (தமிழ்)</option>
@@ -629,8 +598,8 @@
 
                     <!-- Bot Settings -->
                     <div class="loan-card" style="justify-content: flex-start;">
-                        <div style="font-weight: 900; font-size: 16px; color: var(--text-main); margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
-                            <i class="fas fa-robot"></i> Cherry Bot Settings
+                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+                            <i class="fas fa-robot"></i> Cherry Bot Config
                         </div>
                         <div class="input-group">
                             <label>Bot Reply Speed</label>
@@ -640,7 +609,7 @@
                                 <option value="1200">Human-like (Slow & Natural)</option>
                             </select>
                         </div>
-                        <div class="input-group" style="margin-top: 10px;">
+                        <div class="input-group" style="margin-top: 15px;">
                             <label>Bot Personality</label>
                             <select id="setting-bot-tone" class="form-control" onchange="saveAppConfig()">
                                 <option value="friendly">Friendly & Helpful (Default)</option>
@@ -652,36 +621,36 @@
 
                     <!-- Chat Settings -->
                     <div class="loan-card" style="justify-content: flex-start;">
-                        <div style="font-weight: 900; font-size: 16px; color: var(--text-main); margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
-                            <i class="fas fa-comment-dots"></i> Chat Settings
+                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+                            <i class="fas fa-comment-dots"></i> Data Privacy
                         </div>
-                        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Clear your current conversation history with Cherry Bot. This does not delete any financial data.</p>
-                        <button class="btn btn-danger" onclick="clearChatHistory()"><i class="fas fa-trash"></i> Clear Chat History</button>
+                        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Clear your current conversation history with Cherry Bot. This does not delete any financial data.</p>
+                        <button class="btn btn-danger" onclick="clearChatHistory()"><i class="fas fa-trash"></i> Wipe Chat History</button>
                     </div>
                 </div>
 
                 <!-- Visual Settings -->
                 <div class="form-card" style="margin-bottom: 25px; flex-direction: column;">
-                    <div style="font-weight: 900; font-size: 16px; color: var(--text-main); margin-bottom: 10px;">
+                    <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 15px;">
                         <i class="fas fa-layer-group"></i> Glass UI Transparency
                     </div>
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <span style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Clear</span>
+                        <span style="font-size: 14px; color: var(--text-muted); font-weight: 700;">Clear</span>
                         <input type="range" id="opacity-slider" min="0" max="1" step="0.05" oninput="updateGlassOpacity(this.value)">
-                        <span style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Solid</span>
+                        <span style="font-size: 14px; color: var(--text-muted); font-weight: 700;">Solid</span>
                     </div>
 
-                    <div style="font-weight: 900; font-size: 16px; color: var(--text-main); margin-top: 20px; margin-bottom: 10px;">
+                    <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-top: 30px; margin-bottom: 15px;">
                         <i class="fas fa-moon"></i> Video Brightness Dimmer
                     </div>
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <span style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Bright</span>
+                        <span style="font-size: 14px; color: var(--text-muted); font-weight: 700;">Bright</span>
                         <input type="range" id="dimmer-slider" min="0" max="1" step="0.05" oninput="updateVideoDimmer(this.value)">
-                        <span style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Dark</span>
+                        <span style="font-size: 14px; color: var(--text-muted); font-weight: 700;">Dark</span>
                     </div>
                 </div>
 
-                <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Color Themes</h3>
+                <h3 style="color: var(--text-main); margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Color Themes</h3>
                 <div class="loans-grid" id="theme-gallery"></div>
             </section>
 
@@ -691,35 +660,35 @@
     <!-- Modals -->
     <div class="modal-mask" id="profileModal">
         <div class="modal-sheet">
-            <h3 style="color: var(--text-main); font-family: var(--header-font); text-align: center;">Edit Profile & Photo</h3>
+            <h3 style="color: var(--text-main); font-family: var(--header-font); text-align: center; font-size: 22px; margin-bottom: 10px;">Edit Profile & Photo</h3>
             <div class="input-group"><label>Name</label><input type="text" id="m-prof-name" class="form-control"></div>
             <div class="input-group"><label>Job Title</label><input type="text" id="m-prof-role" class="form-control"></div>
-            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
                 <div class="input-group"><label>ID</label><input type="text" id="m-prof-id" class="form-control"></div>
                 <div class="input-group"><label>Height</label><input type="text" id="m-prof-ht" class="form-control"></div>
             </div>
-            <div class="input-group" style="margin-top: 4px;">
+            <div class="input-group" style="margin-top: 10px;">
                 <label>Profile Photo URL or Image File</label>
                 <input type="text" id="m-prof-avatar" class="form-control" placeholder="Paste image link or upload below">
-                <input type="file" id="m-prof-file" accept="image/*" style="font-size: 11px; color: var(--text-muted); margin-top: 6px;" onchange="encodeImageFileAsURL(this)">
+                <input type="file" id="m-prof-file" accept="image/*" style="font-size: 14px; color: var(--text-main); margin-top: 12px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px; border: 1px dashed var(--border-color);" onchange="encodeImageFileAsURL(this)">
             </div>
-            <div class="btn-flex-row" style="margin-top: 10px;">
+            <div class="btn-flex-row" style="margin-top: 20px;">
                 <button class="btn btn-primary" onclick="closeModal('profileModal')">Cancel</button>
-                <button class="btn btn-success" onclick="saveProfileData()">Save Details</button>
+                <button class="btn btn-success" onclick="saveProfileData()">Save Official Details</button>
             </div>
         </div>
     </div>
 
     <div class="modal-mask" id="categoryModal">
         <div class="modal-sheet">
-            <h3 style="color: var(--text-main); text-align: center;" id="cat-modal-title">Edit Label</h3>
+            <h3 style="color: var(--text-main); text-align: center; font-size: 22px;">Edit Label</h3>
             <div class="input-group">
                 <input type="text" id="m-cat-name" class="form-control" placeholder="Category Name">
             </div>
-            <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-top: 10px;">Choose Icon</div>
+            <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); margin-top: 15px;">Choose Icon</div>
             <div class="selection-grid" id="m-cat-icons"></div>
-            <div class="btn-flex-row" style="margin-top: 10px;">
-                <button class="btn btn-danger" id="m-cat-del-btn" style="display: none; max-width: 60px;" onclick="deleteActiveCategory()"><i class="fas fa-trash"></i></button>
+            <div class="btn-flex-row" style="margin-top: 20px;">
+                <button class="btn btn-danger" id="m-cat-del-btn" style="display: none;" onclick="deleteActiveCategory()"><i class="fas fa-trash"></i> Delete Category</button>
                 <button class="btn btn-primary" onclick="closeModal('categoryModal')">Cancel</button>
                 <button class="btn btn-success" onclick="saveActiveCategory()">Save</button>
             </div>
@@ -728,49 +697,66 @@
 
     <div class="modal-mask" id="jobModal">
         <div class="modal-sheet">
-            <h3 style="color: var(--text-main); text-align: center;">Job Profiles</h3>
-            <div style="display: flex; gap: 8px; width: 100%;">
+            <h3 style="color: var(--text-main); text-align: center; font-size: 22px;">Job Profiles</h3>
+            <div style="display: flex; gap: 12px; width: 100%;">
                 <input type="text" id="new-job-input" class="form-control" style="flex:1;" placeholder="Add Job Name">
-                <button class="btn btn-success" style="width: auto;" onclick="createJobProfile()"><i class="fas fa-plus"></i></button>
+                <button class="btn btn-success" style="width: auto; padding: 0 20px;" onclick="createJobProfile()"><i class="fas fa-plus"></i></button>
             </div>
-            <div id="job-profile-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
-            <button class="btn btn-primary" onclick="closeModal('jobModal')">Done</button>
+            <div id="job-profile-list" style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;"></div>
+            <button class="btn btn-primary" style="margin-top: 15px;" onclick="closeModal('jobModal')">Done</button>
         </div>
     </div>
 
     <div class="modal-mask" id="menuSheetModal">
-        <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom));">
-            <div style="font-weight: 900; color: var(--text-main); text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">App Menu</div>
+        <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom)); border-radius: 20px 20px 0 0;">
+            <div style="font-weight: 900; font-size: 18px; color: var(--text-main); text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-bottom: 10px;">App Menu</div>
             <button class="nav-btn" onclick="navTo('history'); closeModal('menuSheetModal')"><i class="fas fa-scroll"></i> Ledger Records</button>
             <button class="nav-btn" onclick="navTo('archives'); closeModal('menuSheetModal')"><i class="fas fa-archive"></i> Past Months</button>
             <button class="nav-btn" onclick="openProfileModal(); closeModal('menuSheetModal')"><i class="fas fa-user-edit"></i> Edit Profile</button>
             <button class="nav-btn action-btn" onclick="completeMonth(); closeModal('menuSheetModal')"><i class="fas fa-calendar-check"></i> Complete Month</button>
             <button class="nav-btn danger-btn" onclick="yearlyReset(); closeModal('menuSheetModal')"><i class="fas fa-skull"></i> Yearly Reset</button>
-            <button class="btn btn-success" style="margin-top: 6px;" onclick="installAppMode(); closeModal('menuSheetModal')"><i class="fas fa-expand"></i> Make Full Screen App</button>
-            <button class="btn btn-primary" style="margin-top: 8px;" onclick="closeModal('menuSheetModal')">Close</button>
+            <button class="btn btn-success" style="margin-top: 10px; font-size: 15px;" onclick="installAppMode(); closeModal('menuSheetModal')"><i class="fas fa-expand"></i> Enter Full Screen App</button>
+            <button class="btn btn-primary" style="margin-top: 10px; font-size: 15px;" onclick="closeModal('menuSheetModal')">Close</button>
         </div>
     </div>
 
     <div class="modal-mask" id="installGuideModal">
         <div class="modal-sheet" style="text-align: center;">
-            <div style="font-size: 42px; color: var(--text-accent); margin-bottom: 10px;"><i class="fas fa-expand-arrows-alt"></i></div>
-            <h3 style="color: var(--text-main); font-family: var(--header-font); margin-bottom: 15px;">App Mode Activated!</h3>
+            <div style="font-size: 48px; color: var(--text-accent); margin-bottom: 15px;"><i class="fas fa-expand-arrows-alt"></i></div>
+            <h3 style="color: var(--text-main); font-family: var(--header-font); font-size: 26px; margin-bottom: 20px;">App Mode Activated!</h3>
             
-            <div style="text-align: left; background: var(--bg-card-alt); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 15px;">
-                <p style="font-size: 13px; color: var(--text-main); font-weight: bold; margin-bottom: 10px;">
-                    To keep this as a permanent App on your phone:
+            <div style="text-align: left; background: var(--bg-card-alt); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 20px;">
+                <p style="font-size: 15px; color: var(--text-main); font-weight: 900; margin-bottom: 15px;">
+                    To keep this as a permanent App on your phone screen:
                 </p>
-                <ol style="font-size: 13px; color: var(--text-muted); line-height: 1.8; padding-left: 20px; margin-bottom: 0; font-weight: bold;">
+                <ol style="font-size: 14px; color: var(--text-muted); line-height: 2; padding-left: 24px; margin-bottom: 0; font-weight: 700;">
                     <li>Tap your Chrome browser menu <b>(⋮)</b>.</li>
-                    <li>Tap <b>"Add to Home screen"</b>.</li>
-                    <li>Open it from your home screen forever!</li>
+                    <li>Tap <b>"Add to Home screen"</b> or <b>"Install App"</b>.</li>
+                    <li>Open it from your home screen forever without browser bars!</li>
                 </ol>
             </div>
-            <button class="btn btn-success" onclick="closeModal('installGuideModal')">Got It</button>
+            <button class="btn btn-success" style="padding: 16px; font-size: 16px;" onclick="closeModal('installGuideModal')">Got It</button>
         </div>
     </div>
 
     <script>
+        // FULL SCREEN ENFORCER SCRIPT FOR MOBILE APPS
+        function enterFullScreen() {
+            if (!document.fullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen().catch(()=>{});
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
+                }
+            }
+        }
+        // Attaches to the first tap on the screen to trigger full screen organically
+        document.addEventListener('touchstart', enterFullScreen, { once: true, passive: true });
+        document.addEventListener('click', enterFullScreen, { once: true });
+
+
         async function preCacheAssets() {
             if ('caches' in window) {
                 try {
@@ -870,19 +856,11 @@
         }
 
         function installAppMode() {
+            enterFullScreen();
             if (pwaEvent) {
                 pwaEvent.prompt();
                 pwaEvent.userChoice.then(() => { pwaEvent = null; });
             } else {
-                if (!document.fullscreenElement) {
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    } else if (document.documentElement.webkitRequestFullscreen) {
-                        document.documentElement.webkitRequestFullscreen();
-                    } else if (document.documentElement.msRequestFullscreen) {
-                        document.documentElement.msRequestFullscreen();
-                    }
-                }
                 openModal('installGuideModal');
             }
         }
@@ -1010,10 +988,7 @@
                 video.muted = true;
                 const promise = video.play();
                 if (promise !== undefined) {
-                    promise.catch(() => {
-                        document.body.addEventListener('touchstart', () => { video.play(); }, { once: true });
-                        document.body.addEventListener('click', () => { video.play(); }, { once: true });
-                    });
+                    promise.catch(() => {});
                 }
             }
         }
@@ -1384,9 +1359,6 @@
             }
         }
 
-        // ==========================================
-        // HIGH LEVEL OFFICE PDF EXPORT WITH PROFILE PHOTO
-        // ==========================================
         function downloadPDF() {
             if (shifts.length === 0) return alert("No shifts to export!");
             
@@ -1414,7 +1386,6 @@
             doc.setFontSize(10);
             doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
             
-            // Draw Profile Avatar in PDF if available
             try {
                 if (profile.avatar && profile.avatar.startsWith('data:image')) {
                     doc.addImage(profile.avatar, 'JPEG', 14, 45, 20, 20);
@@ -1501,8 +1472,8 @@
 
         function runEMICalc() {
             const p = parseFloat(document.getElementById('loan-p-input').value);
-            const r_ann = parseFloat(document.getElementById('loan-r-input').value);
-            const n = parseInt(document.getElementById('loan-n-input').value);
+            const r_ann = parseFloat(document.getElementById('loan-rate').value);
+            const n = parseInt(document.getElementById('loan-tenure').value);
 
             if (!p || !r_ann || !n) {
                 document.getElementById('emi-calc-out').innerText = '₹0';
@@ -1636,9 +1607,6 @@
             }
         }
 
-        // ==========================================
-        // 9. CHERRY BOT 🍒 TRANSLATOR & LOGIC
-        // ==========================================
         function performOfflineTranslation(text, srcLang, dstLang) {
             const clean = text.trim().toLowerCase();
             if (!clean) return "Please enter a word or sentence to translate.";
