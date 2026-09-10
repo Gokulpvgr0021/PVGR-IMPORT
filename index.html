@@ -26,8 +26,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- External Engines & Lexicon -->
-    <script src="lexicon.js"></script>
+    <!-- External Engines -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
@@ -261,21 +260,6 @@
         .progress-bar-bg { background: var(--bg-card-alt); height: 12px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); width: 100%; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); }
 
-        /* Chat / Cherry Bot */
-        .chat-wrap { display: flex; flex-direction: column; height: calc(100dvh - 200px); min-height: 380px; width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; }
-        .translator-bar { background: var(--bg-card-alt); border-bottom: 1px solid var(--border-color); padding: 12px; display: flex; flex-direction: column; gap: 10px; width: 100%; }
-        .translator-select-row { display: flex; width: 100%; gap: 10px; align-items: center; }
-        .translator-select { flex: 1; padding: 12px; font-size: 16px !important; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); outline: none; }
-        
-        .chat-stream { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; -webkit-overflow-scrolling: touch; width: 100%; }
-        .chat-bubble { padding: 14px 18px; border-radius: 16px; max-width: 90%; font-size: 15px; line-height: 1.6; word-wrap: break-word; }
-        .chat-user { background: var(--bg-card-alt); border: 1px solid var(--border-color); align-self: flex-end; border-bottom-right-radius: 4px; }
-        .chat-bot { background: linear-gradient(135deg, var(--text-main), var(--text-accent)); color: #08060c; font-weight: 700; align-self: flex-start; border-bottom-left-radius: 4px; }
-        
-        .chat-controls { display: flex; flex-direction: column; padding: 14px; background: var(--bg-card-alt); border-top: 1px solid var(--border-color); gap: 10px; width: 100%; }
-        .chat-controls input { width: 100%; min-height: 52px; padding: 14px; font-size: 16px !important; border-radius: 12px; }
-        .chat-controls button { width: 100%; min-height: 48px; font-size: 16px; }
-
         /* Modals */
         .modal-mask { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 16px; }
         .modal-mask.active { display: flex; }
@@ -303,7 +287,6 @@
             .vault-summary-col { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); padding: 12px 0; background: transparent; }
             .vault-grid-col { padding: 14px 0; }
             .att-stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-            .chat-wrap { height: calc(100dvh - 175px - var(--safe-top) - var(--safe-bottom)); }
         }
     </style>
 </head>
@@ -335,7 +318,6 @@
         <button class="tab-item active" id="tab-vault" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i><span>Vault</span></button>
         <button class="tab-item" id="tab-att" onclick="navTo('attendance')"><i class="fas fa-business-time"></i><span>Work</span></button>
         <button class="tab-item" id="tab-loan" onclick="navTo('loans')"><i class="fas fa-hand-holding-usd"></i><span>Loans</span></button>
-        <button class="tab-item" id="tab-ai" onclick="navTo('ai-advisor')"><i class="fas fa-language"></i><span>Cherry</span></button>
         <button class="tab-item" id="tab-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i><span>Settings</span></button>
     </div>
 
@@ -353,7 +335,6 @@
                     <button class="btn btn-primary" id="dnav-loans" onclick="navTo('loans')"><i class="fas fa-hand-holding-usd"></i> <span>Loans & EMI</span></button>
                     <button class="btn btn-primary" id="dnav-history" onclick="navTo('history')"><i class="fas fa-scroll"></i> <span>Ledger</span></button>
                     <button class="btn btn-primary" id="dnav-archives" onclick="navTo('archives')"><i class="fas fa-archive"></i> <span>Archives</span></button>
-                    <button class="btn btn-primary" id="dnav-ai-advisor" onclick="navTo('ai-advisor')"><i class="fas fa-language"></i> <span>Cherry & Translator</span></button>
                     <button class="btn btn-primary" id="dnav-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i> <span>Settings & Themes</span></button>
                     
                     <button class="btn btn-success" style="margin-top: 10px;" onclick="triggerAppInstall()"><i class="fas fa-download"></i> <span>Install Standalone App</span></button>
@@ -546,55 +527,7 @@
                 <div class="loans-grid" id="archives-grid"></div>
             </section>
 
-            <!-- 6. CHERRY BOT -->
-            <section id="ai-advisor-view" class="view-panel">
-                <div class="panel-heading">
-                    <span>Cherry Bot 🍒</span>
-                    <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-globe"></i> Multi-lingual Offline</span>
-                </div>
-
-                <div class="chat-wrap">
-                    <div class="translator-bar">
-                        <div class="translator-select-row">
-                            <select id="trans-src" class="translator-select">
-                                <option value="en">English</option>
-                                <option value="ta">Tamil</option>
-                                <option value="hi">Hindi</option>
-                                <option value="es">Spanish</option>
-                                <option value="fr">French</option>
-                            </select>
-                            <i class="fas fa-arrow-right" style="font-size: 14px; color: var(--text-accent);"></i>
-                            <select id="trans-dst" class="translator-select">
-                                <option value="ta">Tamil</option>
-                                <option value="hi">Hindi</option>
-                                <option value="en">English</option>
-                                <option value="es">Spanish</option>
-                                <option value="fr">French</option>
-                            </select>
-                        </div>
-                        <div style="display:flex; gap:8px; width: 100%;">
-                            <input type="text" id="trans-input" class="form-control" style="flex:1;" placeholder="Translate word or phrase...">
-                            <button class="btn btn-success" style="width:auto; padding: 0 18px;" onclick="runQuickTranslate()"><i class="fas fa-check"></i></button>
-                        </div>
-                    </div>
-
-                    <div class="chat-stream" id="chat-stream">
-                        <div class="chat-bubble chat-bot">
-                            வணக்கம் / Namaste / Hello Gokul! 🍒 I am <b>Cherry Bot</b>, your offline assistant.<br><br>
-                            💬 Try typing below:<br>
-                            - "How are you?" or "Epdi irukka?"<br>
-                            - "Check my balance"<br>
-                            - "Translate beautiful to tamil"
-                        </div>
-                    </div>
-                    <div class="chat-controls">
-                        <input type="text" id="chat-user-input" class="form-control" placeholder="Ask Cherry Bot..." onkeypress="if(event.key==='Enter') executeOfflineChat()">
-                        <button class="btn btn-success" id="ai-send-btn" onclick="executeOfflineChat()">Send <i class="fas fa-paper-plane" style="margin-left:6px;"></i></button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 7. SETTINGS & APP CENTER -->
+            <!-- 6. SETTINGS & APP CENTER -->
             <section id="settings-view" class="view-panel">
                 <div class="panel-heading"><span>Settings & App Download</span></div>
                 
@@ -616,33 +549,6 @@
                             <label style="font-size: 13px; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 8px;">Restore Backup</label>
                             <input type="file" id="import-file" accept=".json" style="font-size: 13px; color: var(--text-muted); width: 100%; margin-bottom: 8px;">
                             <button class="btn btn-danger" onclick="importData()"><i class="fas fa-upload"></i> Restore Backup File</button>
-                        </div>
-                    </div>
-
-                    <!-- Translator & Bot Config -->
-                    <div class="loan-card">
-                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
-                            <i class="fas fa-language"></i> Preferences
-                        </div>
-                        <div class="input-group">
-                            <label>Default 'From' Language</label>
-                            <select id="setting-trans-src" class="form-control" onchange="saveAppConfig()">
-                                <option value="en">English</option>
-                                <option value="ta">Tamil (தமிழ்)</option>
-                                <option value="hi">Hindi (हिन्दी)</option>
-                                <option value="es">Spanish</option>
-                                <option value="fr">French</option>
-                            </select>
-                        </div>
-                        <div class="input-group" style="margin-top: 10px;">
-                            <label>Default 'To' Language</label>
-                            <select id="setting-trans-dst" class="form-control" onchange="saveAppConfig()">
-                                <option value="ta">Tamil (தமிழ்)</option>
-                                <option value="hi">Hindi (हिन्दी)</option>
-                                <option value="en">English</option>
-                                <option value="es">Spanish</option>
-                                <option value="fr">French</option>
-                            </select>
                         </div>
                     </div>
                 </div>
@@ -808,7 +714,6 @@
 
         // 2. DYNAMIC MANIFEST & APP ICON SYNC BUILDER
         function buildDynamicManifest() {
-            // Use the user's uploaded avatar, fallback to default if none exists
             const avatarSrc = (profile && profile.avatar) ? profile.avatar : '10276.png';
             const svgIcon = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="%230d0c11"/><text x="50%" y="54%" font-family="sans-serif" font-weight="900" font-size="200" fill="%23f0c75e" text-anchor="middle" dominant-baseline="middle">G</text></svg>`;
             
@@ -876,7 +781,7 @@
             const desktopBtn = document.getElementById(`dnav-${panelId}`);
             if (desktopBtn) desktopBtn.classList.add('active');
 
-            const tabMap = { 'vault-dashboard': 'tab-vault', 'attendance': 'tab-att', 'loans': 'tab-loan', 'ai-advisor': 'tab-ai', 'settings': 'tab-settings' };
+            const tabMap = { 'vault-dashboard': 'tab-vault', 'attendance': 'tab-att', 'loans': 'tab-loan', 'settings': 'tab-settings' };
             if (tabMap[panelId]) {
                 const mobileTab = document.getElementById(tabMap[panelId]);
                 if (mobileTab) mobileTab.classList.add('active');
@@ -890,7 +795,7 @@
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         function openMenuSheet() { openModal('menuSheetModal'); }
 
-        // 5. PROFILE CONTROLLER (Includes App Icon Sync)
+        // 5. PROFILE CONTROLLER
         const defaultProfile = { name: "GOKUL", role: "Influencer & Petrol Bunk Worker", idStr: "TVGR", height: "5'4\"", avatar: "10276.png" };
         let profile = JSON.parse(localStorage.getItem('gokulProfile')) || defaultProfile;
         if (!profile.avatar) profile.avatar = "10276.png";
@@ -901,7 +806,6 @@
             document.getElementById('prof-id').innerText = profile.idStr;
             document.getElementById('prof-ht').innerText = profile.height;
             
-            // Sync all inner profile pictures
             const avatars = [
                 document.getElementById('vault-avatar-img'),
                 document.getElementById('header-avatar-img'),
@@ -909,13 +813,11 @@
             ];
             avatars.forEach(av => { if (av) av.src = profile.avatar; });
 
-            // Sync the phone/browser App Icon & Manifest to the new profile picture
             const iconLink = document.querySelector('link[rel="icon"]');
             const appleIconLink = document.querySelector('link[rel="apple-touch-icon"]');
             if (iconLink) iconLink.href = profile.avatar;
             if (appleIconLink) appleIconLink.href = profile.avatar;
             
-            // Rebuild manifest to lock in the new icon for app installs
             buildDynamicManifest();
         }
 
@@ -1419,65 +1321,7 @@
             }
         }
 
-        // 9. CHERRY BOT & OFFLINE TRANSLATOR
-        function performOfflineTranslation(text, srcLang, dstLang) {
-            const clean = text.trim().toLowerCase();
-            if (!clean) return "Please enter a word to translate.";
-            if (typeof translationLexicon === 'undefined') return "Lexicon not loaded. Ensure lexicon.js is in the folder.";
-
-            for (let entry of translationLexicon) {
-                const srcVal = (entry[srcLang] || "").toLowerCase();
-                const enVal = entry.en.toLowerCase();
-                if (clean === srcVal || clean === enVal || srcVal.includes(clean)) return entry[dstLang] || entry.en;
-            }
-            return text;
-        }
-
-        function runQuickTranslate() {
-            const src = document.getElementById('trans-src').value;
-            const dst = document.getElementById('trans-dst').value;
-            const text = document.getElementById('trans-input').value.trim();
-            if (!text) return;
-
-            const stream = document.getElementById('chat-stream');
-            stream.innerHTML += `<div class="chat-bubble chat-user">${text}</div>`;
-            document.getElementById('trans-input').value = '';
-
-            const res = performOfflineTranslation(text, src, dst);
-            stream.innerHTML += `<div class="chat-bubble chat-bot"><b>${dst.toUpperCase()}:</b> ${res}</div>`;
-            stream.scrollTop = stream.scrollHeight;
-        }
-
-        function executeOfflineChat() {
-            const input = document.getElementById('chat-user-input');
-            const msg = input.value.trim();
-            if (!msg) return;
-
-            const stream = document.getElementById('chat-stream');
-            stream.innerHTML += `<div class="chat-bubble chat-user">${msg}</div>`;
-            input.value = '';
-
-            const bal = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0) - 
-                        transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
-
-            setTimeout(() => {
-                let reply = "I'm running in offline mode. Ask me about your 'balance', 'shifts', or use the translator!";
-                const clean = msg.toLowerCase();
-
-                if (clean.includes("balance") || clean.includes("evalo") || clean.includes("kaasu")) {
-                    reply = `Your Vault Balance is <b>₹${bal.toFixed(2)}</b>.`;
-                } else if (clean.includes("shift") || clean.includes("work")) {
-                    reply = `You have <b>${shifts.length}</b> shift(s) logged in your timesheet.`;
-                } else if (clean.includes("hi") || clean.includes("hello") || clean.includes("vanakkam")) {
-                    reply = "வணக்கம் Gokul! 🍒 How can I help your hub today?";
-                }
-
-                stream.innerHTML += `<div class="chat-bubble chat-bot">${reply}</div>`;
-                stream.scrollTop = stream.scrollHeight;
-            }, 300);
-        }
-
-        // 10. BACKUP, RESTORE & ARCHIVES
+        // 9. BACKUP, RESTORE & ARCHIVES
         function exportData() {
             const data = {
                 profile,
@@ -1567,7 +1411,7 @@
             }
         }
 
-        // 11. APPEARANCE & THEMES
+        // 10. APPEARANCE & THEMES
         function updateGlassOpacity(val) {
             document.documentElement.style.setProperty('--glass-alpha', val);
             localStorage.setItem('gokulGlassAlpha', val);
@@ -1598,11 +1442,6 @@
             document.documentElement.setAttribute('data-theme', id);
             localStorage.setItem('gokulTheme', id);
             renderVaultChart();
-        }
-
-        function saveAppConfig() {
-            localStorage.setItem('gokulTransSrc', document.getElementById('setting-trans-src').value);
-            localStorage.setItem('gokulTransDst', document.getElementById('setting-trans-dst').value);
         }
 
         window.onload = () => {
