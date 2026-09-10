@@ -13,7 +13,7 @@
     <meta name="application-name" content="Gokul Hub">
     <meta name="theme-color" content="#0d0c11">
 
-    <!-- Icons -->
+    <!-- Icons (Dynamically overridden by JS) -->
     <link rel="icon" href="10276.png" type="image/png">
     <link rel="apple-touch-icon" href="10276.png">
 
@@ -806,8 +806,10 @@
             if (!document.fullscreenElement && isStandalone) enterFullScreen();
         }, { passive: true });
 
-        // 2. DYNAMIC MANIFEST BUILDER
+        // 2. DYNAMIC MANIFEST & APP ICON SYNC BUILDER
         function buildDynamicManifest() {
+            // Use the user's uploaded avatar, fallback to default if none exists
+            const avatarSrc = (profile && profile.avatar) ? profile.avatar : '10276.png';
             const svgIcon = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="%230d0c11"/><text x="50%" y="54%" font-family="sans-serif" font-weight="900" font-size="200" fill="%23f0c75e" text-anchor="middle" dominant-baseline="middle">G</text></svg>`;
             
             const manifestObj = {
@@ -822,8 +824,8 @@
                 "background_color": "#0d0c11",
                 "theme_color": "#0d0c11",
                 "icons": [
-                    { "src": "10276.png", "sizes": "192x192", "type": "image/png" },
-                    { "src": "10276.png", "sizes": "512x512", "type": "image/png" },
+                    { "src": avatarSrc, "sizes": "192x192", "type": "image/png" },
+                    { "src": avatarSrc, "sizes": "512x512", "type": "image/png" },
                     { "src": svgIcon, "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
                 ]
             };
@@ -888,7 +890,7 @@
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         function openMenuSheet() { openModal('menuSheetModal'); }
 
-        // 5. PROFILE CONTROLLER
+        // 5. PROFILE CONTROLLER (Includes App Icon Sync)
         const defaultProfile = { name: "GOKUL", role: "Influencer & Petrol Bunk Worker", idStr: "TVGR", height: "5'4\"", avatar: "10276.png" };
         let profile = JSON.parse(localStorage.getItem('gokulProfile')) || defaultProfile;
         if (!profile.avatar) profile.avatar = "10276.png";
@@ -899,12 +901,22 @@
             document.getElementById('prof-id').innerText = profile.idStr;
             document.getElementById('prof-ht').innerText = profile.height;
             
+            // Sync all inner profile pictures
             const avatars = [
                 document.getElementById('vault-avatar-img'),
                 document.getElementById('header-avatar-img'),
                 document.getElementById('sidebar-avatar-img')
             ];
             avatars.forEach(av => { if (av) av.src = profile.avatar; });
+
+            // Sync the phone/browser App Icon & Manifest to the new profile picture
+            const iconLink = document.querySelector('link[rel="icon"]');
+            const appleIconLink = document.querySelector('link[rel="apple-touch-icon"]');
+            if (iconLink) iconLink.href = profile.avatar;
+            if (appleIconLink) appleIconLink.href = profile.avatar;
+            
+            // Rebuild manifest to lock in the new icon for app installs
+            buildDynamicManifest();
         }
 
         function openProfileModal() {
@@ -1594,7 +1606,7 @@
         }
 
         window.onload = () => {
-            buildDynamicManifest();
+            renderProfile(); // Now calls buildDynamicManifest() internally to sync icons
             applyTheme(localStorage.getItem('gokulTheme') || 'harrypotter');
             
             const savedAlpha = localStorage.getItem('gokulGlassAlpha') || '0.75';
@@ -1605,7 +1617,6 @@
             document.documentElement.style.setProperty('--video-dimmer', savedDimmer);
             if (document.getElementById('dimmer-slider')) document.getElementById('dimmer-slider').value = savedDimmer;
 
-            renderProfile();
             renderCategoryGrid();
             updateVaultStats();
             renderJobDropdown();
