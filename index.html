@@ -26,7 +26,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- External Engines & Separated Lexicon -->
+    <!-- External Engines & Lexicon -->
     <script src="lexicon.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -80,15 +80,21 @@
             --total-box: linear-gradient(135deg, rgba(24, 24, 27, 0.9), rgba(39, 39, 42, 0.9));
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: var(--app-font); }
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-tap-highlight-color: transparent; 
+            font-family: var(--app-font);
+            touch-action: manipulation;
+        }
         
         img, video { max-width: 100%; height: auto; }
         
-        /* EXPANDED MOBILE TYPING FIX: Prevents zooming & makes space large */
         input, select, textarea, button { 
             max-width: 100%; 
             font-family: inherit; 
-            font-size: 16px !important; /* Force 16px to prevent iOS auto-zoom */
+            font-size: 16px !important;
         }
 
         html, body {
@@ -96,7 +102,7 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100dvh;
             overflow: hidden;
             background: linear-gradient(135deg, #090414, #1b0d2d, #081a24, #1f0b18);
             background-size: 300% 300%;
@@ -104,22 +110,56 @@
             color: var(--text-main);
             user-select: none;
             -webkit-user-select: none;
+            overscroll-behavior: none;
         }
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        .video-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -2; pointer-events: none; opacity: 0.95; }
-        .video-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, rgba(13, 10, 18, 0.25) 0%, rgba(8, 6, 12, 0.75) 100%); z-index: -1; pointer-events: none; opacity: var(--video-dimmer); transition: opacity 0.3s ease; }
+        .video-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; object-fit: cover; z-index: -2; pointer-events: none; opacity: 0.95; }
+        .video-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: radial-gradient(circle at center, rgba(13, 10, 18, 0.25) 0%, rgba(8, 6, 12, 0.75) 100%); z-index: -1; pointer-events: none; opacity: var(--video-dimmer); transition: opacity 0.3s ease; }
 
-        .app-shell { width: 100%; height: 100%; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background-color 0.3s ease; }
+        .app-shell { width: 100%; height: 100dvh; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background-color 0.3s ease; }
 
-        .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(65px + var(--safe-top)); padding-top: var(--safe-top); background: var(--bg-sidebar); border-bottom: 1px solid var(--border-color); z-index: 100; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .mobile-header { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: calc(65px + var(--safe-top)); 
+            padding-top: var(--safe-top); 
+            background: var(--bg-sidebar); 
+            border-bottom: 1px solid var(--border-color); 
+            z-index: 100; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding-left: 16px; 
+            padding-right: 16px; 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); 
+        }
         .mobile-header .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 18px; color: var(--text-main); font-family: var(--header-font); }
         .mobile-header .brand img { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-color); object-fit: cover; flex-shrink: 0; }
 
         .sidebar { width: 250px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; flex-shrink: 0; z-index: 10; backdrop-filter: blur(12px); }
         
-        .mobile-tab-bar { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: calc(65px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--bg-sidebar); border-top: 1px solid var(--border-color); z-index: 100; justify-content: space-around; align-items: center; box-shadow: 0 -4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .mobile-tab-bar { 
+            display: none; 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            height: calc(65px + var(--safe-bottom)); 
+            padding-bottom: var(--safe-bottom); 
+            background: var(--bg-sidebar); 
+            border-top: 1px solid var(--border-color); 
+            z-index: 100; 
+            justify-content: space-around; 
+            align-items: center; 
+            box-shadow: 0 -4px 16px rgba(0,0,0,0.3); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); 
+        }
         .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; border: none; color: var(--text-muted); font-size: 12px; font-weight: 700; gap: 4px; height: 100%; cursor: pointer; transition: color 0.2s; }
         .tab-item i { font-size: 20px; transition: transform 0.2s; }
         .tab-item.active { color: var(--text-main); }
@@ -136,7 +176,6 @@
         #vault-dashboard-panel { flex-direction: row; padding: 0; width: 100%; height: 100%; }
         .vault-summary-col { width: 320px; max-width: 100%; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 15px; transition: background-color 0.3s ease;}
         
-        /* High Level Profile Badge Standard */
         .profile-badge { 
             background: linear-gradient(135deg, var(--bg-card), var(--bg-card-alt));
             border: 1px solid var(--border-color); 
@@ -173,41 +212,48 @@
         .total-box { background: var(--total-box); border-radius: 16px; padding: 18px; width: 100%; color: #ffffff; box-shadow: 0 6px 16px rgba(0,0,0,0.25); }
         .chart-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; width: 100%; }
         .vault-grid-col { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; width: 100%; }
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr)); gap: 12px; width: 100%; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 115px), 1fr)); gap: 12px; width: 100%; }
         
         .module-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-muted); font-weight: 700; font-size: 12px; text-align: center; cursor: pointer; transition: transform 0.15s; width: 100%; }
         .module-btn:active { transform: scale(0.96); }
         .module-btn i { font-size: 26px; color: var(--text-accent); }
 
+        /* Work / Stats Grid */
+        .att-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; margin-bottom: 20px; }
+        .att-stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px 8px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .att-stat-card i { font-size: 18px; margin-bottom: 2px; }
+        .att-stat-card .val { font-size: 18px; font-weight: 900; color: var(--text-main); }
+        .att-stat-card .lbl { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+
         /* Table & Lists */
         .table-wrap { width: 100%; max-width: 100vw; overflow-x: auto; border-radius: 14px; border: 1px solid var(--border-color); background: var(--bg-card); margin-bottom: 20px; -webkit-overflow-scrolling: touch; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px; }
-        th, td { padding: 12px 14px; text-align: center; border-bottom: 1px solid var(--border-color); }
-        th { background: var(--bg-card-alt); color: var(--text-main); font-weight: 800; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 480px; }
+        th, td { padding: 12px 10px; text-align: center; border-bottom: 1px solid var(--border-color); }
+        th { background: var(--bg-card-alt); color: var(--text-main); font-weight: 800; font-size: 12px; }
 
-        /* LONG & SPACIOUS FORMS */
+        /* Long & Spacious Forms */
         .form-card { width: 100%; background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
         .input-group { display: flex; flex-direction: column; gap: 8px; width: 100%; }
         .input-group label { font-size: 13px; font-weight: 700; color: var(--text-main); }
         .form-control { 
-            padding: 16px 14px; /* MASSIVE PADDING FOR MOBILE TYPING */
+            padding: 15px 14px; 
             border-radius: 12px; 
             border: 1px solid var(--border-color); 
             background: var(--bg-card); 
             color: var(--text-main); 
-            font-size: 16px !important; /* CRITICAL FOR IOS/ANDROID NOT ZOOMING */
+            font-size: 16px !important; 
             outline: none; 
             width: 100%; 
         }
         .form-control:focus { border-color: var(--text-accent); box-shadow: 0 0 8px rgba(39, 174, 96, 0.3); }
 
-        /* BIG BUTTONS */
+        /* Big Buttons */
         .btn { padding: 16px 20px; border-radius: 12px; border: none; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: #ffffff; width: 100%; }
         .btn:active { transform: scale(0.97); }
         .btn-success { background: var(--text-accent); }
         .btn-primary { background: var(--text-main); color: #08060c; }
         .btn-danger { background: var(--danger); }
-        .btn-flex-row { display: flex; flex-direction: column; gap: 12px; width: 100%; } /* Stack buttons vertically on mobile for thumb reach */
+        .btn-flex-row { display: flex; flex-direction: column; gap: 12px; width: 100%; }
 
         /* Loan Cards */
         .loans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; width: 100%; }
@@ -215,52 +261,56 @@
         .progress-bar-bg { background: var(--bg-card-alt); height: 12px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); width: 100%; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); }
 
-        /* LONG & SPACIOUS CHAT/TRANSLATOR */
-        .chat-wrap { display: flex; flex-direction: column; height: calc(100vh - 160px); min-height: 400px; width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; }
-        
-        .translator-bar { background: var(--bg-card-alt); border-bottom: 1px solid var(--border-color); padding: 14px; display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        /* Chat / Cherry Bot */
+        .chat-wrap { display: flex; flex-direction: column; height: calc(100dvh - 200px); min-height: 380px; width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; }
+        .translator-bar { background: var(--bg-card-alt); border-bottom: 1px solid var(--border-color); padding: 12px; display: flex; flex-direction: column; gap: 10px; width: 100%; }
         .translator-select-row { display: flex; width: 100%; gap: 10px; align-items: center; }
-        .translator-select { flex: 1; padding: 14px; font-size: 16px !important; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); outline: none; }
+        .translator-select { flex: 1; padding: 12px; font-size: 16px !important; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); outline: none; }
         
         .chat-stream { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; -webkit-overflow-scrolling: touch; width: 100%; }
         .chat-bubble { padding: 14px 18px; border-radius: 16px; max-width: 90%; font-size: 15px; line-height: 1.6; word-wrap: break-word; }
         .chat-user { background: var(--bg-card-alt); border: 1px solid var(--border-color); align-self: flex-end; border-bottom-right-radius: 4px; }
         .chat-bot { background: linear-gradient(135deg, var(--text-main), var(--text-accent)); color: #08060c; font-weight: 700; align-self: flex-start; border-bottom-left-radius: 4px; }
         
-        /* EXPANDED CHAT INPUT BAR */
-        .chat-controls { display: flex; flex-direction: column; padding: 16px; background: var(--bg-card-alt); border-top: 1px solid var(--border-color); gap: 12px; width: 100%; }
-        .chat-controls input { flex: none; width: 100%; min-height: 56px; padding: 16px; font-size: 16px !important; border-radius: 12px; }
-        .chat-controls button { flex: none; width: 100%; min-height: 50px; font-size: 16px; }
+        .chat-controls { display: flex; flex-direction: column; padding: 14px; background: var(--bg-card-alt); border-top: 1px solid var(--border-color); gap: 10px; width: 100%; }
+        .chat-controls input { width: 100%; min-height: 52px; padding: 14px; font-size: 16px !important; border-radius: 12px; }
+        .chat-controls button { width: 100%; min-height: 48px; font-size: 16px; }
 
         /* Modals */
-        .modal-mask { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 16px; }
+        .modal-mask { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 16px; }
         .modal-mask.active { display: flex; }
-        .modal-sheet { background: var(--bg-app); width: 100%; max-width: 440px; max-height: 90vh; border-radius: 20px; border: 1px solid var(--border-color); padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .modal-sheet { background: var(--bg-app); width: 100%; max-width: 440px; max-height: 88dvh; border-radius: 20px; border: 1px solid var(--border-color); padding: 22px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
         #offline-badge {
-            display: none; position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
-            background: var(--danger); color: #fff; padding: 8px 20px; border-radius: 20px;
-            font-size: 13px; font-weight: bold; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            font-family: var(--app-font); width: max-content; max-width: 90vw;
+            display: none; position: fixed; top: calc(12px + var(--safe-top)); left: 50%; transform: translateX(-50%);
+            background: var(--danger); color: #fff; padding: 6px 18px; border-radius: 20px;
+            font-size: 12px; font-weight: bold; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            width: max-content; max-width: 90vw;
         }
 
+        /* Responsive Breakpoints for Mobile */
         @media (max-width: 820px) {
             .sidebar { display: none; }
             .mobile-header { display: flex; }
             .mobile-tab-bar { display: flex; }
-            .main-stage { margin-top: calc(65px + var(--safe-top)); margin-bottom: calc(65px + var(--safe-bottom)); height: calc(100vh - (130px + var(--safe-top) + var(--safe-bottom))); }
-            .view-panel { padding: 16px; }
+            .main-stage { 
+                margin-top: calc(65px + var(--safe-top)); 
+                margin-bottom: calc(65px + var(--safe-bottom)); 
+                height: calc(100dvh - 130px - var(--safe-top) - var(--safe-bottom)); 
+            }
+            .view-panel { padding: 14px; }
             #vault-dashboard-panel { flex-direction: column; overflow-y: auto; }
-            .vault-summary-col { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); padding: 16px 0; background: transparent; }
-            .vault-grid-col { padding: 16px 0; }
-            .chat-wrap { height: calc(100vh - 170px); }
+            .vault-summary-col { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); padding: 12px 0; background: transparent; }
+            .vault-grid-col { padding: 14px 0; }
+            .att-stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .chat-wrap { height: calc(100dvh - 175px - var(--safe-top) - var(--safe-bottom)); }
         }
     </style>
 </head>
 <body>
 
-    <!-- OFFLINE INDICATOR -->
-    <div id="offline-badge"><i class="fas fa-wifi-slash"></i> Offline Mode: Data saving locally</div>
+    <!-- OFFLINE STATUS BADGE -->
+    <div id="offline-badge"><i class="fas fa-wifi-slash"></i> Offline Mode: Synced Locally</div>
 
     <video id="app-bg-video" class="video-background" autoplay muted loop playsinline webkit-playsinline preload="auto">
         <source src="background.mp4" type="video/mp4">
@@ -268,17 +318,19 @@
     </video>
     <div class="video-overlay"></div>
 
+    <!-- MOBILE TOP BAR -->
     <div class="mobile-header">
         <div class="brand">
             <img id="header-avatar-img" src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'">
             <span>GOKUL HUB</span>
         </div>
         <div style="display: flex; gap: 8px;">
-            <button class="btn btn-primary" style="padding: 8px 14px; font-size: 13px; width: auto;" onclick="downloadAppDirectly()"><i class="fas fa-download"></i> App</button>
-            <button class="btn btn-primary" style="padding: 8px 14px; font-size: 14px; width: auto;" onclick="openMenuSheet()"><i class="fas fa-ellipsis-v"></i></button>
+            <button class="btn btn-success" id="m-install-btn" style="padding: 7px 12px; font-size: 13px; width: auto;" onclick="triggerAppInstall()"><i class="fas fa-arrow-circle-down"></i> Install App</button>
+            <button class="btn btn-primary" style="padding: 7px 12px; font-size: 14px; width: auto;" onclick="openMenuSheet()"><i class="fas fa-ellipsis-v"></i></button>
         </div>
     </div>
 
+    <!-- MOBILE BOTTOM TABS -->
     <div class="mobile-tab-bar">
         <button class="tab-item active" id="tab-vault" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i><span>Vault</span></button>
         <button class="tab-item" id="tab-att" onclick="navTo('attendance')"><i class="fas fa-business-time"></i><span>Work</span></button>
@@ -290,35 +342,35 @@
     <div class="app-shell">
         <aside class="sidebar">
             <div>
-                <div class="sidebar-brand">
-                    <img id="sidebar-avatar-img" src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'">
-                    <div class="sidebar-brand-text">GOKUL HUB</div>
+                <div class="sidebar-brand" style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+                    <img id="sidebar-avatar-img" src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'" style="width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--border-color); object-fit: cover;">
+                    <div style="font-weight: 900; font-size: 18px; color: var(--text-main); font-family: var(--header-font);">GOKUL HUB</div>
                 </div>
 
-                <div class="nav-list">
-                    <button class="nav-btn active" id="dnav-vault-dashboard" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i> <span>Vault</span></button>
-                    <button class="nav-btn" id="dnav-attendance" onclick="navTo('attendance')"><i class="fas fa-business-time"></i> <span>Work & Salary</span></button>
-                    <button class="nav-btn" id="dnav-loans" onclick="navTo('loans')"><i class="fas fa-hand-holding-usd"></i> <span>Loans & EMI</span></button>
-                    <button class="nav-btn" id="dnav-history" onclick="navTo('history')"><i class="fas fa-scroll"></i> <span>Ledger</span></button>
-                    <button class="nav-btn" id="dnav-archives" onclick="navTo('archives')"><i class="fas fa-archive"></i> <span>Archives</span></button>
-                    <button class="nav-btn" id="dnav-ai-advisor" onclick="navTo('ai-advisor')"><i class="fas fa-language"></i> <span>Cherry & Translator</span></button>
-                    <button class="nav-btn" id="dnav-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i> <span>Settings & Themes</span></button>
+                <div class="nav-list" style="display: flex; flex-direction: column; gap: 8px;">
+                    <button class="btn btn-primary active" id="dnav-vault-dashboard" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i> <span>Vault</span></button>
+                    <button class="btn btn-primary" id="dnav-attendance" onclick="navTo('attendance')"><i class="fas fa-business-time"></i> <span>Work & Salary</span></button>
+                    <button class="btn btn-primary" id="dnav-loans" onclick="navTo('loans')"><i class="fas fa-hand-holding-usd"></i> <span>Loans & EMI</span></button>
+                    <button class="btn btn-primary" id="dnav-history" onclick="navTo('history')"><i class="fas fa-scroll"></i> <span>Ledger</span></button>
+                    <button class="btn btn-primary" id="dnav-archives" onclick="navTo('archives')"><i class="fas fa-archive"></i> <span>Archives</span></button>
+                    <button class="btn btn-primary" id="dnav-ai-advisor" onclick="navTo('ai-advisor')"><i class="fas fa-language"></i> <span>Cherry & Translator</span></button>
+                    <button class="btn btn-primary" id="dnav-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i> <span>Settings & Themes</span></button>
                     
-                    <button class="nav-btn action-btn" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
-                    <button class="nav-btn danger-btn" onclick="yearlyReset()"><i class="fas fa-skull"></i> <span>Yearly Reset</span></button>
-                    
-                    <button class="nav-btn" style="background: var(--text-accent); color: #fff; margin-top: 6px;" onclick="downloadAppDirectly()"><i class="fas fa-download" style="color:#fff;"></i> <span>Download / Install App</span></button>
+                    <button class="btn btn-success" style="margin-top: 10px;" onclick="triggerAppInstall()"><i class="fas fa-download"></i> <span>Install Standalone App</span></button>
+                    <button class="btn btn-primary" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
+                    <button class="btn btn-danger" onclick="yearlyReset()"><i class="fas fa-skull"></i> <span>Yearly Reset</span></button>
                 </div>
             </div>
 
-            <div class="sidebar-footer">
+            <div class="sidebar-footer" style="font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; padding-top: 14px; border-top: 1px solid var(--border-color);">
                 <div>Identity: <b>TVGR Vault</b></div>
-                <div>Status: <span style="color: var(--text-accent);">Auto-Sync Live</span></div>
-                <button class="btn btn-primary" style="padding: 10px; font-size: 13px; margin-top: 6px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
+                <div>App Status: <span style="color: var(--text-accent);">PWA Ready</span></div>
+                <button class="btn btn-primary" style="padding: 10px; font-size: 13px; margin-top: 4px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
             </div>
         </aside>
 
         <main class="main-stage">
+            <!-- 1. VAULT DASHBOARD -->
             <section id="vault-dashboard-view" class="view-panel active">
                 <div id="vault-dashboard-panel">
                     <div class="vault-summary-col">
@@ -329,7 +381,7 @@
                             <div style="font-size: 20px; font-weight: 900; letter-spacing: 1px;" id="prof-name">GOKUL</div>
                             <div style="font-size: 13px; color: var(--text-accent); margin-bottom: 4px; font-weight: 700;" id="prof-role">Influencer & Petrol Bunk Worker</div>
                             <div style="font-size: 12px; color: var(--text-muted); font-weight: 600;">ID: <span id="prof-id">TVGR</span> | Ht: <span id="prof-ht">5'4"</span></div>
-                            <button class="btn btn-primary" style="padding: 8px 16px; font-size: 12px; margin-top: 10px; width: 100%; border-radius: 8px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile ID</button>
+                            <button class="btn btn-primary" style="padding: 8px 16px; font-size: 12px; margin-top: 8px; width: 100%; border-radius: 8px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
                         </div>
 
                         <div class="total-box">
@@ -350,10 +402,10 @@
                     <div class="vault-grid-col">
                         <div class="panel-heading" style="border: none; margin-bottom: 16px;">
                             <span id="grid-mode-title">Quick Log Expense</span>
-                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                                <button class="btn btn-primary" id="btn-toggle-edit" style="padding: 10px 16px; font-size: 13px; width: auto;" onclick="toggleEditMode()"><i class="fas fa-pencil-alt"></i> Edit Labels</button>
-                                <button class="btn btn-danger" id="tab-out-btn" style="padding: 10px 16px; font-size: 13px; width: auto;" onclick="setVaultFlow('expense')">Expense (Out)</button>
-                                <button class="btn btn-success" id="tab-in-btn" style="padding: 10px 16px; font-size: 13px; width: auto;" onclick="setVaultFlow('income')">Income (In)</button>
+                            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                <button class="btn btn-primary" id="btn-toggle-edit" style="padding: 9px 14px; font-size: 13px; width: auto;" onclick="toggleEditMode()"><i class="fas fa-pencil-alt"></i> Edit Labels</button>
+                                <button class="btn btn-danger" id="tab-out-btn" style="padding: 9px 14px; font-size: 13px; width: auto;" onclick="setVaultFlow('expense')">Out</button>
+                                <button class="btn btn-success" id="tab-in-btn" style="padding: 9px 14px; font-size: 13px; width: auto;" onclick="setVaultFlow('income')">In</button>
                             </div>
                         </div>
                         <div class="grid-container" id="category-grid"></div>
@@ -361,11 +413,10 @@
                 </div>
             </section>
 
+            <!-- 2. AUTO MAINTAINABLE WORK & SALARY -->
             <section id="attendance-view" class="view-panel">
-                
-                <!-- MOVED TO TOP: Log New Shift Form -->
-                <div class="form-card" style="margin-bottom: 24px;">
-                    <h3 style="color: var(--text-main); font-size: 18px; margin-bottom: 10px;"><i class="fas fa-plus-circle"></i> Log New Shift</h3>
+                <div class="form-card" style="margin-bottom: 20px;">
+                    <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-plus-circle"></i> Log New Shift</h3>
                     <div class="input-group">
                         <label style="display: flex; justify-content: space-between;">
                             <span>Select Job Profile</span>
@@ -374,33 +425,32 @@
                         <select id="att-job-select" class="form-control"></select>
                     </div>
                     
-                    <div style="display: flex; gap: 15px; width: 100%;">
-                        <div class="input-group"><label>Base Rate (8h) ₹</label><input type="number" id="att-base-rate" class="form-control" onchange="saveRates()"></div>
+                    <div style="display: flex; gap: 12px; width: 100%;">
+                        <div class="input-group"><label>Base (8h) ₹</label><input type="number" id="att-base-rate" class="form-control" onchange="saveRates()"></div>
                         <div class="input-group"><label>OT Rate/hr ₹</label><input type="number" id="att-ot-rate" class="form-control" onchange="saveRates()"></div>
                     </div>
 
                     <div class="input-group"><label>Date</label><input type="date" id="att-date" class="form-control"></div>
                     
-                    <div style="display: flex; gap: 15px; width: 100%;">
+                    <div style="display: flex; gap: 12px; width: 100%;">
                         <div class="input-group"><label>In Time</label><input type="time" id="att-in" class="form-control" value="09:30"></div>
                         <div class="input-group"><label>Out Time</label><input type="time" id="att-out" class="form-control" value="18:00"></div>
                     </div>
                     
-                    <button class="btn btn-success" style="margin-top: 10px;" onclick="recordShift()"><i class="fas fa-cloud-upload-alt"></i> Save Shift & Sync Money to Vault</button>
+                    <button class="btn btn-success" onclick="recordShift()"><i class="fas fa-cloud-upload-alt"></i> Save Shift & Sync Money to Vault</button>
                 </div>
 
-                <!-- TABLE & STATS MOVED BELOW -->
                 <div id="timesheet-export-area">
                     <div class="panel-heading">
                         <span>Work & Salary Log</span>
-                        <span style="font-size: 14px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-link"></i> Vault Linked</span>
+                        <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-link"></i> Vault Linked</span>
                     </div>
 
                     <div class="att-stats-row">
                         <div class="att-stat-card"><i class="fas fa-calendar-check" style="color:var(--text-accent);"></i><div class="val" id="stat-days">0</div><div class="lbl">Days</div></div>
                         <div class="att-stat-card"><i class="fas fa-clock" style="color:var(--text-main);"></i><div class="val" id="stat-hrs">0</div><div class="lbl">Reg Hrs</div></div>
                         <div class="att-stat-card"><i class="fas fa-user-clock" style="color:var(--danger);"></i><div class="val" id="stat-ot">0</div><div class="lbl">OT Hrs</div></div>
-                        <div class="att-stat-card"><i class="fas fa-money-bill-wave" style="color:var(--text-accent);"></i><div class="val" style="color:var(--text-accent);" id="stat-salary">₹0</div><div class="lbl">Total Earned</div></div>
+                        <div class="att-stat-card"><i class="fas fa-money-bill-wave" style="color:var(--text-accent);"></i><div class="val" style="color:var(--text-accent);" id="stat-salary">₹0</div><div class="lbl">Salary</div></div>
                     </div>
 
                     <div class="table-wrap">
@@ -409,11 +459,11 @@
                                 <tr>
                                     <th>Date</th>
                                     <th>Job</th>
-                                    <th>Hours</th>
+                                    <th>Timing</th>
                                     <th>Net</th>
                                     <th>OT</th>
                                     <th>Pay</th>
-                                    <th>Act</th>
+                                    <th>Del</th>
                                 </tr>
                             </thead>
                             <tbody id="att-table-body"></tbody>
@@ -421,52 +471,54 @@
                     </div>
                 </div>
 
-                <div class="btn-flex-row" style="margin-top: 20px;">
+                <div class="btn-flex-row" style="margin-top: 15px;">
                     <button class="btn btn-primary" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download Official Timesheet PDF</button>
                     <button class="btn btn-danger" onclick="clearShifts()"><i class="fas fa-trash-alt"></i> Clear All Shift Records</button>
                 </div>
             </section>
 
+            <!-- 3. LOANS -->
             <section id="loans-view" class="view-panel">
                 <div class="panel-heading">
                     <span>Loan Manager</span>
-                    <span style="font-size: 14px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-robot"></i> Auto-Deduct Ready</span>
+                    <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-robot"></i> Auto-Deduct Ready</span>
                 </div>
                 
-                <div class="form-card" style="margin-bottom: 24px;">
-                    <h3 style="margin-bottom: 15px; color: var(--text-main); width: 100%;"><i class="fas fa-calculator"></i> New EMI Calculator</h3>
+                <div class="form-card" style="margin-bottom: 20px;">
+                    <h3 style="color: var(--text-main);"><i class="fas fa-calculator"></i> EMI Calculator</h3>
                     
                     <div class="input-group"><label>Loan Name / Purpose</label><input type="text" id="loan-name-input" class="form-control" placeholder="e.g. Bike Loan"></div>
                     <div class="input-group"><label>Principal Amount (₹)</label><input type="number" id="loan-principal" class="form-control" placeholder="100000" oninput="runEMICalc()"></div>
                     
-                    <div style="display: flex; gap: 15px; width: 100%;">
+                    <div style="display: flex; gap: 12px; width: 100%;">
                         <div class="input-group"><label>Interest Rate (% p.a.)</label><input type="number" id="loan-rate" class="form-control" placeholder="12" step="0.1" oninput="runEMICalc()"></div>
                         <div class="input-group"><label>Tenure (Months)</label><input type="number" id="loan-tenure" class="form-control" placeholder="24" oninput="runEMICalc()"></div>
                     </div>
                     
                     <div class="input-group"><label>Monthly Due Date (Day 1-31)</label><input type="number" id="loan-due-input" class="form-control" placeholder="5" min="1" max="31"></div>
                     
-                    <div style="width: 100%; display: flex; flex-direction: column; gap: 12px; margin: 15px 0;">
-                        <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
-                            <input type="checkbox" id="loan-disburse-check" checked style="width: 24px; height: 24px;"> Deposit Principal to Vault as Income now?
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin: 10px 0;">
+                        <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
+                            <input type="checkbox" id="loan-disburse-check" checked style="width: 22px; height: 22px;"> Deposit Principal to Vault as Income now?
                         </label>
-                        <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
-                            <input type="checkbox" id="loan-autopay-check" checked style="width: 24px; height: 24px;"> Auto-Pay EMI from Vault every month on Due Date
+                        <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
+                            <input type="checkbox" id="loan-autopay-check" checked style="width: 22px; height: 22px;"> Auto-Pay EMI from Vault every month on Due Date
                         </label>
                     </div>
                     
-                    <div style="width: 100%; display: flex; justify-content: space-around; background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; margin-bottom: 15px;">
-                        <div><div style="font-size: 13px; color: var(--text-muted); font-weight: bold; text-transform: uppercase;">Monthly EMI</div><div style="font-weight: 900; font-size: 24px; color: var(--danger);" id="emi-calc-out">₹0</div></div>
-                        <div><div style="font-size: 13px; color: var(--text-muted); font-weight: bold; text-transform: uppercase;">Total Interest</div><div style="font-weight: 900; font-size: 24px; color: var(--text-main);" id="int-calc-out">₹0</div></div>
+                    <div style="display: flex; justify-content: space-around; background: var(--bg-card); padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
+                        <div><div style="font-size: 11px; color: var(--text-muted); font-weight: bold;">MONTHLY EMI</div><div style="font-weight: 900; font-size: 20px; color: var(--danger);" id="emi-calc-out">₹0</div></div>
+                        <div><div style="font-size: 11px; color: var(--text-muted); font-weight: bold;">TOTAL INTEREST</div><div style="font-weight: 900; font-size: 20px; color: var(--text-main);" id="int-calc-out">₹0</div></div>
                     </div>
 
-                    <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan & Activate System</button>
+                    <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan</button>
                 </div>
 
-                <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Active Loans Status</h3>
+                <h3 style="color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">Active Loans</h3>
                 <div class="loans-grid" id="active-loans-grid"></div>
             </section>
 
+            <!-- 4. LEDGER -->
             <section id="history-view" class="view-panel">
                 <div class="panel-heading">
                     <span>Ledger Records</span>
@@ -487,25 +539,22 @@
                 </div>
             </section>
 
+            <!-- 5. ARCHIVES -->
             <section id="archives-view" class="view-panel">
                 <div class="panel-heading"><span>Past Months Archive</span></div>
-                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Completed months stored as separate historical files. Keeps your active dashboard fast.</p>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 18px;">Completed months stored safely as separate records.</p>
                 <div class="loans-grid" id="archives-grid"></div>
             </section>
 
-            <!-- 6. OFFLINE CHERRY BOT VIEW -->
+            <!-- 6. CHERRY BOT -->
             <section id="ai-advisor-view" class="view-panel">
                 <div class="panel-heading">
                     <span>Cherry Bot 🍒</span>
-                    <span style="font-size: 14px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-globe"></i> Multi-lingual Offline</span>
+                    <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-globe"></i> Multi-lingual Offline</span>
                 </div>
 
                 <div class="chat-wrap">
                     <div class="translator-bar">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <span style="font-size: 14px; font-weight: 800; color: var(--text-main);"><i class="fas fa-language"></i> Mega-Lexicon Translator</span>
-                            <span style="font-size: 12px; color: var(--text-muted); font-weight: 700; background: rgba(0,0,0,0.5); padding: 4px 8px; border-radius: 8px;">100% Offline</span>
-                        </div>
                         <div class="translator-select-row">
                             <select id="trans-src" class="translator-select">
                                 <option value="en">English</option>
@@ -523,60 +572,57 @@
                                 <option value="fr">French</option>
                             </select>
                         </div>
-                        <div style="display:flex; gap:10px; width: 100%; margin-top: 4px;">
-                            <input type="text" id="trans-input" class="form-control" style="flex:1;" placeholder="Type word to translate...">
-                            <button class="btn btn-success" style="width:auto; padding: 0 20px;" onclick="runQuickTranslate()"><i class="fas fa-check"></i></button>
+                        <div style="display:flex; gap:8px; width: 100%;">
+                            <input type="text" id="trans-input" class="form-control" style="flex:1;" placeholder="Translate word or phrase...">
+                            <button class="btn btn-success" style="width:auto; padding: 0 18px;" onclick="runQuickTranslate()"><i class="fas fa-check"></i></button>
                         </div>
                     </div>
 
                     <div class="chat-stream" id="chat-stream">
                         <div class="chat-bubble chat-bot">
-                            வணக்கம் / Namaste / Hello Gokul! 🍒 I am <b>Cherry Bot</b>, your offline buddy.<br><br>
-                            My brain is connected to your local lexicon file. I understand hundreds of everyday words in English, Tamil, Hindi, Spanish, and French!<br><br>
-                            💬 Try typing down below:<br>
+                            வணக்கம் / Namaste / Hello Gokul! 🍒 I am <b>Cherry Bot</b>, your offline assistant.<br><br>
+                            💬 Try typing below:<br>
                             - "How are you?" or "Epdi irukka?"<br>
-                            - "Translate beautiful to tamil"<br>
-                            - "Check my balance!"
+                            - "Check my balance"<br>
+                            - "Translate beautiful to tamil"
                         </div>
                     </div>
                     <div class="chat-controls">
-                        <!-- EXPANDED LONG INPUT FOR CHAT -->
-                        <input type="text" id="chat-user-input" class="form-control" placeholder="Chat with Cherry Bot..." onkeypress="if(event.key==='Enter') executeOfflineChat()">
+                        <input type="text" id="chat-user-input" class="form-control" placeholder="Ask Cherry Bot..." onkeypress="if(event.key==='Enter') executeOfflineChat()">
                         <button class="btn btn-success" id="ai-send-btn" onclick="executeOfflineChat()">Send <i class="fas fa-paper-plane" style="margin-left:6px;"></i></button>
                     </div>
                 </div>
             </section>
 
-            <!-- 7. SETTINGS & THEMES VIEW -->
+            <!-- 7. SETTINGS & APP CENTER -->
             <section id="settings-view" class="view-panel">
-                <div class="panel-heading"><span>Settings & Appearance</span></div>
+                <div class="panel-heading"><span>Settings & App Download</span></div>
                 
-                <div class="loans-grid" style="margin-bottom: 25px;">
-                    
-                    <!-- App Installation & Data Backup -->
-                    <div class="loan-card" style="justify-content: flex-start; border-color: var(--text-accent);">
-                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
-                            <i class="fas fa-mobile-alt"></i> App & Backup Center
+                <div class="loans-grid" style="margin-bottom: 20px;">
+                    <!-- App Install Card -->
+                    <div class="loan-card" style="border-color: var(--text-accent);">
+                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                            <i class="fas fa-mobile-alt"></i> Mobile App & Fullscreen
                         </div>
-                        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Force Full-Screen mode, or Backup your private financial data offline.</p>
+                        <p style="font-size: 13px; color: var(--text-muted);">Install this app directly onto your phone home screen for true fullscreen with zero browser bars.</p>
                         
                         <div class="btn-flex-row">
-                            <button class="btn btn-success" onclick="installAppMode()"><i class="fas fa-expand"></i> Enter Full-Screen App Mode</button>
-                            <button class="btn btn-primary" onclick="downloadAppDirectly()"><i class="fas fa-file-code"></i> Download Source HTML</button>
-                            <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-download"></i> Backup Vault Data (.json)</button>
+                            <button class="btn btn-success" onclick="triggerAppInstall()"><i class="fas fa-download"></i> Install Standalone App</button>
+                            <button class="btn btn-primary" onclick="enterFullScreen()"><i class="fas fa-expand"></i> Force Fullscreen Now</button>
+                            <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-file-export"></i> Backup Vault Data (.json)</button>
                         </div>
                         
-                        <div style="background: var(--bg-card-alt); padding: 15px; border-radius: 12px; border: 2px dashed var(--border-color); margin-top: 15px;">
-                            <label style="font-size: 14px; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 10px;">Restore Data Backup</label>
-                            <input type="file" id="import-file" accept=".json" style="font-size: 14px; color: var(--text-muted); margin-bottom: 12px; width: 100%; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px;">
-                            <button class="btn btn-danger" onclick="importData()"><i class="fas fa-upload"></i> Restore Data</button>
+                        <div style="background: var(--bg-card-alt); padding: 12px; border-radius: 12px; border: 1px dashed var(--border-color); margin-top: 10px;">
+                            <label style="font-size: 13px; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 8px;">Restore Backup</label>
+                            <input type="file" id="import-file" accept=".json" style="font-size: 13px; color: var(--text-muted); width: 100%; margin-bottom: 8px;">
+                            <button class="btn btn-danger" onclick="importData()"><i class="fas fa-upload"></i> Restore Backup File</button>
                         </div>
                     </div>
 
-                    <!-- Translator Settings -->
-                    <div class="loan-card" style="justify-content: flex-start;">
-                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
-                            <i class="fas fa-language"></i> Translator Preferences
+                    <!-- Translator & Bot Config -->
+                    <div class="loan-card">
+                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                            <i class="fas fa-language"></i> Preferences
                         </div>
                         <div class="input-group">
                             <label>Default 'From' Language</label>
@@ -588,7 +634,7 @@
                                 <option value="fr">French</option>
                             </select>
                         </div>
-                        <div class="input-group" style="margin-top: 15px;">
+                        <div class="input-group" style="margin-top: 10px;">
                             <label>Default 'To' Language</label>
                             <select id="setting-trans-dst" class="form-control" onchange="saveAppConfig()">
                                 <option value="ta">Tamil (தமிழ்)</option>
@@ -599,363 +645,196 @@
                             </select>
                         </div>
                     </div>
-
-                    <!-- Bot Settings -->
-                    <div class="loan-card" style="justify-content: flex-start;">
-                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
-                            <i class="fas fa-robot"></i> Cherry Bot Config
-                        </div>
-                        <div class="input-group">
-                            <label>Bot Reply Speed</label>
-                            <select id="setting-bot-speed" class="form-control" onchange="saveAppConfig()">
-                                <option value="100">Instant (Lightning Fast)</option>
-                                <option value="500">Normal (Balanced)</option>
-                                <option value="1200">Human-like (Slow & Natural)</option>
-                            </select>
-                        </div>
-                        <div class="input-group" style="margin-top: 15px;">
-                            <label>Bot Personality</label>
-                            <select id="setting-bot-tone" class="form-control" onchange="saveAppConfig()">
-                                <option value="friendly">Friendly & Helpful (Default)</option>
-                                <option value="professional">Strictly Professional</option>
-                                <option value="funny">Sarcastic & Funny</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Chat Settings -->
-                    <div class="loan-card" style="justify-content: flex-start;">
-                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
-                            <i class="fas fa-comment-dots"></i> Data Privacy
-                        </div>
-                        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Clear your current conversation history with Cherry Bot. This does not delete any financial data.</p>
-                        <button class="btn btn-danger" onclick="clearChatHistory()"><i class="fas fa-trash"></i> Wipe Chat History</button>
-                    </div>
                 </div>
 
-                <!-- Visual Settings -->
-                <div class="form-card" style="margin-bottom: 25px; flex-direction: column;">
-                    <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 15px;">
-                        <i class="fas fa-layer-group"></i> Glass UI Transparency
+                <!-- Visual Adjusters -->
+                <div class="form-card" style="margin-bottom: 20px;">
+                    <div style="font-weight: 800; font-size: 16px; color: var(--text-main); margin-bottom: 10px;">
+                        <i class="fas fa-layer-group"></i> Glass Transparency
                     </div>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <span style="font-size: 14px; color: var(--text-muted); font-weight: 700;">Clear</span>
-                        <input type="range" id="opacity-slider" min="0" max="1" step="0.05" oninput="updateGlassOpacity(this.value)">
-                        <span style="font-size: 14px; color: var(--text-muted); font-weight: 700;">Solid</span>
-                    </div>
+                    <input type="range" id="opacity-slider" min="0" max="1" step="0.05" oninput="updateGlassOpacity(this.value)">
 
-                    <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-top: 30px; margin-bottom: 15px;">
-                        <i class="fas fa-moon"></i> Video Brightness Dimmer
+                    <div style="font-weight: 800; font-size: 16px; color: var(--text-main); margin-top: 18px; margin-bottom: 10px;">
+                        <i class="fas fa-moon"></i> Video Dimmer
                     </div>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <span style="font-size: 14px; color: var(--text-muted); font-weight: 700;">Bright</span>
-                        <input type="range" id="dimmer-slider" min="0" max="1" step="0.05" oninput="updateVideoDimmer(this.value)">
-                        <span style="font-size: 14px; color: var(--text-muted); font-weight: 700;">Dark</span>
-                    </div>
+                    <input type="range" id="dimmer-slider" min="0" max="1" step="0.05" oninput="updateVideoDimmer(this.value)">
                 </div>
 
-                <h3 style="color: var(--text-main); margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Color Themes</h3>
+                <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">Color Themes</h3>
                 <div class="loans-grid" id="theme-gallery"></div>
             </section>
-
         </main>
     </div>
 
-    <!-- Modals -->
+    <!-- MODAL: PROFILE -->
     <div class="modal-mask" id="profileModal">
         <div class="modal-sheet">
-            <h3 style="color: var(--text-main); font-family: var(--header-font); text-align: center; font-size: 22px; margin-bottom: 10px;">Edit Profile & Photo</h3>
+            <h3 style="color: var(--text-main); font-family: var(--header-font); text-align: center; font-size: 20px;">Edit Profile & Photo</h3>
             <div class="input-group"><label>Name</label><input type="text" id="m-prof-name" class="form-control"></div>
             <div class="input-group"><label>Job Title</label><input type="text" id="m-prof-role" class="form-control"></div>
-            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+            <div style="display: flex; gap: 12px;">
                 <div class="input-group"><label>ID</label><input type="text" id="m-prof-id" class="form-control"></div>
                 <div class="input-group"><label>Height</label><input type="text" id="m-prof-ht" class="form-control"></div>
             </div>
-            <div class="input-group" style="margin-top: 10px;">
-                <label>Profile Photo URL or Image File</label>
-                <input type="text" id="m-prof-avatar" class="form-control" placeholder="Paste image link or upload below">
-                <input type="file" id="m-prof-file" accept="image/*" style="font-size: 14px; color: var(--text-main); margin-top: 12px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px; border: 1px dashed var(--border-color);" onchange="encodeImageFileAsURL(this)">
+            <div class="input-group">
+                <label>Profile Photo URL or Upload</label>
+                <input type="text" id="m-prof-avatar" class="form-control" placeholder="Paste image link">
+                <input type="file" id="m-prof-file" accept="image/*" style="font-size: 13px; color: var(--text-main); margin-top: 8px;" onchange="encodeImageFileAsURL(this)">
             </div>
-            <div class="btn-flex-row" style="margin-top: 20px;">
+            <div class="btn-flex-row" style="margin-top: 10px;">
                 <button class="btn btn-primary" onclick="closeModal('profileModal')">Cancel</button>
-                <button class="btn btn-success" onclick="saveProfileData()">Save Official Details</button>
+                <button class="btn btn-success" onclick="saveProfileData()">Save Changes</button>
             </div>
         </div>
     </div>
 
+    <!-- MODAL: CATEGORY -->
     <div class="modal-mask" id="categoryModal">
         <div class="modal-sheet">
-            <h3 style="color: var(--text-main); text-align: center; font-size: 22px;">Edit Label</h3>
-            <div class="input-group">
-                <input type="text" id="m-cat-name" class="form-control" placeholder="Category Name">
-            </div>
-            <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); margin-top: 15px;">Choose Icon</div>
-            <div class="selection-grid" id="m-cat-icons"></div>
-            <div class="btn-flex-row" style="margin-top: 20px;">
-                <button class="btn btn-danger" id="m-cat-del-btn" style="display: none;" onclick="deleteActiveCategory()"><i class="fas fa-trash"></i> Delete Category</button>
+            <h3 style="color: var(--text-main); text-align: center; font-size: 20px;" id="cat-modal-title">Edit Label</h3>
+            <div class="input-group"><input type="text" id="m-cat-name" class="form-control" placeholder="Category Name"></div>
+            <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-top: 10px;">Choose Icon</div>
+            <div class="selection-grid" id="m-cat-icons" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 8px;"></div>
+            <div class="btn-flex-row" style="margin-top: 14px;">
+                <button class="btn btn-danger" id="m-cat-del-btn" style="display: none;" onclick="deleteActiveCategory()"><i class="fas fa-trash"></i> Delete</button>
                 <button class="btn btn-primary" onclick="closeModal('categoryModal')">Cancel</button>
                 <button class="btn btn-success" onclick="saveActiveCategory()">Save</button>
             </div>
         </div>
     </div>
 
+    <!-- MODAL: JOBS -->
     <div class="modal-mask" id="jobModal">
         <div class="modal-sheet">
-            <h3 style="color: var(--text-main); text-align: center; font-size: 22px;">Job Profiles</h3>
-            <div style="display: flex; gap: 12px; width: 100%;">
-                <input type="text" id="new-job-input" class="form-control" style="flex:1;" placeholder="Add Job Name">
-                <button class="btn btn-success" style="width: auto; padding: 0 20px;" onclick="createJobProfile()"><i class="fas fa-plus"></i></button>
+            <h3 style="color: var(--text-main); text-align: center; font-size: 20px;">Job Profiles</h3>
+            <div style="display: flex; gap: 10px; width: 100%;">
+                <input type="text" id="new-job-input" class="form-control" style="flex:1;" placeholder="New Job Name">
+                <button class="btn btn-success" style="width: auto; padding: 0 16px;" onclick="createJobProfile()"><i class="fas fa-plus"></i></button>
             </div>
-            <div id="job-profile-list" style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;"></div>
-            <button class="btn btn-primary" style="margin-top: 15px;" onclick="closeModal('jobModal')">Done</button>
+            <div id="job-profile-list" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;"></div>
+            <button class="btn btn-primary" style="margin-top: 10px;" onclick="closeModal('jobModal')">Done</button>
         </div>
     </div>
 
+    <!-- MODAL: BOTTOM SHEET MENU -->
     <div class="modal-mask" id="menuSheetModal">
         <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom)); border-radius: 20px 20px 0 0;">
-            <div style="font-weight: 900; font-size: 18px; color: var(--text-main); text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-bottom: 10px;">App Menu</div>
-            <button class="nav-btn" onclick="navTo('history'); closeModal('menuSheetModal')"><i class="fas fa-scroll"></i> Ledger Records</button>
-            <button class="nav-btn" onclick="navTo('archives'); closeModal('menuSheetModal')"><i class="fas fa-archive"></i> Past Months</button>
-            <button class="nav-btn" onclick="openProfileModal(); closeModal('menuSheetModal')"><i class="fas fa-user-edit"></i> Edit Profile</button>
-            <button class="nav-btn action-btn" onclick="completeMonth(); closeModal('menuSheetModal')"><i class="fas fa-calendar-check"></i> Complete Month</button>
-            <button class="nav-btn danger-btn" onclick="yearlyReset(); closeModal('menuSheetModal')"><i class="fas fa-skull"></i> Yearly Reset</button>
-            <button class="btn btn-success" style="margin-top: 10px; font-size: 15px;" onclick="installAppMode(); closeModal('menuSheetModal')"><i class="fas fa-expand"></i> Enter Full Screen App</button>
-            <button class="btn btn-primary" style="margin-top: 10px; font-size: 15px;" onclick="closeModal('menuSheetModal')">Close</button>
+            <div style="font-weight: 900; font-size: 17px; color: var(--text-main); text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">App Menu</div>
+            <button class="btn btn-success" onclick="triggerAppInstall(); closeModal('menuSheetModal')"><i class="fas fa-download"></i> Download / Install App</button>
+            <button class="btn btn-primary" onclick="navTo('history'); closeModal('menuSheetModal')"><i class="fas fa-scroll"></i> Ledger Records</button>
+            <button class="btn btn-primary" onclick="navTo('archives'); closeModal('menuSheetModal')"><i class="fas fa-archive"></i> Past Months</button>
+            <button class="btn btn-primary" onclick="openProfileModal(); closeModal('menuSheetModal')"><i class="fas fa-user-edit"></i> Edit Profile</button>
+            <button class="btn btn-primary" onclick="completeMonth(); closeModal('menuSheetModal')"><i class="fas fa-calendar-check"></i> Complete Month</button>
+            <button class="btn btn-danger" onclick="yearlyReset(); closeModal('menuSheetModal')"><i class="fas fa-skull"></i> Yearly Reset</button>
+            <button class="btn btn-primary" onclick="closeModal('menuSheetModal')">Close</button>
         </div>
     </div>
 
+    <!-- MODAL: APP INSTALLATION GUIDE -->
     <div class="modal-mask" id="installGuideModal">
         <div class="modal-sheet" style="text-align: center;">
-            <div style="font-size: 48px; color: var(--text-accent); margin-bottom: 15px;"><i class="fas fa-expand-arrows-alt"></i></div>
-            <h3 style="color: var(--text-main); font-family: var(--header-font); font-size: 26px; margin-bottom: 20px;">App Mode Activated!</h3>
+            <div style="font-size: 42px; color: var(--text-accent);"><i class="fas fa-mobile-alt"></i></div>
+            <h3 style="color: var(--text-main); font-family: var(--header-font); font-size: 22px;">Install Fullscreen App</h3>
             
-            <div style="text-align: left; background: var(--bg-card-alt); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 20px;">
-                <p style="font-size: 15px; color: var(--text-main); font-weight: 900; margin-bottom: 15px;">
-                    To keep this as a permanent App on your phone screen:
-                </p>
-                <ol style="font-size: 14px; color: var(--text-muted); line-height: 2; padding-left: 24px; margin-bottom: 0; font-weight: 700;">
-                    <li>Tap your Chrome browser menu <b>(⋮)</b>.</li>
-                    <li>Tap <b>"Add to Home screen"</b> or <b>"Install App"</b>.</li>
-                    <li>Open it from your home screen forever without browser bars!</li>
-                </ol>
+            <div style="text-align: left; background: var(--bg-card-alt); padding: 16px; border-radius: 14px; border: 1px solid var(--border-color); font-size: 14px; line-height: 1.8; color: var(--text-muted);" id="install-instructions">
+                <!-- Injected dynamically based on browser -->
             </div>
-            <button class="btn btn-success" style="padding: 16px; font-size: 16px;" onclick="closeModal('installGuideModal')">Got It</button>
+            <button class="btn btn-success" onclick="closeModal('installGuideModal')">Got It</button>
         </div>
     </div>
 
     <script>
-        // AGGRESSIVE FULL SCREEN ENFORCER
-        function enterFullScreen() {
-            if (!document.fullscreenElement) {
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen().catch(()=>{});
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen(); // Safari/iOS
-                } else if (document.documentElement.msRequestFullscreen) {
-                    document.documentElement.msRequestFullscreen(); // Edge/IE
-                }
-            }
-        }
-        // Listens to EVERY tap. If the user exits full screen, their very next tap will force it back.
-        document.addEventListener('touchstart', enterFullScreen, { passive: true });
-        document.addEventListener('click', enterFullScreen);
+        // 1. FULLSCREEN & PWA INSTALL CONTROLLER
+        let deferredPrompt;
+        const isStandalone = window.matchMedia('(display-mode: fullscreen)').matches || 
+                             window.matchMedia('(display-mode: standalone)').matches || 
+                             window.navigator.standalone === true;
 
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const btn = document.getElementById('m-install-btn');
+            if (btn) btn.style.display = 'flex';
+        });
 
-        async function preCacheAssets() {
-            if ('caches' in window) {
-                try {
-                    const cache = await caches.open('gokul-hub-offline-v1');
-                    const urlsToCache = [
-                        window.location.href.split('#')[0].split('?')[0],
-                        'lexicon.js',
-                        '10276.png',
-                        'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js',
-                        'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
-                        'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js',
-                        'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js',
-                        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-                        'https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap'
-                    ];
-                    for (let url of urlsToCache) {
-                        try { await cache.add(url); } catch(e) {}
+        function triggerAppInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        enterFullScreen();
                     }
-                } catch (e) { console.log('Offline cache setup skipped'); }
-            }
-        }
-
-        function updateNetworkStatus() {
-            const badge = document.getElementById('offline-badge');
-            if (!navigator.onLine) {
-                badge.style.display = 'block';
+                    deferredPrompt = null;
+                });
             } else {
-                badge.style.display = 'none';
+                showManualInstallGuide();
             }
         }
-        window.addEventListener('offline', updateNetworkStatus);
-        window.addEventListener('online', updateNetworkStatus);
 
-        function downloadAppDirectly() {
-            if (pwaEvent) {
-                pwaEvent.prompt();
-                pwaEvent.userChoice.then(() => { pwaEvent = null; });
-                return;
-            }
-            const htmlContent = document.documentElement.outerHTML;
-            const blob = new Blob([htmlContent], { type: 'text/html' });
-            const downloadUrl = URL.createObjectURL(blob);
+        function showManualInstallGuide() {
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const guide = document.getElementById('install-instructions');
             
-            const tempLink = document.createElement('a');
-            tempLink.href = downloadUrl;
-            tempLink.download = 'Gokul_Hub.html';
-            document.body.appendChild(tempLink);
-            tempLink.click();
-            document.body.removeChild(tempLink);
-            URL.revokeObjectURL(downloadUrl);
-        }
-
-        function exportData() {
-            const data = {
-                profile: JSON.parse(localStorage.getItem('gokulProfile') || 'null'),
-                categories: JSON.parse(localStorage.getItem('gokulVaultCats') || 'null'),
-                transactions: JSON.parse(localStorage.getItem('gokulVaultTx') || '[]'),
-                shifts: JSON.parse(localStorage.getItem('gokulAttRecords') || '[]'),
-                jobProfiles: JSON.parse(localStorage.getItem('gokulJobProfiles') || 'null'),
-                loans: JSON.parse(localStorage.getItem('gokulLoans') || '[]'),
-                archives: JSON.parse(localStorage.getItem('gokulArchives') || '[]')
-            };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Gokul_Data_Backup.json';
-            a.click();
-            URL.revokeObjectURL(url);
-            alert("Data Backup Downloaded Successfully!");
-        }
-
-        function importData() {
-            const fileInput = document.getElementById('import-file');
-            if (!fileInput.files.length) return alert("Please select a backup JSON file first.");
-            
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if (data.profile) localStorage.setItem('gokulProfile', JSON.stringify(data.profile));
-                    if (data.categories) localStorage.setItem('gokulVaultCats', JSON.stringify(data.categories));
-                    if (data.transactions) localStorage.setItem('gokulVaultTx', JSON.stringify(data.transactions));
-                    if (data.shifts) localStorage.setItem('gokulAttRecords', JSON.stringify(data.shifts));
-                    if (data.jobProfiles) localStorage.setItem('gokulJobProfiles', JSON.stringify(data.jobProfiles));
-                    if (data.loans) localStorage.setItem('gokulLoans', JSON.stringify(data.loans));
-                    if (data.archives) localStorage.setItem('gokulArchives', JSON.stringify(data.archives));
-                    
-                    alert("Data Successfully Restored! The app will now reload.");
-                    window.location.reload();
-                } catch (err) {
-                    alert("Invalid backup file.");
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        function installAppMode() {
-            enterFullScreen();
-            if (pwaEvent) {
-                pwaEvent.prompt();
-                pwaEvent.userChoice.then(() => { pwaEvent = null; });
+            if (isIOS) {
+                guide.innerHTML = `
+                    <b>To install on iPhone/iPad:</b><br>
+                    1. Tap the <b>Share</b> button (<i class="fas fa-share-square"></i>) at the bottom.<br>
+                    2. Scroll down and tap <b>"Add to Home Screen"</b>.<br>
+                    3. Tap <b>Add</b>. It will open fullscreen without any Safari browser bars!
+                `;
             } else {
-                openModal('installGuideModal');
+                guide.innerHTML = `
+                    <b>To install on Android / Chrome:</b><br>
+                    1. Tap the browser menu <b>(⋮)</b> at the top-right.<br>
+                    2. Tap <b>"Install App"</b> or <b>"Add to Home screen"</b>.<br>
+                    3. Launch <b>Gokul Hub</b> from your home screen for pure fullscreen mode!
+                `;
+            }
+            openModal('installGuideModal');
+        }
+
+        function enterFullScreen() {
+            const doc = document.documentElement;
+            if (!document.fullscreenElement) {
+                if (doc.requestFullscreen) doc.requestFullscreen().catch(()=>{});
+                else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
+                else if (doc.msRequestFullscreen) doc.msRequestFullscreen();
             }
         }
 
-        function saveAppConfig() {
-            const transSrc = document.getElementById('setting-trans-src').value;
-            const transDst = document.getElementById('setting-trans-dst').value;
-            const botSpeed = document.getElementById('setting-bot-speed').value;
-            const botTone = document.getElementById('setting-bot-tone').value;
+        document.addEventListener('touchstart', () => {
+            if (!document.fullscreenElement && isStandalone) enterFullScreen();
+        }, { passive: true });
 
-            localStorage.setItem('gokulTransSrc', transSrc);
-            localStorage.setItem('gokulTransDst', transDst);
-            localStorage.setItem('gokulBotSpeed', botSpeed);
-            localStorage.setItem('gokulBotTone', botTone);
-
-            document.getElementById('trans-src').value = transSrc;
-            document.getElementById('trans-dst').value = transDst;
+        // 2. DYNAMIC MANIFEST BUILDER
+        function buildDynamicManifest() {
+            const svgIcon = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="%230d0c11"/><text x="50%" y="54%" font-family="sans-serif" font-weight="900" font-size="200" fill="%23f0c75e" text-anchor="middle" dominant-baseline="middle">G</text></svg>`;
+            
+            const manifestObj = {
+                "name": "Gokul Hub",
+                "short_name": "GokulHub",
+                "id": "/",
+                "start_url": window.location.href.split('#')[0],
+                "scope": "/",
+                "display": "fullscreen",
+                "display_override": ["fullscreen", "standalone", "window-controls-overlay"],
+                "orientation": "portrait",
+                "background_color": "#0d0c11",
+                "theme_color": "#0d0c11",
+                "icons": [
+                    { "src": "10276.png", "sizes": "192x192", "type": "image/png" },
+                    { "src": "10276.png", "sizes": "512x512", "type": "image/png" },
+                    { "src": svgIcon, "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
+                ]
+            };
+            const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+            document.getElementById('pwa-manifest').setAttribute('href', URL.createObjectURL(manifestBlob));
         }
 
-        function loadAppConfig() {
-            const transSrc = localStorage.getItem('gokulTransSrc') || 'en';
-            const transDst = localStorage.getItem('gokulTransDst') || 'ta';
-            const botSpeed = localStorage.getItem('gokulBotSpeed') || '500';
-            const botTone = localStorage.getItem('gokulBotTone') || 'friendly';
-
-            document.getElementById('setting-trans-src').value = transSrc;
-            document.getElementById('setting-trans-dst').value = transDst;
-            document.getElementById('setting-bot-speed').value = botSpeed;
-            document.getElementById('setting-bot-tone').value = botTone;
-
-            document.getElementById('trans-src').value = transSrc;
-            document.getElementById('trans-dst').value = transDst;
-        }
-
-        function clearChatHistory() {
-            if(confirm("Are you sure you want to clear the chat screen? Your financial data will not be affected.")) {
-                const stream = document.getElementById('chat-stream');
-                stream.innerHTML = `
-                    <div class="chat-bubble chat-bot">
-                        வணக்கம் / Namaste / Hello Gokul! 🍒 I am <b>Cherry Bot</b>, your offline buddy.<br><br>
-                        My brain is now connected to the massive <b>lexicon.js</b> file. I understand hundreds of everyday words in English, Tamil, Hindi, Spanish, and French!<br><br>
-                        💬 Try saying:<br>
-                        - "How are you?" or "Epdi irukka?"<br>
-                        - "Translate beautiful to tamil"<br>
-                        - "Check my balance!"
-                    </div>`;
-                navTo('ai-advisor');
-            }
-        }
-
-        function updateGlassOpacity(val) {
-            document.documentElement.style.setProperty('--glass-alpha', val);
-            localStorage.setItem('gokulGlassAlpha', val);
-        }
-
-        function updateVideoDimmer(val) {
-            document.documentElement.style.setProperty('--video-dimmer', val);
-            localStorage.setItem('gokulVideoDimmer', val);
-        }
-
-        function loadAppearanceSettings() {
-            const savedAlpha = localStorage.getItem('gokulGlassAlpha') || '0.75';
-            document.documentElement.style.setProperty('--glass-alpha', savedAlpha);
-            const opSlider = document.getElementById('opacity-slider');
-            if(opSlider) opSlider.value = savedAlpha;
-
-            const savedDimmer = localStorage.getItem('gokulVideoDimmer') || '1';
-            document.documentElement.style.setProperty('--video-dimmer', savedDimmer);
-            const dimSlider = document.getElementById('dimmer-slider');
-            if(dimSlider) dimSlider.value = savedDimmer;
-        }
-
-        const appManifest = {
-            "name": "Gokul's Hub",
-            "short_name": "GokulHub",
-            "start_url": window.location.href.split('#')[0],
-            "display": "fullscreen",
-            "orientation": "portrait",
-            "background_color": "#0d0c11",
-            "theme_color": "#0d0c11",
-            "icons": [
-                { "src": "10276.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-                { "src": "10276.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
-            ]
-        };
-        const manifestBlob = new Blob([JSON.stringify(appManifest)], { type: 'application/json' });
-        document.getElementById('pwa-manifest').setAttribute('href', URL.createObjectURL(manifestBlob));
-
+        // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-offline-v1';
+                const CACHE_NAME = 'gokul-hub-v2';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -964,43 +843,30 @@
                         caches.match(e.request).then((res) => {
                             return res || fetch(e.request).then((fetchRes) => {
                                 return caches.open(CACHE_NAME).then((cache) => {
-                                    if (e.request.url.startsWith('http')) {
-                                        cache.put(e.request, fetchRes.clone());
-                                    }
+                                    if (e.request.url.startsWith('http')) cache.put(e.request, fetchRes.clone());
                                     return fetchRes;
                                 });
                             });
-                        }).catch(() => {
-                            if (e.request.mode === 'navigate') return caches.match('${window.location.href.split('#')[0].split('?')[0]}');
-                        })
+                        }).catch(() => caches.match('${window.location.href.split('#')[0]}'))
                     );
                 });
             `;
             const swBlob = new Blob([swCode], { type: 'application/javascript' });
-            navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+            navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(()=>{});
         }
 
-        let pwaEvent;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            pwaEvent = e;
-        });
-
-        function initVideoPlayback() {
-            const video = document.getElementById('app-bg-video');
-            if (video) {
-                video.muted = true;
-                const promise = video.play();
-                if (promise !== undefined) {
-                    promise.catch(() => {});
-                }
-            }
+        function updateNetworkStatus() {
+            const badge = document.getElementById('offline-badge');
+            if (badge) badge.style.display = navigator.onLine ? 'none' : 'block';
         }
+        window.addEventListener('offline', updateNetworkStatus);
+        window.addEventListener('online', updateNetworkStatus);
 
+        // 4. NAVIGATION CONTROLLER
         function navTo(panelId) {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.sidebar .btn').forEach(b => b.classList.remove('active'));
 
             const targetPanel = document.getElementById(`${panelId}-view`);
             if (targetPanel) targetPanel.classList.add('active');
@@ -1008,7 +874,7 @@
             const desktopBtn = document.getElementById(`dnav-${panelId}`);
             if (desktopBtn) desktopBtn.classList.add('active');
 
-            const tabMap = { 'vault-dashboard': 'tab-vault', 'attendance': 'tab-att', 'loans': 'tab-loan', 'ai-advisor': 'tab-ai', 'settings': 'tab-themes' };
+            const tabMap = { 'vault-dashboard': 'tab-vault', 'attendance': 'tab-att', 'loans': 'tab-loan', 'ai-advisor': 'tab-ai', 'settings': 'tab-settings' };
             if (tabMap[panelId]) {
                 const mobileTab = document.getElementById(tabMap[panelId]);
                 if (mobileTab) mobileTab.classList.add('active');
@@ -1022,9 +888,10 @@
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         function openMenuSheet() { openModal('menuSheetModal'); }
 
+        // 5. PROFILE CONTROLLER
         const defaultProfile = { name: "GOKUL", role: "Influencer & Petrol Bunk Worker", idStr: "TVGR", height: "5'4\"", avatar: "10276.png" };
         let profile = JSON.parse(localStorage.getItem('gokulProfile')) || defaultProfile;
-        if(!profile.avatar) profile.avatar = "10276.png";
+        if (!profile.avatar) profile.avatar = "10276.png";
 
         function renderProfile() {
             document.getElementById('prof-name').innerText = profile.name.toUpperCase();
@@ -1037,9 +904,7 @@
                 document.getElementById('header-avatar-img'),
                 document.getElementById('sidebar-avatar-img')
             ];
-            avatars.forEach(av => {
-                if(av) av.src = profile.avatar;
-            });
+            avatars.forEach(av => { if (av) av.src = profile.avatar; });
         }
 
         function openProfileModal() {
@@ -1055,9 +920,7 @@
             const file = element.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onloadend = function() {
-                    document.getElementById('m-prof-avatar').value = reader.result;
-                }
+                reader.onloadend = () => { document.getElementById('m-prof-avatar').value = reader.result; };
                 reader.readAsDataURL(file);
             }
         }
@@ -1067,14 +930,15 @@
             profile.role = document.getElementById('m-prof-role').value.trim();
             profile.idStr = document.getElementById('m-prof-id').value.trim();
             profile.height = document.getElementById('m-prof-ht').value.trim();
-            const avInput = document.getElementById('m-prof-avatar').value.trim();
-            if(avInput) profile.avatar = avInput;
+            const av = document.getElementById('m-prof-avatar').value.trim();
+            if (av) profile.avatar = av;
             
             localStorage.setItem('gokulProfile', JSON.stringify(profile));
             renderProfile();
             closeModal('profileModal');
         }
 
+        // 6. VAULT & TRANSACTIONS
         const defaultCategories = [
             { name: "Food & Snacks", icon: "fas fa-utensils", type: "expense" },
             { name: "Fuel & Travel", icon: "fas fa-motorcycle", type: "expense" },
@@ -1102,7 +966,7 @@
         function toggleEditMode() {
             isEditMode = !isEditMode;
             const btn = document.getElementById('btn-toggle-edit');
-            btn.innerHTML = isEditMode ? '<i class="fas fa-check"></i> Done' : '<i class="fas fa-pencil-alt"></i> Edit';
+            btn.innerHTML = isEditMode ? '<i class="fas fa-check"></i> Done' : '<i class="fas fa-pencil-alt"></i> Edit Labels';
             renderCategoryGrid();
         }
 
@@ -1111,15 +975,13 @@
             grid.innerHTML = '';
             categories.forEach((cat, idx) => {
                 if (cat.type === currentFlow) {
-                    const extra = isEditMode ? 'edit-mode' : '';
-                    grid.innerHTML += `<button class="module-btn ${extra}" onclick="handleCatPress(${idx})">
+                    grid.innerHTML += `<button class="module-btn" onclick="handleCatPress(${idx})">
                         <i class="${cat.icon}"></i><span>${cat.name}</span>
                     </button>`;
                 }
             });
-
             if (isEditMode) {
-                grid.innerHTML += `<button class="module-btn add-btn" onclick="openCatEditor(null)">
+                grid.innerHTML += `<button class="module-btn" style="border: 2px dashed var(--text-accent);" onclick="openCatEditor(null)">
                     <i class="fas fa-plus"></i><span>Add New</span>
                 </button>`;
             }
@@ -1131,39 +993,34 @@
         }
 
         let editingCatIdx = null;
-        let selectedIcon = '';
+        let selectedIcon = 'fas fa-coins';
 
         function openCatEditor(idx) {
             editingCatIdx = idx;
             const iconContainer = document.getElementById('m-cat-icons');
-            const iconSet = ['fas fa-gas-pump', 'fas fa-utensils', 'fas fa-motorcycle', 'fas fa-mobile-alt', 'fas fa-shopping-bag', 'fas fa-camera-retro', 'fas fa-wallet', 'fas fa-film', 'fas fa-heart', 'fas fa-home', 'fas fa-car', 'fas fa-gift', 'fas fa-briefcase', 'fas fa-tshirt', 'fas fa-coffee'];
-            iconContainer.innerHTML = iconSet.map(ic => `<div class="select-item" onclick="selectCatIcon('${ic}')" data-icon="${ic}"><i class="${ic}"></i></div>`).join('');
+            const iconSet = ['fas fa-gas-pump', 'fas fa-utensils', 'fas fa-motorcycle', 'fas fa-mobile-alt', 'fas fa-shopping-bag', 'fas fa-camera-retro', 'fas fa-wallet', 'fas fa-film', 'fas fa-home', 'fas fa-car', 'fas fa-gift', 'fas fa-briefcase', 'fas fa-coffee'];
+            iconContainer.innerHTML = iconSet.map(ic => `<div style="font-size: 20px; cursor: pointer; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center;" onclick="selectCatIcon('${ic}')"><i class="${ic}"></i></div>`).join('');
             
             if (idx !== null) {
                 const cat = categories[idx];
                 document.getElementById('cat-modal-title').innerText = "Edit Label";
                 document.getElementById('m-cat-name').value = cat.name;
                 document.getElementById('m-cat-del-btn').style.display = 'block';
-                selectCatIcon(cat.icon);
+                selectedIcon = cat.icon;
             } else {
                 document.getElementById('cat-modal-title').innerText = "New Label";
                 document.getElementById('m-cat-name').value = '';
                 document.getElementById('m-cat-del-btn').style.display = 'none';
-                selectCatIcon(iconSet[0]);
+                selectedIcon = iconSet[0];
             }
             openModal('categoryModal');
         }
 
-        function selectCatIcon(ic) {
-            selectedIcon = ic;
-            document.querySelectorAll('#m-cat-icons .select-item').forEach(el => el.classList.remove('selected'));
-            const target = document.querySelector(`#m-cat-icons .select-item[data-icon="${ic}"]`);
-            if (target) target.classList.add('selected');
-        }
+        function selectCatIcon(ic) { selectedIcon = ic; }
 
         function saveActiveCategory() {
             const name = document.getElementById('m-cat-name').value.trim();
-            if (!name) return alert("Enter category name");
+            if (!name) return alert("Enter label name");
             if (editingCatIdx !== null) {
                 categories[editingCatIdx].name = name;
                 categories[editingCatIdx].icon = selectedIcon;
@@ -1191,8 +1048,7 @@
                     date: new Date().toLocaleString('en-GB'),
                     category,
                     type,
-                    amount,
-                    source: isAuto ? 'system' : 'manual'
+                    amount
                 });
                 localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
                 updateVaultStats();
@@ -1249,6 +1105,7 @@
             });
         }
 
+        // 7. ORDERLY WORK & ATTENDANCE ENGINE
         let shifts = JSON.parse(localStorage.getItem('gokulAttRecords')) || [];
         const defaultJobs = ["Petrol Bunk Worker", "Instagram Influencer", "Content Creator"];
         let jobProfiles = JSON.parse(localStorage.getItem('gokulJobProfiles')) || defaultJobs;
@@ -1263,7 +1120,7 @@
             list.innerHTML = jobProfiles.map((j, i) => `
                 <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color);">
                     <span style="font-weight: 700;">${j}</span>
-                    <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px;" onclick="removeJobProfile(${i})"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px; width: auto;" onclick="removeJobProfile(${i})"><i class="fas fa-trash"></i></button>
                 </div>
             `).join('');
             openModal('jobModal');
@@ -1304,18 +1161,17 @@
             const otRate = parseFloat(document.getElementById('att-ot-rate').value);
             const jobType = document.getElementById('att-job-select').value;
 
-            if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) return alert("Please fill all shift details.");
-            
-            // Auto-prevent exact duplicate dates unless confirmed
+            if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) return alert("Fill all shift details");
+
             if (shifts.some(s => s.date === date)) {
-                if (!confirm(`You already have a shift logged for ${date}. Do you want to log another one on the same day?`)) return;
+                if (!confirm(`A shift is already logged for ${date}. Add another on this day?`)) return;
             }
 
             saveRates();
 
             const start = new Date(`1970-01-01T${inTime}:00`);
             let end = new Date(`1970-01-01T${outTime}:00`);
-            if (end < start) end.setDate(end.getDate() + 1); // Handle night shifts over midnight
+            if (end < start) end.setDate(end.getDate() + 1);
 
             const gross = (end - start) / (1000 * 60 * 60);
             const breakDeduct = gross > 4 ? 0.5 : 0;
@@ -1334,12 +1190,9 @@
 
             logVaultTx(`${jobType} (Shift: ${date})`, 'income', true, totalEarned);
             
-            // Auto-maintainable: Reset form for the next entry
+            // Auto-maintain form
             document.getElementById('att-date').valueAsDate = new Date();
-            document.getElementById('att-in').value = "09:30";
-            document.getElementById('att-out').value = "18:00";
-            
-            alert(`Shift logged! ₹${totalEarned.toFixed(2)} synced to Vault.`);
+            alert(`Shift saved! ₹${totalEarned.toFixed(2)} deposited to Vault.`);
         }
 
         function updateShiftStats() {
@@ -1347,16 +1200,15 @@
             tbody.innerHTML = '';
             let totalPay = 0, totalHrs = 0, totalOT = 0;
 
-            // Calculate overall totals first
             shifts.forEach(s => {
                 totalPay += s.totalEarned;
                 totalHrs += s.net;
                 totalOT += s.otHours;
             });
 
-            // Render table backwards so the NEWEST shifts appear at the top
-            [...shifts].reverse().forEach((s, reversedIndex) => {
-                const actualIndex = shifts.length - 1 - reversedIndex; // Track real index for deletion
+            // Show newest shifts at top
+            [...shifts].reverse().forEach((s, revIdx) => {
+                const actualIdx = shifts.length - 1 - revIdx;
                 tbody.innerHTML += `<tr>
                     <td>${s.date}</td>
                     <td style="font-weight: 700; font-size: 11px;">${s.jobType}</td>
@@ -1364,11 +1216,7 @@
                     <td>${s.net.toFixed(1)}h</td>
                     <td style="color: var(--text-accent); font-weight: 700;">${s.otHours.toFixed(1)}h</td>
                     <td style="font-weight: 900;">₹${s.totalEarned.toFixed(0)}</td>
-                    <td>
-                        <button class="btn btn-danger" style="padding: 6px; width: auto; font-size: 11px; border-radius: 6px;" onclick="deleteShift(${actualIndex})">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </td>
+                    <td><button class="btn btn-danger" style="padding: 4px 8px; width: auto; font-size: 11px;" onclick="deleteShift(${actualIdx})"><i class="fas fa-trash"></i></button></td>
                 </tr>`;
             });
 
@@ -1378,16 +1226,16 @@
             document.getElementById('stat-salary').innerText = `₹${totalPay.toFixed(0)}`;
         }
 
-        function deleteShift(index) {
-            if (confirm("Delete this single shift? (Note: The money logged to your Vault will remain. Adjust it manually if needed.)")) {
-                shifts.splice(index, 1);
+        function deleteShift(idx) {
+            if (confirm("Delete this single shift?")) {
+                shifts.splice(idx, 1);
                 localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
                 updateShiftStats();
             }
         }
 
         function clearShifts() {
-            if (confirm("Clear shift logs? (Vault money remains intact)")) {
+            if (confirm("Clear all shift records? (Vault balance remains unaffected)")) {
                 shifts = [];
                 localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
                 updateShiftStats();
@@ -1396,112 +1244,30 @@
 
         function downloadPDF() {
             if (shifts.length === 0) return alert("No shifts to export!");
-            
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'mm', 'a4');
             
-            const primaryColor = [28, 69, 135]; 
-            const accentColor = [22, 163, 74]; 
-            const darkText = [40, 40, 40];
-            const lightText = [100, 100, 100];
-
-            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-            doc.rect(0, 0, 210, 40, 'F');
-            
+            doc.setFillColor(28, 69, 135);
+            doc.rect(0, 0, 210, 35, 'F');
             doc.setTextColor(255, 255, 255);
-            doc.setFontSize(22);
+            doc.setFontSize(20);
             doc.setFont("helvetica", "bold");
-            doc.text("GOKUL HUB INC.", 14, 20);
-            
-            doc.setFontSize(12);
-            doc.setFont("helvetica", "normal");
-            doc.text("OFFICIAL TIMESHEET & SALARY REPORT", 14, 30);
-            
-            const now = new Date();
-            doc.setFontSize(10);
-            doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
-            
-            try {
-                if (profile.avatar && profile.avatar.startsWith('data:image')) {
-                    doc.addImage(profile.avatar, 'JPEG', 14, 45, 20, 20);
-                }
-            } catch(e) {}
+            doc.text("GOKUL HUB - TIMESHEET REPORT", 14, 22);
 
-            doc.setTextColor(darkText[0], darkText[1], darkText[2]);
-            doc.setFontSize(12);
-            doc.setFont("helvetica", "bold");
-            doc.text("EMPLOYEE DETAILS", profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14, 50);
-            doc.setFontSize(10);
-            doc.setFont("helvetica", "normal");
-            const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14;
-            doc.text(`Name: ${profile.name}`, textStartX, 58);
-            doc.text(`ID: ${profile.idStr}`, textStartX, 64);
-            doc.text(`Role: ${profile.role}`, textStartX, 70);
-            
-            let totalPay = 0, totalHrs = 0, totalOT = 0;
-            shifts.forEach(s => {
-                totalPay += s.totalEarned;
-                totalHrs += s.net;
-                totalOT += s.otHours;
-            });
-
-            doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-            doc.setLineWidth(0.5);
-            doc.roundedRect(120, 45, 75, 38, 3, 3, 'S');
-            doc.setFont("helvetica", "bold");
-            doc.text("SUMMARY", 125, 52);
-            doc.setFont("helvetica", "normal");
-            doc.text(`Total Days: ${shifts.length}`, 125, 60);
-            doc.text(`Reg Hours: ${totalHrs.toFixed(1)}h`, 125, 66);
-            doc.text(`OT Hours: ${totalOT.toFixed(1)}h`, 125, 72);
-            doc.setFont("helvetica", "bold");
-            doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]);
-            doc.text(`Net Salary: INR ${totalPay.toFixed(2)}`, 125, 78);
-
-            doc.setTextColor(darkText[0], darkText[1], darkText[2]);
-            
-            const tableColumn = ["Date", "Job Title", "Timing", "Reg (Hrs)", "OT (Hrs)", "Earned (INR)"];
-            const tableRows = [];
-
-            shifts.forEach(s => {
-                tableRows.push([
-                    s.date,
-                    s.jobType,
-                    `${s.inTime} - ${s.outTime}`,
-                    s.net.toFixed(1),
-                    s.otHours.toFixed(1),
-                    `Rs. ${s.totalEarned.toFixed(2)}`
-                ]);
-            });
+            const tableColumn = ["Date", "Job Title", "Timing", "Hours", "OT", "Earned (INR)"];
+            const tableRows = shifts.map(s => [s.date, s.jobType, `${s.inTime} - ${s.outTime}`, s.net.toFixed(1), s.otHours.toFixed(1), `Rs. ${s.totalEarned.toFixed(2)}`]);
 
             doc.autoTable({
-                startY: 95,
+                startY: 50,
                 head: [tableColumn],
                 body: tableRows,
                 theme: 'striped',
-                headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' },
-                bodyStyles: { textColor: darkText, halign: 'center' },
-                alternateRowStyles: { fillColor: [240, 244, 248] },
-                styles: { font: 'helvetica', fontSize: 10, cellPadding: 6 },
-                columnStyles: { 1: { halign: 'left' }, 5: { fontStyle: 'bold', textColor: [22, 163, 74] } },
-                margin: { top: 10, right: 14, bottom: 20, left: 14 }
+                headStyles: { fillColor: [28, 69, 135] }
             });
-
-            const finalY = doc.lastAutoTable.finalY || 95;
-            doc.setFontSize(10);
-            doc.setFont("helvetica", "bold");
-            doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30);
-            doc.setLineWidth(0.5);
-            doc.line(14, finalY + 25, 70, finalY + 25);
-            
-            doc.setFontSize(8);
-            doc.setFont("helvetica", "normal");
-            doc.setTextColor(lightText[0], lightText[1], lightText[2]);
-            doc.text("System Generated Report - Gokul Hub Automated Offline PWA", 14, finalY + 45);
-
-            doc.save(`Gokul_Timesheet_Report_${now.getTime()}.pdf`);
+            doc.save(`Gokul_Timesheet_${Date.now()}.pdf`);
         }
 
+        // 8. LOAN CALCULATION & AUTO-PAY
         let loans = JSON.parse(localStorage.getItem('gokulLoans')) || [];
         let calculatedEMI = null;
 
@@ -1556,7 +1322,7 @@
             document.getElementById('loan-name-input').value = '';
             document.getElementById('loan-principal').value = '';
             runEMICalc();
-            alert(`"${name}" saved to Active Loans!`);
+            alert(`"${name}" added to Active Loans!`);
         }
 
         function renderLoans() {
@@ -1576,23 +1342,22 @@
                     <div class="loan-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
                             <span style="font-weight: 800; font-size: 15px;">${l.name}</span>
-                            <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px;" onclick="deleteLoan(${l.id})"><i class="fas fa-trash"></i></button>
+                            <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px; width: auto;" onclick="deleteLoan(${l.id})"><i class="fas fa-trash"></i></button>
                         </div>
                         <div style="display:flex; justify-content:space-between; font-size: 12px;"><span>Monthly EMI:</span><b style="color:var(--danger)">₹${l.emi.toLocaleString('en-IN')}</b></div>
-                        <div style="display:flex; justify-content:space-between; font-size: 12px;"><span>Remaining Balance:</span><b>₹${bal.toLocaleString('en-IN')}</b></div>
+                        <div style="display:flex; justify-content:space-between; font-size: 12px;"><span>Remaining:</span><b>₹${bal.toLocaleString('en-IN')}</b></div>
                         <div style="display:flex; justify-content:space-between; font-size: 12px;"><span>Due Date:</span><b>Day ${l.due} of month</b></div>
 
                         <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${pct}%"></div></div>
-                        <div style="font-size: 11px; color: var(--text-muted); text-align: right;">${l.paid}/${l.tenure} Months Paid</div>
+                        <div style="font-size: 11px; color: var(--text-muted); text-align: right;">${l.paid}/${l.tenure} Paid</div>
 
                         <div style="display: flex; gap: 8px; align-items: center; margin-top: 6px;">
-                            <input type="number" id="seek-${l.id}" class="form-control" value="1" min="1" max="${rem}" style="width: 60px; text-align: center; padding: 8px;">
+                            <input type="number" id="seek-${l.id}" class="form-control" value="1" min="1" max="${rem}" style="width: 60px; text-align: center; padding: 6px;">
                             <button class="btn btn-success" style="flex: 1;" onclick="payLoanEMI(${l.id})" ${rem === 0 ? 'disabled' : ''}>
                                 ${rem === 0 ? 'Fully Paid' : 'Pay EMI & Sync'}
                             </button>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
 
@@ -1600,7 +1365,7 @@
             const l = loans.find(x => x.id === loanId);
             if (!l) return;
             const count = parseInt(document.getElementById(`seek-${l.id}`).value) || 1;
-            if (l.paid + count > l.tenure) return alert("Installment exceeds tenure");
+            if (l.paid + count > l.tenure) return alert("Exceeds total tenure");
 
             const total = l.emi * count;
             logVaultTx(`EMI: ${l.name} (${count}m)`, 'expense', true, total);
@@ -1642,45 +1407,32 @@
             }
         }
 
+        // 9. CHERRY BOT & OFFLINE TRANSLATOR
         function performOfflineTranslation(text, srcLang, dstLang) {
             const clean = text.trim().toLowerCase();
-            if (!clean) return "Please enter a word or sentence to translate.";
-
-            if (typeof translationLexicon === 'undefined') return "Lexicon not loaded! Ensure lexicon.js is linked.";
+            if (!clean) return "Please enter a word to translate.";
+            if (typeof translationLexicon === 'undefined') return "Lexicon not loaded. Ensure lexicon.js is in the folder.";
 
             for (let entry of translationLexicon) {
                 const srcVal = (entry[srcLang] || "").toLowerCase();
                 const enVal = entry.en.toLowerCase();
-                if (clean === srcVal || clean === enVal || srcVal.includes(clean) || clean.includes(srcVal)) {
-                    return entry[dstLang] || entry.en;
-                }
+                if (clean === srcVal || clean === enVal || srcVal.includes(clean)) return entry[dstLang] || entry.en;
             }
-
-            const tokens = clean.split(/\s+/);
-            const translatedTokens = tokens.map(token => {
-                for (let entry of translationLexicon) {
-                    if (entry.en.toLowerCase() === token || (entry[srcLang] && entry[srcLang].toLowerCase().includes(token))) {
-                        return entry[dstLang] ? entry[dstLang].split(' (')[0] : token;
-                    }
-                }
-                return token;
-            });
-
-            return translatedTokens.join(' ');
+            return text;
         }
 
         function runQuickTranslate() {
             const src = document.getElementById('trans-src').value;
             const dst = document.getElementById('trans-dst').value;
             const text = document.getElementById('trans-input').value.trim();
-            if (!text) return alert("Please enter text in the box to translate.");
+            if (!text) return;
 
             const stream = document.getElementById('chat-stream');
-            stream.innerHTML += `<div class="chat-bubble chat-user">Translate (${src.toUpperCase()} ➔ ${dst.toUpperCase()}): <b>${text}</b></div>`;
+            stream.innerHTML += `<div class="chat-bubble chat-user">${text}</div>`;
             document.getElementById('trans-input').value = '';
 
-            const result = performOfflineTranslation(text, src, dst);
-            stream.innerHTML += `<div class="chat-bubble chat-bot"><b>Translation (${dst.toUpperCase()}):</b><br><span style="font-size: 15px; font-weight: 800;">${result}</span></div>`;
+            const res = performOfflineTranslation(text, src, dst);
+            stream.innerHTML += `<div class="chat-bubble chat-bot"><b>${dst.toUpperCase()}:</b> ${res}</div>`;
             stream.scrollTop = stream.scrollHeight;
         }
 
@@ -1692,101 +1444,67 @@
             const stream = document.getElementById('chat-stream');
             stream.innerHTML += `<div class="chat-bubble chat-user">${msg}</div>`;
             input.value = '';
-            stream.scrollTop = stream.scrollHeight;
 
-            const loadId = `load-${Date.now()}`;
-            stream.innerHTML += `<div class="chat-bubble chat-bot" id="${loadId}"><i class="fas fa-ellipsis-h fa-beat"></i> Thinking...</div>`;
-            stream.scrollTop = stream.scrollHeight;
-
-            const botSpeed = parseInt(localStorage.getItem('gokulBotSpeed')) || 500;
-            const botTone = localStorage.getItem('gokulBotTone') || 'friendly';
+            const bal = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0) - 
+                        transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
 
             setTimeout(() => {
-                const inc = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
-                const exp = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
-                const bal = inc - exp;
-                
-                let reply = "";
-                const clean = msg.toLowerCase().trim();
-                const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+                let reply = "I'm running in offline mode. Ask me about your 'balance', 'shifts', or use the translator!";
+                const clean = msg.toLowerCase();
 
-                if (clean.startsWith("translate") || clean.startsWith("trans ")) {
-                    const parts = clean.replace("translate", "").replace("trans", "").trim();
-                    let targetLang = "ta";
-                    let targetName = "Tamil";
-                    let textToTranslate = parts;
-
-                    if (parts.includes(" to ")) {
-                        const spl = parts.split(" to ");
-                        textToTranslate = spl[0].trim();
-                        const langKey = spl[1].trim().toLowerCase();
-
-                        if (langKey.includes("tamil") || langKey === "ta") { targetLang = "ta"; targetName = "Tamil"; }
-                        else if (langKey.includes("hindi") || langKey === "hi") { targetLang = "hi"; targetName = "Hindi"; }
-                        else if (langKey.includes("english") || langKey === "en") { targetLang = "en"; targetName = "English"; }
-                        else if (langKey.includes("spanish") || langKey === "es") { targetLang = "es"; targetName = "Spanish"; }
-                        else if (langKey.includes("french") || langKey === "fr") { targetLang = "fr"; targetName = "French"; }
-                    }
-
-                    if (typeof translationLexicon !== 'undefined') {
-                        const translated = performOfflineTranslation(textToTranslate, "en", targetLang);
-                        reply = `🌐 <b>Offline Translation to ${targetName}:</b><br><br><span style="font-size: 15px; font-weight: 800;">"${translated}"</span>`;
-                    } else {
-                        reply = "Lexicon file is missing! Please ensure 'lexicon.js' is saved in the same folder.";
-                    }
-                }
-                else if (clean.match(/\b(how are you|how do you do|how's it going|how are things|eppadi irukka|epdi irukka|nalama|nallama|kaise ho|kya haal|kaise hain)\b/)) {
-                    if(botTone === 'professional') reply = "I am operating optimally. How may I assist with your Hub data?";
-                    else if (botTone === 'funny') reply = "I'm literally trapped inside your phone... but other than that, I'm doing great! 🍒";
-                    else reply = pick(["I'm doing fantastic, just organizing your vault! 🍒 How are you feeling today?", "நான் ரொம்ப நல்லா இருக்கேன் Gokul! நீங்க எப்படி இருக்கீங்க?", "मैं बिल्कुल ठीक हूँ भाई! आप कैसे हैं?"]);
-                }
-                else if (clean.match(/\b(what are you doing|what's up|doing what|whatcha doing|enna panra|enna pandra|enna panreenga|kya kar rahe ho|kya kar raha hai)\b/)) {
-                    if(botTone === 'professional') reply = "I am currently monitoring your local financial databases and awaiting your commands.";
-                    else if(botTone === 'funny') reply = "Plotting world domination... just kidding, checking your balance. 🍒";
-                    else reply = pick(["Just hanging out in your device, ready to translate or check your finances! 🍒", "உங்களுக்காக காத்துட்டு இருக்கேன்! சொல்லுங்க, என்ன பாக்கணும்?"]);
-                }
-                else if (clean.match(/\b(who created you|who made you|your boss|your creator|unna yaru|yaru uruvakunathu|kisne banaya)\b/)) {
-                    reply = pick(["I was built as a smart offline assistant specially for Gokul Hub! 🍒", "என்னை உங்களுக்காகவே, Gokul Hub-ல வேலை செய்ய உருவாக்கினாங்க!"]);
-                }
-                else if (clean.match(/\b(hello|hi|hey|greetings|sup|yo|vanakkam|namaste|pranam)\b/)) {
-                    if(botTone === 'professional') reply = "Greetings, Gokul. I am ready to process your financial inquiries.";
-                    else if(botTone === 'funny') reply = "Oh, look who it is! Ready to face the music (and by music, I mean your bank balance)? 🍒";
-                    else reply = pick(["Hello there! Cherry Bot at your service 🍒. How can I help you?", "வணக்கம் தலைவா! Machi Cherry Bot ready. Translate பண்ணனுமா இல்ல கணக்கு பாக்கணுமா?"]);
-                }
-                else if (clean.includes("who are you") || clean.includes("your name") || clean.includes("un peru enna") || clean.includes("aap kaun ho")) {
-                    reply = "I am <b>Cherry Bot</b> 🍒! Your smart, multilingual, 100% offline personal assistant and translator built right into Gokul Hub.";
-                }
-                else if (clean.match(/\b(balance|how much|total|left|evalo kaasu|evalo panam|kaasu evalo|balance evalo|panam iruku|ennoda balance|en kitta evalo|kitna paisa|paisa kitna|balance kitna|kitne paise bache|kya balance hai)\b/)) {
-                    reply = pick([`Your current Vault balance sits at <b>₹${bal.toFixed(2)}</b>.`, `உங்க Vault-ல இப்போதைக்கு மொத்தம் <b>₹${bal.toFixed(2)}</b> மீதம் இருக்கு. (வரவு: +₹${inc.toFixed(2)}, செலவு: -₹${exp.toFixed(2)}) 💰`]);
-                } 
-                else if (clean.match(/\b(expense|spent|out|spending|selavu|selavu evalo|evlo selavu|kharcha|evalo pochu|kitna kharcha|kharcha kitna|kitne kharch hue)\b/)) {
-                    reply = pick([`You have spent a total of <b>₹${exp.toFixed(2)}</b>. Check your Dashboard for a detailed breakdown.`, `இதுவரைக்கும் நீங்க பண்ணியிருக்க மொத்த செலவு <b>₹${exp.toFixed(2)}</b>. கவனமா செலவு பண்ணுங்க Gokul!`]);
-                } 
-                else if (clean.match(/\b(income|earned|salary|in|sambalam|varavu|income evalo|kaasu vandhucha|evalo vandhuchu|kamai|aamdani|income kitni)\b/)) {
-                    reply = pick([`Your total recorded income is <b>₹${inc.toFixed(2)}</b>. Keep up the great work!`, `உங்க மொத்த வரவு/சம்பளம் <b>₹${inc.toFixed(2)}</b> Record ஆகியிருக்கு! கலக்குங்க! 🔥`]);
-                } 
-                else if (clean.match(/\b(loan|emi|debt|kadan|kadan evalo|emi evalo|kadan iruka|karz|loan kitna|emi kitni hai)\b/)) {
-                    reply = loans.length === 0 ? "You currently have no active loans! Enjoy the debt-free life. 🍒" : `You currently have <b>${loans.length}</b> active loan(s). Make sure you keep enough vault balance to cover upcoming EMIs!`;
-                } 
-                else if (clean.match(/\b(shift|work|attendance|vela|shift evalo|shift count|duty)\b/)) {
-                    reply = `You have logged <b>${shifts.length}</b> work shifts so far. You can download your full timesheet from the Work tab.`;
-                } 
-                else if (clean.match(/\b(time|date|today|day)\b/)) {
-                    const now = new Date();
-                    reply = `Right now it's <b>${now.toLocaleTimeString()}</b> on ${now.toLocaleDateString()}. Make today count!`;
-                }
-                else {
-                    if(botTone === 'funny') reply = "Look, I'm just a bot living in an offline hub. I know about your money, your loans, and basic translations. I don't know the meaning of life. 🍒";
-                    else if(botTone === 'professional') reply = "I am unable to process that input. Please request financial data, shift logs, or utilize the translation protocol.";
-                    else reply = pick(["I am operating in <b>100% Offline Mode</b> 🍒! You can chat with me, check your finances, or use the Translator Bar above!", "Try asking: <i>'translate beautiful to tamil'</i>, <i>'how are you?'</i>, or check your <i>'total balance'</i>!"]);
+                if (clean.includes("balance") || clean.includes("evalo") || clean.includes("kaasu")) {
+                    reply = `Your Vault Balance is <b>₹${bal.toFixed(2)}</b>.`;
+                } else if (clean.includes("shift") || clean.includes("work")) {
+                    reply = `You have <b>${shifts.length}</b> shift(s) logged in your timesheet.`;
+                } else if (clean.includes("hi") || clean.includes("hello") || clean.includes("vanakkam")) {
+                    reply = "வணக்கம் Gokul! 🍒 How can I help your hub today?";
                 }
 
-                document.getElementById(loadId).innerHTML = `<strong>Cherry Bot 🍒:</strong><br><br>${reply}`;
+                stream.innerHTML += `<div class="chat-bubble chat-bot">${reply}</div>`;
                 stream.scrollTop = stream.scrollHeight;
-            }, botSpeed); 
+            }, 300);
         }
 
-        let archives = JSON.parse(localStorage.getItem('gokulArchives')) || [];
+        // 10. BACKUP, RESTORE & ARCHIVES
+        function exportData() {
+            const data = {
+                profile,
+                categories,
+                transactions,
+                shifts,
+                jobProfiles,
+                loans,
+                archives: JSON.parse(localStorage.getItem('gokulArchives') || '[]')
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Gokul_Backup_${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importData() {
+            const fileInput = document.getElementById('import-file');
+            if (!fileInput.files.length) return alert("Select a JSON backup file first.");
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.profile) localStorage.setItem('gokulProfile', JSON.stringify(data.profile));
+                    if (data.categories) localStorage.setItem('gokulVaultCats', JSON.stringify(data.categories));
+                    if (data.transactions) localStorage.setItem('gokulVaultTx', JSON.stringify(data.transactions));
+                    if (data.shifts) localStorage.setItem('gokulAttRecords', JSON.stringify(data.shifts));
+                    if (data.jobProfiles) localStorage.setItem('gokulJobProfiles', JSON.stringify(data.jobProfiles));
+                    if (data.loans) localStorage.setItem('gokulLoans', JSON.stringify(data.loans));
+                    if (data.archives) localStorage.setItem('gokulArchives', JSON.stringify(data.archives));
+                    alert("Data Restored!");
+                    window.location.reload();
+                } catch(err) { alert("Invalid file format."); }
+            };
+            reader.readAsText(fileInput.files[0]);
+        }
 
         function completeMonth() {
             if (!transactions.length && !shifts.length) return alert("No active data to archive");
@@ -1795,6 +1513,7 @@
 
             const inc = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
             const exp = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+            const archives = JSON.parse(localStorage.getItem('gokulArchives') || '[]');
 
             archives.push({ id: Date.now(), name, earned: inc, spent: exp, count: shifts.length });
             localStorage.setItem('gokulArchives', JSON.stringify(archives));
@@ -1812,47 +1531,45 @@
         }
 
         function renderArchives() {
+            const archives = JSON.parse(localStorage.getItem('gokulArchives') || '[]');
             const grid = document.getElementById('archives-grid');
             grid.innerHTML = archives.map(a => `
                 <div class="loan-card">
-                    <div style="font-weight: 800; font-size: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">${a.name}</div>
+                    <div style="font-weight: 800; font-size: 16px;">${a.name}</div>
                     <div style="font-size: 12px;">Shifts: <b>${a.count}</b></div>
                     <div style="font-size: 12px;">Income: <b style="color:var(--text-accent)">+₹${a.earned.toFixed(2)}</b></div>
                     <div style="font-size: 12px;">Expenses: <b style="color:var(--danger)">-₹${a.spent.toFixed(2)}</b></div>
-                    <button class="btn btn-danger" style="margin-top: 6px;" onclick="deleteArchiveItem(${a.id})"><i class="fas fa-trash"></i> Delete Archive</button>
                 </div>
             `).join('');
         }
 
-        function deleteArchiveItem(id) {
-            if (confirm("Delete archived file?")) {
-                archives = archives.filter(x => x.id !== id);
-                localStorage.setItem('gokulArchives', JSON.stringify(archives));
-                renderArchives();
+        function yearlyReset() {
+            if (confirm("Reset active data for the new year?")) {
+                transactions = [];
+                shifts = [];
+                localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
+                localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
+                updateVaultStats();
+                updateShiftStats();
+                navTo('vault-dashboard');
             }
         }
 
-        function yearlyReset() {
-            if (confirm("YEARLY RESET: Delete all active & archived transaction data?")) {
-                archives = [];
-                transactions = [];
-                shifts = [];
-                localStorage.setItem('gokulArchives', JSON.stringify(archives));
-                localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
-                localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
-                localStorage.setItem('gokulYear', new Date().getFullYear());
-                updateVaultStats();
-                updateShiftStats();
-                renderArchives();
-                navTo('vault-dashboard');
-            }
+        // 11. APPEARANCE & THEMES
+        function updateGlassOpacity(val) {
+            document.documentElement.style.setProperty('--glass-alpha', val);
+            localStorage.setItem('gokulGlassAlpha', val);
+        }
+
+        function updateVideoDimmer(val) {
+            document.documentElement.style.setProperty('--video-dimmer', val);
+            localStorage.setItem('gokulVideoDimmer', val);
         }
 
         const themeOpts = [
             { id: 'harrypotter', name: 'Hogwarts Magic' },
             { id: 'default', name: 'Corporate Clean' },
-            { id: 'dark', name: 'Onyx Dark' },
-            { id: 'cyberpunk', name: 'Cyberpunk Neon' }
+            { id: 'dark', name: 'Onyx Dark' }
         ];
 
         function renderThemeGallery() {
@@ -1871,12 +1588,23 @@
             renderVaultChart();
         }
 
-        window.onload = () => {
-            const savedTheme = localStorage.getItem('gokulTheme') || 'harrypotter';
-            document.documentElement.setAttribute('data-theme', savedTheme);
+        function saveAppConfig() {
+            localStorage.setItem('gokulTransSrc', document.getElementById('setting-trans-src').value);
+            localStorage.setItem('gokulTransDst', document.getElementById('setting-trans-dst').value);
+        }
 
-            loadAppConfig();
-            loadAppearanceSettings();
+        window.onload = () => {
+            buildDynamicManifest();
+            applyTheme(localStorage.getItem('gokulTheme') || 'harrypotter');
+            
+            const savedAlpha = localStorage.getItem('gokulGlassAlpha') || '0.75';
+            document.documentElement.style.setProperty('--glass-alpha', savedAlpha);
+            if (document.getElementById('opacity-slider')) document.getElementById('opacity-slider').value = savedAlpha;
+
+            const savedDimmer = localStorage.getItem('gokulVideoDimmer') || '1';
+            document.documentElement.style.setProperty('--video-dimmer', savedDimmer);
+            if (document.getElementById('dimmer-slider')) document.getElementById('dimmer-slider').value = savedDimmer;
+
             renderProfile();
             renderCategoryGrid();
             updateVaultStats();
@@ -1886,8 +1614,6 @@
             renderArchives();
             renderThemeGallery();
             autoCheckEMIs();
-            initVideoPlayback();
-            preCacheAssets();
             updateNetworkStatus();
         };
     </script>
