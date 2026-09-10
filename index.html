@@ -79,6 +79,20 @@
             --total-box: linear-gradient(135deg, rgba(24, 24, 27, 0.9), rgba(39, 39, 42, 0.9));
         }
 
+        /* J.A.R.V.I.S. Iron Man Theme */
+        [data-theme="jarvis"] {
+            --bg-app: rgba(4, 9, 20, var(--glass-alpha));
+            --bg-sidebar: rgba(6, 14, 28, calc(var(--glass-alpha) + 0.1));
+            --bg-card: rgba(10, 22, 40, calc(var(--glass-alpha) + 0.05));
+            --bg-card-alt: rgba(15, 30, 55, calc(var(--glass-alpha) + 0.1));
+            --text-main: #ffffff;
+            --text-muted: #66c2ff;
+            --text-accent: #00f0ff;
+            --border-color: rgba(0, 240, 255, 0.35);
+            --total-box: linear-gradient(135deg, rgba(0, 120, 255, 0.4) 0%, rgba(0, 240, 255, 0.1) 100%);
+            --danger: #ff003c;
+        }
+
         * { 
             box-sizing: border-box; 
             margin: 0; 
@@ -249,7 +263,7 @@
         /* Big Buttons */
         .btn { padding: 16px 20px; border-radius: 12px; border: none; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: #ffffff; width: 100%; }
         .btn:active { transform: scale(0.97); }
-        .btn-success { background: var(--text-accent); }
+        .btn-success { background: var(--text-accent); color: #000; }
         .btn-primary { background: var(--text-main); color: #08060c; }
         .btn-danger { background: var(--danger); }
         .btn-flex-row { display: flex; flex-direction: column; gap: 12px; width: 100%; }
@@ -1267,7 +1281,7 @@
 
                         <div style="display: flex; gap: 8px; align-items: center; margin-top: 6px;">
                             <input type="number" id="seek-${l.id}" class="form-control" value="1" min="1" max="${rem}" style="width: 60px; text-align: center; padding: 6px;">
-                            <button class="btn btn-success" style="flex: 1;" onclick="payLoanEMI(${l.id})" ${rem === 0 ? 'disabled' : ''}>
+                            <button class="btn btn-success" style="flex: 1; color: #000;" onclick="payLoanEMI(${l.id})" ${rem === 0 ? 'disabled' : ''}>
                                 ${rem === 0 ? 'Fully Paid' : 'Pay EMI & Sync'}
                             </button>
                         </div>
@@ -1424,6 +1438,7 @@
 
         const themeOpts = [
             { id: 'harrypotter', name: 'Hogwarts Magic' },
+            { id: 'jarvis', name: 'J.A.R.V.I.S. Protocol' },
             { id: 'default', name: 'Corporate Clean' },
             { id: 'dark', name: 'Onyx Dark' }
         ];
@@ -1445,8 +1460,8 @@
         }
 
         window.onload = () => {
-            renderProfile(); // Now calls buildDynamicManifest() internally to sync icons
-            applyTheme(localStorage.getItem('gokulTheme') || 'harrypotter');
+            renderProfile(); // Sync icons and manifest
+            applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); // Default to JARVIS now if unset
             
             const savedAlpha = localStorage.getItem('gokulGlassAlpha') || '0.75';
             document.documentElement.style.setProperty('--glass-alpha', savedAlpha);
