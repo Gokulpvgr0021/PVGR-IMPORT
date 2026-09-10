@@ -13,11 +13,11 @@
     <meta name="application-name" content="Gokul Hub">
     <meta name="theme-color" content="#0d0c11">
 
-    <!-- Icons (Dynamically overridden by JS) -->
+    <!-- Icons -->
     <link rel="icon" href="10276.png" type="image/png">
     <link rel="apple-touch-icon" href="10276.png">
 
-    <!-- Dynamic PWA Manifest (Forces Full Screen) -->
+    <!-- Dynamic PWA Manifest -->
     <link rel="manifest" id="pwa-manifest" href="">
 
     <!-- Fonts & Icons -->
@@ -79,7 +79,6 @@
             --total-box: linear-gradient(135deg, rgba(24, 24, 27, 0.9), rgba(39, 39, 42, 0.9));
         }
 
-        /* J.A.R.V.I.S. Iron Man Theme */
         [data-theme="jarvis"] {
             --bg-app: rgba(4, 9, 20, var(--glass-alpha));
             --bg-sidebar: rgba(6, 14, 28, calc(var(--glass-alpha) + 0.1));
@@ -389,18 +388,18 @@
                         </div>
 
                         <div class="chart-box">
-                            <div style="font-size: 13px; font-weight: 800; margin-bottom: 12px;">Expense Split</div>
+                            <div style="font-size: 13px; font-weight: 800; margin-bottom: 12px;">Spending Split</div>
                             <div style="height: 160px;"><canvas id="financeChart"></canvas></div>
                         </div>
                     </div>
 
                     <div class="vault-grid-col">
                         <div class="panel-heading" style="border: none; margin-bottom: 16px;">
-                            <span id="grid-mode-title">Quick Log Expense</span>
+                            <span id="grid-mode-title">Quick Log Spending</span>
                             <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
                                 <button class="btn btn-primary" id="btn-toggle-edit" style="padding: 9px 14px; font-size: 13px; width: auto;" onclick="toggleEditMode()"><i class="fas fa-pencil-alt"></i> Edit Labels</button>
-                                <button class="btn btn-danger" id="tab-out-btn" style="padding: 9px 14px; font-size: 13px; width: auto;" onclick="setVaultFlow('expense')">Out</button>
-                                <button class="btn btn-success" id="tab-in-btn" style="padding: 9px 14px; font-size: 13px; width: auto;" onclick="setVaultFlow('income')">In</button>
+                                <button class="btn btn-danger" id="tab-out-btn" style="padding: 9px 14px; font-size: 13px; width: auto;" onclick="setVaultFlow('expense')">Spending</button>
+                                <button class="btn btn-success" id="tab-in-btn" style="padding: 9px 14px; font-size: 13px; width: auto;" onclick="setVaultFlow('income')">Income</button>
                             </div>
                         </div>
                         <div class="grid-container" id="category-grid"></div>
@@ -586,6 +585,25 @@
         </main>
     </div>
 
+    <!-- MODAL: LOG TRANSACTION WITH NOTES -->
+    <div class="modal-mask" id="txModal">
+        <div class="modal-sheet">
+            <h3 style="color: var(--text-main); text-align: center; font-size: 20px;" id="tx-modal-title">Log Transaction</h3>
+            <div class="input-group">
+                <label>Amount (₹)</label>
+                <input type="number" id="m-tx-amount" class="form-control" placeholder="0.00" inputmode="decimal">
+            </div>
+            <div class="input-group">
+                <label>Notes (Optional)</label>
+                <input type="text" id="m-tx-note" class="form-control" placeholder="e.g. UPI payment, Cash, Groceries...">
+            </div>
+            <div class="btn-flex-row" style="margin-top: 14px;">
+                <button class="btn btn-primary" onclick="closeModal('txModal')">Cancel</button>
+                <button class="btn btn-success" onclick="saveTxFromModal()"><i class="fas fa-check"></i> Save Transaction</button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL: PROFILE -->
     <div class="modal-mask" id="profileModal">
         <div class="modal-sheet">
@@ -755,7 +773,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-v2';
+                const CACHE_NAME = 'gokul-hub-v3';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -866,7 +884,7 @@
             closeModal('profileModal');
         }
 
-        // 6. VAULT & TRANSACTIONS
+        // 6. VAULT & TRANSACTIONS (Upgraded with Spending & Notes)
         const defaultCategories = [
             { name: "Food & Snacks", icon: "fas fa-utensils", type: "expense" },
             { name: "Fuel & Travel", icon: "fas fa-motorcycle", type: "expense" },
@@ -882,11 +900,14 @@
         let isEditMode = false;
         let vaultChart = null;
 
+        let pendingTxCategory = '';
+        let pendingTxType = '';
+
         function setVaultFlow(type) {
             currentFlow = type;
             document.getElementById('tab-out-btn').style.opacity = type === 'expense' ? '1' : '0.4';
             document.getElementById('tab-in-btn').style.opacity = type === 'income' ? '1' : '0.4';
-            document.getElementById('grid-mode-title').innerText = type === 'expense' ? 'Quick Log Expense' : 'Quick Log Income';
+            document.getElementById('grid-mode-title').innerText = type === 'expense' ? 'Quick Log Spending' : 'Quick Log Income';
             renderCategoryGrid();
             renderVaultChart();
         }
@@ -916,8 +937,17 @@
         }
 
         function handleCatPress(idx) {
-            if (isEditMode) openCatEditor(idx);
-            else logVaultTx(categories[idx].name, categories[idx].type);
+            if (isEditMode) {
+                openCatEditor(idx);
+            } else {
+                pendingTxCategory = categories[idx].name;
+                pendingTxType = categories[idx].type;
+                document.getElementById('tx-modal-title').innerText = `Log ${pendingTxCategory}`;
+                document.getElementById('m-tx-amount').value = '';
+                document.getElementById('m-tx-note').value = '';
+                openModal('txModal');
+                setTimeout(() => document.getElementById('m-tx-amount').focus(), 100);
+            }
         }
 
         let editingCatIdx = null;
@@ -969,14 +999,28 @@
             }
         }
 
-        function logVaultTx(category, type, isAuto = false, customAmt = 0) {
-            let amount = isAuto ? customAmt : parseFloat(prompt(`Enter ₹ amount for ${category}:`));
+        function saveTxFromModal() {
+            const amount = parseFloat(document.getElementById('m-tx-amount').value);
+            const note = document.getElementById('m-tx-note').value.trim();
+
+            if (isNaN(amount) || amount <= 0) {
+                return alert("Please enter a valid amount.");
+            }
+
+            logVaultTx(pendingTxCategory, pendingTxType, false, amount, note);
+            closeModal('txModal');
+        }
+
+        function logVaultTx(category, type, isAuto = false, customAmt = 0, note = '') {
+            let amount = customAmt;
+
             if (!isNaN(amount) && amount > 0) {
                 transactions.push({
                     date: new Date().toLocaleString('en-GB'),
                     category,
                     type,
-                    amount
+                    amount,
+                    note: note || (isAuto ? 'Auto-synced' : '')
                 });
                 localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
                 updateVaultStats();
@@ -997,10 +1041,13 @@
             tbody.innerHTML = '';
             [...transactions].reverse().forEach(t => {
                 const isInc = t.type === 'income';
+                const displayType = t.type === 'expense' ? 'Spending' : 'Income';
+                const noteHtml = t.note ? `<div style="font-size: 11px; color: var(--text-muted); font-weight: normal; margin-top: 4px;">📝 ${t.note}</div>` : '';
+                
                 tbody.innerHTML += `<tr>
                     <td>${t.date}</td>
-                    <td style="font-weight: 700;">${t.category}</td>
-                    <td style="text-transform: capitalize; color: ${isInc ? 'var(--text-accent)' : 'var(--danger)'}">${t.type}</td>
+                    <td style="font-weight: 700; text-align: left;">${t.category}${noteHtml}</td>
+                    <td style="text-transform: capitalize; color: ${isInc ? 'var(--text-accent)' : 'var(--danger)'}">${displayType}</td>
                     <td style="font-weight: 800; color: ${isInc ? 'var(--text-accent)' : 'var(--danger)'}">${isInc ? '+' : '-'}₹${t.amount.toFixed(2)}</td>
                 </tr>`;
             });
@@ -1116,9 +1163,8 @@
             localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
             updateShiftStats();
 
-            logVaultTx(`${jobType} (Shift: ${date})`, 'income', true, totalEarned);
+            logVaultTx(`${jobType} (Shift: ${date})`, 'income', true, totalEarned, 'Shift Salary');
             
-            // Auto-maintain form
             document.getElementById('att-date').valueAsDate = new Date();
             alert(`Shift saved! ₹${totalEarned.toFixed(2)} deposited to Vault.`);
         }
@@ -1134,7 +1180,6 @@
                 totalOT += s.otHours;
             });
 
-            // Show newest shifts at top
             [...shifts].reverse().forEach((s, revIdx) => {
                 const actualIdx = shifts.length - 1 - revIdx;
                 tbody.innerHTML += `<tr>
@@ -1245,7 +1290,7 @@
             localStorage.setItem('gokulLoans', JSON.stringify(loans));
             renderLoans();
 
-            if (disburse) logVaultTx(`Loan Disbursed: ${name}`, 'income', true, loan.principal);
+            if (disburse) logVaultTx(`Loan Disbursed: ${name}`, 'income', true, loan.principal, 'Auto Loan Disbursement');
 
             document.getElementById('loan-name-input').value = '';
             document.getElementById('loan-principal').value = '';
@@ -1296,7 +1341,7 @@
             if (l.paid + count > l.tenure) return alert("Exceeds total tenure");
 
             const total = l.emi * count;
-            logVaultTx(`EMI: ${l.name} (${count}m)`, 'expense', true, total);
+            logVaultTx(`EMI: ${l.name} (${count}m)`, 'expense', true, total, 'Manual EMI Payment');
 
             l.paid += count;
             const now = new Date();
@@ -1322,7 +1367,7 @@
 
             loans.forEach(l => {
                 if (l.autopay && l.paid < l.tenure && day >= l.due && l.lastPaidMonth !== key) {
-                    logVaultTx(`Auto EMI: ${l.name}`, 'expense', true, l.emi);
+                    logVaultTx(`Auto EMI: ${l.name}`, 'expense', true, l.emi, 'Scheduled Auto-Pay');
                     l.paid++;
                     l.lastPaidMonth = key;
                     count++;
@@ -1408,7 +1453,7 @@
                     <div style="font-weight: 800; font-size: 16px;">${a.name}</div>
                     <div style="font-size: 12px;">Shifts: <b>${a.count}</b></div>
                     <div style="font-size: 12px;">Income: <b style="color:var(--text-accent)">+₹${a.earned.toFixed(2)}</b></div>
-                    <div style="font-size: 12px;">Expenses: <b style="color:var(--danger)">-₹${a.spent.toFixed(2)}</b></div>
+                    <div style="font-size: 12px;">Spending: <b style="color:var(--danger)">-₹${a.spent.toFixed(2)}</b></div>
                 </div>
             `).join('');
         }
