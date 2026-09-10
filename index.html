@@ -13,7 +13,7 @@
     <meta name="application-name" content="Gokul Hub">
     <meta name="theme-color" content="#0d0c11">
 
-    <!-- Icons -->
+    <!-- Icons (Dynamically overridden by JS) -->
     <link rel="icon" href="10276.png" type="image/png">
     <link rel="apple-touch-icon" href="10276.png">
 
@@ -224,12 +224,7 @@
         .total-box { background: var(--total-box); border-radius: 16px; padding: 18px; width: 100%; color: #ffffff; box-shadow: 0 6px 16px rgba(0,0,0,0.25); }
         .chart-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; width: 100%; }
         .vault-grid-col { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; width: 100%; }
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 115px), 1fr)); gap: 12px; width: 100%; }
         
-        .module-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-muted); font-weight: 700; font-size: 12px; text-align: center; cursor: pointer; transition: transform 0.15s; width: 100%; }
-        .module-btn:active { transform: scale(0.96); }
-        .module-btn i { font-size: 26px; color: var(--text-accent); }
-
         /* Work / Stats Grid */
         .att-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; margin-bottom: 20px; }
         .att-stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px 8px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
@@ -388,21 +383,45 @@
                         </div>
 
                         <div class="chart-box">
-                            <div style="font-size: 13px; font-weight: 800; margin-bottom: 12px;">Spending Split</div>
+                            <div style="font-size: 13px; font-weight: 800; margin-bottom: 12px;">Spending Summary</div>
                             <div style="height: 160px;"><canvas id="financeChart"></canvas></div>
                         </div>
                     </div>
 
+                    <!-- NEW: Fast Note & Emoji Transaction Entry -->
                     <div class="vault-grid-col">
                         <div class="panel-heading" style="border: none; margin-bottom: 16px;">
-                            <span id="grid-mode-title">Quick Log Spending</span>
-                            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                                <button class="btn btn-primary" id="btn-toggle-edit" style="padding: 9px 14px; font-size: 13px; width: auto;" onclick="toggleEditMode()"><i class="fas fa-pencil-alt"></i> Edit Labels</button>
-                                <button class="btn btn-danger" id="tab-out-btn" style="padding: 9px 14px; font-size: 13px; width: auto;" onclick="setVaultFlow('expense')">Spending</button>
-                                <button class="btn btn-success" id="tab-in-btn" style="padding: 9px 14px; font-size: 13px; width: auto;" onclick="setVaultFlow('income')">Income</button>
+                            <span>Log Transaction</span>
+                        </div>
+                        
+                        <div class="form-card">
+                            <div style="display: flex; gap: 12px;">
+                                <div class="input-group" style="flex: 1;">
+                                    <label>Amount (₹)</label>
+                                    <input type="number" id="quick-tx-amount" class="form-control" placeholder="0.00" inputmode="decimal">
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label>Notes (What was this for?)</label>
+                                <input type="text" id="quick-tx-note" class="form-control" placeholder="e.g. UPI Payment 💸, Lunch 🍔...">
+                                
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
+                                    <span style="font-size: 12px; color: var(--text-muted); width: 100%; font-weight: 700;">Quick Add Emojis:</span>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Food 🍔')">🍔 Food</button>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Petrol ⛽')">⛽ Petrol</button>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('UPI 💸')">💸 UPI</button>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Shop 🛒')">🛒 Shop</button>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Snacks 🍿')">🍿 Snacks</button>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Salary 💰')">💰 Salary</button>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 12px; margin-top: 10px;">
+                                <button class="btn btn-danger" onclick="saveQuickTx('expense')"><i class="fas fa-minus-circle"></i> Spend Out</button>
+                                <button class="btn btn-success" onclick="saveQuickTx('income')"><i class="fas fa-plus-circle"></i> Income In</button>
                             </div>
                         </div>
-                        <div class="grid-container" id="category-grid"></div>
                     </div>
                 </div>
             </section>
@@ -523,7 +542,7 @@
                         <thead>
                             <tr>
                                 <th>Timestamp</th>
-                                <th>Category / Profile</th>
+                                <th>Transaction Note</th>
                                 <th>Flow</th>
                                 <th>Amount</th>
                             </tr>
@@ -585,25 +604,6 @@
         </main>
     </div>
 
-    <!-- MODAL: LOG TRANSACTION WITH NOTES -->
-    <div class="modal-mask" id="txModal">
-        <div class="modal-sheet">
-            <h3 style="color: var(--text-main); text-align: center; font-size: 20px;" id="tx-modal-title">Log Transaction</h3>
-            <div class="input-group">
-                <label>Amount (₹)</label>
-                <input type="number" id="m-tx-amount" class="form-control" placeholder="0.00" inputmode="decimal">
-            </div>
-            <div class="input-group">
-                <label>Notes (Optional)</label>
-                <input type="text" id="m-tx-note" class="form-control" placeholder="e.g. UPI payment, Cash, Groceries...">
-            </div>
-            <div class="btn-flex-row" style="margin-top: 14px;">
-                <button class="btn btn-primary" onclick="closeModal('txModal')">Cancel</button>
-                <button class="btn btn-success" onclick="saveTxFromModal()"><i class="fas fa-check"></i> Save Transaction</button>
-            </div>
-        </div>
-    </div>
-
     <!-- MODAL: PROFILE -->
     <div class="modal-mask" id="profileModal">
         <div class="modal-sheet">
@@ -622,21 +622,6 @@
             <div class="btn-flex-row" style="margin-top: 10px;">
                 <button class="btn btn-primary" onclick="closeModal('profileModal')">Cancel</button>
                 <button class="btn btn-success" onclick="saveProfileData()">Save Changes</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: CATEGORY -->
-    <div class="modal-mask" id="categoryModal">
-        <div class="modal-sheet">
-            <h3 style="color: var(--text-main); text-align: center; font-size: 20px;" id="cat-modal-title">Edit Label</h3>
-            <div class="input-group"><input type="text" id="m-cat-name" class="form-control" placeholder="Category Name"></div>
-            <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-top: 10px;">Choose Icon</div>
-            <div class="selection-grid" id="m-cat-icons" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 8px;"></div>
-            <div class="btn-flex-row" style="margin-top: 14px;">
-                <button class="btn btn-danger" id="m-cat-del-btn" style="display: none;" onclick="deleteActiveCategory()"><i class="fas fa-trash"></i> Delete</button>
-                <button class="btn btn-primary" onclick="closeModal('categoryModal')">Cancel</button>
-                <button class="btn btn-success" onclick="saveActiveCategory()">Save</button>
             </div>
         </div>
     </div>
@@ -773,7 +758,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-v3';
+                const CACHE_NAME = 'gokul-hub-v4';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -820,7 +805,6 @@
             }
 
             if (panelId === 'vault-dashboard') renderVaultChart();
-            if (panelId !== 'vault-dashboard' && isEditMode) toggleEditMode();
         }
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
@@ -884,143 +868,40 @@
             closeModal('profileModal');
         }
 
-        // 6. VAULT & TRANSACTIONS (Upgraded with Spending & Notes)
-        const defaultCategories = [
-            { name: "Food & Snacks", icon: "fas fa-utensils", type: "expense" },
-            { name: "Fuel & Travel", icon: "fas fa-motorcycle", type: "expense" },
-            { name: "Recharge & Net", icon: "fas fa-mobile-alt", type: "expense" },
-            { name: "Shopping", icon: "fas fa-shopping-bag", type: "expense" },
-            { name: "Entertainment", icon: "fas fa-film", type: "expense" },
-            { name: "Family Support", icon: "fas fa-home", type: "expense" }
-        ];
-
-        let categories = JSON.parse(localStorage.getItem('gokulVaultCats')) || defaultCategories;
+        // 6. VAULT & TRANSACTIONS (New Quick Note System)
         let transactions = JSON.parse(localStorage.getItem('gokulVaultTx')) || [];
-        let currentFlow = 'expense';
-        let isEditMode = false;
-        let vaultChart = null;
 
-        let pendingTxCategory = '';
-        let pendingTxType = '';
-
-        function setVaultFlow(type) {
-            currentFlow = type;
-            document.getElementById('tab-out-btn').style.opacity = type === 'expense' ? '1' : '0.4';
-            document.getElementById('tab-in-btn').style.opacity = type === 'income' ? '1' : '0.4';
-            document.getElementById('grid-mode-title').innerText = type === 'expense' ? 'Quick Log Spending' : 'Quick Log Income';
-            renderCategoryGrid();
-            renderVaultChart();
-        }
-
-        function toggleEditMode() {
-            isEditMode = !isEditMode;
-            const btn = document.getElementById('btn-toggle-edit');
-            btn.innerHTML = isEditMode ? '<i class="fas fa-check"></i> Done' : '<i class="fas fa-pencil-alt"></i> Edit Labels';
-            renderCategoryGrid();
-        }
-
-        function renderCategoryGrid() {
-            const grid = document.getElementById('category-grid');
-            grid.innerHTML = '';
-            categories.forEach((cat, idx) => {
-                if (cat.type === currentFlow) {
-                    grid.innerHTML += `<button class="module-btn" onclick="handleCatPress(${idx})">
-                        <i class="${cat.icon}"></i><span>${cat.name}</span>
-                    </button>`;
-                }
-            });
-            if (isEditMode) {
-                grid.innerHTML += `<button class="module-btn" style="border: 2px dashed var(--text-accent);" onclick="openCatEditor(null)">
-                    <i class="fas fa-plus"></i><span>Add New</span>
-                </button>`;
-            }
-        }
-
-        function handleCatPress(idx) {
-            if (isEditMode) {
-                openCatEditor(idx);
+        function addEmoji(emojiText) {
+            const noteInput = document.getElementById('quick-tx-note');
+            if(noteInput.value) {
+                noteInput.value = noteInput.value + ' ' + emojiText;
             } else {
-                pendingTxCategory = categories[idx].name;
-                pendingTxType = categories[idx].type;
-                document.getElementById('tx-modal-title').innerText = `Log ${pendingTxCategory}`;
-                document.getElementById('m-tx-amount').value = '';
-                document.getElementById('m-tx-note').value = '';
-                openModal('txModal');
-                setTimeout(() => document.getElementById('m-tx-amount').focus(), 100);
+                noteInput.value = emojiText;
             }
+            noteInput.focus();
         }
 
-        let editingCatIdx = null;
-        let selectedIcon = 'fas fa-coins';
-
-        function openCatEditor(idx) {
-            editingCatIdx = idx;
-            const iconContainer = document.getElementById('m-cat-icons');
-            const iconSet = ['fas fa-gas-pump', 'fas fa-utensils', 'fas fa-motorcycle', 'fas fa-mobile-alt', 'fas fa-shopping-bag', 'fas fa-camera-retro', 'fas fa-wallet', 'fas fa-film', 'fas fa-home', 'fas fa-car', 'fas fa-gift', 'fas fa-briefcase', 'fas fa-coffee'];
-            iconContainer.innerHTML = iconSet.map(ic => `<div style="font-size: 20px; cursor: pointer; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center;" onclick="selectCatIcon('${ic}')"><i class="${ic}"></i></div>`).join('');
-            
-            if (idx !== null) {
-                const cat = categories[idx];
-                document.getElementById('cat-modal-title').innerText = "Edit Label";
-                document.getElementById('m-cat-name').value = cat.name;
-                document.getElementById('m-cat-del-btn').style.display = 'block';
-                selectedIcon = cat.icon;
-            } else {
-                document.getElementById('cat-modal-title').innerText = "New Label";
-                document.getElementById('m-cat-name').value = '';
-                document.getElementById('m-cat-del-btn').style.display = 'none';
-                selectedIcon = iconSet[0];
-            }
-            openModal('categoryModal');
-        }
-
-        function selectCatIcon(ic) { selectedIcon = ic; }
-
-        function saveActiveCategory() {
-            const name = document.getElementById('m-cat-name').value.trim();
-            if (!name) return alert("Enter label name");
-            if (editingCatIdx !== null) {
-                categories[editingCatIdx].name = name;
-                categories[editingCatIdx].icon = selectedIcon;
-            } else {
-                categories.push({ name, icon: selectedIcon, type: currentFlow });
-            }
-            localStorage.setItem('gokulVaultCats', JSON.stringify(categories));
-            renderCategoryGrid();
-            closeModal('categoryModal');
-        }
-
-        function deleteActiveCategory() {
-            if (confirm("Delete this label?")) {
-                categories.splice(editingCatIdx, 1);
-                localStorage.setItem('gokulVaultCats', JSON.stringify(categories));
-                renderCategoryGrid();
-                closeModal('categoryModal');
-            }
-        }
-
-        function saveTxFromModal() {
-            const amount = parseFloat(document.getElementById('m-tx-amount').value);
-            const note = document.getElementById('m-tx-note').value.trim();
+        function saveQuickTx(type) {
+            const amount = parseFloat(document.getElementById('quick-tx-amount').value);
+            const note = document.getElementById('quick-tx-note').value.trim() || (type === 'expense' ? 'General Spending 💸' : 'General Income 💰');
 
             if (isNaN(amount) || amount <= 0) {
                 return alert("Please enter a valid amount.");
             }
 
-            logVaultTx(pendingTxCategory, pendingTxType, false, amount, note);
-            closeModal('txModal');
+            logVaultTx(note, type, false, amount, '');
+            document.getElementById('quick-tx-amount').value = '';
+            document.getElementById('quick-tx-note').value = '';
         }
 
         function logVaultTx(category, type, isAuto = false, customAmt = 0, note = '') {
-            let amount = customAmt;
-
-            if (!isNaN(amount) && amount > 0) {
+            if (!isNaN(customAmt) && customAmt > 0) {
                 transactions.push({
                     date: new Date().toLocaleString('en-GB'),
-                    category,
-                    type,
-                    amount,
-                    note: note || (isAuto ? 'Auto-synced' : '')
+                    category: category, 
+                    type: type,
+                    amount: customAmt,
+                    note: note 
                 });
                 localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
                 updateVaultStats();
@@ -1058,7 +939,7 @@
         function renderVaultChart() {
             if (typeof Chart === 'undefined') return;
             const ctx = document.getElementById('financeChart').getContext('2d');
-            const dataToChart = transactions.filter(t => t.type === currentFlow);
+            const dataToChart = transactions.filter(t => t.type === 'expense');
             const totals = {};
             dataToChart.forEach(t => {
                 const cleanCat = t.category.split(' (')[0].split(' EMI:')[0].trim();
@@ -1163,7 +1044,7 @@
             localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
             updateShiftStats();
 
-            logVaultTx(`${jobType} (Shift: ${date})`, 'income', true, totalEarned, 'Shift Salary');
+            logVaultTx(`Shift Salary: ${jobType} 💰`, 'income', true, totalEarned, `Date: ${date}`);
             
             document.getElementById('att-date').valueAsDate = new Date();
             alert(`Shift saved! ₹${totalEarned.toFixed(2)} deposited to Vault.`);
@@ -1290,7 +1171,7 @@
             localStorage.setItem('gokulLoans', JSON.stringify(loans));
             renderLoans();
 
-            if (disburse) logVaultTx(`Loan Disbursed: ${name}`, 'income', true, loan.principal, 'Auto Loan Disbursement');
+            if (disburse) logVaultTx(`Loan Disbursed: ${name} 🏦`, 'income', true, loan.principal, 'Auto Loan Disbursement');
 
             document.getElementById('loan-name-input').value = '';
             document.getElementById('loan-principal').value = '';
@@ -1341,7 +1222,7 @@
             if (l.paid + count > l.tenure) return alert("Exceeds total tenure");
 
             const total = l.emi * count;
-            logVaultTx(`EMI: ${l.name} (${count}m)`, 'expense', true, total, 'Manual EMI Payment');
+            logVaultTx(`EMI: ${l.name} 🏦`, 'expense', true, total, 'Manual EMI Payment');
 
             l.paid += count;
             const now = new Date();
@@ -1367,7 +1248,7 @@
 
             loans.forEach(l => {
                 if (l.autopay && l.paid < l.tenure && day >= l.due && l.lastPaidMonth !== key) {
-                    logVaultTx(`Auto EMI: ${l.name}`, 'expense', true, l.emi, 'Scheduled Auto-Pay');
+                    logVaultTx(`Auto EMI: ${l.name} 🏦`, 'expense', true, l.emi, 'Scheduled Auto-Pay');
                     l.paid++;
                     l.lastPaidMonth = key;
                     count++;
@@ -1384,7 +1265,6 @@
         function exportData() {
             const data = {
                 profile,
-                categories,
                 transactions,
                 shifts,
                 jobProfiles,
@@ -1408,7 +1288,6 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     if (data.profile) localStorage.setItem('gokulProfile', JSON.stringify(data.profile));
-                    if (data.categories) localStorage.setItem('gokulVaultCats', JSON.stringify(data.categories));
                     if (data.transactions) localStorage.setItem('gokulVaultTx', JSON.stringify(data.transactions));
                     if (data.shifts) localStorage.setItem('gokulAttRecords', JSON.stringify(data.shifts));
                     if (data.jobProfiles) localStorage.setItem('gokulJobProfiles', JSON.stringify(data.jobProfiles));
@@ -1506,7 +1385,7 @@
 
         window.onload = () => {
             renderProfile(); // Sync icons and manifest
-            applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); // Default to JARVIS now if unset
+            applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); // Default to JARVIS
             
             const savedAlpha = localStorage.getItem('gokulGlassAlpha') || '0.75';
             document.documentElement.style.setProperty('--glass-alpha', savedAlpha);
@@ -1516,7 +1395,6 @@
             document.documentElement.style.setProperty('--video-dimmer', savedDimmer);
             if (document.getElementById('dimmer-slider')) document.getElementById('dimmer-slider').value = savedDimmer;
 
-            renderCategoryGrid();
             updateVaultStats();
             renderJobDropdown();
             updateShiftStats();
