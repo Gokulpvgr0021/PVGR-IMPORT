@@ -13,7 +13,7 @@
     <meta name="application-name" content="Gokul Hub">
     <meta name="theme-color" content="#0d0c11">
 
-    <!-- Icons (Dynamically overridden by JS) -->
+    <!-- Icons -->
     <link rel="icon" href="10276.png" type="image/png">
     <link rel="apple-touch-icon" href="10276.png">
 
@@ -758,7 +758,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-v4';
+                const CACHE_NAME = 'gokul-hub-v5';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -1101,24 +1101,103 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'mm', 'a4');
             
-            doc.setFillColor(28, 69, 135);
-            doc.rect(0, 0, 210, 35, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(20);
-            doc.setFont("helvetica", "bold");
-            doc.text("GOKUL HUB - TIMESHEET REPORT", 14, 22);
-
-            const tableColumn = ["Date", "Job Title", "Timing", "Hours", "OT", "Earned (INR)"];
-            const tableRows = shifts.map(s => [s.date, s.jobType, `${s.inTime} - ${s.outTime}`, s.net.toFixed(1), s.otHours.toFixed(1), `Rs. ${s.totalEarned.toFixed(2)}`]);
-
-            doc.autoTable({
-                startY: 50,
-                head: [tableColumn],
-                body: tableRows,
-                theme: 'striped',
-                headStyles: { fillColor: [28, 69, 135] }
+            const green = [50, 130, 70];
+            
+            let totalEarned = 0, totalOTHours = 0, totalNetHours = 0;
+            shifts.forEach(s => {
+                totalEarned += s.totalEarned;
+                totalNetHours += s.net;
+                totalOTHours += s.otHours;
             });
-            doc.save(`Gokul_Timesheet_${Date.now()}.pdf`);
+
+            const otPay = totalOTHours > 0 ? (totalEarned * (totalOTHours / totalNetHours)) : 0;
+            const basePay = totalEarned - otPay;
+            const basic = basePay * 0.6;
+            const hra = basePay * 0.4;
+            const totalDed = 0;
+
+            doc.setTextColor(green[0], green[1], green[2]);
+            doc.setFontSize(16);
+            doc.setFont("helvetica", "bold");
+            doc.text("GOKUL HUB / MAGNUM CLOTHING PVT. LTD.", 105, 20, { align: "center" });
+
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            const monthName = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+            doc.text(`Payslip For The Month of ${monthName}`, 105, 26, { align: "center" });
+
+            doc.setDrawColor(green[0], green[1], green[2]);
+            doc.setLineWidth(0.4);
+            doc.rect(14, 32, 182, 145);
+
+            doc.line(14, 46, 196, 46);
+            doc.line(14, 56, 196, 56);
+
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(9);
+            doc.text(`Emp. No/Card No : ${profile.idStr}`, 16, 38);
+            doc.text(`Name : ${profile.name.toUpperCase()}`, 80, 38);
+            doc.text(`Des. : ${profile.role.substring(0, 20)}`, 140, 38);
+
+            const days = shifts.length;
+            doc.text(`Days pre : ${days}`, 16, 52);
+            doc.text(`PH : 0`, 50, 52);
+            doc.text(`EL : 0`, 70, 52);
+            doc.text(`ELB : 0`, 95, 52);
+            doc.text(`O.ALL : 0`, 115, 52);
+            doc.text(`P days : ${days}`, 145, 52);
+            doc.text(`LOP : 0`, 175, 52);
+
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(green[0], green[1], green[2]);
+            doc.text("EARNINGS", 55, 62, { align: "center" });
+            doc.text("DEDUCTIONS", 145, 62, { align: "center" });
+
+            doc.line(14, 66, 196, 66);
+            doc.line(105, 56, 105, 177);
+
+            doc.setTextColor(0, 0, 0);
+            doc.setFont("helvetica", "normal");
+            let y = 74;
+            const gap = 8;
+
+            const leftX = 16;
+            const valLeftX = 98;
+            doc.text("Basic", leftX, y);                doc.text(basic.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("HRA", leftX, y);                  doc.text(hra.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("EDA/O.ALL", leftX, y);            doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("OT", leftX, y);                   doc.text(otPay.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("Misc. Ear 1", leftX, y);          doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("Misc. 2", leftX, y);              doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("OTHER", leftX, y);                doc.text("0.00", valLeftX, y, { align: "right" });
+
+            y = 74;
+            const rightX = 108;
+            const valRightX = 190;
+            doc.text("EPF", rightX, y);                 doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("ESI", rightX, y);                 doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("PT", rightX, y);                  doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("Loan", rightX, y);                doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("Adv.", rightX, y);                doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("Misc. 1", rightX, y);             doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("Misc. 2", rightX, y);             doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("Misc. 3", rightX, y);             doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("TDS", rightX, y);                 doc.text("0.00", valRightX, y, { align: "right" });
+
+            doc.line(14, 155, 196, 155);
+            doc.line(105, 165, 196, 165);
+            
+            doc.setFont("helvetica", "bold");
+            doc.text("Gross", leftX, 162); 
+            doc.text(totalEarned.toFixed(2), valLeftX, 162, { align: "right" });
+
+            doc.text("Tot Ded", rightX, 162); 
+            doc.text(totalDed.toFixed(2), valRightX, 162, { align: "right" });
+
+            doc.text("Net Pay", rightX, 172); 
+            doc.text((totalEarned - totalDed).toFixed(2), valRightX, 172, { align: "right" });
+
+            doc.save(`Payslip_${monthName.replace(' ', '_')}.pdf`);
         }
 
         // 8. LOAN CALCULATION & AUTO-PAY
