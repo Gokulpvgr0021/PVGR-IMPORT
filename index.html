@@ -13,7 +13,7 @@
     <meta name="application-name" content="Gokul Hub">
     <meta name="theme-color" content="#0d0c11">
 
-    <!-- Icons -->
+    <!-- Icons (Dynamically overridden by JS) -->
     <link rel="icon" href="10276.png" type="image/png">
     <link rel="apple-touch-icon" href="10276.png">
 
@@ -484,8 +484,10 @@
                     </div>
                 </div>
 
+                <!-- NEW: Split Download Buttons -->
                 <div class="btn-flex-row" style="margin-top: 15px;">
-                    <button class="btn btn-primary" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download Official Timesheet PDF</button>
+                    <button class="btn btn-primary" onclick="downloadPayslip()"><i class="fas fa-file-invoice-dollar"></i> Download Salary Slip</button>
+                    <button class="btn btn-primary" onclick="downloadTimesheet()"><i class="fas fa-list-alt"></i> Download Timesheet</button>
                     <button class="btn btn-danger" onclick="clearShifts()"><i class="fas fa-trash-alt"></i> Clear All Shift Records</button>
                 </div>
             </section>
@@ -868,7 +870,7 @@
             closeModal('profileModal');
         }
 
-        // 6. VAULT & TRANSACTIONS (New Quick Note System)
+        // 6. VAULT & TRANSACTIONS
         let transactions = JSON.parse(localStorage.getItem('gokulVaultTx')) || [];
 
         function addEmoji(emojiText) {
@@ -1096,7 +1098,7 @@
             }
         }
 
-        function downloadPDF() {
+        function downloadPayslip() {
             if (shifts.length === 0) return alert("No shifts to export!");
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'mm', 'a4');
@@ -1198,6 +1200,31 @@
             doc.text((totalEarned - totalDed).toFixed(2), valRightX, 172, { align: "right" });
 
             doc.save(`Payslip_${monthName.replace(' ', '_')}.pdf`);
+        }
+
+        function downloadTimesheet() {
+            if (shifts.length === 0) return alert("No shifts to export!");
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            
+            doc.setFillColor(28, 69, 135);
+            doc.rect(0, 0, 210, 35, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(20);
+            doc.setFont("helvetica", "bold");
+            doc.text("GOKUL HUB - TIMESHEET REPORT", 14, 22);
+
+            const tableColumn = ["Date", "Job Title", "Timing", "Hours", "OT", "Earned (INR)"];
+            const tableRows = shifts.map(s => [s.date, s.jobType, `${s.inTime} - ${s.outTime}`, s.net.toFixed(1), s.otHours.toFixed(1), `Rs. ${s.totalEarned.toFixed(2)}`]);
+
+            doc.autoTable({
+                startY: 50,
+                head: [tableColumn],
+                body: tableRows,
+                theme: 'striped',
+                headStyles: { fillColor: [28, 69, 135] }
+            });
+            doc.save(`Gokul_Timesheet_${Date.now()}.pdf`);
         }
 
         // 8. LOAN CALCULATION & AUTO-PAY
