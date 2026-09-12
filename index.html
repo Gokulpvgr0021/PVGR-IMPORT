@@ -388,7 +388,7 @@
                         </div>
                     </div>
 
-                    <!-- NEW: Fast Note & Emoji Transaction Entry -->
+                    <!-- Fast Note & Emoji Transaction Entry -->
                     <div class="vault-grid-col">
                         <div class="panel-heading" style="border: none; margin-bottom: 16px;">
                             <span>Log Transaction</span>
@@ -438,10 +438,9 @@
                         <select id="att-job-select" class="form-control"></select>
                     </div>
                     
-                    <div style="display: flex; gap: 8px; width: 100%;">
-                        <div class="input-group"><label>Base (8h)</label><input type="number" id="att-base-rate" class="form-control" placeholder="₹" onchange="saveRates()"></div>
-                        <div class="input-group"><label>OT/hr</label><input type="number" id="att-ot-rate" class="form-control" placeholder="₹" onchange="saveRates()"></div>
-                        <div class="input-group"><label>EPF Deduct</label><input type="number" id="att-epf-rate" class="form-control" placeholder="₹" onchange="saveRates()"></div>
+                    <div style="display: flex; gap: 12px; width: 100%;">
+                        <div class="input-group"><label>Base (8h) ₹</label><input type="number" id="att-base-rate" class="form-control" onchange="saveRates()"></div>
+                        <div class="input-group"><label>OT Rate/hr ₹</label><input type="number" id="att-ot-rate" class="form-control" onchange="saveRates()"></div>
                     </div>
 
                     <div class="input-group"><label>Date</label><input type="date" id="att-date" class="form-control"></div>
@@ -460,11 +459,28 @@
                         <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-link"></i> Vault Linked</span>
                     </div>
 
+                    <!-- NEW: Monthly EPF & ESIC Options -->
+                    <div class="form-card" style="margin-bottom: 20px;">
+                        <h3 style="color: var(--text-main); font-size: 16px;"><i class="fas fa-file-invoice"></i> Monthly Deductions (EPF & ESIC)</h3>
+                        <div style="display: flex; gap: 12px; width: 100%; align-items: flex-end;">
+                            <div class="input-group">
+                                <label>EPF (₹ / Month)</label>
+                                <input type="number" id="monthly-epf" class="form-control" placeholder="0" onchange="saveMonthlyDeductions()">
+                            </div>
+                            <div class="input-group">
+                                <label>ESIC (₹ / Month)</label>
+                                <input type="number" id="monthly-esic" class="form-control" placeholder="0" onchange="saveMonthlyDeductions()">
+                            </div>
+                            <button class="btn btn-danger" style="width: auto; padding: 15px;" onclick="syncDeductionsToVault()"><i class="fas fa-minus-circle"></i> Sync</button>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Enter once per month. Click 'Sync' to deduct this total from your Vault.</div>
+                    </div>
+
                     <div class="att-stats-row">
                         <div class="att-stat-card"><i class="fas fa-calendar-check" style="color:var(--text-accent);"></i><div class="val" id="stat-days">0</div><div class="lbl">Days</div></div>
-                        <div class="att-stat-card"><i class="fas fa-clock" style="color:var(--text-main);"></i><div class="val" id="stat-hrs">0</div><div class="lbl">Reg Hrs</div></div>
-                        <div class="att-stat-card"><i class="fas fa-user-clock" style="color:var(--danger);"></i><div class="val" id="stat-ot">0</div><div class="lbl">OT Hrs</div></div>
-                        <div class="att-stat-card"><i class="fas fa-money-bill-wave" style="color:var(--text-accent);"></i><div class="val" style="color:var(--text-accent);" id="stat-salary">₹0</div><div class="lbl">Salary</div></div>
+                        <div class="att-stat-card"><i class="fas fa-money-bill" style="color:var(--text-main);"></i><div class="val" id="stat-gross">₹0</div><div class="lbl">Gross</div></div>
+                        <div class="att-stat-card"><i class="fas fa-minus-circle" style="color:var(--danger);"></i><div class="val" style="color:var(--danger);" id="stat-ded">₹0</div><div class="lbl">Deducts</div></div>
+                        <div class="att-stat-card"><i class="fas fa-wallet" style="color:var(--text-accent);"></i><div class="val" style="color:var(--text-accent);" id="stat-net">₹0</div><div class="lbl">Net Pay</div></div>
                     </div>
 
                     <div class="table-wrap">
@@ -473,10 +489,10 @@
                                 <tr>
                                     <th>Date</th>
                                     <th>Job</th>
+                                    <th>Timing</th>
                                     <th>Hrs</th>
                                     <th>OT</th>
-                                    <th>EPF</th>
-                                    <th>Net Pay</th>
+                                    <th>Gross</th>
                                     <th>Del</th>
                                 </tr>
                             </thead>
@@ -485,7 +501,6 @@
                     </div>
                 </div>
 
-                <!-- NEW: Split Download Buttons -->
                 <div class="btn-flex-row" style="margin-top: 15px;">
                     <button class="btn btn-primary" onclick="downloadPayslip()"><i class="fas fa-file-invoice-dollar"></i> Download Salary Slip</button>
                     <button class="btn btn-primary" onclick="downloadTimesheet()"><i class="fas fa-list-alt"></i> Download Timesheet</button>
@@ -945,7 +960,6 @@
             const dataToChart = transactions.filter(t => t.type === 'expense');
             const totals = {};
             dataToChart.forEach(t => {
-                // Simplify label logic since categories are now raw notes
                 let cleanCat = t.category.split(' ')[0]; // Group by first word/emoji roughly
                 if (cleanCat.length < 3) cleanCat = t.category.substring(0, 10);
                 totals[cleanCat] = (totals[cleanCat] || 0) + t.amount;
@@ -1007,13 +1021,33 @@
 
         document.getElementById('att-base-rate').value = localStorage.getItem('gokulSavedBase') || '';
         document.getElementById('att-ot-rate').value = localStorage.getItem('gokulSavedOT') || '';
-        document.getElementById('att-epf-rate').value = localStorage.getItem('gokulSavedEPF') || '0';
+        
+        // Ensure monthly deductions are loaded
+        document.getElementById('monthly-epf').value = localStorage.getItem('gokulMonthlyEPF') || '0';
+        document.getElementById('monthly-esic').value = localStorage.getItem('gokulMonthlyESIC') || '0';
         document.getElementById('att-date').valueAsDate = new Date();
 
         function saveRates() {
             localStorage.setItem('gokulSavedBase', document.getElementById('att-base-rate').value);
             localStorage.setItem('gokulSavedOT', document.getElementById('att-ot-rate').value);
-            localStorage.setItem('gokulSavedEPF', document.getElementById('att-epf-rate').value);
+        }
+
+        function saveMonthlyDeductions() {
+            localStorage.setItem('gokulMonthlyEPF', document.getElementById('monthly-epf').value || '0');
+            localStorage.setItem('gokulMonthlyESIC', document.getElementById('monthly-esic').value || '0');
+            updateShiftStats();
+        }
+
+        function syncDeductionsToVault() {
+            const epf = parseFloat(document.getElementById('monthly-epf').value) || 0;
+            const esic = parseFloat(document.getElementById('monthly-esic').value) || 0;
+            const totalDed = epf + esic;
+            if (totalDed > 0) {
+                logVaultTx(`Monthly EPF & ESIC 🏦`, 'expense', true, totalDed, `EPF: ₹${epf}, ESIC: ₹${esic}`);
+                alert(`₹${totalDed.toFixed(2)} deducted from Vault for EPF & ESIC!`);
+            } else {
+                alert("Please enter EPF/ESIC amounts first.");
+            }
         }
 
         function recordShift() {
@@ -1022,7 +1056,6 @@
             const outTime = document.getElementById('att-out').value;
             const baseSalary = parseFloat(document.getElementById('att-base-rate').value);
             const otRate = parseFloat(document.getElementById('att-ot-rate').value);
-            const epfDeduction = parseFloat(document.getElementById('att-epf-rate').value) || 0;
             const jobType = document.getElementById('att-job-select').value;
 
             if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) return alert("Fill all shift details");
@@ -1046,47 +1079,48 @@
             const baseEarned = (regHours / 8) * baseSalary;
             const otEarned = otHours * otRate;
             const grossEarned = baseEarned + otEarned;
-            const netPay = grossEarned - epfDeduction;
 
-            shifts.push({ date, jobType, inTime, outTime, net, otHours, grossEarned, epf: epfDeduction, totalEarned: netPay });
+            // Store grossEarned under totalEarned so legacy code functions normally
+            shifts.push({ date, jobType, inTime, outTime, net, otHours, totalEarned: grossEarned });
             shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
             localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
             updateShiftStats();
 
-            logVaultTx(`Shift Salary: ${jobType} 💰`, 'income', true, netPay, `Date: ${date}`);
+            logVaultTx(`Shift Salary: ${jobType} 💰`, 'income', true, grossEarned, `Date: ${date}`);
             
             document.getElementById('att-date').valueAsDate = new Date();
-            alert(`Shift saved! ₹${netPay.toFixed(2)} deposited to Vault.`);
+            alert(`Shift Gross Pay saved! ₹${grossEarned.toFixed(2)} deposited to Vault.`);
         }
 
         function updateShiftStats() {
             const tbody = document.getElementById('att-table-body');
             tbody.innerHTML = '';
-            let totalPay = 0, totalHrs = 0, totalOT = 0;
+            
+            let totalGross = 0;
+            shifts.forEach(s => { totalGross += (s.grossEarned || s.totalEarned); });
 
-            shifts.forEach(s => {
-                totalPay += s.totalEarned;
-                totalHrs += s.net;
-                totalOT += s.otHours;
-            });
+            const epf = parseFloat(document.getElementById('monthly-epf').value) || 0;
+            const esic = parseFloat(document.getElementById('monthly-esic').value) || 0;
+            const totalDed = epf + esic;
+            const netPay = totalGross - totalDed;
 
             [...shifts].reverse().forEach((s, revIdx) => {
                 const actualIdx = shifts.length - 1 - revIdx;
                 tbody.innerHTML += `<tr>
                     <td>${s.date}</td>
                     <td style="font-weight: 700; font-size: 11px;">${s.jobType.substring(0,8)}..</td>
+                    <td style="font-size: 11px;">${s.inTime}-${s.outTime}</td>
                     <td>${s.net.toFixed(1)}h</td>
                     <td style="color: var(--text-accent); font-weight: 700;">${s.otHours.toFixed(1)}h</td>
-                    <td style="color: var(--danger); font-weight: 700;">₹${(s.epf || 0).toFixed(0)}</td>
-                    <td style="font-weight: 900;">₹${s.totalEarned.toFixed(0)}</td>
+                    <td style="font-weight: 900;">₹${(s.grossEarned || s.totalEarned).toFixed(0)}</td>
                     <td><button class="btn btn-danger" style="padding: 4px 8px; width: auto; font-size: 11px;" onclick="deleteShift(${actualIdx})"><i class="fas fa-trash"></i></button></td>
                 </tr>`;
             });
 
             document.getElementById('stat-days').innerText = shifts.length;
-            document.getElementById('stat-hrs').innerText = totalHrs.toFixed(1);
-            document.getElementById('stat-ot').innerText = totalOT.toFixed(1);
-            document.getElementById('stat-salary').innerText = `₹${totalPay.toFixed(0)}`;
+            document.getElementById('stat-gross').innerText = `₹${totalGross.toFixed(0)}`;
+            document.getElementById('stat-ded').innerText = `₹${totalDed.toFixed(0)}`;
+            document.getElementById('stat-net').innerText = `₹${netPay.toFixed(0)}`;
         }
 
         function deleteShift(idx) {
@@ -1112,20 +1146,21 @@
             
             const green = [50, 130, 70];
             
-            let totalGross = 0, totalOTHours = 0, totalNetHours = 0, totalEpf = 0, totalNet = 0;
+            let totalGross = 0, totalOTHours = 0, totalNetHours = 0;
             shifts.forEach(s => {
-                totalGross += s.grossEarned || s.totalEarned;
-                totalEpf += s.epf || 0;
-                totalNet += s.totalEarned;
+                totalGross += (s.grossEarned || s.totalEarned);
                 totalNetHours += s.net;
                 totalOTHours += s.otHours;
             });
+
+            const totalEpf = parseFloat(localStorage.getItem('gokulMonthlyEPF')) || 0;
+            const totalEsic = parseFloat(localStorage.getItem('gokulMonthlyESIC')) || 0;
 
             const otPay = totalOTHours > 0 ? (totalGross * (totalOTHours / totalNetHours)) : 0;
             const basePay = totalGross - otPay;
             const basic = basePay * 0.6;
             const hra = basePay * 0.4;
-            const totalDed = totalEpf;
+            const totalDed = totalEpf + totalEsic;
 
             doc.setTextColor(green[0], green[1], green[2]);
             doc.setFontSize(16);
@@ -1186,7 +1221,7 @@
             const rightX = 108;
             const valRightX = 190;
             doc.text("EPF", rightX, y);                 doc.text(totalEpf.toFixed(2), valRightX, y, { align: "right" }); y += gap;
-            doc.text("ESI", rightX, y);                 doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("ESI", rightX, y);                 doc.text(totalEsic.toFixed(2), valRightX, y, { align: "right" }); y += gap;
             doc.text("PT", rightX, y);                  doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
             doc.text("Loan", rightX, y);                doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
             doc.text("Adv.", rightX, y);                doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
@@ -1206,7 +1241,7 @@
             doc.text(totalDed.toFixed(2), valRightX, 162, { align: "right" });
 
             doc.text("Net Pay", rightX, 172); 
-            doc.text(totalNet.toFixed(2), valRightX, 172, { align: "right" });
+            doc.text((totalGross - totalDed).toFixed(2), valRightX, 172, { align: "right" });
 
             doc.save(`Payslip_${monthName.replace(' ', '_')}.pdf`);
         }
@@ -1223,8 +1258,8 @@
             doc.setFont("helvetica", "bold");
             doc.text("GOKUL HUB - TIMESHEET REPORT", 14, 22);
 
-            const tableColumn = ["Date", "Job Title", "Timing", "Hours", "OT", "Earned (INR)"];
-            const tableRows = shifts.map(s => [s.date, s.jobType, `${s.inTime} - ${s.outTime}`, s.net.toFixed(1), s.otHours.toFixed(1), `Rs. ${s.totalEarned.toFixed(2)}`]);
+            const tableColumn = ["Date", "Job Title", "Timing", "Hours", "OT", "Gross Earned (INR)"];
+            const tableRows = shifts.map(s => [s.date, s.jobType, `${s.inTime} - ${s.outTime}`, s.net.toFixed(1), s.otHours.toFixed(1), `Rs. ${(s.grossEarned || s.totalEarned).toFixed(2)}`]);
 
             doc.autoTable({
                 startY: 50,
@@ -1427,10 +1462,15 @@
             archives.push({ id: Date.now(), name, earned: inc, spent: exp, count: shifts.length });
             localStorage.setItem('gokulArchives', JSON.stringify(archives));
 
+            // Reset Everything
             transactions = [];
             shifts = [];
             localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
             localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
+            localStorage.setItem('gokulMonthlyEPF', '0');
+            localStorage.setItem('gokulMonthlyESIC', '0');
+            document.getElementById('monthly-epf').value = '0';
+            document.getElementById('monthly-esic').value = '0';
 
             updateVaultStats();
             updateShiftStats();
@@ -1458,6 +1498,11 @@
                 shifts = [];
                 localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
                 localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
+                localStorage.setItem('gokulMonthlyEPF', '0');
+                localStorage.setItem('gokulMonthlyESIC', '0');
+                document.getElementById('monthly-epf').value = '0';
+                document.getElementById('monthly-esic').value = '0';
+                
                 updateVaultStats();
                 updateShiftStats();
                 navTo('vault-dashboard');
