@@ -438,9 +438,10 @@
                         <select id="att-job-select" class="form-control"></select>
                     </div>
                     
-                    <div style="display: flex; gap: 12px; width: 100%;">
-                        <div class="input-group"><label>Base (8h) ₹</label><input type="number" id="att-base-rate" class="form-control" onchange="saveRates()"></div>
-                        <div class="input-group"><label>OT Rate/hr ₹</label><input type="number" id="att-ot-rate" class="form-control" onchange="saveRates()"></div>
+                    <div style="display: flex; gap: 8px; width: 100%;">
+                        <div class="input-group"><label>Base (8h)</label><input type="number" id="att-base-rate" class="form-control" placeholder="₹" onchange="saveRates()"></div>
+                        <div class="input-group"><label>OT/hr</label><input type="number" id="att-ot-rate" class="form-control" placeholder="₹" onchange="saveRates()"></div>
+                        <div class="input-group"><label>EPF Deduct</label><input type="number" id="att-epf-rate" class="form-control" placeholder="₹" onchange="saveRates()"></div>
                     </div>
 
                     <div class="input-group"><label>Date</label><input type="date" id="att-date" class="form-control"></div>
@@ -472,10 +473,10 @@
                                 <tr>
                                     <th>Date</th>
                                     <th>Job</th>
-                                    <th>Timing</th>
-                                    <th>Net</th>
+                                    <th>Hrs</th>
                                     <th>OT</th>
-                                    <th>Pay</th>
+                                    <th>EPF</th>
+                                    <th>Net Pay</th>
                                     <th>Del</th>
                                 </tr>
                             </thead>
@@ -760,7 +761,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-v5';
+                const CACHE_NAME = 'gokul-hub-v6';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -870,7 +871,7 @@
             closeModal('profileModal');
         }
 
-        // 6. VAULT & TRANSACTIONS
+        // 6. VAULT & TRANSACTIONS (New Quick Note System)
         let transactions = JSON.parse(localStorage.getItem('gokulVaultTx')) || [];
 
         function addEmoji(emojiText) {
@@ -944,7 +945,9 @@
             const dataToChart = transactions.filter(t => t.type === 'expense');
             const totals = {};
             dataToChart.forEach(t => {
-                const cleanCat = t.category.split(' (')[0].split(' EMI:')[0].trim();
+                // Simplify label logic since categories are now raw notes
+                let cleanCat = t.category.split(' ')[0]; // Group by first word/emoji roughly
+                if (cleanCat.length < 3) cleanCat = t.category.substring(0, 10);
                 totals[cleanCat] = (totals[cleanCat] || 0) + t.amount;
             });
 
@@ -1004,11 +1007,13 @@
 
         document.getElementById('att-base-rate').value = localStorage.getItem('gokulSavedBase') || '';
         document.getElementById('att-ot-rate').value = localStorage.getItem('gokulSavedOT') || '';
+        document.getElementById('att-epf-rate').value = localStorage.getItem('gokulSavedEPF') || '0';
         document.getElementById('att-date').valueAsDate = new Date();
 
         function saveRates() {
             localStorage.setItem('gokulSavedBase', document.getElementById('att-base-rate').value);
             localStorage.setItem('gokulSavedOT', document.getElementById('att-ot-rate').value);
+            localStorage.setItem('gokulSavedEPF', document.getElementById('att-epf-rate').value);
         }
 
         function recordShift() {
@@ -1017,6 +1022,7 @@
             const outTime = document.getElementById('att-out').value;
             const baseSalary = parseFloat(document.getElementById('att-base-rate').value);
             const otRate = parseFloat(document.getElementById('att-ot-rate').value);
+            const epfDeduction = parseFloat(document.getElementById('att-epf-rate').value) || 0;
             const jobType = document.getElementById('att-job-select').value;
 
             if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) return alert("Fill all shift details");
@@ -1039,17 +1045,18 @@
 
             const baseEarned = (regHours / 8) * baseSalary;
             const otEarned = otHours * otRate;
-            const totalEarned = baseEarned + otEarned;
+            const grossEarned = baseEarned + otEarned;
+            const netPay = grossEarned - epfDeduction;
 
-            shifts.push({ date, jobType, inTime, outTime, net, otHours, totalEarned });
+            shifts.push({ date, jobType, inTime, outTime, net, otHours, grossEarned, epf: epfDeduction, totalEarned: netPay });
             shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
             localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
             updateShiftStats();
 
-            logVaultTx(`Shift Salary: ${jobType} 💰`, 'income', true, totalEarned, `Date: ${date}`);
+            logVaultTx(`Shift Salary: ${jobType} 💰`, 'income', true, netPay, `Date: ${date}`);
             
             document.getElementById('att-date').valueAsDate = new Date();
-            alert(`Shift saved! ₹${totalEarned.toFixed(2)} deposited to Vault.`);
+            alert(`Shift saved! ₹${netPay.toFixed(2)} deposited to Vault.`);
         }
 
         function updateShiftStats() {
@@ -1067,10 +1074,10 @@
                 const actualIdx = shifts.length - 1 - revIdx;
                 tbody.innerHTML += `<tr>
                     <td>${s.date}</td>
-                    <td style="font-weight: 700; font-size: 11px;">${s.jobType}</td>
-                    <td style="font-size: 11px;">${s.inTime}-${s.outTime}</td>
+                    <td style="font-weight: 700; font-size: 11px;">${s.jobType.substring(0,8)}..</td>
                     <td>${s.net.toFixed(1)}h</td>
                     <td style="color: var(--text-accent); font-weight: 700;">${s.otHours.toFixed(1)}h</td>
+                    <td style="color: var(--danger); font-weight: 700;">₹${(s.epf || 0).toFixed(0)}</td>
                     <td style="font-weight: 900;">₹${s.totalEarned.toFixed(0)}</td>
                     <td><button class="btn btn-danger" style="padding: 4px 8px; width: auto; font-size: 11px;" onclick="deleteShift(${actualIdx})"><i class="fas fa-trash"></i></button></td>
                 </tr>`;
@@ -1105,18 +1112,20 @@
             
             const green = [50, 130, 70];
             
-            let totalEarned = 0, totalOTHours = 0, totalNetHours = 0;
+            let totalGross = 0, totalOTHours = 0, totalNetHours = 0, totalEpf = 0, totalNet = 0;
             shifts.forEach(s => {
-                totalEarned += s.totalEarned;
+                totalGross += s.grossEarned || s.totalEarned;
+                totalEpf += s.epf || 0;
+                totalNet += s.totalEarned;
                 totalNetHours += s.net;
                 totalOTHours += s.otHours;
             });
 
-            const otPay = totalOTHours > 0 ? (totalEarned * (totalOTHours / totalNetHours)) : 0;
-            const basePay = totalEarned - otPay;
+            const otPay = totalOTHours > 0 ? (totalGross * (totalOTHours / totalNetHours)) : 0;
+            const basePay = totalGross - otPay;
             const basic = basePay * 0.6;
             const hra = basePay * 0.4;
-            const totalDed = 0;
+            const totalDed = totalEpf;
 
             doc.setTextColor(green[0], green[1], green[2]);
             doc.setFontSize(16);
@@ -1176,7 +1185,7 @@
             y = 74;
             const rightX = 108;
             const valRightX = 190;
-            doc.text("EPF", rightX, y);                 doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("EPF", rightX, y);                 doc.text(totalEpf.toFixed(2), valRightX, y, { align: "right" }); y += gap;
             doc.text("ESI", rightX, y);                 doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
             doc.text("PT", rightX, y);                  doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
             doc.text("Loan", rightX, y);                doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
@@ -1191,13 +1200,13 @@
             
             doc.setFont("helvetica", "bold");
             doc.text("Gross", leftX, 162); 
-            doc.text(totalEarned.toFixed(2), valLeftX, 162, { align: "right" });
+            doc.text(totalGross.toFixed(2), valLeftX, 162, { align: "right" });
 
             doc.text("Tot Ded", rightX, 162); 
             doc.text(totalDed.toFixed(2), valRightX, 162, { align: "right" });
 
             doc.text("Net Pay", rightX, 172); 
-            doc.text((totalEarned - totalDed).toFixed(2), valRightX, 172, { align: "right" });
+            doc.text(totalNet.toFixed(2), valRightX, 172, { align: "right" });
 
             doc.save(`Payslip_${monthName.replace(' ', '_')}.pdf`);
         }
