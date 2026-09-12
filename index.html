@@ -459,7 +459,7 @@
                         <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-link"></i> Vault Linked</span>
                     </div>
 
-                    <!-- NEW: Monthly EPF & ESIC Options -->
+                    <!-- Monthly EPF & ESIC Options -->
                     <div class="form-card" style="margin-bottom: 20px;">
                         <h3 style="color: var(--text-main); font-size: 16px;"><i class="fas fa-file-invoice"></i> Monthly Deductions (EPF & ESIC)</h3>
                         <div style="display: flex; gap: 12px; width: 100%; align-items: flex-end;">
@@ -501,6 +501,7 @@
                     </div>
                 </div>
 
+                <!-- Split Download Buttons -->
                 <div class="btn-flex-row" style="margin-top: 15px;">
                     <button class="btn btn-primary" onclick="downloadPayslip()"><i class="fas fa-file-invoice-dollar"></i> Download Salary Slip</button>
                     <button class="btn btn-primary" onclick="downloadTimesheet()"><i class="fas fa-list-alt"></i> Download Timesheet</button>
@@ -556,13 +557,14 @@
                     <span id="ledger-count" style="font-size: 14px; color: var(--text-muted); font-family: var(--app-font);">0 Records</span>
                 </div>
                 <div class="table-wrap">
-                    <table>
+                    <table id="ledger-table">
                         <thead>
                             <tr>
-                                <th>Timestamp</th>
+                                <th>Date</th>
                                 <th>Transaction Note</th>
                                 <th>Flow</th>
                                 <th>Amount</th>
+                                <th style="width: 50px;">Del</th>
                             </tr>
                         </thead>
                         <tbody id="ledger-table-body"></tbody>
@@ -926,6 +928,14 @@
             }
         }
 
+        function deleteLedgerTx(idx) {
+            if (confirm("Delete this transaction? Your Vault balance will be updated automatically.")) {
+                transactions.splice(idx, 1);
+                localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
+                updateVaultStats();
+            }
+        }
+
         function updateVaultStats() {
             const inc = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
             const exp = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
@@ -938,16 +948,18 @@
 
             const tbody = document.getElementById('ledger-table-body');
             tbody.innerHTML = '';
-            [...transactions].reverse().forEach(t => {
+            [...transactions].reverse().forEach((t, revIdx) => {
+                const actualIdx = transactions.length - 1 - revIdx;
                 const isInc = t.type === 'income';
                 const displayType = t.type === 'expense' ? 'Spending' : 'Income';
                 const noteHtml = t.note ? `<div style="font-size: 11px; color: var(--text-muted); font-weight: normal; margin-top: 4px;">📝 ${t.note}</div>` : '';
                 
                 tbody.innerHTML += `<tr>
-                    <td>${t.date}</td>
+                    <td style="font-size: 11px;">${t.date.split(',')[0]}<br>${t.date.split(',')[1] || ''}</td>
                     <td style="font-weight: 700; text-align: left;">${t.category}${noteHtml}</td>
                     <td style="text-transform: capitalize; color: ${isInc ? 'var(--text-accent)' : 'var(--danger)'}">${displayType}</td>
                     <td style="font-weight: 800; color: ${isInc ? 'var(--text-accent)' : 'var(--danger)'}">${isInc ? '+' : '-'}₹${t.amount.toFixed(2)}</td>
+                    <td><button class="btn btn-danger" style="padding: 4px 8px; width: auto; font-size: 11px;" onclick="deleteLedgerTx(${actualIdx})"><i class="fas fa-trash"></i></button></td>
                 </tr>`;
             });
 
