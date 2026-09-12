@@ -778,7 +778,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-v6';
+                const CACHE_NAME = 'gokul-hub-v7';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -1055,8 +1055,10 @@
             const esic = parseFloat(document.getElementById('monthly-esic').value) || 0;
             const totalDed = epf + esic;
             if (totalDed > 0) {
+                if(!confirm(`Deduct exactly ₹${totalDed} from your Vault balance right now?`)) return;
+                
                 logVaultTx(`Monthly EPF & ESIC 🏦`, 'expense', true, totalDed, `EPF: ₹${epf}, ESIC: ₹${esic}`);
-                alert(`₹${totalDed.toFixed(2)} deducted from Vault for EPF & ESIC!`);
+                alert(`₹${totalDed.toFixed(2)} successfully deducted from Vault for EPF & ESIC!`);
             } else {
                 alert("Please enter EPF/ESIC amounts first.");
             }
@@ -1118,9 +1120,11 @@
 
             [...shifts].reverse().forEach((s, revIdx) => {
                 const actualIdx = shifts.length - 1 - revIdx;
+                const shortJob = s.jobType.length > 8 ? s.jobType.substring(0,8) + '..' : s.jobType;
+                
                 tbody.innerHTML += `<tr>
                     <td>${s.date}</td>
-                    <td style="font-weight: 700; font-size: 11px;">${s.jobType.substring(0,8)}..</td>
+                    <td style="font-weight: 700; font-size: 11px;">${shortJob}</td>
                     <td style="font-size: 11px;">${s.inTime}-${s.outTime}</td>
                     <td>${s.net.toFixed(1)}h</td>
                     <td style="color: var(--text-accent); font-weight: 700;">${s.otHours.toFixed(1)}h</td>
