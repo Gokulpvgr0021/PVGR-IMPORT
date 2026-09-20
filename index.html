@@ -37,49 +37,12 @@
             --glass-alpha: 0.75;
             --video-dimmer: 1;
 
-            --bg-body: transparent;
-            --bg-app: rgba(18, 14, 26, var(--glass-alpha));
-            --bg-sidebar: rgba(13, 10, 18, calc(var(--glass-alpha) + 0.1));
-            --bg-card: rgba(28, 22, 38, calc(var(--glass-alpha) + 0.05));
-            --bg-card-alt: rgba(38, 30, 52, calc(var(--glass-alpha) + 0.1));
-            --text-main: #f0c75e;
-            --text-muted: #b8a990;
-            --text-accent: #27ae60;
-            --border-color: rgba(153, 117, 40, 0.5);
-            --total-box: linear-gradient(135deg, rgba(87, 0, 0, 0.85) 0%, rgba(16, 56, 30, 0.85) 50%, rgba(10, 27, 56, 0.85) 100%);
-            --hover-color: rgba(65, 48, 86, 0.85);
-            --danger: #ff4757;
-            --safe-top: env(safe-area-inset-top, 0px);
-            --safe-bottom: env(safe-area-inset-bottom, 0px);
-            --app-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --header-font: 'Cinzel Decorative', Georgia, serif;
-        }
+            /* Base Variables (Default JARVIS style) */
+            --bg-grad-1: #090414;
+            --bg-grad-2: #1b0d2d;
+            --bg-grad-3: #081a24;
+            --bg-grad-4: #1f0b18;
 
-        [data-theme="default"] {
-            --bg-app: rgba(244, 247, 246, var(--glass-alpha));
-            --bg-sidebar: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.1));
-            --bg-card: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.05));
-            --bg-card-alt: rgba(240, 244, 248, calc(var(--glass-alpha) + 0.1));
-            --text-main: #1c4587;
-            --text-muted: #64748b;
-            --text-accent: #16a34a;
-            --border-color: rgba(203, 213, 225, 0.7);
-            --total-box: linear-gradient(135deg, rgba(30, 58, 138, 0.9), rgba(2, 132, 199, 0.9));
-        }
-
-        [data-theme="dark"] {
-            --bg-app: rgba(24, 24, 27, var(--glass-alpha));
-            --bg-sidebar: rgba(18, 18, 21, calc(var(--glass-alpha) + 0.1));
-            --bg-card: rgba(39, 39, 42, calc(var(--glass-alpha) + 0.05));
-            --bg-card-alt: rgba(63, 63, 70, calc(var(--glass-alpha) + 0.1));
-            --text-main: #fafafa;
-            --text-muted: #a1a1aa;
-            --text-accent: #22c55e;
-            --border-color: rgba(63, 63, 70, 0.7);
-            --total-box: linear-gradient(135deg, rgba(24, 24, 27, 0.9), rgba(39, 39, 42, 0.9));
-        }
-
-        [data-theme="jarvis"] {
             --bg-app: rgba(4, 9, 20, var(--glass-alpha));
             --bg-sidebar: rgba(6, 14, 28, calc(var(--glass-alpha) + 0.1));
             --bg-card: rgba(10, 22, 40, calc(var(--glass-alpha) + 0.05));
@@ -90,6 +53,116 @@
             --border-color: rgba(0, 240, 255, 0.35);
             --total-box: linear-gradient(135deg, rgba(0, 120, 255, 0.4) 0%, rgba(0, 240, 255, 0.1) 100%);
             --danger: #ff003c;
+
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --app-font: 'Plus Jakarta Sans', sans-serif;
+            --header-font: 'Cinzel Decorative', Georgia, serif;
+        }
+
+        /* 👑 ROYAL RAJPUT (Deep Red & Gold) */
+        [data-theme="rajput"] {
+            --bg-grad-1: #2b0000; --bg-grad-2: #4a0404; --bg-grad-3: #1a0000; --bg-grad-4: #330000;
+            --bg-app: rgba(43, 0, 0, var(--glass-alpha));
+            --bg-sidebar: rgba(26, 0, 0, calc(var(--glass-alpha) + 0.1));
+            --bg-card: rgba(51, 0, 0, calc(var(--glass-alpha) + 0.1));
+            --bg-card-alt: rgba(77, 0, 0, calc(var(--glass-alpha) + 0.2));
+            --text-main: #ffdf00; 
+            --text-muted: #ffaa00;
+            --text-accent: #ff6600; 
+            --border-color: rgba(255, 223, 0, 0.4);
+            --total-box: linear-gradient(135deg, rgba(153, 0, 0, 0.8), rgba(204, 85, 0, 0.8));
+            --danger: #ff3333;
+        }
+
+        /* 🦚 PEACOCK EMERALD (Royal Green & Cyan) */
+        [data-theme="peacock"] {
+            --bg-grad-1: #001a11; --bg-grad-2: #003322; --bg-grad-3: #001a33; --bg-grad-4: #000d1a;
+            --bg-app: rgba(0, 26, 17, var(--glass-alpha));
+            --bg-sidebar: rgba(0, 15, 10, calc(var(--glass-alpha) + 0.1));
+            --bg-card: rgba(0, 38, 26, calc(var(--glass-alpha) + 0.1));
+            --bg-card-alt: rgba(0, 51, 34, calc(var(--glass-alpha) + 0.2));
+            --text-main: #00ffcc;
+            --text-muted: #3399ff;
+            --text-accent: #ffcc00; 
+            --border-color: rgba(0, 255, 204, 0.4);
+            --total-box: linear-gradient(135deg, rgba(0, 77, 51, 0.8), rgba(0, 51, 102, 0.8));
+            --danger: #ff4d4d;
+        }
+
+        /* 🕉️ VARANASI SAFFRON (Orange, Brown & Gold) */
+        [data-theme="saffron"] {
+            --bg-grad-1: #331100; --bg-grad-2: #4d1a00; --bg-grad-3: #662200; --bg-grad-4: #2b0d00;
+            --bg-app: rgba(51, 17, 0, var(--glass-alpha));
+            --bg-sidebar: rgba(26, 8, 0, calc(var(--glass-alpha) + 0.1));
+            --bg-card: rgba(77, 26, 0, calc(var(--glass-alpha) + 0.1));
+            --bg-card-alt: rgba(102, 34, 0, calc(var(--glass-alpha) + 0.2));
+            --text-main: #ffcc00;
+            --text-muted: #ff9966;
+            --text-accent: #ff3300;
+            --border-color: rgba(255, 204, 0, 0.4);
+            --total-box: linear-gradient(135deg, rgba(153, 51, 0, 0.8), rgba(204, 102, 0, 0.8));
+            --danger: #ff0000;
+        }
+
+        /* 🕌 MUGHAL MAGENTA (Deep Purple, Pink & Gold) */
+        [data-theme="mughal"] {
+            --bg-grad-1: #1a001a; --bg-grad-2: #330033; --bg-grad-3: #26004d; --bg-grad-4: #13001a;
+            --bg-app: rgba(26, 0, 26, var(--glass-alpha));
+            --bg-sidebar: rgba(13, 0, 13, calc(var(--glass-alpha) + 0.1));
+            --bg-card: rgba(51, 0, 51, calc(var(--glass-alpha) + 0.1));
+            --bg-card-alt: rgba(77, 0, 77, calc(var(--glass-alpha) + 0.2));
+            --text-main: #ff99ff;
+            --text-muted: #cc66ff;
+            --text-accent: #ffcc00; 
+            --border-color: rgba(255, 153, 255, 0.4);
+            --total-box: linear-gradient(135deg, rgba(102, 0, 102, 0.8), rgba(77, 0, 153, 0.8));
+            --danger: #ff3366;
+        }
+
+        /* ⚔️ MARATHA NAVY (Deep Blue & Silver/Gold) */
+        [data-theme="maratha"] {
+            --bg-grad-1: #00002b; --bg-grad-2: #00004d; --bg-grad-3: #001a33; --bg-grad-4: #00001a;
+            --bg-app: rgba(0, 0, 43, var(--glass-alpha));
+            --bg-sidebar: rgba(0, 0, 20, calc(var(--glass-alpha) + 0.1));
+            --bg-card: rgba(0, 0, 77, calc(var(--glass-alpha) + 0.1));
+            --bg-card-alt: rgba(0, 0, 102, calc(var(--glass-alpha) + 0.2));
+            --text-main: #ffffff;
+            --text-muted: #99ccff;
+            --text-accent: #ffaa00; 
+            --border-color: rgba(153, 204, 255, 0.4);
+            --total-box: linear-gradient(135deg, rgba(0, 51, 153, 0.8), rgba(0, 102, 204, 0.8));
+            --danger: #ff4d4d;
+        }
+
+        /* 🏛️ CHOLA BRONZE (Earthy Gold & Dark Brown) */
+        [data-theme="chola"] {
+            --bg-grad-1: #1a1300; --bg-grad-2: #332600; --bg-grad-3: #2b1a00; --bg-grad-4: #140f00;
+            --bg-app: rgba(26, 19, 0, var(--glass-alpha));
+            --bg-sidebar: rgba(13, 9, 0, calc(var(--glass-alpha) + 0.1));
+            --bg-card: rgba(51, 38, 0, calc(var(--glass-alpha) + 0.1));
+            --bg-card-alt: rgba(77, 57, 0, calc(var(--glass-alpha) + 0.2));
+            --text-main: #ffcc66;
+            --text-muted: #cc9933;
+            --text-accent: #ff9900;
+            --border-color: rgba(255, 204, 102, 0.4);
+            --total-box: linear-gradient(135deg, rgba(102, 77, 0, 0.8), rgba(153, 51, 0, 0.8));
+            --danger: #ff3300;
+        }
+
+        /* 🕊️ IVORY PALACE (Clean Light Theme) */
+        [data-theme="light"] {
+            --bg-grad-1: #fdfbf7; --bg-grad-2: #f4eee0; --bg-grad-3: #e8ded1; --bg-grad-4: #faf7f2;
+            --bg-app: rgba(253, 251, 247, var(--glass-alpha));
+            --bg-sidebar: rgba(244, 238, 224, calc(var(--glass-alpha) + 0.3));
+            --bg-card: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.5));
+            --bg-card-alt: rgba(240, 235, 225, calc(var(--glass-alpha) + 0.6));
+            --text-main: #4a3b2c;
+            --text-muted: #8c735a;
+            --text-accent: #b32400; 
+            --border-color: rgba(140, 115, 90, 0.3);
+            --total-box: linear-gradient(135deg, rgba(200, 170, 140, 0.9), rgba(230, 210, 180, 0.9));
+            --danger: #d92626;
         }
 
         /* Performance Optimizations */
@@ -99,7 +172,7 @@
 
         html, body {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; overflow: hidden;
-            background: linear-gradient(135deg, #090414, #1b0d2d, #081a24, #1f0b18);
+            background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2), var(--bg-grad-3), var(--bg-grad-4));
             background-size: 300% 300%; animation: ambientGradient 12s ease infinite;
             color: var(--text-main); user-select: none; -webkit-user-select: none; overscroll-behavior: none;
             transform: translateZ(0); 
@@ -107,114 +180,119 @@
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* ====== FIXED APP LOADING ANIMATION ====== */
+        /* ====== SPLASH SCREEN ANIMATION ====== */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh;
-            background: #0d0c11; 
+            background: var(--bg-grad-1); 
             z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
         }
         .splash-logo-container { position: relative; display: flex; justify-content: center; align-items: center; }
         .splash-logo { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--text-accent); object-fit: cover; animation: pulseLogo 1.5s infinite alternate ease-in-out; z-index: 2; }
         .splash-ring { position: absolute; width: 150px; height: 150px; border-radius: 50%; border: 2px dashed var(--text-main); animation: spinRing 4s linear infinite; z-index: 1; }
-        .splash-text { margin-top: 30px; font-size: 32px; font-weight: 900; color: var(--text-main); font-family: var(--header-font); letter-spacing: 3px; }
-        .splash-sub { font-size: 13px; color: var(--text-muted); font-weight: 600; letter-spacing: 2px; margin-top: 8px; }
+        .splash-text { margin-top: 30px; font-size: 36px; font-weight: 900; color: var(--text-main); font-family: var(--header-font); letter-spacing: 4px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .splash-sub { font-size: 14px; color: var(--text-accent); font-weight: 700; letter-spacing: 3px; margin-top: 8px; text-transform: uppercase; }
         
-        .splash-loader { width: 220px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 6px; margin-top: 40px; overflow: hidden; }
-        .splash-loader-bar { height: 100%; width: 0%; background: var(--text-accent); border-radius: 6px; animation: loadBar 2s ease-in-out forwards; }
+        .splash-loader { width: 220px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 6px; margin-top: 40px; overflow: hidden; border: 1px solid var(--border-color); }
+        .splash-loader-bar { height: 100%; width: 0%; background: var(--text-accent); border-radius: 6px; animation: loadBar 2s ease-in-out forwards; box-shadow: 0 0 10px var(--text-accent); }
         
         @keyframes loadBar { 0% { width: 0%; } 50% { width: 70%; } 100% { width: 100%; } }
-        @keyframes pulseLogo { 0% { transform: scale(0.95); box-shadow: 0 0 15px rgba(39, 174, 96, 0.4); } 100% { transform: scale(1.05); box-shadow: 0 0 40px rgba(39, 174, 96, 0.8); } }
+        @keyframes pulseLogo { 0% { transform: scale(0.95); box-shadow: 0 0 15px var(--border-color); } 100% { transform: scale(1.05); box-shadow: 0 0 40px var(--border-color); } }
         @keyframes spinRing { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .hide-splash { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
-        /* ========================================= */
 
+        /* ====== UI SHELL ====== */
         .video-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; object-fit: cover; z-index: -2; pointer-events: none; opacity: 0.95; will-change: opacity; }
-        .video-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: radial-gradient(circle at center, rgba(13, 10, 18, 0.25) 0%, rgba(8, 6, 12, 0.75) 100%); z-index: -1; pointer-events: none; opacity: var(--video-dimmer); transition: opacity 0.3s ease; }
+        .video-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: radial-gradient(circle at center, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%); z-index: -1; pointer-events: none; opacity: var(--video-dimmer); transition: opacity 0.3s ease; }
 
-        .app-shell { width: 100%; height: 100dvh; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: background-color 0.3s ease; transform: translateZ(0); }
+        .app-shell { width: 100%; height: 100dvh; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: background-color 0.3s ease; transform: translateZ(0); }
 
-        .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(65px + var(--safe-top)); padding-top: var(--safe-top); background: var(--bg-sidebar); border-bottom: 1px solid var(--border-color); z-index: 100; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-        .mobile-header .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 18px; color: var(--text-main); font-family: var(--header-font); }
-        .mobile-header .brand img { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-color); object-fit: cover; flex-shrink: 0; }
+        .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(65px + var(--safe-top)); padding-top: var(--safe-top); background: var(--bg-sidebar); border-bottom: 1px solid var(--border-color); z-index: 100; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .mobile-header .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 20px; color: var(--text-main); font-family: var(--header-font); }
+        .mobile-header .brand img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--text-accent); object-fit: cover; flex-shrink: 0; }
 
-        .sidebar { width: 250px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; flex-shrink: 0; z-index: 10; backdrop-filter: blur(8px); }
+        .sidebar { width: 250px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; flex-shrink: 0; z-index: 10; backdrop-filter: blur(12px); }
+        .sidebar-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding-bottom: 15px; border-bottom: 2px solid var(--border-color); }
+        .sidebar-brand img { width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--text-accent); object-fit: cover; }
+        .sidebar-brand-text { font-weight: 900; font-size: 22px; color: var(--text-main); font-family: var(--header-font); letter-spacing: 1px; }
+
+        .nav-list { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; flex: 1; }
         
-        .mobile-tab-bar { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: calc(65px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--bg-sidebar); border-top: 1px solid var(--border-color); z-index: 100; justify-content: space-around; align-items: center; box-shadow: 0 -4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-        .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; border: none; color: var(--text-muted); font-size: 12px; font-weight: 700; gap: 4px; height: 100%; cursor: pointer; transition: color 0.2s; }
+        .mobile-tab-bar { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: calc(65px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--bg-sidebar); border-top: 1px solid var(--border-color); z-index: 100; justify-content: space-around; align-items: center; box-shadow: 0 -4px 16px rgba(0,0,0,0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; border: none; color: var(--text-muted); font-size: 12px; font-weight: 800; gap: 4px; height: 100%; cursor: pointer; transition: color 0.2s; }
         .tab-item i { font-size: 20px; transition: transform 0.2s; }
         .tab-item.active { color: var(--text-main); }
-        .tab-item.active i { transform: translateY(-2px); color: var(--text-accent); }
+        .tab-item.active i { transform: translateY(-3px); color: var(--text-accent); text-shadow: 0 0 10px var(--text-accent); }
 
         .main-stage { flex: 1; display: flex; position: relative; overflow: hidden; width: 100%; max-width: 100vw; height: 100%; }
         
-        /* Instant Panel Loading (No Staggered Delays) */
         .view-panel { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 24px; flex-direction: column; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; }
         .view-panel.active { display: flex; animation: panelFade 0.2s ease-out; }
-        @keyframes panelFade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes panelFade { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
         
-        .panel-heading { font-size: 24px; font-weight: 900; color: var(--text-main); font-family: var(--header-font); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .panel-heading { font-size: 26px; font-weight: 900; color: var(--text-main); font-family: var(--header-font); border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; letter-spacing: 1px; }
 
         /* Vault Layout */
         #vault-dashboard-panel { flex-direction: row; padding: 0; width: 100%; height: 100%; }
-        .vault-summary-col { width: 320px; max-width: 100%; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 15px; transition: background-color 0.3s ease;}
+        .vault-summary-col { width: 320px; max-width: 100%; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 18px; transition: background-color 0.3s ease;}
         
-        .profile-badge { background: linear-gradient(135deg, var(--bg-card), var(--bg-card-alt)); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; width: 100%; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.3); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .profile-badge { background: linear-gradient(135deg, var(--bg-card), var(--bg-card-alt)); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; width: 100%; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.4); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .profile-badge::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, var(--text-accent), var(--text-main)); }
-        .profile-avatar { width: 84px; height: 84px; border-radius: 50%; border: 3px solid var(--text-main); margin: 4px auto; overflow: hidden; background: var(--bg-card-alt); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+        .profile-avatar { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--text-main); margin: 4px auto; overflow: hidden; background: var(--bg-card-alt); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-        .total-box { background: var(--total-box); border-radius: 16px; padding: 18px; width: 100%; color: #ffffff; box-shadow: 0 6px 16px rgba(0,0,0,0.25); }
+        .total-box { background: var(--total-box); border-radius: 16px; padding: 20px; width: 100%; color: #ffffff; box-shadow: 0 8px 20px rgba(0,0,0,0.4); border: 1px solid var(--border-color); }
         .chart-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; width: 100%; }
         .vault-grid-col { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; width: 100%; }
         
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr)); gap: 12px; width: 100%; }
-        .module-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-muted); font-weight: 700; font-size: 12px; text-align: center; cursor: pointer; transition: transform 0.15s; width: 100%; }
-        .module-btn:active { transform: scale(0.96); }
-        .module-btn i { font-size: 26px; color: var(--text-accent); }
+        .module-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-muted); font-weight: 800; font-size: 13px; text-align: center; cursor: pointer; transition: transform 0.15s, border-color 0.2s, color 0.2s; width: 100%; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .module-btn:active { transform: scale(0.95); }
+        .module-btn:hover { border-color: var(--text-accent); color: var(--text-main); }
+        .module-btn i { font-size: 28px; color: var(--text-accent); }
         
         /* Stats Rows */
-        .att-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; margin-bottom: 20px; }
-        .att-stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px 8px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .att-stat-card i { font-size: 18px; margin-bottom: 2px; }
-        .att-stat-card .val { font-size: 18px; font-weight: 900; color: var(--text-main); }
-        .att-stat-card .lbl { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+        .att-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; margin-bottom: 24px; }
+        .att-stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px 8px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .att-stat-card i { font-size: 20px; margin-bottom: 2px; }
+        .att-stat-card .val { font-size: 20px; font-weight: 900; color: var(--text-main); font-family: var(--header-font); }
+        .att-stat-card .lbl { font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
 
-        .table-wrap { width: 100%; max-width: 100vw; overflow-x: auto; border-radius: 14px; border: 1px solid var(--border-color); background: var(--bg-card); margin-bottom: 20px; -webkit-overflow-scrolling: touch; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 500px; }
-        th, td { padding: 12px 10px; text-align: center; border-bottom: 1px solid var(--border-color); }
-        th { background: var(--bg-card-alt); color: var(--text-main); font-weight: 800; font-size: 12px; }
+        .table-wrap { width: 100%; max-width: 100vw; overflow-x: auto; border-radius: 14px; border: 1px solid var(--border-color); background: var(--bg-card); margin-bottom: 20px; -webkit-overflow-scrolling: touch; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 500px; }
+        th, td { padding: 14px 12px; text-align: center; border-bottom: 1px solid var(--border-color); }
+        th { background: var(--bg-card-alt); color: var(--text-main); font-weight: 900; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
 
         /* SPACIOUS FORMS */
-        .form-card { width: 100%; background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; }
+        .form-card { width: 100%; background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 18px; margin-bottom: 24px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
         .input-group { display: flex; flex-direction: column; gap: 8px; width: 100%; }
-        .input-group label { font-size: 13px; font-weight: 700; color: var(--text-main); }
-        .form-control { padding: 15px 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-size: 16px !important; outline: none; width: 100%; }
-        .form-control:focus { border-color: var(--text-accent); box-shadow: 0 0 8px rgba(39, 174, 96, 0.3); }
+        .input-group label { font-size: 14px; font-weight: 800; color: var(--text-main); }
+        .form-control { padding: 16px 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-size: 16px !important; outline: none; width: 100%; transition: box-shadow 0.2s, border-color 0.2s; }
+        .form-control:focus { border-color: var(--text-accent); box-shadow: 0 0 10px rgba(39, 174, 96, 0.4); }
 
-        .btn { padding: 16px 20px; border-radius: 12px; border: none; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: #ffffff; width: 100%; transition: transform 0.1s; }
+        .btn { padding: 16px 20px; border-radius: 12px; border: none; font-weight: 900; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; color: #ffffff; width: 100%; transition: transform 0.1s, box-shadow 0.2s; letter-spacing: 0.5px; }
         .btn:active { transform: scale(0.97); }
-        .btn-success { background: var(--text-accent); color: #000; }
-        .btn-primary { background: var(--text-main); color: #08060c; }
-        .btn-danger { background: var(--danger); }
-        .btn-flex-row { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        .btn-success { background: var(--text-accent); color: #000; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4); }
+        .btn-primary { background: var(--text-main); color: #08060c; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); }
+        .btn-danger { background: var(--danger); box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4); }
+        .btn-flex-row { display: flex; flex-direction: column; gap: 14px; width: 100%; }
 
         /* Loan Cards */
-        .loans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; width: 100%; }
-        .loan-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; width: 100%; transform: translateZ(0); transition: border-color 0.3s; }
-        .progress-bar-bg { background: var(--bg-card-alt); height: 12px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); width: 100%; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); transition: width 0.4s ease; }
+        .loans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 20px; width: 100%; }
+        .loan-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 14px; width: 100%; transform: translateZ(0); box-shadow: 0 6px 15px rgba(0,0,0,0.3); }
+        .progress-bar-bg { background: var(--bg-card-alt); height: 14px; border-radius: 7px; overflow: hidden; border: 1px solid var(--border-color); width: 100%; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); transition: width 0.4s ease; box-shadow: 0 0 10px var(--text-accent); }
 
         input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: var(--text-accent); cursor: pointer; margin-top: -7px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: var(--bg-card); border-radius: 3px; border: 1px solid var(--border-color); }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: var(--text-accent); cursor: pointer; margin-top: -8px; box-shadow: 0 0 12px rgba(0,0,0,0.6); }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; cursor: pointer; background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border-color); }
 
         /* Modals */
-        .modal-mask { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 16px; }
+        .modal-mask { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 16px; }
         .modal-mask.active { display: flex; }
-        .modal-sheet { background: var(--bg-app); width: 100%; max-width: 440px; max-height: 90vh; border-radius: 20px; border: 1px solid var(--border-color); padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .modal-sheet { background: var(--bg-app); width: 100%; max-width: 440px; max-height: 90vh; border-radius: 24px; border: 1px solid var(--border-color); padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
         
-        #offline-badge { display: none; position: fixed; top: calc(12px + var(--safe-top)); left: 50%; transform: translateX(-50%); background: var(--danger); color: #fff; padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: bold; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.3); width: max-content; max-width: 90vw; }
+        #offline-badge { display: none; position: fixed; top: calc(12px + var(--safe-top)); left: 50%; transform: translateX(-50%); background: var(--danger); color: #fff; padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: bold; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.4); width: max-content; max-width: 90vw; border: 1px solid #fff; }
 
         @media (max-width: 820px) {
             .sidebar { display: none; }
@@ -225,7 +303,7 @@
             #vault-dashboard-panel { flex-direction: column; overflow-y: auto; }
             .vault-summary-col { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); padding: 12px 0; background: transparent; }
             .vault-grid-col { padding: 14px 0; }
-            .att-stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .att-stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
         }
         
         /* FAST MODE OVERRIDES */
@@ -236,7 +314,7 @@
         body.fast-mode .sidebar { 
             backdrop-filter: none !important; 
             -webkit-backdrop-filter: none !important; 
-            background-color: #0d0c11 !important; 
+            background-color: var(--bg-grad-1) !important; 
         }
     </style>
 </head>
@@ -300,17 +378,19 @@
                     <button class="btn btn-primary" id="dnav-archives" onclick="navTo('archives')"><i class="fas fa-archive"></i> <span>Archives</span></button>
                     <button class="btn btn-primary" id="dnav-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i> <span>Settings & Themes</span></button>
                     
-                    <button class="btn btn-success" style="margin-top: 10px;" onclick="triggerAppInstall()"><i class="fas fa-download"></i> <span>Install Standalone App</span></button>
-                    <button class="btn btn-primary" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
-                    <button class="btn btn-primary" style="background: transparent; border: 1px solid #3498db; color: #3498db;" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> <span>Reboot App</span></button>
-                    <button class="btn btn-danger" onclick="yearlyReset()"><i class="fas fa-skull"></i> <span>Yearly Reset</span></button>
+                    <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px; display: flex; flex-direction: column; gap: 8px;">
+                        <button class="btn btn-success" onclick="triggerAppInstall()"><i class="fas fa-download"></i> <span>Install Full App</span></button>
+                        <button class="btn btn-primary" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
+                        <button class="btn btn-primary" style="background: transparent; border: 1px solid var(--text-muted); color: var(--text-main);" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> <span>Reboot App</span></button>
+                        <button class="btn btn-danger" onclick="yearlyReset()"><i class="fas fa-skull"></i> <span>Yearly Reset</span></button>
+                    </div>
                 </div>
             </div>
 
-            <div class="sidebar-footer" style="font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; padding-top: 14px; border-top: 1px solid var(--border-color);">
-                <div>Identity: <b>TVGR Vault</b></div>
+            <div class="sidebar-footer">
+                <div>Identity: <b style="color: var(--text-main);">TVGR Vault</b></div>
                 <div>App Status: <span style="color: var(--text-accent);">PWA Optimized</span></div>
-                <button class="btn btn-primary" style="padding: 10px; font-size: 13px; margin-top: 4px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
+                <button class="btn btn-primary" style="padding: 10px; font-size: 13px; margin-top: 8px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
             </div>
         </aside>
 
@@ -323,23 +403,23 @@
                             <div class="profile-avatar">
                                 <img id="vault-avatar-img" src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'">
                             </div>
-                            <div style="font-size: 20px; font-weight: 900; letter-spacing: 1px;" id="prof-name">GOKUL</div>
-                            <div style="font-size: 13px; color: var(--text-accent); margin-bottom: 4px; font-weight: 700;" id="prof-role">Influencer & Petrol Bunk Worker</div>
-                            <div style="font-size: 12px; color: var(--text-muted); font-weight: 600;">ID: <span id="prof-id">TVGR</span> | Ht: <span id="prof-ht">5'4"</span></div>
-                            <button class="btn btn-primary" style="padding: 8px 16px; font-size: 12px; margin-top: 8px; width: 100%; border-radius: 8px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
+                            <div style="font-size: 24px; font-weight: 900; letter-spacing: 2px;" id="prof-name">GOKUL</div>
+                            <div style="font-size: 13px; color: var(--text-accent); margin-bottom: 4px; font-weight: 800;" id="prof-role">Influencer & Petrol Bunk Worker</div>
+                            <div style="font-size: 12px; color: var(--text-muted); font-weight: 700;">ID: <span id="prof-id" style="color: var(--text-main);">TVGR</span> | Ht: <span id="prof-ht" style="color: var(--text-main);">5'4"</span></div>
+                            <button class="btn btn-primary" style="padding: 10px 16px; font-size: 13px; margin-top: 12px; width: 100%; border-radius: 10px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
                         </div>
 
                         <div class="total-box">
-                            <div style="font-size: 13px; opacity: 0.9; font-weight: 700;">Total Balance</div>
-                            <div style="font-size: 32px; font-weight: 900; margin: 8px 0;" id="total-balance">₹0.00</div>
-                            <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 800;">
+                            <div style="font-size: 13px; opacity: 0.9; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Total Balance</div>
+                            <div style="font-size: 36px; font-weight: 900; margin: 10px 0; font-family: var(--header-font);" id="total-balance">₹0.00</div>
+                            <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 900;">
                                 <span style="color: #4ade80;" id="total-in">+₹0.00</span>
                                 <span style="color: #f87171;" id="total-out">-₹0.00</span>
                             </div>
                         </div>
 
                         <div class="chart-box">
-                            <div style="font-size: 13px; font-weight: 800; margin-bottom: 12px;">Spending Summary</div>
+                            <div style="font-size: 14px; font-weight: 900; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Spending Summary</div>
                             <div style="height: 160px;"><canvas id="financeChart"></canvas></div>
                         </div>
                     </div>
@@ -348,13 +428,13 @@
                         <div class="panel-heading" style="border: none; margin-bottom: 16px;">
                             <span id="grid-mode-title">Quick Log Expense</span>
                             <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                                <button class="btn btn-primary" id="btn-toggle-edit" style="padding: 6px 12px; font-size: 12px; width: auto;" onclick="toggleEditMode()"><i class="fas fa-pencil-alt"></i> Edit Labels</button>
-                                <button class="btn btn-danger" id="tab-out-btn" style="padding: 6px 12px; font-size: 12px; width: auto;" onclick="setVaultFlow('expense')">Out (-)</button>
-                                <button class="btn btn-success" id="tab-in-btn" style="padding: 6px 12px; font-size: 12px; width: auto;" onclick="setVaultFlow('income')">In (+)</button>
+                                <button class="btn btn-primary" id="btn-toggle-edit" style="padding: 8px 14px; font-size: 12px; width: auto;" onclick="toggleEditMode()"><i class="fas fa-pencil-alt"></i> Edit Labels</button>
+                                <button class="btn btn-danger" id="tab-out-btn" style="padding: 8px 14px; font-size: 12px; width: auto;" onclick="setVaultFlow('expense')">Out (-)</button>
+                                <button class="btn btn-success" id="tab-in-btn" style="padding: 8px 14px; font-size: 12px; width: auto;" onclick="setVaultFlow('income')">In (+)</button>
                             </div>
                         </div>
                         
-                        <div class="form-card" style="margin-bottom: 20px;">
+                        <div class="form-card" style="margin-bottom: 24px;">
                             <div class="input-group">
                                 <label>Amount (₹)</label>
                                 <input type="number" id="quick-tx-amount" class="form-control" placeholder="0.00" inputmode="decimal">
@@ -363,16 +443,16 @@
                             <div class="input-group">
                                 <label>Notes</label>
                                 <input type="text" id="quick-tx-note" class="form-control" placeholder="e.g. UPI Payment 💸, Lunch 🍔...">
-                                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
-                                    <span style="font-size: 12px; color: var(--text-muted); width: 100%; font-weight: 700;">Quick Add Emojis:</span>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px;" onclick="addEmoji('Food 🍔')">🍔 Food</button>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px;" onclick="addEmoji('Petrol ⛽')">⛽ Petrol</button>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px;" onclick="addEmoji('UPI 💸')">💸 UPI</button>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px;" onclick="addEmoji('Salary 💰')">💰 Salary</button>
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px;">
+                                    <span style="font-size: 13px; color: var(--text-muted); width: 100%; font-weight: 800;">Quick Add Emojis:</span>
+                                    <button class="btn btn-primary" style="padding: 8px 14px; width: auto; font-size: 14px;" onclick="addEmoji('Food 🍔')">🍔 Food</button>
+                                    <button class="btn btn-primary" style="padding: 8px 14px; width: auto; font-size: 14px;" onclick="addEmoji('Petrol ⛽')">⛽ Petrol</button>
+                                    <button class="btn btn-primary" style="padding: 8px 14px; width: auto; font-size: 14px;" onclick="addEmoji('UPI 💸')">💸 UPI</button>
+                                    <button class="btn btn-primary" style="padding: 8px 14px; width: auto; font-size: 14px;" onclick="addEmoji('Salary 💰')">💰 Salary</button>
                                 </div>
                             </div>
                             
-                            <div style="display: flex; gap: 12px; margin-top: 10px;">
+                            <div style="display: flex; gap: 14px; margin-top: 14px;">
                                 <button class="btn btn-danger" onclick="saveQuickTx('expense')"><i class="fas fa-minus-circle"></i> Spend Out</button>
                                 <button class="btn btn-success" onclick="saveQuickTx('income')"><i class="fas fa-plus-circle"></i> Income In</button>
                             </div>
@@ -385,8 +465,8 @@
 
             <!-- 2. ATTENDANCE & WORK -->
             <section id="attendance-view" class="view-panel">
-                <div class="form-card" style="margin-bottom: 20px;">
-                    <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-plus-circle"></i> Log New Shift</h3>
+                <div class="form-card" style="margin-bottom: 24px;">
+                    <h3 style="color: var(--text-main); font-size: 20px; font-family: var(--header-font);"><i class="fas fa-plus-circle"></i> Log New Shift</h3>
                     <div class="input-group">
                         <label style="display: flex; justify-content: space-between;">
                             <span>Select Job Profile</span>
@@ -395,14 +475,14 @@
                         <select id="att-job-select" class="form-control"></select>
                     </div>
                     
-                    <div style="display: flex; gap: 12px; width: 100%;">
+                    <div style="display: flex; gap: 14px; width: 100%;">
                         <div class="input-group"><label>Base (8h) ₹</label><input type="number" id="att-base-rate" class="form-control" onchange="saveRates()"></div>
                         <div class="input-group"><label>OT Rate/hr ₹</label><input type="number" id="att-ot-rate" class="form-control" onchange="saveRates()"></div>
                     </div>
 
                     <div class="input-group"><label>Date (Sundays = 100% OT)</label><input type="date" id="att-date" class="form-control"></div>
                     
-                    <div style="display: flex; gap: 12px; width: 100%;">
+                    <div style="display: flex; gap: 14px; width: 100%;">
                         <div class="input-group"><label>In Time</label><input type="time" id="att-in" class="form-control" value="09:30"></div>
                         <div class="input-group"><label>Out Time</label><input type="time" id="att-out" class="form-control" value="18:00"></div>
                     </div>
@@ -413,12 +493,12 @@
                 <div id="timesheet-export-area">
                     <div class="panel-heading">
                         <span>Work & Salary Log</span>
-                        <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-link"></i> Vault Linked</span>
+                        <span style="font-size: 14px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-link"></i> Vault Linked</span>
                     </div>
 
-                    <div class="form-card" style="margin-bottom: 20px;">
-                        <h3 style="color: var(--text-main); font-size: 16px;"><i class="fas fa-file-invoice"></i> Monthly Deductions (EPF & ESIC)</h3>
-                        <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
+                    <div class="form-card" style="margin-bottom: 24px;">
+                        <h3 style="color: var(--text-main); font-size: 18px; font-family: var(--header-font);"><i class="fas fa-file-invoice"></i> Monthly Deductions (EPF & ESIC)</h3>
+                        <div style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
                             <div class="input-group">
                                 <label>EPF (₹ / Month)</label>
                                 <input type="number" id="monthly-epf" class="form-control" placeholder="0" onchange="saveMonthlyDeductions()">
@@ -456,7 +536,7 @@
                     </div>
                 </div>
 
-                <div class="btn-flex-row" style="margin-top: 15px;">
+                <div class="btn-flex-row" style="margin-top: 20px;">
                     <button class="btn btn-primary" onclick="downloadPayslip()"><i class="fas fa-file-invoice-dollar"></i> Download Salary Slip (PDF)</button>
                     <button class="btn btn-primary" onclick="downloadTimesheet()"><i class="fas fa-list-alt"></i> Download Timesheet (PDF)</button>
                     <button class="btn btn-danger" onclick="clearShifts()"><i class="fas fa-trash-alt"></i> Clear All Shift Records</button>
@@ -471,38 +551,38 @@
                 </div>
                 
                 <div class="form-card" style="margin-bottom: 24px;">
-                    <h3 style="margin-bottom: 15px; color: var(--text-main); width: 100%;"><i class="fas fa-calculator"></i> New EMI Calculator</h3>
+                    <h3 style="margin-bottom: 15px; color: var(--text-main); width: 100%; font-family: var(--header-font);"><i class="fas fa-calculator"></i> New EMI Calculator</h3>
                     
                     <div class="input-group"><label>Loan Name / Purpose</label><input type="text" id="loan-name-input" class="form-control" placeholder="e.g. Bike Loan"></div>
                     <div class="input-group"><label>Principal Amount (₹)</label><input type="number" id="loan-principal" class="form-control" placeholder="100000" oninput="runEMICalc()"></div>
                     
-                    <div style="display: flex; gap: 12px; width: 100%;">
+                    <div style="display: flex; gap: 14px; width: 100%;">
                         <div class="input-group"><label>Interest Rate (% p.a.)</label><input type="number" id="loan-rate" class="form-control" placeholder="12" step="0.1" oninput="runEMICalc()"></div>
                         <div class="input-group"><label>Tenure (Months)</label><input type="number" id="loan-tenure" class="form-control" placeholder="24" oninput="runEMICalc()"></div>
                     </div>
                     
-                    <div style="display: flex; gap: 12px; width: 100%;">
+                    <div style="display: flex; gap: 14px; width: 100%;">
                         <div class="input-group"><label>Start Date</label><input type="date" id="loan-start-date" class="form-control" onchange="calcLoanEndDate()"></div>
                         <div class="input-group"><label>End Date (Est.)</label><input type="date" id="loan-end-date" class="form-control"></div>
                     </div>
 
                     <div class="input-group"><label>Monthly Due Date (Day 1-31)</label><input type="number" id="loan-due-input" class="form-control" placeholder="5" min="1" max="31"></div>
                     
-                    <div style="width: 100%; display: flex; flex-direction: column; gap: 12px; margin: 15px 0;">
-                        <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
-                            <input type="checkbox" id="loan-autopay-check" checked style="width: 24px; height: 24px;"> Auto-update EMI progress every month
+                    <div style="width: 100%; display: flex; flex-direction: column; gap: 14px; margin: 15px 0;">
+                        <label style="display: flex; align-items: center; gap: 14px; font-size: 15px; font-weight: 800; cursor: pointer; color: var(--text-main);">
+                            <input type="checkbox" id="loan-autopay-check" checked style="width: 26px; height: 26px;"> Auto-update EMI progress every month
                         </label>
                     </div>
                     
-                    <div style="width: 100%; display: flex; justify-content: space-around; background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; margin-bottom: 15px;">
-                        <div><div style="font-size: 13px; color: var(--text-muted); font-weight: bold; text-transform: uppercase;">Monthly EMI</div><div style="font-weight: 900; font-size: 24px; color: var(--danger);" id="emi-calc-out">₹0</div></div>
-                        <div><div style="font-size: 13px; color: var(--text-muted); font-weight: bold; text-transform: uppercase;">Total Interest</div><div style="font-weight: 900; font-size: 24px; color: var(--text-main);" id="int-calc-out">₹0</div></div>
+                    <div style="width: 100%; display: flex; justify-content: space-around; background: var(--bg-card); padding: 24px; border-radius: 16px; border: 1px solid var(--border-color); text-align: center; margin-bottom: 15px;">
+                        <div><div style="font-size: 14px; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Monthly EMI</div><div style="font-weight: 900; font-size: 28px; color: var(--danger); font-family: var(--header-font);" id="emi-calc-out">₹0</div></div>
+                        <div><div style="font-size: 14px; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Total Interest</div><div style="font-weight: 900; font-size: 28px; color: var(--text-main); font-family: var(--header-font);" id="int-calc-out">₹0</div></div>
                     </div>
 
                     <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan</button>
                 </div>
 
-                <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Active Loans Status</h3>
+                <h3 style="color: var(--text-main); margin-bottom: 15px; margin-top: 30px; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; font-family: var(--header-font);">Active Loans Status</h3>
                 <div class="loans-grid" id="active-loans-grid"></div>
             </section>
 
@@ -510,7 +590,7 @@
             <section id="history-view" class="view-panel">
                 <div class="panel-heading">
                     <span>Ledger Records</span>
-                    <span id="ledger-count" style="font-size: 14px; color: var(--text-muted); font-family: var(--app-font);">0 Records</span>
+                    <span id="ledger-count" style="font-size: 15px; color: var(--text-muted); font-family: var(--app-font);">0 Records</span>
                 </div>
                 <div class="table-wrap">
                     <table id="ledger-table">
@@ -531,7 +611,7 @@
             <!-- 5. ARCHIVES -->
             <section id="archives-view" class="view-panel">
                 <div class="panel-heading"><span>Past Months Archive</span></div>
-                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Completed months stored safely as separate records. Keeps your active dashboard fast.</p>
+                <p style="font-size: 15px; color: var(--text-muted); margin-bottom: 24px; font-weight: 600;">Completed months stored safely as separate records. Keeps your active dashboard fast.</p>
                 <div class="loans-grid" id="archives-grid"></div>
             </section>
 
@@ -539,30 +619,33 @@
             <section id="settings-view" class="view-panel">
                 <div class="panel-heading"><span>Settings & App Center</span></div>
                 
-                <div class="loans-grid" style="margin-bottom: 20px;">
+                <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; font-family: var(--header-font);">Color Themes</h3>
+                <div class="loans-grid" id="theme-gallery" style="margin-bottom: 30px;"></div>
+
+                <div class="loans-grid" style="margin-bottom: 24px;">
                     
                     <div class="loan-card" style="border-color: var(--text-accent);">
-                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
-                            <i class="fas fa-mobile-alt"></i> Mobile App & Fullscreen
+                        <div style="font-weight: 900; font-size: 20px; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-family: var(--header-font);">
+                            <i class="fas fa-mobile-alt"></i> Mobile App & Backup
                         </div>
-                        <p style="font-size: 13px; color: var(--text-muted);">Install this app directly onto your phone home screen for true fullscreen with zero browser bars.</p>
+                        <p style="font-size: 14px; color: var(--text-muted); font-weight: 600;">Install this app directly onto your phone home screen for true fullscreen with zero browser bars.</p>
                         
                         <div class="btn-flex-row">
                             <button class="btn btn-success" onclick="triggerAppInstall()"><i class="fas fa-download"></i> Install Standalone App</button>
                             <button class="btn btn-primary" onclick="enterFullScreen()"><i class="fas fa-expand"></i> Force Fullscreen Now</button>
-                            <button class="btn btn-primary" style="background: #3498db; color: #fff;" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> Reboot / Refresh App</button>
+                            <button class="btn btn-primary" style="background: transparent; color: var(--text-main); border: 2px solid var(--text-main);" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> Reboot / Refresh App</button>
                             <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-file-export"></i> Backup Vault Data (.json)</button>
                         </div>
                         
-                        <div style="background: var(--bg-card-alt); padding: 12px; border-radius: 12px; border: 1px dashed var(--border-color); margin-top: 10px;">
-                            <label style="font-size: 13px; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 8px;">Restore Backup</label>
-                            <input type="file" id="import-file" accept=".json" style="font-size: 13px; color: var(--text-muted); width: 100%; margin-bottom: 8px;">
+                        <div style="background: var(--bg-card-alt); padding: 16px; border-radius: 12px; border: 1px dashed var(--border-color); margin-top: 14px;">
+                            <label style="font-size: 14px; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 10px;">Restore Backup</label>
+                            <input type="file" id="import-file" accept=".json" style="font-size: 14px; color: var(--text-muted); width: 100%; margin-bottom: 10px; padding: 8px; background: rgba(0,0,0,0.3); border-radius: 8px;">
                             <button class="btn btn-danger" onclick="importData()"><i class="fas fa-upload"></i> Restore Backup File</button>
                         </div>
                     </div>
 
                     <div class="loan-card" style="justify-content: flex-start;">
-                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+                        <div style="font-weight: 900; font-size: 20px; color: var(--text-main); margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-family: var(--header-font);">
                             <i class="fas fa-bolt"></i> App Performance Config
                         </div>
                         <div class="input-group">
@@ -572,25 +655,23 @@
                                 <option value="fast">Lightning Fast (No Video, No Blurs)</option>
                             </select>
                         </div>
-                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">Select 'Lightning Fast' if your phone is lagging or overheating.</p>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-top: 12px; font-weight: 600;">Select 'Lightning Fast' if your phone is lagging or overheating.</p>
                     </div>
 
                 </div>
 
-                <div class="form-card" style="margin-bottom: 20px;">
-                    <div style="font-weight: 800; font-size: 16px; color: var(--text-main); margin-bottom: 10px;">
+                <div class="form-card" style="margin-bottom: 24px;">
+                    <div style="font-weight: 800; font-size: 18px; color: var(--text-main); margin-bottom: 12px; font-family: var(--header-font);">
                         <i class="fas fa-layer-group"></i> Glass Transparency
                     </div>
                     <input type="range" id="opacity-slider" min="0" max="1" step="0.05" oninput="updateGlassOpacity(this.value)">
 
-                    <div style="font-weight: 800; font-size: 16px; color: var(--text-main); margin-top: 18px; margin-bottom: 10px;">
+                    <div style="font-weight: 800; font-size: 18px; color: var(--text-main); margin-top: 24px; margin-bottom: 12px; font-family: var(--header-font);">
                         <i class="fas fa-moon"></i> Video Dimmer
                     </div>
                     <input type="range" id="dimmer-slider" min="0" max="1" step="0.05" oninput="updateVideoDimmer(this.value)">
                 </div>
 
-                <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">Color Themes</h3>
-                <div class="loans-grid" id="theme-gallery"></div>
             </section>
         </main>
     </div>
@@ -598,19 +679,19 @@
     <!-- MODAL: PROFILE -->
     <div class="modal-mask" id="profileModal">
         <div class="modal-sheet">
-            <h3 style="color: var(--text-main); font-family: var(--header-font); text-align: center; font-size: 20px;">Edit Profile & Photo</h3>
+            <h3 style="color: var(--text-main); font-family: var(--header-font); text-align: center; font-size: 24px; margin-bottom: 10px;">Edit Profile</h3>
             <div class="input-group"><label>Name</label><input type="text" id="m-prof-name" class="form-control"></div>
             <div class="input-group"><label>Job Title</label><input type="text" id="m-prof-role" class="form-control"></div>
-            <div style="display: flex; gap: 12px;">
+            <div style="display: flex; gap: 14px;">
                 <div class="input-group"><label>ID</label><input type="text" id="m-prof-id" class="form-control"></div>
                 <div class="input-group"><label>Height</label><input type="text" id="m-prof-ht" class="form-control"></div>
             </div>
             <div class="input-group">
                 <label>Profile Photo URL or Upload</label>
                 <input type="text" id="m-prof-avatar" class="form-control" placeholder="Paste image link">
-                <input type="file" id="m-prof-file" accept="image/*" style="font-size: 13px; color: var(--text-main); margin-top: 8px;" onchange="encodeImageFileAsURL(this)">
+                <input type="file" id="m-prof-file" accept="image/*" style="font-size: 14px; color: var(--text-main); margin-top: 10px; padding: 12px; background: rgba(0,0,0,0.3); border-radius: 10px; border: 1px dashed var(--border-color);" onchange="encodeImageFileAsURL(this)">
             </div>
-            <div class="btn-flex-row" style="margin-top: 10px;">
+            <div class="btn-flex-row" style="margin-top: 15px;">
                 <button class="btn btn-primary" onclick="closeModal('profileModal')">Cancel</button>
                 <button class="btn btn-success" onclick="saveProfileData()">Save Changes</button>
             </div>
@@ -620,23 +701,23 @@
     <!-- MODAL: JOBS -->
     <div class="modal-mask" id="jobModal">
         <div class="modal-sheet">
-            <h3 style="color: var(--text-main); text-align: center; font-size: 20px;">Job Profiles</h3>
-            <div style="display: flex; gap: 10px; width: 100%;">
+            <h3 style="color: var(--text-main); text-align: center; font-size: 24px; font-family: var(--header-font);">Job Profiles</h3>
+            <div style="display: flex; gap: 12px; width: 100%;">
                 <input type="text" id="new-job-input" class="form-control" style="flex:1;" placeholder="New Job Name">
-                <button class="btn btn-success" style="width: auto; padding: 0 16px;" onclick="createJobProfile()"><i class="fas fa-plus"></i></button>
+                <button class="btn btn-success" style="width: auto; padding: 0 20px;" onclick="createJobProfile()"><i class="fas fa-plus"></i></button>
             </div>
-            <div id="job-profile-list" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;"></div>
-            <button class="btn btn-primary" style="margin-top: 10px;" onclick="closeModal('jobModal')">Done</button>
+            <div id="job-profile-list" style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;"></div>
+            <button class="btn btn-primary" style="margin-top: 15px;" onclick="closeModal('jobModal')">Done</button>
         </div>
     </div>
 
     <!-- MODAL: BOTTOM SHEET MENU -->
     <div class="modal-mask" id="menuSheetModal">
-        <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom)); border-radius: 20px 20px 0 0;">
-            <div style="font-weight: 900; font-size: 17px; color: var(--text-main); text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">App Menu</div>
-            <button class="btn btn-success" onclick="triggerAppInstall(); closeModal('menuSheetModal')"><i class="fas fa-download"></i> Download / Install App</button>
+        <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom)); border-radius: 24px 24px 0 0;">
+            <div style="font-weight: 900; font-size: 20px; color: var(--text-main); text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-bottom: 10px; font-family: var(--header-font);">App Menu</div>
+            <button class="btn btn-success" onclick="triggerAppInstall(); closeModal('menuSheetModal')"><i class="fas fa-download"></i> Install App</button>
             
-            <button class="btn btn-primary" style="background: #3498db; color: #fff; border: none;" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> Reboot / Refresh App</button>
+            <button class="btn btn-primary" style="background: transparent; border: 2px solid var(--text-main); color: var(--text-main);" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> Reboot App</button>
             
             <button class="btn btn-primary" onclick="navTo('history'); closeModal('menuSheetModal')"><i class="fas fa-scroll"></i> Ledger Records</button>
             <button class="btn btn-primary" onclick="navTo('archives'); closeModal('menuSheetModal')"><i class="fas fa-archive"></i> Past Months</button>
@@ -650,12 +731,12 @@
     <!-- MODAL: APP INSTALLATION GUIDE -->
     <div class="modal-mask" id="installGuideModal">
         <div class="modal-sheet" style="text-align: center;">
-            <div style="font-size: 42px; color: var(--text-accent);"><i class="fas fa-mobile-alt"></i></div>
-            <h3 style="color: var(--text-main); font-family: var(--header-font); font-size: 22px;">Install Fullscreen App</h3>
+            <div style="font-size: 50px; color: var(--text-accent); margin-bottom: 10px;"><i class="fas fa-mobile-alt"></i></div>
+            <h3 style="color: var(--text-main); font-family: var(--header-font); font-size: 26px; margin-bottom: 20px;">Install Fullscreen App</h3>
             
-            <div style="text-align: left; background: var(--bg-card-alt); padding: 16px; border-radius: 14px; border: 1px solid var(--border-color); font-size: 14px; line-height: 1.8; color: var(--text-muted);" id="install-instructions">
+            <div style="text-align: left; background: var(--bg-card-alt); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color); font-size: 15px; line-height: 1.8; color: var(--text-muted);" id="install-instructions">
             </div>
-            <button class="btn btn-success" onclick="closeModal('installGuideModal')">Got It</button>
+            <button class="btn btn-success" style="margin-top: 15px;" onclick="closeModal('installGuideModal')">Got It</button>
         </div>
     </div>
 
@@ -675,6 +756,7 @@
             const splash = document.getElementById('splash-screen');
             if(splash) {
                 splash.style.display = 'flex';
+                // Force CSS reflow
                 void splash.offsetWidth;
                 splash.classList.remove('hide-splash');
                 splash.style.opacity = '1';
@@ -776,7 +858,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-v18';
+                const CACHE_NAME = 'gokul-hub-v21';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -1073,6 +1155,7 @@
 
             if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) return alert("Fill all shift details");
 
+            // STRICT SINGLE DAY VALIDATION
             if (shifts.some(s => s.date === date)) {
                 return alert(`Restriction: A shift is already logged for ${date}. You can only log one shift per day.`);
             }
@@ -1547,11 +1630,15 @@
             if (isNaN(count) || count <= 0) return alert("Enter a valid number of months.");
             if (l.paid + count > l.tenure) return alert(`You only have ${l.tenure - l.paid} months left!`);
             
+            const total = l.emi * count;
+            
             l.paid += count;
             l.lastPaidMonth = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
             
             localStorage.setItem('gokulLoans', JSON.stringify(loans));
             renderLoans();
+            
+            alert(`Successfully logged ₹${total.toLocaleString('en-IN')} payment for ${l.name}.`);
         }
 
         function deleteLoan(id) {
@@ -1650,6 +1737,36 @@
         }
 
         // 10. APPEARANCE & PERFORMANCE MODE
+        const themeOpts = [
+            { id: 'rajput', name: '👑 Royal Rajput' }, 
+            { id: 'peacock', name: '🦚 Peacock Emerald' }, 
+            { id: 'saffron', name: '🕉️ Varanasi Saffron' }, 
+            { id: 'mughal', name: '🕌 Mughal Magenta' }, 
+            { id: 'maratha', name: '⚔️ Maratha Navy' }, 
+            { id: 'chola', name: '🏛️ Chola Bronze' }, 
+            { id: 'light', name: '🕊️ Ivory Palace' }, 
+            { id: 'jarvis', name: '🤖 J.A.R.V.I.S.' }, 
+            { id: 'dark', name: '🖤 Onyx Dark' }
+        ];
+
+        function renderThemeGallery() {
+            document.getElementById('theme-gallery').innerHTML = themeOpts.map(th => `<div class="loan-card" style="text-align: center; cursor: pointer; border: 2px solid var(--border-color);" onclick="applyTheme('${th.id}')"><div style="font-weight: 900; font-size: 16px; font-family: var(--header-font);">${th.name}</div><button class="btn btn-primary" style="margin-top: 12px; font-size: 13px;">Apply Theme</button></div>`).join('');
+        }
+        
+        function applyTheme(id) { 
+            document.documentElement.setAttribute('data-theme', id); 
+            localStorage.setItem('gokulTheme', id); 
+            
+            const rootStyles = getComputedStyle(document.documentElement);
+            const grad1 = rootStyles.getPropertyValue('--bg-grad-1').trim();
+            const splash = document.getElementById('splash-screen');
+            if (splash && grad1) {
+                splash.style.background = grad1;
+            }
+            
+            renderVaultChart(); 
+        }
+
         function saveAppConfig() {
             const perfMode = document.getElementById('setting-perf-mode').value;
             localStorage.setItem('gokulPerfMode', perfMode);
@@ -1669,15 +1786,60 @@
                 document.documentElement.style.setProperty('--glass-alpha', '1');
             } else {
                 document.body.classList.remove('fast-mode');
-                loadAppearanceSettings(); // Restore original slider value
+                loadAppearanceSettings(); 
             }
         }
 
-        const themeOpts = [{ id: 'harrypotter', name: 'Hogwarts Magic' }, { id: 'jarvis', name: 'J.A.R.V.I.S.' }, { id: 'default', name: 'Corporate Clean' }, { id: 'dark', name: 'Onyx Dark' }];
-        function renderThemeGallery() {
-            document.getElementById('theme-gallery').innerHTML = themeOpts.map(th => `<div class="loan-card" style="text-align: center; cursor: pointer;" onclick="applyTheme('${th.id}')"><div style="font-weight: 800;">${th.name}</div><button class="btn btn-primary" style="margin-top: 8px;">Apply Theme</button></div>`).join('');
+        // ==========================================
+        // 11. HORIZONTAL SWIPE NAVIGATION
+        // ==========================================
+        let touchStartX = null;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+        const appPages = ['vault-dashboard', 'attendance', 'loans', 'history', 'archives', 'settings'];
+
+        document.addEventListener('touchstart', e => {
+            // Ignore swipes on sliders, tables, or buttons to prevent accidental page turns
+            if (e.target.closest('input') || e.target.closest('.table-wrap') || e.target.closest('.selection-grid') || e.target.closest('button')) {
+                touchStartX = null;
+                return;
+            }
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, {passive: true});
+
+        document.addEventListener('touchend', e => {
+            if (touchStartX === null) return;
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            handleGesture();
+        }, {passive: true});
+
+        function handleGesture() {
+            const xDiff = touchEndX - touchStartX;
+            const yDiff = touchEndY - touchStartY;
+            
+            // Thresholds: Minimum 60px horizontal swipe, Maximum 50px vertical drift
+            if (Math.abs(xDiff) > 60 && Math.abs(yDiff) < 50) {
+                let activeIdx = -1;
+                for(let i = 0; i < appPages.length; i++) {
+                    const el = document.getElementById(appPages[i] + '-view');
+                    if(el && el.classList.contains('active')) {
+                        activeIdx = i;
+                        break;
+                    }
+                }
+                
+                if (activeIdx !== -1) {
+                    if (xDiff < 0 && activeIdx < appPages.length - 1) {
+                        navTo(appPages[activeIdx + 1]); // Swipe Left -> Next
+                    } else if (xDiff > 0 && activeIdx > 0) {
+                        navTo(appPages[activeIdx - 1]); // Swipe Right -> Prev
+                    }
+                }
+            }
         }
-        function applyTheme(id) { document.documentElement.setAttribute('data-theme', id); localStorage.setItem('gokulTheme', id); renderVaultChart(); }
 
         window.addEventListener('DOMContentLoaded', () => {
             renderProfile(); 
@@ -1692,7 +1854,6 @@
             renderThemeGallery();
             autoCheckEMIs(); 
             updateNetworkStatus(); 
-            preCacheAssets();
         });
     </script>
 </body>
