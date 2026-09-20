@@ -92,6 +92,7 @@
             --danger: #ff003c;
         }
 
+        /* Performance Optimizations & Overrides */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: var(--app-font); touch-action: manipulation; }
         img, video { max-width: 100%; height: auto; }
         input, select, textarea, button { max-width: 100%; font-family: inherit; font-size: 16px !important; }
@@ -106,12 +107,12 @@
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* ====== SPLASH SCREEN ANIMATION ====== */
+        /* ====== SPLASH SCREEN ====== */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh;
             background: #0d0c11; 
             z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+            transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
         }
         .splash-logo-container { position: relative; display: flex; justify-content: center; align-items: center; }
         .splash-logo { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--text-accent); object-fit: cover; animation: pulseLogo 1.5s infinite alternate ease-in-out; z-index: 2; }
@@ -128,18 +129,18 @@
         .hide-splash { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
 
         /* ====== UI SHELL ====== */
-        .video-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; object-fit: cover; z-index: -2; pointer-events: none; opacity: 0.95; }
-        .video-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: radial-gradient(circle at center, rgba(13, 10, 18, 0.25) 0%, rgba(8, 6, 12, 0.75) 100%); z-index: -1; pointer-events: none; opacity: var(--video-dimmer); }
+        .video-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; object-fit: cover; z-index: -2; pointer-events: none; opacity: 0.95; will-change: opacity; }
+        .video-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: radial-gradient(circle at center, rgba(13, 10, 18, 0.25) 0%, rgba(8, 6, 12, 0.75) 100%); z-index: -1; pointer-events: none; opacity: var(--video-dimmer); transition: opacity 0.3s ease; }
 
-        .app-shell { width: 100%; height: 100dvh; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: background-color 0.3s ease; }
+        .app-shell { width: 100%; height: 100dvh; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: background-color 0.3s ease; transform: translateZ(0); }
 
-        .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(65px + var(--safe-top)); padding-top: var(--safe-top); background: var(--bg-sidebar); border-bottom: 1px solid var(--border-color); z-index: 100; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(65px + var(--safe-top)); padding-top: var(--safe-top); background: var(--bg-sidebar); border-bottom: 1px solid var(--border-color); z-index: 100; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         .mobile-header .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 18px; color: var(--text-main); font-family: var(--header-font); }
         .mobile-header .brand img { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-color); object-fit: cover; flex-shrink: 0; }
 
-        .sidebar { width: 250px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; flex-shrink: 0; z-index: 10; backdrop-filter: blur(12px); }
+        .sidebar { width: 250px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; flex-shrink: 0; z-index: 10; backdrop-filter: blur(8px); }
         
-        .mobile-tab-bar { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: calc(65px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--bg-sidebar); border-top: 1px solid var(--border-color); z-index: 100; justify-content: space-around; align-items: center; box-shadow: 0 -4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .mobile-tab-bar { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: calc(65px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--bg-sidebar); border-top: 1px solid var(--border-color); z-index: 100; justify-content: space-around; align-items: center; box-shadow: 0 -4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; border: none; color: var(--text-muted); font-size: 12px; font-weight: 700; gap: 4px; height: 100%; cursor: pointer; transition: color 0.2s; }
         .tab-item i { font-size: 20px; transition: transform 0.2s; }
         .tab-item.active { color: var(--text-main); }
@@ -147,7 +148,7 @@
 
         .main-stage { flex: 1; display: flex; position: relative; overflow: hidden; width: 100%; max-width: 100vw; height: 100%; }
         
-        /* Instant Panel Loading */
+        /* Instant Panel Loading (No Staggered Delays) */
         .view-panel { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 24px; flex-direction: column; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; }
         .view-panel.active { display: flex; animation: panelFade 0.2s ease-out; }
         @keyframes panelFade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -185,7 +186,7 @@
         th { background: var(--bg-card-alt); color: var(--text-main); font-weight: 800; font-size: 12px; }
 
         /* SPACIOUS FORMS */
-        .form-card { width: 100%; background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+        .form-card { width: 100%; background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; }
         .input-group { display: flex; flex-direction: column; gap: 8px; width: 100%; }
         .input-group label { font-size: 13px; font-weight: 700; color: var(--text-main); }
         .form-control { padding: 15px 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-size: 16px !important; outline: none; width: 100%; }
@@ -353,7 +354,7 @@
                             </div>
                         </div>
                         
-                        <div class="form-card" style="margin-bottom: 20px;">
+                        <div class="form-card">
                             <div class="input-group">
                                 <label>Amount (₹)</label>
                                 <input type="number" id="quick-tx-amount" class="form-control" placeholder="0.00" inputmode="decimal">
@@ -384,7 +385,7 @@
 
             <!-- 2. ATTENDANCE & WORK -->
             <section id="attendance-view" class="view-panel">
-                <div class="form-card" style="margin-bottom: 20px;">
+                <div class="form-card">
                     <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-plus-circle"></i> Log New Shift</h3>
                     <div class="input-group">
                         <label style="display: flex; justify-content: space-between;">
@@ -409,13 +410,13 @@
                     <button class="btn btn-success" onclick="recordShift()"><i class="fas fa-cloud-upload-alt"></i> Save Shift & Sync Money to Vault</button>
                 </div>
 
-                <div id="timesheet-export-area">
+                <div id="timesheet-export-area" style="margin-top: 24px;">
                     <div class="panel-heading">
                         <span>Work & Salary Log</span>
                         <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-link"></i> Vault Linked</span>
                     </div>
 
-                    <div class="form-card" style="margin-bottom: 20px;">
+                    <div class="form-card">
                         <h3 style="color: var(--text-main); font-size: 16px;"><i class="fas fa-file-invoice"></i> Monthly Deductions (EPF & ESIC)</h3>
                         <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
                             <div class="input-group">
@@ -466,10 +467,10 @@
             <section id="loans-view" class="view-panel">
                 <div class="panel-heading">
                     <span>Loan Manager</span>
-                    <span style="font-size: 14px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-robot"></i> Auto-Deduct Ready</span>
+                    <span style="font-size: 14px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-robot"></i> Independent Track</span>
                 </div>
                 
-                <div class="form-card" style="margin-bottom: 24px;">
+                <div class="form-card">
                     <h3 style="margin-bottom: 15px; color: var(--text-main); width: 100%;"><i class="fas fa-calculator"></i> New EMI Calculator</h3>
                     
                     <div class="input-group"><label>Loan Name / Purpose</label><input type="text" id="loan-name-input" class="form-control" placeholder="e.g. Bike Loan"></div>
@@ -484,10 +485,7 @@
                     
                     <div style="width: 100%; display: flex; flex-direction: column; gap: 12px; margin: 15px 0;">
                         <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
-                            <input type="checkbox" id="loan-disburse-check" checked style="width: 24px; height: 24px;"> Deposit Principal to Vault as Income now?
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
-                            <input type="checkbox" id="loan-autopay-check" checked style="width: 24px; height: 24px;"> Auto-Pay EMI from Vault every month
+                            <input type="checkbox" id="loan-autopay-check" checked style="width: 24px; height: 24px;"> Auto-update EMI payment every month
                         </label>
                     </div>
                     
@@ -499,7 +497,7 @@
                     <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan</button>
                 </div>
 
-                <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Active Loans Status</h3>
+                <h3 style="color: var(--text-main); margin-bottom: 15px; margin-top: 24px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Active Loans Status</h3>
                 <div class="loans-grid" id="active-loans-grid"></div>
             </section>
 
@@ -664,7 +662,7 @@
                 const splash = document.getElementById('splash-screen');
                 if(splash) {
                     splash.classList.add('hide-splash');
-                    setTimeout(() => splash.style.display = 'none', 600); // Remove from rendering tree
+                    setTimeout(() => splash.style.display = 'none', 600); 
                 }
             }, 2000); 
         });
@@ -673,7 +671,6 @@
             const splash = document.getElementById('splash-screen');
             if(splash) {
                 splash.style.display = 'flex';
-                // Force CSS reflow
                 void splash.offsetWidth;
                 splash.classList.remove('hide-splash');
                 splash.style.opacity = '1';
@@ -775,7 +772,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-v16';
+                const CACHE_NAME = 'gokul-hub-v17';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -1087,7 +1084,7 @@
             const breakDeduct = gross > 4 ? 0.5 : 0;
             const net = Math.max(0, gross - breakDeduct);
             
-            // LOCAL TIMEZONE SUNDAY CHECK
+            // LOCAL TIMEZONE SUNDAY CHECK FIX
             const dateParts = date.split('-');
             const shiftDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
             const isSunday = shiftDate.getDay() === 0;
@@ -1416,7 +1413,6 @@
         function saveActiveLoan() {
             const name = document.getElementById('loan-name-input').value.trim() || "Loan";
             const due = parseInt(document.getElementById('loan-due-input').value) || 5;
-            const disburse = document.getElementById('loan-disburse-check').checked;
             const autopay = document.getElementById('loan-autopay-check').checked;
             
             const calc = runEMICalc();
@@ -1426,8 +1422,6 @@
             loans.push({ id: uniqueId, name, due, emi: calc.emi, principal: calc.p, tenure: calc.n, paid: 0, autopay, lastPaidMonth: "" });
             localStorage.setItem('gokulLoans', JSON.stringify(loans));
             renderLoans();
-            
-            if (disburse) logVaultTx(`Loan Disbursed: ${name} 🏦`, 'income', false, calc.p, 'Auto Loan Disbursement');
             
             document.getElementById('loan-name-input').value = '';
             document.getElementById('loan-principal').value = '';
@@ -1481,7 +1475,7 @@
                     ${!isDone ? `
                     <div style="display: flex; gap: 10px; align-items: center; margin-top: 12px; background: var(--bg-card-alt); padding: 8px; border-radius: 10px; border: 1px solid var(--border-color);">
                         <input type="number" id="seek-${l.id}" class="form-control" value="1" min="1" max="${remMonths}" style="width: 70px; padding: 10px; text-align: center; font-weight: 800;">
-                        <button class="btn btn-success" style="flex: 1; color: #000; padding: 10px;" onclick="payLoanEMI(${l.id})">Pay EMI & Sync</button>
+                        <button class="btn btn-success" style="flex: 1; color: #000; padding: 10px;" onclick="payLoanEMI(${l.id})">Log Payment</button>
                     </div>
                     ` : `
                     <div style="margin-top: 12px; text-align: center; font-weight: 800; color: var(--text-accent); padding: 8px; background: var(--bg-card-alt); border-radius: 10px;">
@@ -1504,7 +1498,6 @@
             if (l.paid + count > l.tenure) return alert(`You only have ${l.tenure - l.paid} months left!`);
             
             const total = l.emi * count;
-            logVaultTx(`EMI: ${l.name} 🏦`, 'expense', false, total, `Manual EMI Payment (${count} months)`);
             
             l.paid += count;
             l.lastPaidMonth = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
@@ -1512,7 +1505,7 @@
             localStorage.setItem('gokulLoans', JSON.stringify(loans));
             renderLoans();
             
-            alert(`Successfully Paid ₹${total.toLocaleString('en-IN')} for ${l.name}. Deducted from Vault.`);
+            alert(`Successfully logged ₹${total.toLocaleString('en-IN')} payment for ${l.name}.`);
         }
 
         function deleteLoan(id) {
@@ -1529,11 +1522,15 @@
             let count = 0;
             loans.forEach(l => {
                 if (l.autopay && l.paid < l.tenure && today.getDate() >= l.due && l.lastPaidMonth !== key) {
-                    logVaultTx(`Auto EMI: ${l.name} 🏦`, 'expense', false, l.emi, 'Scheduled Auto-Pay');
-                    l.paid++; l.lastPaidMonth = key; count++;
+                    l.paid++; 
+                    l.lastPaidMonth = key; 
+                    count++;
                 }
             });
-            if (count > 0) { localStorage.setItem('gokulLoans', JSON.stringify(loans)); renderLoans(); }
+            if (count > 0) { 
+                localStorage.setItem('gokulLoans', JSON.stringify(loans)); 
+                renderLoans(); 
+            }
         }
 
         // 9. ARCHIVES
@@ -1636,14 +1633,21 @@
         }
         function applyTheme(id) { document.documentElement.setAttribute('data-theme', id); localStorage.setItem('gokulTheme', id); renderVaultChart(); }
 
-        window.onload = () => {
+        window.addEventListener('DOMContentLoaded', () => {
             renderProfile(); 
             applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); 
             loadAppearanceSettings();
             loadAppConfig(); 
-            updateVaultStats(); renderJobDropdown(); updateShiftStats(); renderLoans(); renderArchives(); renderThemeGallery();
-            autoCheckEMIs(); updateNetworkStatus(); preCacheAssets();
-        };
+            updateVaultStats(); 
+            renderJobDropdown(); 
+            updateShiftStats(); 
+            renderLoans(); 
+            renderArchives(); 
+            renderThemeGallery();
+            autoCheckEMIs(); 
+            updateNetworkStatus(); 
+            preCacheAssets();
+        });
     </script>
 </body>
 </html>
