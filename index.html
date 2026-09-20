@@ -92,7 +92,7 @@
             --danger: #ff003c;
         }
 
-        /* Base Resets */
+        /* Performance Optimizations */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: var(--app-font); touch-action: manipulation; }
         img, video { max-width: 100%; height: auto; }
         input, select, textarea, button { max-width: 100%; font-family: inherit; font-size: 16px !important; }
@@ -225,7 +225,6 @@
             .att-stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
         }
         
-        /* Utility class for performance mode */
         body.fast-mode .video-background { display: none !important; }
         body.fast-mode { animation: none !important; }
     </style>
@@ -288,6 +287,10 @@
                     
                     <button class="btn btn-success" style="margin-top: 10px;" onclick="triggerAppInstall()"><i class="fas fa-download"></i> <span>Install Standalone App</span></button>
                     <button class="btn btn-primary" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
+                    
+                    <!-- NEW REBOOT BUTTON DESKTOP -->
+                    <button class="btn btn-primary" style="background: transparent; border: 1px solid #3498db; color: #3498db;" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> <span>Reboot App</span></button>
+
                     <button class="btn btn-danger" onclick="yearlyReset()"><i class="fas fa-skull"></i> <span>Yearly Reset</span></button>
                 </div>
             </div>
@@ -482,7 +485,7 @@
                         <div><div style="font-size: 13px; color: var(--text-muted); font-weight: bold; text-transform: uppercase;">Total Interest</div><div style="font-weight: 900; font-size: 24px; color: var(--text-main);" id="int-calc-out">₹0</div></div>
                     </div>
 
-                    <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan & Activate System</button>
+                    <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan</button>
                 </div>
 
                 <h3 class="stagger-anim" style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Active Loans Status</h3>
@@ -534,6 +537,8 @@
                         <div class="btn-flex-row">
                             <button class="btn btn-success" onclick="triggerAppInstall()"><i class="fas fa-download"></i> Install Standalone App</button>
                             <button class="btn btn-primary" onclick="enterFullScreen()"><i class="fas fa-expand"></i> Force Fullscreen Now</button>
+                            <!-- NEW REBOOT BUTTON MOBILE SETTINGS -->
+                            <button class="btn btn-primary" style="background: #3498db; color: #fff;" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> Reboot / Refresh App</button>
                             <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-file-export"></i> Backup Vault Data (.json)</button>
                         </div>
                         
@@ -620,6 +625,10 @@
         <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom)); border-radius: 20px 20px 0 0;">
             <div style="font-weight: 900; font-size: 17px; color: var(--text-main); text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">App Menu</div>
             <button class="btn btn-success" onclick="triggerAppInstall(); closeModal('menuSheetModal')"><i class="fas fa-download"></i> Download / Install App</button>
+            
+            <!-- NEW REBOOT BUTTON MOBILE MENU -->
+            <button class="btn btn-primary" style="background: #3498db; color: #fff; border: none;" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> Reboot / Refresh App</button>
+            
             <button class="btn btn-primary" onclick="navTo('history'); closeModal('menuSheetModal')"><i class="fas fa-scroll"></i> Ledger Records</button>
             <button class="btn btn-primary" onclick="navTo('archives'); closeModal('menuSheetModal')"><i class="fas fa-archive"></i> Past Months</button>
             <button class="btn btn-primary" onclick="openProfileModal(); closeModal('menuSheetModal')"><i class="fas fa-user-edit"></i> Edit Profile</button>
@@ -643,25 +652,35 @@
     </div>
 
     <script>
-        // 0. SPLASH SCREEN & ENTRANCE ANIMATION LOGIC
+        // 0. SPLASH SCREEN & REBOOT LOGIC
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 if(splash) splash.classList.add('hide-splash');
                 triggerPanelAnimations('vault-dashboard-view');
-            }, 2500); // Intro plays for 2.5 seconds
+            }, 2500); 
         });
+
+        function rebootApp() {
+            const splash = document.getElementById('splash-screen');
+            if(splash) {
+                splash.classList.remove('hide-splash');
+                splash.style.opacity = '1';
+                splash.style.visibility = 'visible';
+            }
+            setTimeout(() => {
+                window.location.reload(true);
+            }, 600);
+        }
 
         function triggerPanelAnimations(panelId) {
             const panel = document.getElementById(panelId);
             if(!panel) return;
             const animElements = panel.querySelectorAll('.stagger-anim');
-            // Reset state
             animElements.forEach(el => el.classList.remove('show'));
-            // Stagger entrance
             setTimeout(() => {
                 animElements.forEach((el, index) => {
-                    setTimeout(() => { el.classList.add('show'); }, index * 60); // 60ms delay per item
+                    setTimeout(() => { el.classList.add('show'); }, index * 60); 
                 });
             }, 50);
         }
@@ -757,7 +776,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-v10';
+                const CACHE_NAME = 'gokul-hub-v11';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -794,7 +813,7 @@
             const targetPanel = document.getElementById(`${panelId}-view`);
             if (targetPanel) {
                 targetPanel.classList.add('active');
-                triggerPanelAnimations(`${panelId}-view`); // Trigger entrance animations
+                triggerPanelAnimations(`${panelId}-view`); 
             }
 
             const desktopBtn = document.getElementById(`dnav-${panelId}`);
@@ -828,7 +847,7 @@
                 document.getElementById('vault-avatar-img'),
                 document.getElementById('header-avatar-img'),
                 document.getElementById('sidebar-avatar-img'),
-                document.getElementById('splash-avatar-img') // Sync to Splash Screen
+                document.getElementById('splash-avatar-img') 
             ];
             avatars.forEach(av => { if (av) av.src = profile.avatar; });
 
@@ -1015,6 +1034,7 @@
 
         document.getElementById('att-base-rate').value = localStorage.getItem('gokulSavedBase') || '';
         document.getElementById('att-ot-rate').value = localStorage.getItem('gokulSavedOT') || '';
+        
         document.getElementById('monthly-epf').value = localStorage.getItem('gokulMonthlyEPF') || '0';
         document.getElementById('monthly-esic').value = localStorage.getItem('gokulMonthlyESIC') || '0';
         document.getElementById('att-date').valueAsDate = new Date();
@@ -1499,6 +1519,7 @@
                     <div style="font-size: 12px;">Shifts: <b>${a.count}</b></div>
                     <div style="font-size: 12px;">Income: <b style="color:var(--text-accent)">+₹${a.earned.toFixed(2)}</b></div>
                     <div style="font-size: 12px;">Spending: <b style="color:var(--danger)">-₹${a.spent.toFixed(2)}</b></div>
+                    <button class="btn btn-danger" style="margin-top: 6px;" onclick="deleteArchiveItem(${a.id})"><i class="fas fa-trash"></i> Delete Archive</button>
                 </div>`;
             });
             grid.innerHTML = html;
