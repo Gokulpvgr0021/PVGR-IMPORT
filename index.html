@@ -13,7 +13,7 @@
     <meta name="application-name" content="Gokul Hub">
     <meta name="theme-color" content="#0d0c11">
 
-    <!-- Icons (Dynamically overridden by JS) -->
+    <!-- Icons -->
     <link rel="icon" href="10276.png" type="image/png">
     <link rel="apple-touch-icon" href="10276.png">
 
@@ -26,7 +26,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- External Engines -->
+    <!-- External Engines & Separated Lexicon -->
+    <script src="lexicon.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
@@ -92,37 +93,17 @@
             --danger: #ff003c;
         }
 
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            -webkit-tap-highlight-color: transparent; 
-            font-family: var(--app-font);
-            touch-action: manipulation;
-        }
-        
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: var(--app-font); touch-action: manipulation; }
         img, video { max-width: 100%; height: auto; }
         
-        input, select, textarea, button { 
-            max-width: 100%; 
-            font-family: inherit; 
-            font-size: 16px !important;
-        }
+        /* EXPANDED MOBILE TYPING FIX: 16px font prevents iOS auto-zoom */
+        input, select, textarea, button { max-width: 100%; font-family: inherit; font-size: 16px !important; }
 
         html, body {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100dvh;
-            overflow: hidden;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; overflow: hidden;
             background: linear-gradient(135deg, #090414, #1b0d2d, #081a24, #1f0b18);
-            background-size: 300% 300%;
-            animation: ambientGradient 12s ease infinite;
-            color: var(--text-main);
-            user-select: none;
-            -webkit-user-select: none;
-            overscroll-behavior: none;
+            background-size: 300% 300%; animation: ambientGradient 12s ease infinite;
+            color: var(--text-main); user-select: none; -webkit-user-select: none; overscroll-behavior: none;
         }
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -132,46 +113,13 @@
 
         .app-shell { width: 100%; height: 100dvh; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background-color 0.3s ease; }
 
-        .mobile-header { 
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: calc(65px + var(--safe-top)); 
-            padding-top: var(--safe-top); 
-            background: var(--bg-sidebar); 
-            border-bottom: 1px solid var(--border-color); 
-            z-index: 100; 
-            align-items: center; 
-            justify-content: space-between; 
-            padding-left: 16px; 
-            padding-right: 16px; 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px); 
-        }
+        .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(65px + var(--safe-top)); padding-top: var(--safe-top); background: var(--bg-sidebar); border-bottom: 1px solid var(--border-color); z-index: 100; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .mobile-header .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 18px; color: var(--text-main); font-family: var(--header-font); }
         .mobile-header .brand img { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-color); object-fit: cover; flex-shrink: 0; }
 
         .sidebar { width: 250px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; flex-shrink: 0; z-index: 10; backdrop-filter: blur(12px); }
         
-        .mobile-tab-bar { 
-            display: none; 
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
-            height: calc(65px + var(--safe-bottom)); 
-            padding-bottom: var(--safe-bottom); 
-            background: var(--bg-sidebar); 
-            border-top: 1px solid var(--border-color); 
-            z-index: 100; 
-            justify-content: space-around; 
-            align-items: center; 
-            box-shadow: 0 -4px 16px rgba(0,0,0,0.3); 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px); 
-        }
+        .mobile-tab-bar { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: calc(65px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--bg-sidebar); border-top: 1px solid var(--border-color); z-index: 100; justify-content: space-around; align-items: center; box-shadow: 0 -4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; border: none; color: var(--text-muted); font-size: 12px; font-weight: 700; gap: 4px; height: 100%; cursor: pointer; transition: color 0.2s; }
         .tab-item i { font-size: 20px; transition: transform 0.2s; }
         .tab-item.active { color: var(--text-main); }
@@ -188,73 +136,39 @@
         #vault-dashboard-panel { flex-direction: row; padding: 0; width: 100%; height: 100%; }
         .vault-summary-col { width: 320px; max-width: 100%; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 15px; transition: background-color 0.3s ease;}
         
-        .profile-badge { 
-            background: linear-gradient(135deg, var(--bg-card), var(--bg-card-alt));
-            border: 1px solid var(--border-color); 
-            border-radius: 20px; 
-            padding: 20px; 
-            width: 100%; 
-            text-align: center; 
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        .profile-badge::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
-            background: linear-gradient(90deg, var(--text-accent), var(--text-main));
-        }
-        .profile-avatar { 
-            width: 84px; height: 84px; 
-            border-radius: 50%; 
-            border: 3px solid var(--text-main); 
-            margin: 4px auto; 
-            overflow: hidden; 
-            background: var(--bg-card-alt); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        }
+        .profile-badge { background: linear-gradient(135deg, var(--bg-card), var(--bg-card-alt)); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; width: 100%; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.3); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .profile-badge::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, var(--text-accent), var(--text-main)); }
+        .profile-avatar { width: 84px; height: 84px; border-radius: 50%; border: 3px solid var(--text-main); margin: 4px auto; overflow: hidden; background: var(--bg-card-alt); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
         .total-box { background: var(--total-box); border-radius: 16px; padding: 18px; width: 100%; color: #ffffff; box-shadow: 0 6px 16px rgba(0,0,0,0.25); }
         .chart-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; width: 100%; }
         .vault-grid-col { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; width: 100%; }
         
-        /* Work / Stats Grid */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr)); gap: 12px; width: 100%; }
+        .module-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-muted); font-weight: 700; font-size: 12px; text-align: center; cursor: pointer; transition: transform 0.15s; width: 100%; }
+        .module-btn:active { transform: scale(0.96); }
+        .module-btn i { font-size: 26px; color: var(--text-accent); }
+        
+        /* Stats Rows */
         .att-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; margin-bottom: 20px; }
         .att-stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px 8px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .att-stat-card i { font-size: 18px; margin-bottom: 2px; }
         .att-stat-card .val { font-size: 18px; font-weight: 900; color: var(--text-main); }
         .att-stat-card .lbl { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
 
-        /* Table & Lists */
         .table-wrap { width: 100%; max-width: 100vw; overflow-x: auto; border-radius: 14px; border: 1px solid var(--border-color); background: var(--bg-card); margin-bottom: 20px; -webkit-overflow-scrolling: touch; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 480px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 500px; }
         th, td { padding: 12px 10px; text-align: center; border-bottom: 1px solid var(--border-color); }
         th { background: var(--bg-card-alt); color: var(--text-main); font-weight: 800; font-size: 12px; }
 
-        /* Long & Spacious Forms */
+        /* SPACIOUS FORMS */
         .form-card { width: 100%; background: var(--bg-card-alt); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
         .input-group { display: flex; flex-direction: column; gap: 8px; width: 100%; }
         .input-group label { font-size: 13px; font-weight: 700; color: var(--text-main); }
-        .form-control { 
-            padding: 15px 14px; 
-            border-radius: 12px; 
-            border: 1px solid var(--border-color); 
-            background: var(--bg-card); 
-            color: var(--text-main); 
-            font-size: 16px !important; 
-            outline: none; 
-            width: 100%; 
-        }
+        .form-control { padding: 15px 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-size: 16px !important; outline: none; width: 100%; }
         .form-control:focus { border-color: var(--text-accent); box-shadow: 0 0 8px rgba(39, 174, 96, 0.3); }
 
-        /* Big Buttons */
         .btn { padding: 16px 20px; border-radius: 12px; border: none; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: #ffffff; width: 100%; }
         .btn:active { transform: scale(0.97); }
         .btn-success { background: var(--text-accent); color: #000; }
@@ -268,39 +182,45 @@
         .progress-bar-bg { background: var(--bg-card-alt); height: 12px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); width: 100%; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); }
 
-        /* Modals */
+        /* CHAT/TRANSLATOR */
+        .chat-wrap { display: flex; flex-direction: column; height: calc(100vh - 160px); min-height: 400px; width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; }
+        .translator-bar { background: var(--bg-card-alt); border-bottom: 1px solid var(--border-color); padding: 14px; display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        .translator-select-row { display: flex; width: 100%; gap: 10px; align-items: center; }
+        .translator-select { flex: 1; padding: 14px; font-size: 16px !important; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); outline: none; }
+        .chat-stream { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; -webkit-overflow-scrolling: touch; width: 100%; }
+        .chat-bubble { padding: 14px 18px; border-radius: 16px; max-width: 90%; font-size: 15px; line-height: 1.6; word-wrap: break-word; }
+        .chat-user { background: var(--bg-card-alt); border: 1px solid var(--border-color); align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-bot { background: linear-gradient(135deg, var(--text-main), var(--text-accent)); color: #08060c; font-weight: 700; align-self: flex-start; border-bottom-left-radius: 4px; }
+        .chat-controls { display: flex; flex-direction: column; padding: 16px; background: var(--bg-card-alt); border-top: 1px solid var(--border-color); gap: 12px; width: 100%; }
+        .chat-controls input { flex: none; width: 100%; min-height: 56px; padding: 16px; font-size: 16px !important; border-radius: 12px; }
+        .chat-controls button { flex: none; width: 100%; min-height: 50px; font-size: 16px; }
+
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: var(--text-accent); cursor: pointer; margin-top: -7px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: var(--bg-card); border-radius: 3px; border: 1px solid var(--border-color); }
+
         .modal-mask { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 16px; }
         .modal-mask.active { display: flex; }
-        .modal-sheet { background: var(--bg-app); width: 100%; max-width: 440px; max-height: 88dvh; border-radius: 20px; border: 1px solid var(--border-color); padding: 22px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .modal-sheet { background: var(--bg-app); width: 100%; max-width: 440px; max-height: 90vh; border-radius: 20px; border: 1px solid var(--border-color); padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        #offline-badge {
-            display: none; position: fixed; top: calc(12px + var(--safe-top)); left: 50%; transform: translateX(-50%);
-            background: var(--danger); color: #fff; padding: 6px 18px; border-radius: 20px;
-            font-size: 12px; font-weight: bold; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            width: max-content; max-width: 90vw;
-        }
+        #offline-badge { display: none; position: fixed; top: calc(12px + var(--safe-top)); left: 50%; transform: translateX(-50%); background: var(--danger); color: #fff; padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: bold; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.3); width: max-content; max-width: 90vw; }
 
-        /* Responsive Breakpoints for Mobile */
         @media (max-width: 820px) {
             .sidebar { display: none; }
             .mobile-header { display: flex; }
             .mobile-tab-bar { display: flex; }
-            .main-stage { 
-                margin-top: calc(65px + var(--safe-top)); 
-                margin-bottom: calc(65px + var(--safe-bottom)); 
-                height: calc(100dvh - 130px - var(--safe-top) - var(--safe-bottom)); 
-            }
-            .view-panel { padding: 14px; }
+            .main-stage { margin-top: calc(65px + var(--safe-top)); margin-bottom: calc(65px + var(--safe-bottom)); height: calc(100dvh - 130px - var(--safe-top) - var(--safe-bottom)); }
+            .view-panel { padding: 16px; }
             #vault-dashboard-panel { flex-direction: column; overflow-y: auto; }
             .vault-summary-col { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); padding: 12px 0; background: transparent; }
             .vault-grid-col { padding: 14px 0; }
             .att-stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .chat-wrap { height: calc(100dvh - 180px); }
         }
     </style>
 </head>
 <body>
 
-    <!-- OFFLINE STATUS BADGE -->
     <div id="offline-badge"><i class="fas fa-wifi-slash"></i> Offline Mode: Synced Locally</div>
 
     <video id="app-bg-video" class="video-background" autoplay muted loop playsinline webkit-playsinline preload="auto">
@@ -309,23 +229,22 @@
     </video>
     <div class="video-overlay"></div>
 
-    <!-- MOBILE TOP BAR -->
     <div class="mobile-header">
         <div class="brand">
             <img id="header-avatar-img" src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'">
             <span>GOKUL HUB</span>
         </div>
         <div style="display: flex; gap: 8px;">
-            <button class="btn btn-success" id="m-install-btn" style="padding: 7px 12px; font-size: 13px; width: auto;" onclick="triggerAppInstall()"><i class="fas fa-arrow-circle-down"></i> Install App</button>
+            <button class="btn btn-success" id="m-install-btn" style="padding: 7px 12px; font-size: 13px; width: auto;" onclick="triggerAppInstall()"><i class="fas fa-arrow-circle-down"></i> App</button>
             <button class="btn btn-primary" style="padding: 7px 12px; font-size: 14px; width: auto;" onclick="openMenuSheet()"><i class="fas fa-ellipsis-v"></i></button>
         </div>
     </div>
 
-    <!-- MOBILE BOTTOM TABS -->
     <div class="mobile-tab-bar">
         <button class="tab-item active" id="tab-vault" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i><span>Vault</span></button>
         <button class="tab-item" id="tab-att" onclick="navTo('attendance')"><i class="fas fa-business-time"></i><span>Work</span></button>
         <button class="tab-item" id="tab-loan" onclick="navTo('loans')"><i class="fas fa-hand-holding-usd"></i><span>Loans</span></button>
+        <button class="tab-item" id="tab-ai" onclick="navTo('ai-advisor')"><i class="fas fa-language"></i><span>Cherry</span></button>
         <button class="tab-item" id="tab-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i><span>Settings</span></button>
     </div>
 
@@ -337,7 +256,7 @@
                     <div style="font-weight: 900; font-size: 18px; color: var(--text-main); font-family: var(--header-font);">GOKUL HUB</div>
                 </div>
 
-                <div class="nav-list" style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="nav-list">
                     <button class="btn btn-primary active" id="dnav-vault-dashboard" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i> <span>Vault</span></button>
                     <button class="btn btn-primary" id="dnav-attendance" onclick="navTo('attendance')"><i class="fas fa-business-time"></i> <span>Work & Salary</span></button>
                     <button class="btn btn-primary" id="dnav-loans" onclick="navTo('loans')"><i class="fas fa-hand-holding-usd"></i> <span>Loans & EMI</span></button>
@@ -359,6 +278,7 @@
         </aside>
 
         <main class="main-stage">
+            
             <!-- 1. VAULT DASHBOARD -->
             <section id="vault-dashboard-view" class="view-panel active">
                 <div id="vault-dashboard-panel">
@@ -388,32 +308,26 @@
                         </div>
                     </div>
 
-                    <!-- Fast Note & Emoji Transaction Entry -->
                     <div class="vault-grid-col">
                         <div class="panel-heading" style="border: none; margin-bottom: 16px;">
                             <span>Log Transaction</span>
                         </div>
                         
                         <div class="form-card">
-                            <div style="display: flex; gap: 12px;">
-                                <div class="input-group" style="flex: 1;">
-                                    <label>Amount (₹)</label>
-                                    <input type="number" id="quick-tx-amount" class="form-control" placeholder="0.00" inputmode="decimal">
-                                </div>
+                            <div class="input-group">
+                                <label>Amount (₹)</label>
+                                <input type="number" id="quick-tx-amount" class="form-control" placeholder="0.00" inputmode="decimal">
                             </div>
                             
                             <div class="input-group">
-                                <label>Notes (What was this for?)</label>
+                                <label>Notes</label>
                                 <input type="text" id="quick-tx-note" class="form-control" placeholder="e.g. UPI Payment 💸, Lunch 🍔...">
-                                
                                 <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
                                     <span style="font-size: 12px; color: var(--text-muted); width: 100%; font-weight: 700;">Quick Add Emojis:</span>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Food 🍔')">🍔 Food</button>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Petrol ⛽')">⛽ Petrol</button>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('UPI 💸')">💸 UPI</button>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Shop 🛒')">🛒 Shop</button>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Snacks 🍿')">🍿 Snacks</button>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Salary 💰')">💰 Salary</button>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px;" onclick="addEmoji('Food 🍔')">🍔 Food</button>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px;" onclick="addEmoji('Petrol ⛽')">⛽ Petrol</button>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px;" onclick="addEmoji('UPI 💸')">💸 UPI</button>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px;" onclick="addEmoji('Salary 💰')">💰 Salary</button>
                                 </div>
                             </div>
                             
@@ -426,7 +340,7 @@
                 </div>
             </section>
 
-            <!-- 2. AUTO MAINTAINABLE WORK & SALARY -->
+            <!-- 2. ATTENDANCE & WORK -->
             <section id="attendance-view" class="view-panel">
                 <div class="form-card" style="margin-bottom: 20px;">
                     <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-plus-circle"></i> Log New Shift</h3>
@@ -443,7 +357,7 @@
                         <div class="input-group"><label>OT Rate/hr ₹</label><input type="number" id="att-ot-rate" class="form-control" onchange="saveRates()"></div>
                     </div>
 
-                    <div class="input-group"><label>Date</label><input type="date" id="att-date" class="form-control"></div>
+                    <div class="input-group"><label>Date (Sundays = 100% OT)</label><input type="date" id="att-date" class="form-control"></div>
                     
                     <div style="display: flex; gap: 12px; width: 100%;">
                         <div class="input-group"><label>In Time</label><input type="time" id="att-in" class="form-control" value="09:30"></div>
@@ -459,10 +373,9 @@
                         <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-link"></i> Vault Linked</span>
                     </div>
 
-                    <!-- Monthly EPF & ESIC Options -->
                     <div class="form-card" style="margin-bottom: 20px;">
                         <h3 style="color: var(--text-main); font-size: 16px;"><i class="fas fa-file-invoice"></i> Monthly Deductions (EPF & ESIC)</h3>
-                        <div style="display: flex; gap: 12px; width: 100%; align-items: flex-end;">
+                        <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
                             <div class="input-group">
                                 <label>EPF (₹ / Month)</label>
                                 <input type="number" id="monthly-epf" class="form-control" placeholder="0" onchange="saveMonthlyDeductions()">
@@ -471,9 +384,8 @@
                                 <label>ESIC (₹ / Month)</label>
                                 <input type="number" id="monthly-esic" class="form-control" placeholder="0" onchange="saveMonthlyDeductions()">
                             </div>
-                            <button class="btn btn-danger" style="width: auto; padding: 15px;" onclick="syncDeductionsToVault()"><i class="fas fa-minus-circle"></i> Sync</button>
+                            <button class="btn btn-danger" style="width: 100%;" onclick="syncDeductionsToVault()"><i class="fas fa-minus-circle"></i> Sync Deductions to Vault</button>
                         </div>
-                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Enter once per month. Click 'Sync' to deduct this total from your Vault.</div>
                     </div>
 
                     <div class="att-stats-row">
@@ -501,10 +413,9 @@
                     </div>
                 </div>
 
-                <!-- Split Download Buttons -->
                 <div class="btn-flex-row" style="margin-top: 15px;">
-                    <button class="btn btn-primary" onclick="downloadPayslip()"><i class="fas fa-file-invoice-dollar"></i> Download Salary Slip</button>
-                    <button class="btn btn-primary" onclick="downloadTimesheet()"><i class="fas fa-list-alt"></i> Download Timesheet</button>
+                    <button class="btn btn-primary" onclick="downloadPayslip()"><i class="fas fa-file-invoice-dollar"></i> Download Salary Slip (PDF)</button>
+                    <button class="btn btn-primary" onclick="downloadTimesheet()"><i class="fas fa-list-alt"></i> Download Timesheet (PDF)</button>
                     <button class="btn btn-danger" onclick="clearShifts()"><i class="fas fa-trash-alt"></i> Clear All Shift Records</button>
                 </div>
             </section>
@@ -513,11 +424,11 @@
             <section id="loans-view" class="view-panel">
                 <div class="panel-heading">
                     <span>Loan Manager</span>
-                    <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-robot"></i> Auto-Deduct Ready</span>
+                    <span style="font-size: 14px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-robot"></i> Auto-Deduct Ready</span>
                 </div>
                 
-                <div class="form-card" style="margin-bottom: 20px;">
-                    <h3 style="color: var(--text-main);"><i class="fas fa-calculator"></i> EMI Calculator</h3>
+                <div class="form-card" style="margin-bottom: 24px;">
+                    <h3 style="margin-bottom: 15px; color: var(--text-main); width: 100%;"><i class="fas fa-calculator"></i> EMI Calculator</h3>
                     
                     <div class="input-group"><label>Loan Name / Purpose</label><input type="text" id="loan-name-input" class="form-control" placeholder="e.g. Bike Loan"></div>
                     <div class="input-group"><label>Principal Amount (₹)</label><input type="number" id="loan-principal" class="form-control" placeholder="100000" oninput="runEMICalc()"></div>
@@ -529,24 +440,24 @@
                     
                     <div class="input-group"><label>Monthly Due Date (Day 1-31)</label><input type="number" id="loan-due-input" class="form-control" placeholder="5" min="1" max="31"></div>
                     
-                    <div style="display: flex; flex-direction: column; gap: 10px; margin: 10px 0;">
-                        <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
-                            <input type="checkbox" id="loan-disburse-check" checked style="width: 22px; height: 22px;"> Deposit Principal to Vault as Income now?
+                    <div style="width: 100%; display: flex; flex-direction: column; gap: 12px; margin: 15px 0;">
+                        <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
+                            <input type="checkbox" id="loan-disburse-check" checked style="width: 24px; height: 24px;"> Deposit Principal to Vault as Income now?
                         </label>
-                        <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
-                            <input type="checkbox" id="loan-autopay-check" checked style="width: 22px; height: 22px;"> Auto-Pay EMI from Vault every month on Due Date
+                        <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
+                            <input type="checkbox" id="loan-autopay-check" checked style="width: 24px; height: 24px;"> Auto-Pay EMI from Vault every month
                         </label>
                     </div>
                     
-                    <div style="display: flex; justify-content: space-around; background: var(--bg-card); padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
-                        <div><div style="font-size: 11px; color: var(--text-muted); font-weight: bold;">MONTHLY EMI</div><div style="font-weight: 900; font-size: 20px; color: var(--danger);" id="emi-calc-out">₹0</div></div>
-                        <div><div style="font-size: 11px; color: var(--text-muted); font-weight: bold;">TOTAL INTEREST</div><div style="font-weight: 900; font-size: 20px; color: var(--text-main);" id="int-calc-out">₹0</div></div>
+                    <div style="width: 100%; display: flex; justify-content: space-around; background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; margin-bottom: 15px;">
+                        <div><div style="font-size: 13px; color: var(--text-muted); font-weight: bold;">MONTHLY EMI</div><div style="font-weight: 900; font-size: 24px; color: var(--danger);" id="emi-calc-out">₹0</div></div>
+                        <div><div style="font-size: 13px; color: var(--text-muted); font-weight: bold;">TOTAL INTEREST</div><div style="font-weight: 900; font-size: 24px; color: var(--text-main);" id="int-calc-out">₹0</div></div>
                     </div>
 
                     <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan</button>
                 </div>
 
-                <h3 style="color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">Active Loans</h3>
+                <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Active Loans</h3>
                 <div class="loans-grid" id="active-loans-grid"></div>
             </section>
 
@@ -561,7 +472,7 @@
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Transaction Note</th>
+                                <th>Note / Category</th>
                                 <th>Flow</th>
                                 <th>Amount</th>
                                 <th style="width: 50px;">Del</th>
@@ -575,16 +486,67 @@
             <!-- 5. ARCHIVES -->
             <section id="archives-view" class="view-panel">
                 <div class="panel-heading"><span>Past Months Archive</span></div>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 18px;">Completed months stored safely as separate records.</p>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Completed months stored safely as separate records.</p>
                 <div class="loans-grid" id="archives-grid"></div>
             </section>
 
-            <!-- 6. SETTINGS & APP CENTER -->
+            <!-- 6. CHERRY BOT & TRANSLATOR -->
+            <section id="ai-advisor-view" class="view-panel">
+                <div class="panel-heading">
+                    <span>Cherry Bot 🍒</span>
+                    <span style="font-size: 14px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-globe"></i> Multi-lingual Offline</span>
+                </div>
+
+                <div class="chat-wrap">
+                    <div class="translator-bar">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-size: 14px; font-weight: 800; color: var(--text-main);"><i class="fas fa-language"></i> Mega-Lexicon Translator</span>
+                            <span style="font-size: 12px; color: var(--text-muted); font-weight: 700; background: rgba(0,0,0,0.5); padding: 4px 8px; border-radius: 8px;">100% Offline</span>
+                        </div>
+                        <div class="translator-select-row">
+                            <select id="trans-src" class="translator-select">
+                                <option value="en">English</option>
+                                <option value="ta">Tamil</option>
+                                <option value="hi">Hindi</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                            </select>
+                            <i class="fas fa-arrow-right" style="font-size: 14px; color: var(--text-accent);"></i>
+                            <select id="trans-dst" class="translator-select">
+                                <option value="ta">Tamil</option>
+                                <option value="hi">Hindi</option>
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                            </select>
+                        </div>
+                        <div style="display:flex; flex-direction: column; gap:10px; width: 100%; margin-top: 10px;">
+                            <input type="text" id="trans-input" class="form-control" style="width: 100%;" placeholder="Type word to translate...">
+                            <button class="btn btn-success" style="width: 100%;" onclick="runQuickTranslate()"><i class="fas fa-language"></i> Translate</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-stream" id="chat-stream">
+                        <div class="chat-bubble chat-bot">
+                            வணக்கம் / Namaste / Hello Gokul! 🍒 I am <b>Cherry Bot</b>, your offline buddy.<br><br>
+                            My brain is connected to your local lexicon file. I understand hundreds of everyday words in English, Tamil, Hindi, Spanish, and French!<br><br>
+                            💬 Try typing down below:<br>
+                            - "How are you?" or "Epdi irukka?"<br>
+                            - "Check my balance!"
+                        </div>
+                    </div>
+                    <div class="chat-controls">
+                        <input type="text" id="chat-user-input" class="form-control" placeholder="Chat with Cherry Bot..." onkeypress="if(event.key==='Enter') executeOfflineChat()">
+                        <button class="btn btn-success" id="ai-send-btn" onclick="executeOfflineChat()">Send <i class="fas fa-paper-plane" style="margin-left:6px;"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. SETTINGS & APP CENTER -->
             <section id="settings-view" class="view-panel">
                 <div class="panel-heading"><span>Settings & App Download</span></div>
                 
                 <div class="loans-grid" style="margin-bottom: 20px;">
-                    <!-- App Install Card -->
                     <div class="loan-card" style="border-color: var(--text-accent);">
                         <div style="font-weight: 900; font-size: 18px; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
                             <i class="fas fa-mobile-alt"></i> Mobile App & Fullscreen
@@ -593,7 +555,6 @@
                         
                         <div class="btn-flex-row">
                             <button class="btn btn-success" onclick="triggerAppInstall()"><i class="fas fa-download"></i> Install Standalone App</button>
-                            <button class="btn btn-primary" onclick="enterFullScreen()"><i class="fas fa-expand"></i> Force Fullscreen Now</button>
                             <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-file-export"></i> Backup Vault Data (.json)</button>
                         </div>
                         
@@ -602,6 +563,42 @@
                             <input type="file" id="import-file" accept=".json" style="font-size: 13px; color: var(--text-muted); width: 100%; margin-bottom: 8px;">
                             <button class="btn btn-danger" onclick="importData()"><i class="fas fa-upload"></i> Restore Backup File</button>
                         </div>
+                    </div>
+
+                    <!-- Translator Settings -->
+                    <div class="loan-card" style="justify-content: flex-start;">
+                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+                            <i class="fas fa-language"></i> Translator Preferences
+                        </div>
+                        <div class="input-group">
+                            <label>Default 'From' Language</label>
+                            <select id="setting-trans-src" class="form-control" onchange="saveAppConfig()">
+                                <option value="en">English</option>
+                                <option value="ta">Tamil (தமிழ்)</option>
+                                <option value="hi">Hindi (हिन्दी)</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                            </select>
+                        </div>
+                        <div class="input-group" style="margin-top: 15px;">
+                            <label>Default 'To' Language</label>
+                            <select id="setting-trans-dst" class="form-control" onchange="saveAppConfig()">
+                                <option value="ta">Tamil (தமிழ்)</option>
+                                <option value="hi">Hindi (हिन्दी)</option>
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Chat Settings -->
+                    <div class="loan-card" style="justify-content: flex-start;">
+                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+                            <i class="fas fa-comment-dots"></i> Data Privacy
+                        </div>
+                        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Clear your current conversation history with Cherry Bot. This does not delete any financial data.</p>
+                        <button class="btn btn-danger" onclick="clearChatHistory()"><i class="fas fa-trash"></i> Wipe Chat History</button>
                     </div>
                 </div>
 
@@ -630,14 +627,14 @@
             <h3 style="color: var(--text-main); font-family: var(--header-font); text-align: center; font-size: 20px;">Edit Profile & Photo</h3>
             <div class="input-group"><label>Name</label><input type="text" id="m-prof-name" class="form-control"></div>
             <div class="input-group"><label>Job Title</label><input type="text" id="m-prof-role" class="form-control"></div>
-            <div style="display: flex; gap: 12px;">
+            <div style="display: flex; flex-direction: column; gap: 12px;">
                 <div class="input-group"><label>ID</label><input type="text" id="m-prof-id" class="form-control"></div>
                 <div class="input-group"><label>Height</label><input type="text" id="m-prof-ht" class="form-control"></div>
             </div>
             <div class="input-group">
-                <label>Profile Photo URL or Upload</label>
-                <input type="text" id="m-prof-avatar" class="form-control" placeholder="Paste image link">
-                <input type="file" id="m-prof-file" accept="image/*" style="font-size: 13px; color: var(--text-main); margin-top: 8px;" onchange="encodeImageFileAsURL(this)">
+                <label>Profile Photo</label>
+                <input type="file" id="m-prof-file" accept="image/*" style="font-size: 13px; color: var(--text-main); margin-top: 8px; padding: 10px; background: rgba(0,0,0,0.2); border: 1px dashed var(--border-color);" onchange="encodeImageFileAsURL(this)">
+                <input type="hidden" id="m-prof-avatar">
             </div>
             <div class="btn-flex-row" style="margin-top: 10px;">
                 <button class="btn btn-primary" onclick="closeModal('profileModal')">Cancel</button>
@@ -650,9 +647,9 @@
     <div class="modal-mask" id="jobModal">
         <div class="modal-sheet">
             <h3 style="color: var(--text-main); text-align: center; font-size: 20px;">Job Profiles</h3>
-            <div style="display: flex; gap: 10px; width: 100%;">
+            <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
                 <input type="text" id="new-job-input" class="form-control" style="flex:1;" placeholder="New Job Name">
-                <button class="btn btn-success" style="width: auto; padding: 0 16px;" onclick="createJobProfile()"><i class="fas fa-plus"></i></button>
+                <button class="btn btn-success" onclick="createJobProfile()"><i class="fas fa-plus"></i> Add Job</button>
             </div>
             <div id="job-profile-list" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;"></div>
             <button class="btn btn-primary" style="margin-top: 10px;" onclick="closeModal('jobModal')">Done</button>
@@ -663,7 +660,7 @@
     <div class="modal-mask" id="menuSheetModal">
         <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom)); border-radius: 20px 20px 0 0;">
             <div style="font-weight: 900; font-size: 17px; color: var(--text-main); text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">App Menu</div>
-            <button class="btn btn-success" onclick="triggerAppInstall(); closeModal('menuSheetModal')"><i class="fas fa-download"></i> Download / Install App</button>
+            <button class="btn btn-success" onclick="triggerAppInstall(); closeModal('menuSheetModal')"><i class="fas fa-download"></i> Install Full App</button>
             <button class="btn btn-primary" onclick="navTo('history'); closeModal('menuSheetModal')"><i class="fas fa-scroll"></i> Ledger Records</button>
             <button class="btn btn-primary" onclick="navTo('archives'); closeModal('menuSheetModal')"><i class="fas fa-archive"></i> Past Months</button>
             <button class="btn btn-primary" onclick="openProfileModal(); closeModal('menuSheetModal')"><i class="fas fa-user-edit"></i> Edit Profile</button>
@@ -680,35 +677,40 @@
             <h3 style="color: var(--text-main); font-family: var(--header-font); font-size: 22px;">Install Fullscreen App</h3>
             
             <div style="text-align: left; background: var(--bg-card-alt); padding: 16px; border-radius: 14px; border: 1px solid var(--border-color); font-size: 14px; line-height: 1.8; color: var(--text-muted);" id="install-instructions">
-                <!-- Injected dynamically based on browser -->
+                <!-- Injected dynamically -->
             </div>
-            <button class="btn btn-success" onclick="closeModal('installGuideModal')">Got It</button>
+            <button class="btn btn-success" style="margin-top: 10px;" onclick="closeModal('installGuideModal')">Got It</button>
         </div>
     </div>
 
     <script>
-        // 1. FULLSCREEN & PWA INSTALL CONTROLLER
-        let deferredPrompt;
-        const isStandalone = window.matchMedia('(display-mode: fullscreen)').matches || 
-                             window.matchMedia('(display-mode: standalone)').matches || 
-                             window.navigator.standalone === true;
+        // FULL SCREEN ENFORCER SCRIPT FOR MOBILE APPS
+        function enterFullScreen() {
+            if (!document.fullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen().catch(()=>{});
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
+                }
+            }
+        }
+        document.addEventListener('touchstart', enterFullScreen, { once: true, passive: true });
+        document.addEventListener('click', enterFullScreen, { once: true });
 
+        // INSTALL CONTROLLER
+        let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            const btn = document.getElementById('m-install-btn');
-            if (btn) btn.style.display = 'flex';
         });
 
         function triggerAppInstall() {
+            enterFullScreen();
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        enterFullScreen();
-                    }
-                    deferredPrompt = null;
-                });
+                deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
             } else {
                 showManualInstallGuide();
             }
@@ -717,96 +719,70 @@
         function showManualInstallGuide() {
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
             const guide = document.getElementById('install-instructions');
-            
             if (isIOS) {
-                guide.innerHTML = `
-                    <b>To install on iPhone/iPad:</b><br>
-                    1. Tap the <b>Share</b> button (<i class="fas fa-share-square"></i>) at the bottom.<br>
-                    2. Scroll down and tap <b>"Add to Home Screen"</b>.<br>
-                    3. Tap <b>Add</b>. It will open fullscreen without any Safari browser bars!
-                `;
+                guide.innerHTML = `<b>To install on iPhone/iPad:</b><br>1. Tap the <b>Share</b> button (<i class="fas fa-share-square"></i>) at the bottom.<br>2. Tap <b>"Add to Home Screen"</b>.<br>3. Launch from home screen!`;
             } else {
-                guide.innerHTML = `
-                    <b>To install on Android / Chrome:</b><br>
-                    1. Tap the browser menu <b>(⋮)</b> at the top-right.<br>
-                    2. Tap <b>"Install App"</b> or <b>"Add to Home screen"</b>.<br>
-                    3. Launch <b>Gokul Hub</b> from your home screen for pure fullscreen mode!
-                `;
+                guide.innerHTML = `<b>To install on Android / Chrome:</b><br>1. Tap the browser menu <b>(⋮)</b> at the top-right.<br>2. Tap <b>"Install App"</b> or <b>"Add to Home screen"</b>.<br>3. Launch from home screen!`;
             }
             openModal('installGuideModal');
         }
 
-        function enterFullScreen() {
-            const doc = document.documentElement;
-            if (!document.fullscreenElement) {
-                if (doc.requestFullscreen) doc.requestFullscreen().catch(()=>{});
-                else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
-                else if (doc.msRequestFullscreen) doc.msRequestFullscreen();
-            }
+        function downloadAppDirectly() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const downloadUrl = URL.createObjectURL(blob);
+            const tempLink = document.createElement('a');
+            tempLink.href = downloadUrl;
+            tempLink.download = 'Gokul_Hub.html';
+            document.body.appendChild(tempLink);
+            tempLink.click();
+            document.body.removeChild(tempLink);
+            URL.revokeObjectURL(downloadUrl);
         }
 
-        document.addEventListener('touchstart', () => {
-            if (!document.fullscreenElement && isStandalone) enterFullScreen();
-        }, { passive: true });
-
-        // 2. DYNAMIC MANIFEST & APP ICON SYNC BUILDER
-        function buildDynamicManifest() {
-            const avatarSrc = (profile && profile.avatar) ? profile.avatar : '10276.png';
-            const svgIcon = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="%230d0c11"/><text x="50%" y="54%" font-family="sans-serif" font-weight="900" font-size="200" fill="%23f0c75e" text-anchor="middle" dominant-baseline="middle">G</text></svg>`;
-            
-            const manifestObj = {
-                "name": "Gokul Hub",
-                "short_name": "GokulHub",
-                "id": "/",
-                "start_url": window.location.href.split('#')[0],
-                "scope": "/",
-                "display": "fullscreen",
-                "display_override": ["fullscreen", "standalone", "window-controls-overlay"],
-                "orientation": "portrait",
-                "background_color": "#0d0c11",
-                "theme_color": "#0d0c11",
-                "icons": [
-                    { "src": avatarSrc, "sizes": "192x192", "type": "image/png" },
-                    { "src": avatarSrc, "sizes": "512x512", "type": "image/png" },
-                    { "src": svgIcon, "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
-                ]
+        function exportData() {
+            const data = {
+                profile: JSON.parse(localStorage.getItem('gokulProfile') || 'null'),
+                transactions: JSON.parse(localStorage.getItem('gokulVaultTx') || '[]'),
+                shifts: JSON.parse(localStorage.getItem('gokulAttRecords') || '[]'),
+                jobProfiles: JSON.parse(localStorage.getItem('gokulJobProfiles') || 'null'),
+                loans: JSON.parse(localStorage.getItem('gokulLoans') || '[]'),
+                archives: JSON.parse(localStorage.getItem('gokulArchives') || '[]'),
+                epf: localStorage.getItem('gokulMonthlyEPF'),
+                esic: localStorage.getItem('gokulMonthlyESIC')
             };
-            const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
-            document.getElementById('pwa-manifest').setAttribute('href', URL.createObjectURL(manifestBlob));
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Gokul_Data_Backup.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            alert("Backup Downloaded!");
         }
 
-        // 3. SERVICE WORKER FOR OFFLINE
-        if ('serviceWorker' in navigator) {
-            const swCode = `
-                const CACHE_NAME = 'gokul-hub-v7';
-                self.addEventListener('install', (e) => { self.skipWaiting(); });
-                self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
-                self.addEventListener('fetch', (e) => {
-                    if (e.request.method !== 'GET') return;
-                    e.respondWith(
-                        caches.match(e.request).then((res) => {
-                            return res || fetch(e.request).then((fetchRes) => {
-                                return caches.open(CACHE_NAME).then((cache) => {
-                                    if (e.request.url.startsWith('http')) cache.put(e.request, fetchRes.clone());
-                                    return fetchRes;
-                                });
-                            });
-                        }).catch(() => caches.match('${window.location.href.split('#')[0]}'))
-                    );
-                });
-            `;
-            const swBlob = new Blob([swCode], { type: 'application/javascript' });
-            navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(()=>{});
+        function importData() {
+            const fileInput = document.getElementById('import-file');
+            if (!fileInput.files.length) return alert("Select a JSON backup file first.");
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.profile) localStorage.setItem('gokulProfile', JSON.stringify(data.profile));
+                    if (data.transactions) localStorage.setItem('gokulVaultTx', JSON.stringify(data.transactions));
+                    if (data.shifts) localStorage.setItem('gokulAttRecords', JSON.stringify(data.shifts));
+                    if (data.jobProfiles) localStorage.setItem('gokulJobProfiles', JSON.stringify(data.jobProfiles));
+                    if (data.loans) localStorage.setItem('gokulLoans', JSON.stringify(data.loans));
+                    if (data.archives) localStorage.setItem('gokulArchives', JSON.stringify(data.archives));
+                    if (data.epf) localStorage.setItem('gokulMonthlyEPF', data.epf);
+                    if (data.esic) localStorage.setItem('gokulMonthlyESIC', data.esic);
+                    alert("Data Restored!");
+                    window.location.reload();
+                } catch(err) { alert("Invalid file format."); }
+            };
+            reader.readAsText(fileInput.files[0]);
         }
 
-        function updateNetworkStatus() {
-            const badge = document.getElementById('offline-badge');
-            if (badge) badge.style.display = navigator.onLine ? 'none' : 'block';
-        }
-        window.addEventListener('offline', updateNetworkStatus);
-        window.addEventListener('online', updateNetworkStatus);
-
-        // 4. NAVIGATION CONTROLLER
         function navTo(panelId) {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
@@ -818,7 +794,7 @@
             const desktopBtn = document.getElementById(`dnav-${panelId}`);
             if (desktopBtn) desktopBtn.classList.add('active');
 
-            const tabMap = { 'vault-dashboard': 'tab-vault', 'attendance': 'tab-att', 'loans': 'tab-loan', 'settings': 'tab-settings' };
+            const tabMap = { 'vault-dashboard': 'tab-vault', 'attendance': 'tab-att', 'loans': 'tab-loan', 'ai-advisor': 'tab-ai', 'settings': 'tab-settings' };
             if (tabMap[panelId]) {
                 const mobileTab = document.getElementById(tabMap[panelId]);
                 if (mobileTab) mobileTab.classList.add('active');
@@ -831,7 +807,6 @@
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         function openMenuSheet() { openModal('menuSheetModal'); }
 
-        // 5. PROFILE CONTROLLER
         const defaultProfile = { name: "GOKUL", role: "Influencer & Petrol Bunk Worker", idStr: "TVGR", height: "5'4\"", avatar: "10276.png" };
         let profile = JSON.parse(localStorage.getItem('gokulProfile')) || defaultProfile;
         if (!profile.avatar) profile.avatar = "10276.png";
@@ -842,19 +817,11 @@
             document.getElementById('prof-id').innerText = profile.idStr;
             document.getElementById('prof-ht').innerText = profile.height;
             
-            const avatars = [
-                document.getElementById('vault-avatar-img'),
-                document.getElementById('header-avatar-img'),
-                document.getElementById('sidebar-avatar-img')
-            ];
-            avatars.forEach(av => { if (av) av.src = profile.avatar; });
-
-            const iconLink = document.querySelector('link[rel="icon"]');
-            const appleIconLink = document.querySelector('link[rel="apple-touch-icon"]');
-            if (iconLink) iconLink.href = profile.avatar;
-            if (appleIconLink) appleIconLink.href = profile.avatar;
-            
-            buildDynamicManifest();
+            const avatars = ['vault-avatar-img', 'header-avatar-img', 'sidebar-avatar-img'];
+            avatars.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.src = profile.avatar;
+            });
         }
 
         function openProfileModal() {
@@ -862,7 +829,7 @@
             document.getElementById('m-prof-role').value = profile.role;
             document.getElementById('m-prof-id').value = profile.idStr;
             document.getElementById('m-prof-ht').value = profile.height;
-            document.getElementById('m-prof-avatar').value = profile.avatar.startsWith('data:') ? '' : profile.avatar;
+            document.getElementById('m-prof-avatar').value = profile.avatar;
             openModal('profileModal');
         }
 
@@ -888,26 +855,21 @@
             closeModal('profileModal');
         }
 
-        // 6. VAULT & TRANSACTIONS (New Quick Note System)
+        // QUICK EMOJI TX ENGINE
         let transactions = JSON.parse(localStorage.getItem('gokulVaultTx')) || [];
 
         function addEmoji(emojiText) {
             const noteInput = document.getElementById('quick-tx-note');
-            if(noteInput.value) {
-                noteInput.value = noteInput.value + ' ' + emojiText;
-            } else {
-                noteInput.value = emojiText;
-            }
+            if(noteInput.value) noteInput.value = noteInput.value + ' ' + emojiText;
+            else noteInput.value = emojiText;
             noteInput.focus();
         }
 
         function saveQuickTx(type) {
             const amount = parseFloat(document.getElementById('quick-tx-amount').value);
-            const note = document.getElementById('quick-tx-note').value.trim() || (type === 'expense' ? 'General Spending 💸' : 'General Income 💰');
+            const note = document.getElementById('quick-tx-note').value.trim() || (type === 'expense' ? 'Spending 💸' : 'Income 💰');
 
-            if (isNaN(amount) || amount <= 0) {
-                return alert("Please enter a valid amount.");
-            }
+            if (isNaN(amount) || amount <= 0) return alert("Enter a valid amount.");
 
             logVaultTx(note, type, false, amount, '');
             document.getElementById('quick-tx-amount').value = '';
@@ -915,21 +877,19 @@
         }
 
         function logVaultTx(category, type, isAuto = false, customAmt = 0, note = '') {
-            if (!isNaN(customAmt) && customAmt > 0) {
-                transactions.push({
-                    date: new Date().toLocaleString('en-GB'),
-                    category: category, 
-                    type: type,
-                    amount: customAmt,
-                    note: note 
-                });
-                localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
-                updateVaultStats();
-            }
+            transactions.push({
+                date: new Date().toLocaleString('en-GB'),
+                category: category, 
+                type: type,
+                amount: customAmt,
+                note: note 
+            });
+            localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
+            updateVaultStats();
         }
 
         function deleteLedgerTx(idx) {
-            if (confirm("Delete this transaction? Your Vault balance will be updated automatically.")) {
+            if (confirm("Delete this transaction?")) {
                 transactions.splice(idx, 1);
                 localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
                 updateVaultStats();
@@ -955,7 +915,7 @@
                 const noteHtml = t.note ? `<div style="font-size: 11px; color: var(--text-muted); font-weight: normal; margin-top: 4px;">📝 ${t.note}</div>` : '';
                 
                 tbody.innerHTML += `<tr>
-                    <td style="font-size: 11px;">${t.date.split(',')[0]}<br>${t.date.split(',')[1] || ''}</td>
+                    <td style="font-size: 11px;">${t.date.split(',')[0]}</td>
                     <td style="font-weight: 700; text-align: left;">${t.category}${noteHtml}</td>
                     <td style="text-transform: capitalize; color: ${isInc ? 'var(--text-accent)' : 'var(--danger)'}">${displayType}</td>
                     <td style="font-weight: 800; color: ${isInc ? 'var(--text-accent)' : 'var(--danger)'}">${isInc ? '+' : '-'}₹${t.amount.toFixed(2)}</td>
@@ -972,7 +932,7 @@
             const dataToChart = transactions.filter(t => t.type === 'expense');
             const totals = {};
             dataToChart.forEach(t => {
-                let cleanCat = t.category.split(' ')[0]; // Group by first word/emoji roughly
+                let cleanCat = t.category.split(' ')[0]; 
                 if (cleanCat.length < 3) cleanCat = t.category.substring(0, 10);
                 totals[cleanCat] = (totals[cleanCat] || 0) + t.amount;
             });
@@ -992,22 +952,19 @@
             });
         }
 
-        // 7. ORDERLY WORK & ATTENDANCE ENGINE
+        // WORK & ATTENDANCE WITH SUNDAY OT
         let shifts = JSON.parse(localStorage.getItem('gokulAttRecords')) || [];
-        const defaultJobs = ["Petrol Bunk Worker", "Instagram Influencer", "Content Creator"];
-        let jobProfiles = JSON.parse(localStorage.getItem('gokulJobProfiles')) || defaultJobs;
+        let jobProfiles = JSON.parse(localStorage.getItem('gokulJobProfiles')) || ["Petrol Bunk Worker", "Instagram Influencer"];
 
         function renderJobDropdown() {
-            const sel = document.getElementById('att-job-select');
-            sel.innerHTML = jobProfiles.map(j => `<option value="${j}">${j}</option>`).join('');
+            document.getElementById('att-job-select').innerHTML = jobProfiles.map(j => `<option value="${j}">${j}</option>`).join('');
         }
 
         function openJobModal() {
-            const list = document.getElementById('job-profile-list');
-            list.innerHTML = jobProfiles.map((j, i) => `
-                <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color);">
+            document.getElementById('job-profile-list').innerHTML = jobProfiles.map((j, i) => `
+                <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); padding: 10px; border-radius: 8px;">
                     <span style="font-weight: 700;">${j}</span>
-                    <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px; width: auto;" onclick="removeJobProfile(${i})"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-danger" style="padding: 4px 8px; width: auto;" onclick="removeJobProfile(${i})"><i class="fas fa-trash"></i></button>
                 </div>
             `).join('');
             openModal('jobModal');
@@ -1033,8 +990,6 @@
 
         document.getElementById('att-base-rate').value = localStorage.getItem('gokulSavedBase') || '';
         document.getElementById('att-ot-rate').value = localStorage.getItem('gokulSavedOT') || '';
-        
-        // Ensure monthly deductions are loaded
         document.getElementById('monthly-epf').value = localStorage.getItem('gokulMonthlyEPF') || '0';
         document.getElementById('monthly-esic').value = localStorage.getItem('gokulMonthlyESIC') || '0';
         document.getElementById('att-date').valueAsDate = new Date();
@@ -1056,12 +1011,9 @@
             const totalDed = epf + esic;
             if (totalDed > 0) {
                 if(!confirm(`Deduct exactly ₹${totalDed} from your Vault balance right now?`)) return;
-                
                 logVaultTx(`Monthly EPF & ESIC 🏦`, 'expense', true, totalDed, `EPF: ₹${epf}, ESIC: ₹${esic}`);
                 alert(`₹${totalDed.toFixed(2)} successfully deducted from Vault for EPF & ESIC!`);
-            } else {
-                alert("Please enter EPF/ESIC amounts first.");
-            }
+            } else { alert("Please enter EPF/ESIC amounts first."); }
         }
 
         function recordShift() {
@@ -1074,10 +1026,6 @@
 
             if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) return alert("Fill all shift details");
 
-            if (shifts.some(s => s.date === date)) {
-                if (!confirm(`A shift is already logged for ${date}. Add another on this day?`)) return;
-            }
-
             saveRates();
 
             const start = new Date(`1970-01-01T${inTime}:00`);
@@ -1087,23 +1035,27 @@
             const gross = (end - start) / (1000 * 60 * 60);
             const breakDeduct = gross > 4 ? 0.5 : 0;
             const net = Math.max(0, gross - breakDeduct);
-            const regHours = Math.min(net, 8);
-            const otHours = Math.max(0, net - 8);
+            
+            // SUNDAY OT CHECK
+            const shiftDate = new Date(date);
+            const isSunday = shiftDate.getDay() === 0;
+
+            let regHours = isSunday ? 0 : Math.min(net, 8);
+            let otHours = isSunday ? net : Math.max(0, net - 8);
 
             const baseEarned = (regHours / 8) * baseSalary;
             const otEarned = otHours * otRate;
             const grossEarned = baseEarned + otEarned;
 
-            // Store grossEarned under totalEarned so legacy code functions normally
-            shifts.push({ date, jobType, inTime, outTime, net, otHours, totalEarned: grossEarned });
+            shifts.push({ date, jobType, inTime, outTime, net, otHours, totalEarned: grossEarned, grossEarned: grossEarned });
             shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
             localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
             updateShiftStats();
 
             logVaultTx(`Shift Salary: ${jobType} 💰`, 'income', true, grossEarned, `Date: ${date}`);
             
-            document.getElementById('att-date').valueAsDate = new Date();
-            alert(`Shift Gross Pay saved! ₹${grossEarned.toFixed(2)} deposited to Vault.`);
+            if(isSunday) alert(`SUNDAY SHIFT! 100% calculated as OT. ₹${grossEarned.toFixed(2)} synced to Vault.`);
+            else alert(`Shift Gross Pay saved! ₹${grossEarned.toFixed(2)} deposited to Vault.`);
         }
 
         function updateShiftStats() {
@@ -1155,11 +1107,11 @@
             }
         }
 
+        // CORPORATE PDF EXPORTS WITH PROFILE PHOTO
         function downloadPayslip() {
             if (shifts.length === 0) return alert("No shifts to export!");
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'mm', 'a4');
-            
             const green = [50, 130, 70];
             
             let totalGross = 0, totalOTHours = 0, totalNetHours = 0;
@@ -1178,6 +1130,13 @@
             const hra = basePay * 0.4;
             const totalDed = totalEpf + totalEsic;
 
+            // Render Avatar if base64
+            try {
+                if (profile.avatar && profile.avatar.startsWith('data:image')) {
+                    doc.addImage(profile.avatar, 'JPEG', 14, 15, 20, 20);
+                }
+            } catch(e) {}
+
             doc.setTextColor(green[0], green[1], green[2]);
             doc.setFontSize(16);
             doc.setFont("helvetica", "bold");
@@ -1190,41 +1149,40 @@
 
             doc.setDrawColor(green[0], green[1], green[2]);
             doc.setLineWidth(0.4);
-            doc.rect(14, 32, 182, 145);
+            doc.rect(14, 38, 182, 145);
 
-            doc.line(14, 46, 196, 46);
-            doc.line(14, 56, 196, 56);
+            doc.line(14, 52, 196, 52);
+            doc.line(14, 62, 196, 62);
 
             doc.setTextColor(0, 0, 0);
             doc.setFontSize(9);
-            doc.text(`Emp. No/Card No : ${profile.idStr}`, 16, 38);
-            doc.text(`Name : ${profile.name.toUpperCase()}`, 80, 38);
-            doc.text(`Des. : ${profile.role.substring(0, 20)}`, 140, 38);
+            doc.text(`Emp. No/Card No : ${profile.idStr}`, 16, 44);
+            doc.text(`Name : ${profile.name.toUpperCase()}`, 80, 44);
+            doc.text(`Des. : ${profile.role.substring(0, 20)}`, 140, 44);
 
             const days = shifts.length;
-            doc.text(`Days pre : ${days}`, 16, 52);
-            doc.text(`PH : 0`, 50, 52);
-            doc.text(`EL : 0`, 70, 52);
-            doc.text(`ELB : 0`, 95, 52);
-            doc.text(`O.ALL : 0`, 115, 52);
-            doc.text(`P days : ${days}`, 145, 52);
-            doc.text(`LOP : 0`, 175, 52);
+            doc.text(`Days pre : ${days}`, 16, 58);
+            doc.text(`PH : 0`, 50, 58);
+            doc.text(`EL : 0`, 70, 58);
+            doc.text(`ELB : 0`, 95, 58);
+            doc.text(`O.ALL : 0`, 115, 58);
+            doc.text(`P days : ${days}`, 145, 58);
+            doc.text(`LOP : 0`, 175, 58);
 
             doc.setFont("helvetica", "bold");
             doc.setTextColor(green[0], green[1], green[2]);
-            doc.text("EARNINGS", 55, 62, { align: "center" });
-            doc.text("DEDUCTIONS", 145, 62, { align: "center" });
+            doc.text("EARNINGS", 55, 68, { align: "center" });
+            doc.text("DEDUCTIONS", 145, 68, { align: "center" });
 
-            doc.line(14, 66, 196, 66);
-            doc.line(105, 56, 105, 177);
+            doc.line(14, 72, 196, 72);
+            doc.line(105, 62, 105, 183);
 
             doc.setTextColor(0, 0, 0);
             doc.setFont("helvetica", "normal");
-            let y = 74;
+            let y = 80;
             const gap = 8;
-
-            const leftX = 16;
-            const valLeftX = 98;
+            const leftX = 16, valLeftX = 98;
+            
             doc.text("Basic", leftX, y);                doc.text(basic.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
             doc.text("HRA", leftX, y);                  doc.text(hra.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
             doc.text("EDA/O.ALL", leftX, y);            doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
@@ -1233,31 +1191,22 @@
             doc.text("Misc. 2", leftX, y);              doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
             doc.text("OTHER", leftX, y);                doc.text("0.00", valLeftX, y, { align: "right" });
 
-            y = 74;
-            const rightX = 108;
-            const valRightX = 190;
+            y = 80;
+            const rightX = 108, valRightX = 190;
             doc.text("EPF", rightX, y);                 doc.text(totalEpf.toFixed(2), valRightX, y, { align: "right" }); y += gap;
             doc.text("ESI", rightX, y);                 doc.text(totalEsic.toFixed(2), valRightX, y, { align: "right" }); y += gap;
             doc.text("PT", rightX, y);                  doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
             doc.text("Loan", rightX, y);                doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
             doc.text("Adv.", rightX, y);                doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
-            doc.text("Misc. 1", rightX, y);             doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
-            doc.text("Misc. 2", rightX, y);             doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
-            doc.text("Misc. 3", rightX, y);             doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
             doc.text("TDS", rightX, y);                 doc.text("0.00", valRightX, y, { align: "right" });
 
-            doc.line(14, 155, 196, 155);
-            doc.line(105, 165, 196, 165);
+            doc.line(14, 160, 196, 160);
+            doc.line(105, 170, 196, 170);
             
             doc.setFont("helvetica", "bold");
-            doc.text("Gross", leftX, 162); 
-            doc.text(totalGross.toFixed(2), valLeftX, 162, { align: "right" });
-
-            doc.text("Tot Ded", rightX, 162); 
-            doc.text(totalDed.toFixed(2), valRightX, 162, { align: "right" });
-
-            doc.text("Net Pay", rightX, 172); 
-            doc.text((totalGross - totalDed).toFixed(2), valRightX, 172, { align: "right" });
+            doc.text("Gross", leftX, 167); doc.text(totalGross.toFixed(2), valLeftX, 167, { align: "right" });
+            doc.text("Tot Ded", rightX, 167); doc.text(totalDed.toFixed(2), valRightX, 167, { align: "right" });
+            doc.text("Net Pay", rightX, 177); doc.text((totalGross - totalDed).toFixed(2), valRightX, 177, { align: "right" });
 
             doc.save(`Payslip_${monthName.replace(' ', '_')}.pdf`);
         }
@@ -1266,48 +1215,62 @@
             if (shifts.length === 0) return alert("No shifts to export!");
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'mm', 'a4');
-            
-            doc.setFillColor(28, 69, 135);
-            doc.rect(0, 0, 210, 35, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(20);
-            doc.setFont("helvetica", "bold");
-            doc.text("GOKUL HUB - TIMESHEET REPORT", 14, 22);
+            const primaryColor = [28, 69, 135]; 
 
-            const tableColumn = ["Date", "Job Title", "Timing", "Hours", "OT", "Gross Earned (INR)"];
-            const tableRows = shifts.map(s => [s.date, s.jobType, `${s.inTime} - ${s.outTime}`, s.net.toFixed(1), s.otHours.toFixed(1), `Rs. ${(s.grossEarned || s.totalEarned).toFixed(2)}`]);
+            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+            doc.rect(0, 0, 210, 40, 'F');
+            
+            try {
+                if (profile.avatar && profile.avatar.startsWith('data:image')) {
+                    doc.addImage(profile.avatar, 'JPEG', 14, 10, 20, 20);
+                }
+            } catch(e) {}
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(22);
+            doc.setFont("helvetica", "bold");
+            const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14;
+            doc.text("GOKUL HUB INC.", textStartX, 20);
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "normal");
+            doc.text("OFFICIAL TIMESHEET & SALARY REPORT", textStartX, 30);
+            
+            doc.setTextColor(40,40,40);
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.text("EMPLOYEE DETAILS", 14, 50);
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Name: ${profile.name} | ID: ${profile.idStr} | Role: ${profile.role}`, 14, 58);
+
+            const tableColumn = ["Date", "Job Title", "Timing", "Reg (Hrs)", "OT (Hrs)", "Earned (INR)"];
+            const tableRows = shifts.map(s => [s.date, s.jobType, `${s.inTime} - ${s.outTime}`, (s.net - s.otHours).toFixed(1), s.otHours.toFixed(1), `Rs. ${(s.grossEarned || s.totalEarned).toFixed(2)}`]);
 
             doc.autoTable({
-                startY: 50,
+                startY: 65,
                 head: [tableColumn],
                 body: tableRows,
                 theme: 'striped',
-                headStyles: { fillColor: [28, 69, 135] }
+                headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' },
+                bodyStyles: { textColor: [40,40,40], halign: 'center' },
+                alternateRowStyles: { fillColor: [240, 244, 248] },
+                styles: { font: 'helvetica', fontSize: 10, cellPadding: 6 },
+                columnStyles: { 1: { halign: 'left' }, 5: { fontStyle: 'bold', textColor: [22, 163, 74] } },
+                margin: { top: 10, right: 14, bottom: 20, left: 14 }
             });
-            doc.save(`Gokul_Timesheet_${Date.now()}.pdf`);
+            doc.save(`Gokul_Timesheet_Report_${Date.now()}.pdf`);
         }
 
-        // 8. LOAN CALCULATION & AUTO-PAY
+        // LOANS
         let loans = JSON.parse(localStorage.getItem('gokulLoans')) || [];
-        let calculatedEMI = null;
-
         function runEMICalc() {
             const p = parseFloat(document.getElementById('loan-principal').value);
             const r_ann = parseFloat(document.getElementById('loan-rate').value);
             const n = parseInt(document.getElementById('loan-tenure').value);
-
-            if (!p || !r_ann || !n) {
-                document.getElementById('emi-calc-out').innerText = '₹0';
-                document.getElementById('int-calc-out').innerText = '₹0';
-                calculatedEMI = null;
-                return;
-            }
-
+            if (!p || !r_ann || !n) { document.getElementById('emi-calc-out').innerText = '₹0'; document.getElementById('int-calc-out').innerText = '₹0'; calculatedEMI = null; return; }
             const r = r_ann / 12 / 100;
             const emi = Math.round(p * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1));
-            const totalPay = emi * n;
-            const totalInt = totalPay - p;
-
+            const totalInt = (emi * n) - p;
             document.getElementById('emi-calc-out').innerText = `₹${emi.toLocaleString('en-IN')}`;
             document.getElementById('int-calc-out').innerText = `₹${totalInt.toLocaleString('en-IN')}`;
             calculatedEMI = { emi, p, n };
@@ -1318,27 +1281,11 @@
             const due = parseInt(document.getElementById('loan-due-input').value) || 5;
             const disburse = document.getElementById('loan-disburse-check').checked;
             const autopay = document.getElementById('loan-autopay-check').checked;
-
             if (!calculatedEMI) return alert("Calculate loan values first");
-
-            const loan = {
-                id: Date.now(),
-                name,
-                due,
-                emi: calculatedEMI.emi,
-                principal: calculatedEMI.p,
-                tenure: calculatedEMI.n,
-                paid: 0,
-                autopay,
-                lastPaidMonth: ""
-            };
-
-            loans.push(loan);
+            loans.push({ id: Date.now(), name, due, emi: calculatedEMI.emi, principal: calculatedEMI.p, tenure: calculatedEMI.n, paid: 0, autopay, lastPaidMonth: "" });
             localStorage.setItem('gokulLoans', JSON.stringify(loans));
             renderLoans();
-
-            if (disburse) logVaultTx(`Loan Disbursed: ${name} 🏦`, 'income', true, loan.principal, 'Auto Loan Disbursement');
-
+            if (disburse) logVaultTx(`Loan Disbursed: ${name}`, 'income', true, calculatedEMI.p, 'Auto Loan Disbursement');
             document.getElementById('loan-name-input').value = '';
             document.getElementById('loan-principal').value = '';
             runEMICalc();
@@ -1347,238 +1294,150 @@
 
         function renderLoans() {
             const grid = document.getElementById('active-loans-grid');
-            grid.innerHTML = '';
-            if (!loans.length) {
-                grid.innerHTML = '<div style="font-size: 13px; color: var(--text-muted);">No active loans.</div>';
-                return;
-            }
-
-            loans.forEach(l => {
+            if (!loans.length) return grid.innerHTML = '<div style="font-size: 13px; color: var(--text-muted);">No active loans.</div>';
+            grid.innerHTML = loans.map(l => {
                 const rem = l.tenure - l.paid;
                 const pct = (l.paid / l.tenure) * 100;
-                const bal = rem * l.emi;
-
-                grid.innerHTML += `
-                    <div class="loan-card">
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
-                            <span style="font-weight: 800; font-size: 15px;">${l.name}</span>
-                            <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px; width: auto;" onclick="deleteLoan(${l.id})"><i class="fas fa-trash"></i></button>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; font-size: 12px;"><span>Monthly EMI:</span><b style="color:var(--danger)">₹${l.emi.toLocaleString('en-IN')}</b></div>
-                        <div style="display:flex; justify-content:space-between; font-size: 12px;"><span>Remaining:</span><b>₹${bal.toLocaleString('en-IN')}</b></div>
-                        <div style="display:flex; justify-content:space-between; font-size: 12px;"><span>Due Date:</span><b>Day ${l.due} of month</b></div>
-
-                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${pct}%"></div></div>
-                        <div style="font-size: 11px; color: var(--text-muted); text-align: right;">${l.paid}/${l.tenure} Paid</div>
-
-                        <div style="display: flex; gap: 8px; align-items: center; margin-top: 6px;">
-                            <input type="number" id="seek-${l.id}" class="form-control" value="1" min="1" max="${rem}" style="width: 60px; text-align: center; padding: 6px;">
-                            <button class="btn btn-success" style="flex: 1; color: #000;" onclick="payLoanEMI(${l.id})" ${rem === 0 ? 'disabled' : ''}>
-                                ${rem === 0 ? 'Fully Paid' : 'Pay EMI & Sync'}
-                            </button>
-                        </div>
-                    </div>`;
-            });
+                return `<div class="loan-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+                        <span style="font-weight: 800; font-size: 15px;">${l.name}</span>
+                        <button class="btn btn-danger" style="padding: 4px 8px; width: auto;" onclick="deleteLoan(${l.id})"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size: 12px;"><span>Monthly EMI:</span><b style="color:var(--danger)">₹${l.emi.toLocaleString('en-IN')}</b></div>
+                    <div style="display:flex; justify-content:space-between; font-size: 12px;"><span>Remaining:</span><b>₹${(rem * l.emi).toLocaleString('en-IN')}</b></div>
+                    <div style="display:flex; justify-content:space-between; font-size: 12px;"><span>Due Date:</span><b>Day ${l.due}</b></div>
+                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${pct}%"></div></div>
+                    <div style="font-size: 11px; color: var(--text-muted); text-align: right;">${l.paid}/${l.tenure} Paid</div>
+                    <div style="display: flex; gap: 8px; align-items: center; margin-top: 6px;">
+                        <input type="number" id="seek-${l.id}" class="form-control" value="1" min="1" max="${rem}" style="width: 60px; padding: 6px;">
+                        <button class="btn btn-success" style="flex: 1; color: #000;" onclick="payLoanEMI(${l.id})" ${rem === 0 ? 'disabled' : ''}>${rem === 0 ? 'Fully Paid' : 'Pay EMI'}</button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function payLoanEMI(loanId) {
             const l = loans.find(x => x.id === loanId);
-            if (!l) return;
             const count = parseInt(document.getElementById(`seek-${l.id}`).value) || 1;
             if (l.paid + count > l.tenure) return alert("Exceeds total tenure");
-
-            const total = l.emi * count;
-            logVaultTx(`EMI: ${l.name} 🏦`, 'expense', true, total, 'Manual EMI Payment');
-
+            logVaultTx(`EMI: ${l.name} 🏦`, 'expense', true, l.emi * count, 'Manual EMI Payment');
             l.paid += count;
-            const now = new Date();
-            l.lastPaidMonth = `${now.getFullYear()}-${now.getMonth() + 1}`;
+            l.lastPaidMonth = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
             localStorage.setItem('gokulLoans', JSON.stringify(loans));
             renderLoans();
-            alert(`Paid ₹${total.toLocaleString('en-IN')} for ${l.name}. Deducted from Vault.`);
+            alert(`Paid ₹${(l.emi * count).toLocaleString('en-IN')}`);
         }
 
         function deleteLoan(id) {
-            if (confirm("Delete this loan?")) {
-                loans = loans.filter(x => x.id !== id);
-                localStorage.setItem('gokulLoans', JSON.stringify(loans));
-                renderLoans();
-            }
+            if (confirm("Delete this loan?")) { loans = loans.filter(x => x.id !== id); localStorage.setItem('gokulLoans', JSON.stringify(loans)); renderLoans(); }
         }
 
         function autoCheckEMIs() {
             const today = new Date();
             const key = `${today.getFullYear()}-${today.getMonth() + 1}`;
-            const day = today.getDate();
             let count = 0;
-
             loans.forEach(l => {
-                if (l.autopay && l.paid < l.tenure && day >= l.due && l.lastPaidMonth !== key) {
+                if (l.autopay && l.paid < l.tenure && today.getDate() >= l.due && l.lastPaidMonth !== key) {
                     logVaultTx(`Auto EMI: ${l.name} 🏦`, 'expense', true, l.emi, 'Scheduled Auto-Pay');
-                    l.paid++;
-                    l.lastPaidMonth = key;
-                    count++;
+                    l.paid++; l.lastPaidMonth = key; count++;
                 }
             });
+            if (count > 0) { localStorage.setItem('gokulLoans', JSON.stringify(loans)); renderLoans(); }
+        }
 
-            if (count > 0) {
-                localStorage.setItem('gokulLoans', JSON.stringify(loans));
-                renderLoans();
+        // CHERRY BOT & TRANSLATOR
+        function performOfflineTranslation(text, srcLang, dstLang) {
+            const clean = text.trim().toLowerCase();
+            if (!clean) return "Please enter text.";
+            if (typeof translationLexicon === 'undefined') return "Lexicon missing!";
+            for (let entry of translationLexicon) {
+                if (clean === (entry[srcLang]||"").toLowerCase() || clean === entry.en.toLowerCase() || (entry[srcLang]||"").toLowerCase().includes(clean)) return entry[dstLang] || entry.en;
             }
+            return clean.split(/\s+/).map(t => {
+                for (let e of translationLexicon) if (e.en.toLowerCase() === t || (e[srcLang] && e[srcLang].toLowerCase().includes(t))) return e[dstLang] ? e[dstLang].split(' (')[0] : t;
+                return t;
+            }).join(' ');
         }
 
-        // 9. BACKUP, RESTORE & ARCHIVES
-        function exportData() {
-            const data = {
-                profile,
-                transactions,
-                shifts,
-                jobProfiles,
-                loans,
-                archives: JSON.parse(localStorage.getItem('gokulArchives') || '[]')
-            };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Gokul_Backup_${Date.now()}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
+        function runQuickTranslate() {
+            const src = document.getElementById('trans-src').value;
+            const dst = document.getElementById('trans-dst').value;
+            const text = document.getElementById('trans-input').value.trim();
+            if (!text) return;
+            const stream = document.getElementById('chat-stream');
+            stream.innerHTML += `<div class="chat-bubble chat-user">Translate (${src.toUpperCase()} ➔ ${dst.toUpperCase()}): <b>${text}</b></div>`;
+            document.getElementById('trans-input').value = '';
+            stream.innerHTML += `<div class="chat-bubble chat-bot"><b>${dst.toUpperCase()}:</b><br><span style="font-size: 15px; font-weight: 800;">${performOfflineTranslation(text, src, dst)}</span></div>`;
+            stream.scrollTop = stream.scrollHeight;
         }
 
-        function importData() {
-            const fileInput = document.getElementById('import-file');
-            if (!fileInput.files.length) return alert("Select a JSON backup file first.");
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if (data.profile) localStorage.setItem('gokulProfile', JSON.stringify(data.profile));
-                    if (data.transactions) localStorage.setItem('gokulVaultTx', JSON.stringify(data.transactions));
-                    if (data.shifts) localStorage.setItem('gokulAttRecords', JSON.stringify(data.shifts));
-                    if (data.jobProfiles) localStorage.setItem('gokulJobProfiles', JSON.stringify(data.jobProfiles));
-                    if (data.loans) localStorage.setItem('gokulLoans', JSON.stringify(data.loans));
-                    if (data.archives) localStorage.setItem('gokulArchives', JSON.stringify(data.archives));
-                    alert("Data Restored!");
-                    window.location.reload();
-                } catch(err) { alert("Invalid file format."); }
-            };
-            reader.readAsText(fileInput.files[0]);
+        function executeOfflineChat() {
+            const input = document.getElementById('chat-user-input');
+            const msg = input.value.trim();
+            if (!msg) return;
+            const stream = document.getElementById('chat-stream');
+            stream.innerHTML += `<div class="chat-bubble chat-user">${msg}</div>`;
+            input.value = '';
+            stream.scrollTop = stream.scrollHeight;
+            const loadId = `load-${Date.now()}`;
+            stream.innerHTML += `<div class="chat-bubble chat-bot" id="${loadId}"><i class="fas fa-ellipsis-h fa-beat"></i> Thinking...</div>`;
+            stream.scrollTop = stream.scrollHeight;
+
+            const botSpeed = parseInt(localStorage.getItem('gokulBotSpeed')) || 500;
+            const botTone = localStorage.getItem('gokulBotTone') || 'friendly';
+
+            setTimeout(() => {
+                const inc = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
+                const exp = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+                let reply = ""; const clean = msg.toLowerCase().trim(); const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+                if (clean.startsWith("translate") || clean.startsWith("trans ")) {
+                    const parts = clean.replace("translate", "").replace("trans", "").trim();
+                    let targetLang = "ta", targetName = "Tamil", textToTranslate = parts;
+                    if (parts.includes(" to ")) {
+                        const spl = parts.split(" to "); textToTranslate = spl[0].trim(); const lk = spl[1].trim();
+                        if (lk.includes("hi")) { targetLang = "hi"; targetName = "Hindi"; }
+                        else if (lk.includes("en")) { targetLang = "en"; targetName = "English"; }
+                        else if (lk.includes("es")) { targetLang = "es"; targetName = "Spanish"; }
+                        else if (lk.includes("fr")) { targetLang = "fr"; targetName = "French"; }
+                    }
+                    reply = `🌐 <b>Translation to ${targetName}:</b><br><span style="font-size: 15px; font-weight: 800;">"${performOfflineTranslation(textToTranslate, "en", targetLang)}"</span>`;
+                }
+                else if (clean.match(/\b(how are you|eppadi irukka|epdi irukka|kaise ho)\b/)) { reply = botTone === 'funny' ? "Trapped in your phone, but doing great! 🍒" : "I'm doing fantastic, just organizing your vault! 🍒"; }
+                else if (clean.match(/\b(what are you doing|enna panra|kya kar rahe ho)\b/)) { reply = "Just monitoring your offline databases and waiting for your commands! 🍒"; }
+                else if (clean.match(/\b(balance|evalo kaasu|kitna paisa)\b/)) { reply = `Your Vault balance sits at <b>₹${(inc - exp).toFixed(2)}</b>.`; } 
+                else if (clean.match(/\b(expense|spent|selavu|kharcha)\b/)) { reply = `You have spent <b>₹${exp.toFixed(2)}</b>.`; } 
+                else if (clean.match(/\b(income|earned|salary|varavu)\b/)) { reply = `Total recorded income is <b>₹${inc.toFixed(2)}</b>.`; } 
+                else if (clean.match(/\b(loan|emi|debt|kadan)\b/)) { reply = loans.length === 0 ? "You currently have no active loans! 🍒" : `You have <b>${loans.length}</b> active loan(s).`; } 
+                else if (clean.match(/\b(shift|work|attendance|vela)\b/)) { reply = `You have logged <b>${shifts.length}</b> work shifts.`; } 
+                else { reply = "I am operating in <b>100% Offline Mode</b> 🍒! Ask about your balance, shifts, or type 'translate [word] to [language]'."; }
+
+                document.getElementById(loadId).innerHTML = `<strong>Cherry Bot 🍒:</strong><br><br>${reply}`;
+                stream.scrollTop = stream.scrollHeight;
+            }, botSpeed); 
         }
 
-        function completeMonth() {
-            if (!transactions.length && !shifts.length) return alert("No active data to archive");
-            const name = prompt("Archive Name:", new Date().toLocaleString('default', { month: 'long', year: 'numeric' }));
-            if (!name) return;
-
-            const inc = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
-            const exp = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
-            const archives = JSON.parse(localStorage.getItem('gokulArchives') || '[]');
-
-            archives.push({ id: Date.now(), name, earned: inc, spent: exp, count: shifts.length });
-            localStorage.setItem('gokulArchives', JSON.stringify(archives));
-
-            // Reset Everything
-            transactions = [];
-            shifts = [];
-            localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
-            localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
-            localStorage.setItem('gokulMonthlyEPF', '0');
-            localStorage.setItem('gokulMonthlyESIC', '0');
-            document.getElementById('monthly-epf').value = '0';
-            document.getElementById('monthly-esic').value = '0';
-
-            updateVaultStats();
-            updateShiftStats();
-            renderArchives();
-            alert(`Archived "${name}"! Active month reset.`);
-            navTo('archives');
+        function loadAppConfig() {
+            document.getElementById('setting-trans-src').value = localStorage.getItem('gokulTransSrc') || 'en';
+            document.getElementById('setting-trans-dst').value = localStorage.getItem('gokulTransDst') || 'ta';
+            document.getElementById('setting-bot-speed').value = localStorage.getItem('gokulBotSpeed') || '500';
+            document.getElementById('setting-bot-tone').value = localStorage.getItem('gokulBotTone') || 'friendly';
+            document.getElementById('trans-src').value = document.getElementById('setting-trans-src').value;
+            document.getElementById('trans-dst').value = document.getElementById('setting-trans-dst').value;
         }
 
-        function renderArchives() {
-            const archives = JSON.parse(localStorage.getItem('gokulArchives') || '[]');
-            const grid = document.getElementById('archives-grid');
-            grid.innerHTML = archives.map(a => `
-                <div class="loan-card">
-                    <div style="font-weight: 800; font-size: 16px;">${a.name}</div>
-                    <div style="font-size: 12px;">Shifts: <b>${a.count}</b></div>
-                    <div style="font-size: 12px;">Income: <b style="color:var(--text-accent)">+₹${a.earned.toFixed(2)}</b></div>
-                    <div style="font-size: 12px;">Spending: <b style="color:var(--danger)">-₹${a.spent.toFixed(2)}</b></div>
-                </div>
-            `).join('');
-        }
-
-        function yearlyReset() {
-            if (confirm("Reset active data for the new year?")) {
-                transactions = [];
-                shifts = [];
-                localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
-                localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
-                localStorage.setItem('gokulMonthlyEPF', '0');
-                localStorage.setItem('gokulMonthlyESIC', '0');
-                document.getElementById('monthly-epf').value = '0';
-                document.getElementById('monthly-esic').value = '0';
-                
-                updateVaultStats();
-                updateShiftStats();
-                navTo('vault-dashboard');
-            }
-        }
-
-        // 10. APPEARANCE & THEMES
-        function updateGlassOpacity(val) {
-            document.documentElement.style.setProperty('--glass-alpha', val);
-            localStorage.setItem('gokulGlassAlpha', val);
-        }
-
-        function updateVideoDimmer(val) {
-            document.documentElement.style.setProperty('--video-dimmer', val);
-            localStorage.setItem('gokulVideoDimmer', val);
-        }
-
-        const themeOpts = [
-            { id: 'harrypotter', name: 'Hogwarts Magic' },
-            { id: 'jarvis', name: 'J.A.R.V.I.S. Protocol' },
-            { id: 'default', name: 'Corporate Clean' },
-            { id: 'dark', name: 'Onyx Dark' }
-        ];
-
+        const themeOpts = [{ id: 'harrypotter', name: 'Hogwarts Magic' }, { id: 'jarvis', name: 'J.A.R.V.I.S.' }, { id: 'default', name: 'Corporate Clean' }, { id: 'dark', name: 'Onyx Dark' }];
         function renderThemeGallery() {
-            const grid = document.getElementById('theme-gallery');
-            grid.innerHTML = themeOpts.map(th => `
-                <div class="loan-card" style="text-align: center; cursor: pointer;" onclick="applyTheme('${th.id}')">
-                    <div style="font-weight: 800;">${th.name}</div>
-                    <button class="btn btn-primary" style="margin-top: 8px;">Apply Theme</button>
-                </div>
-            `).join('');
+            document.getElementById('theme-gallery').innerHTML = themeOpts.map(th => `<div class="loan-card" style="text-align: center; cursor: pointer;" onclick="applyTheme('${th.id}')"><div style="font-weight: 800;">${th.name}</div><button class="btn btn-primary" style="margin-top: 8px;">Apply Theme</button></div>`).join('');
         }
-
-        function applyTheme(id) {
-            document.documentElement.setAttribute('data-theme', id);
-            localStorage.setItem('gokulTheme', id);
-            renderVaultChart();
-        }
+        function applyTheme(id) { document.documentElement.setAttribute('data-theme', id); localStorage.setItem('gokulTheme', id); renderVaultChart(); }
 
         window.onload = () => {
-            renderProfile(); // Sync icons and manifest
-            applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); // Default to JARVIS
-            
-            const savedAlpha = localStorage.getItem('gokulGlassAlpha') || '0.75';
-            document.documentElement.style.setProperty('--glass-alpha', savedAlpha);
-            if (document.getElementById('opacity-slider')) document.getElementById('opacity-slider').value = savedAlpha;
-
-            const savedDimmer = localStorage.getItem('gokulVideoDimmer') || '1';
-            document.documentElement.style.setProperty('--video-dimmer', savedDimmer);
-            if (document.getElementById('dimmer-slider')) document.getElementById('dimmer-slider').value = savedDimmer;
-
-            updateVaultStats();
-            renderJobDropdown();
-            updateShiftStats();
-            renderLoans();
-            renderArchives();
-            renderThemeGallery();
-            autoCheckEMIs();
-            updateNetworkStatus();
+            renderProfile(); 
+            applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); 
+            loadAppConfig(); loadAppearanceSettings();
+            updateVaultStats(); renderJobDropdown(); updateShiftStats(); renderLoans(); renderArchives(); renderThemeGallery();
+            autoCheckEMIs(); updateNetworkStatus(); preCacheAssets();
         };
     </script>
 </body>
