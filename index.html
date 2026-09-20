@@ -92,7 +92,6 @@
             --danger: #ff003c;
         }
 
-        /* Performance Optimizations */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: var(--app-font); touch-action: manipulation; }
         img, video { max-width: 100%; height: auto; }
         input, select, textarea, button { max-width: 100%; font-family: inherit; font-size: 16px !important; }
@@ -107,12 +106,12 @@
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* ====== FIXED APP LOADING ANIMATION ====== */
+        /* ====== SPLASH SCREEN ANIMATION ====== */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh;
             background: #0d0c11; 
             z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
         }
         .splash-logo-container { position: relative; display: flex; justify-content: center; align-items: center; }
         .splash-logo { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--text-accent); object-fit: cover; animation: pulseLogo 1.5s infinite alternate ease-in-out; z-index: 2; }
@@ -127,35 +126,37 @@
         @keyframes pulseLogo { 0% { transform: scale(0.95); box-shadow: 0 0 15px rgba(39, 174, 96, 0.4); } 100% { transform: scale(1.05); box-shadow: 0 0 40px rgba(39, 174, 96, 0.8); } }
         @keyframes spinRing { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .hide-splash { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
-        /* ========================================= */
 
-        .video-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; object-fit: cover; z-index: -2; pointer-events: none; opacity: 0.95; will-change: opacity; }
-        .video-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: radial-gradient(circle at center, rgba(13, 10, 18, 0.25) 0%, rgba(8, 6, 12, 0.75) 100%); z-index: -1; pointer-events: none; opacity: var(--video-dimmer); transition: opacity 0.3s ease; }
+        /* ====== UI SHELL ====== */
+        .video-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; object-fit: cover; z-index: -2; pointer-events: none; opacity: 0.95; }
+        .video-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: radial-gradient(circle at center, rgba(13, 10, 18, 0.25) 0%, rgba(8, 6, 12, 0.75) 100%); z-index: -1; pointer-events: none; opacity: var(--video-dimmer); }
 
-        .app-shell { width: 100%; height: 100dvh; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: background-color 0.3s ease; transform: translateZ(0); }
+        .app-shell { width: 100%; height: 100dvh; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: background-color 0.3s ease; }
 
-        .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(65px + var(--safe-top)); padding-top: var(--safe-top); background: var(--bg-sidebar); border-bottom: 1px solid var(--border-color); z-index: 100; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(65px + var(--safe-top)); padding-top: var(--safe-top); background: var(--bg-sidebar); border-bottom: 1px solid var(--border-color); z-index: 100; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .mobile-header .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 18px; color: var(--text-main); font-family: var(--header-font); }
         .mobile-header .brand img { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-color); object-fit: cover; flex-shrink: 0; }
 
-        .sidebar { width: 250px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; flex-shrink: 0; z-index: 10; backdrop-filter: blur(8px); }
+        .sidebar { width: 250px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; flex-shrink: 0; z-index: 10; backdrop-filter: blur(12px); }
         
-        .mobile-tab-bar { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: calc(65px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--bg-sidebar); border-top: 1px solid var(--border-color); z-index: 100; justify-content: space-around; align-items: center; box-shadow: 0 -4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .mobile-tab-bar { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: calc(65px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--bg-sidebar); border-top: 1px solid var(--border-color); z-index: 100; justify-content: space-around; align-items: center; box-shadow: 0 -4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; border: none; color: var(--text-muted); font-size: 12px; font-weight: 700; gap: 4px; height: 100%; cursor: pointer; transition: color 0.2s; }
         .tab-item i { font-size: 20px; transition: transform 0.2s; }
         .tab-item.active { color: var(--text-main); }
         .tab-item.active i { transform: translateY(-2px); color: var(--text-accent); }
 
         .main-stage { flex: 1; display: flex; position: relative; overflow: hidden; width: 100%; max-width: 100vw; height: 100%; }
-        /* Instant panel display - removed view panel animations */
+        
+        /* Instant Panel Loading */
         .view-panel { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 24px; flex-direction: column; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; }
-        .view-panel.active { display: flex; }
+        .view-panel.active { display: flex; animation: panelFade 0.2s ease-out; }
+        @keyframes panelFade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
         .panel-heading { font-size: 24px; font-weight: 900; color: var(--text-main); font-family: var(--header-font); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 
         /* Vault Layout */
         #vault-dashboard-panel { flex-direction: row; padding: 0; width: 100%; height: 100%; }
-        .vault-summary-col { width: 320px; max-width: 100%; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 15px; transition: background-color 0.3s ease;}
+        .vault-summary-col { width: 320px; max-width: 100%; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 15px; }
         
         .profile-badge { background: linear-gradient(135deg, var(--bg-card), var(--bg-card-alt)); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; width: 100%; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.3); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .profile-badge::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, var(--text-accent), var(--text-main)); }
@@ -190,7 +191,7 @@
         .form-control { padding: 15px 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-size: 16px !important; outline: none; width: 100%; }
         .form-control:focus { border-color: var(--text-accent); box-shadow: 0 0 8px rgba(39, 174, 96, 0.3); }
 
-        .btn { padding: 16px 20px; border-radius: 12px; border: none; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: #ffffff; width: 100%; }
+        .btn { padding: 16px 20px; border-radius: 12px; border: none; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: #ffffff; width: 100%; transition: transform 0.1s; }
         .btn:active { transform: scale(0.97); }
         .btn-success { background: var(--text-accent); color: #000; }
         .btn-primary { background: var(--text-main); color: #08060c; }
@@ -199,7 +200,7 @@
 
         /* Loan Cards */
         .loans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; width: 100%; }
-        .loan-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; width: 100%; transform: translateZ(0); }
+        .loan-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; width: 100%; }
         .progress-bar-bg { background: var(--bg-card-alt); height: 12px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); width: 100%; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); transition: width 0.4s ease; }
 
@@ -226,8 +227,16 @@
             .att-stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
         }
         
+        /* FAST MODE OVERRIDES */
         body.fast-mode .video-background { display: none !important; }
-        body.fast-mode { animation: none !important; }
+        body.fast-mode .app-shell, 
+        body.fast-mode .mobile-header, 
+        body.fast-mode .mobile-tab-bar, 
+        body.fast-mode .sidebar { 
+            backdrop-filter: none !important; 
+            -webkit-backdrop-filter: none !important; 
+            background-color: #0d0c11 !important; 
+        }
     </style>
 </head>
 <body>
@@ -487,7 +496,7 @@
                         <div><div style="font-size: 13px; color: var(--text-muted); font-weight: bold; text-transform: uppercase;">Total Interest</div><div style="font-weight: 900; font-size: 24px; color: var(--text-main);" id="int-calc-out">₹0</div></div>
                     </div>
 
-                    <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan & Activate System</button>
+                    <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan</button>
                 </div>
 
                 <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Active Loans Status</h3>
@@ -529,7 +538,6 @@
                 
                 <div class="loans-grid" style="margin-bottom: 20px;">
                     
-                    <!-- App Installation & Data Backup -->
                     <div class="loan-card" style="border-color: var(--text-accent);">
                         <div style="font-weight: 900; font-size: 18px; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
                             <i class="fas fa-mobile-alt"></i> Mobile App & Fullscreen
@@ -550,7 +558,6 @@
                         </div>
                     </div>
 
-                    <!-- Performance Optimization Settings -->
                     <div class="loan-card" style="justify-content: flex-start;">
                         <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
                             <i class="fas fa-bolt"></i> App Performance Config
@@ -567,7 +574,6 @@
 
                 </div>
 
-                <!-- Visual Adjusters -->
                 <div class="form-card" style="margin-bottom: 20px;">
                     <div style="font-weight: 800; font-size: 16px; color: var(--text-main); margin-bottom: 10px;">
                         <i class="fas fa-layer-group"></i> Glass Transparency
@@ -653,14 +659,14 @@
 
     <script>
         // 0. SPLASH SCREEN & REBOOT LOGIC
-        window.addEventListener('load', () => {
+        document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 if(splash) {
                     splash.classList.add('hide-splash');
                     setTimeout(() => splash.style.display = 'none', 600); // Remove from rendering tree
                 }
-            }, 2200); 
+            }, 2000); 
         });
 
         function rebootApp() {
@@ -769,7 +775,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-v14';
+                const CACHE_NAME = 'gokul-hub-v15';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -1081,7 +1087,8 @@
             const breakDeduct = gross > 4 ? 0.5 : 0;
             const net = Math.max(0, gross - breakDeduct);
             
-            const shiftDate = new Date(date);
+            const dateParts = date.split('-');
+            const shiftDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
             const isSunday = shiftDate.getDay() === 0;
 
             let regHours = isSunday ? 0 : Math.min(net, 8);
@@ -1405,7 +1412,6 @@
             const calc = runEMICalc();
             if (!calc) return alert("Calculate loan values first");
 
-            // UNIQUE ID generated for the loan seek field mapping
             const uniqueId = Date.now();
             loans.push({ id: uniqueId, name, due, emi: calc.emi, principal: calc.p, tenure: calc.n, paid: 0, autopay, lastPaidMonth: "" });
             localStorage.setItem('gokulLoans', JSON.stringify(loans));
@@ -1431,7 +1437,6 @@
                 const rem = l.tenure - l.paid;
                 const pct = (l.paid / l.tenure) * 100;
                 
-                // Fixed ID reference for seek input so the button logic can find it properly
                 html += `<div class="loan-card">
                     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
                         <span style="font-weight: 800; font-size: 15px;">${l.name}</span>
@@ -1455,7 +1460,6 @@
             const l = loans.find(x => x.id === loanId);
             if (!l) return;
             
-            // Correct mapping to the dynamically generated input field
             const seekInput = document.getElementById(`seek-${loanId}`);
             const count = parseInt(seekInput ? seekInput.value : 1) || 1;
             
@@ -1584,7 +1588,7 @@
                 document.documentElement.style.setProperty('--glass-alpha', '1');
             } else {
                 document.body.classList.remove('fast-mode');
-                loadAppearanceSettings(); // Restore original slider value
+                loadAppearanceSettings(); 
             }
         }
 
