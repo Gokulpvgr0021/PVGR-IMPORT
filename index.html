@@ -92,6 +92,7 @@
             --danger: #ff003c;
         }
 
+        /* Performance Optimizations */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: var(--app-font); touch-action: manipulation; }
         img, video { max-width: 100%; height: auto; }
         input, select, textarea, button { max-width: 100%; font-family: inherit; font-size: 16px !important; }
@@ -109,7 +110,7 @@
         /* ====== FIXED APP LOADING ANIMATION ====== */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh;
-            background: #0d0c11; /* Solid dark background to hide layout rendering */
+            background: #0d0c11; 
             z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
         }
@@ -119,7 +120,6 @@
         .splash-text { margin-top: 30px; font-size: 32px; font-weight: 900; color: var(--text-main); font-family: var(--header-font); letter-spacing: 3px; }
         .splash-sub { font-size: 13px; color: var(--text-muted); font-weight: 600; letter-spacing: 2px; margin-top: 8px; }
         
-        /* New Loading Bar */
         .splash-loader { width: 220px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 6px; margin-top: 40px; overflow: hidden; }
         .splash-loader-bar { height: 100%; width: 0%; background: var(--text-accent); border-radius: 6px; animation: loadBar 2s ease-in-out forwards; }
         
@@ -127,7 +127,10 @@
         @keyframes pulseLogo { 0% { transform: scale(0.95); box-shadow: 0 0 15px rgba(39, 174, 96, 0.4); } 100% { transform: scale(1.05); box-shadow: 0 0 40px rgba(39, 174, 96, 0.8); } }
         @keyframes spinRing { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .hide-splash { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
-        /* ========================================= */
+
+        /* Staggered Scroll Animations */
+        .stagger-anim { opacity: 0; transform: translateY(25px); transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); will-change: opacity, transform; }
+        .stagger-anim.show { opacity: 1; transform: translateY(0); }
 
         .video-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; object-fit: cover; z-index: -2; pointer-events: none; opacity: 0.95; will-change: opacity; }
         .video-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: radial-gradient(circle at center, rgba(13, 10, 18, 0.25) 0%, rgba(8, 6, 12, 0.75) 100%); z-index: -1; pointer-events: none; opacity: var(--video-dimmer); transition: opacity 0.3s ease; }
@@ -147,10 +150,8 @@
         .tab-item.active i { transform: translateY(-2px); color: var(--text-accent); }
 
         .main-stage { flex: 1; display: flex; position: relative; overflow: hidden; width: 100%; max-width: 100vw; height: 100%; }
-        /* Panel transitions now just handle display - all elements inside are instantly visible */
         .view-panel { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 24px; flex-direction: column; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; }
-        .view-panel.active { display: flex; animation: panelFade 0.25s ease-out; }
-        @keyframes panelFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .view-panel.active { display: flex; }
         
         .panel-heading { font-size: 24px; font-weight: 900; color: var(--text-main); font-family: var(--header-font); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 
@@ -293,6 +294,7 @@
                     
                     <button class="btn btn-success" style="margin-top: 10px;" onclick="triggerAppInstall()"><i class="fas fa-download"></i> <span>Install Standalone App</span></button>
                     <button class="btn btn-primary" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
+                    <button class="btn btn-primary" style="background: transparent; border: 1px solid #3498db; color: #3498db;" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> <span>Reboot App</span></button>
                     <button class="btn btn-danger" onclick="yearlyReset()"><i class="fas fa-skull"></i> <span>Yearly Reset</span></button>
                 </div>
             </div>
@@ -309,7 +311,7 @@
             <section id="vault-dashboard-view" class="view-panel active">
                 <div id="vault-dashboard-panel">
                     <div class="vault-summary-col">
-                        <div class="profile-badge">
+                        <div class="profile-badge stagger-anim">
                             <div class="profile-avatar">
                                 <img id="vault-avatar-img" src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'">
                             </div>
@@ -319,7 +321,7 @@
                             <button class="btn btn-primary" style="padding: 8px 16px; font-size: 12px; margin-top: 8px; width: 100%; border-radius: 8px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
                         </div>
 
-                        <div class="total-box">
+                        <div class="total-box stagger-anim">
                             <div style="font-size: 13px; opacity: 0.9; font-weight: 700;">Total Balance</div>
                             <div style="font-size: 32px; font-weight: 900; margin: 8px 0;" id="total-balance">₹0.00</div>
                             <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 800;">
@@ -328,14 +330,14 @@
                             </div>
                         </div>
 
-                        <div class="chart-box">
+                        <div class="chart-box stagger-anim">
                             <div style="font-size: 13px; font-weight: 800; margin-bottom: 12px;">Spending Summary</div>
                             <div style="height: 160px;"><canvas id="financeChart"></canvas></div>
                         </div>
                     </div>
 
                     <div class="vault-grid-col">
-                        <div class="panel-heading" style="border: none; margin-bottom: 16px;">
+                        <div class="panel-heading stagger-anim" style="border: none; margin-bottom: 16px;">
                             <span id="grid-mode-title">Quick Log Expense</span>
                             <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
                                 <button class="btn btn-primary" id="btn-toggle-edit" style="padding: 6px 12px; font-size: 12px; width: auto;" onclick="toggleEditMode()"><i class="fas fa-pencil-alt"></i> Edit Labels</button>
@@ -344,7 +346,7 @@
                             </div>
                         </div>
                         
-                        <div class="form-card" style="margin-bottom: 20px;">
+                        <div class="form-card stagger-anim" style="margin-bottom: 20px;">
                             <div class="input-group">
                                 <label>Amount (₹)</label>
                                 <input type="number" id="quick-tx-amount" class="form-control" placeholder="0.00" inputmode="decimal">
@@ -368,14 +370,14 @@
                             </div>
                         </div>
 
-                        <div class="grid-container" id="category-grid"></div>
+                        <div class="grid-container stagger-anim" id="category-grid"></div>
                     </div>
                 </div>
             </section>
 
             <!-- 2. ATTENDANCE & WORK -->
             <section id="attendance-view" class="view-panel">
-                <div class="form-card" style="margin-bottom: 20px;">
+                <div class="form-card stagger-anim" style="margin-bottom: 20px;">
                     <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-plus-circle"></i> Log New Shift</h3>
                     <div class="input-group">
                         <label style="display: flex; justify-content: space-between;">
@@ -401,12 +403,12 @@
                 </div>
 
                 <div id="timesheet-export-area">
-                    <div class="panel-heading">
+                    <div class="panel-heading stagger-anim">
                         <span>Work & Salary Log</span>
                         <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-link"></i> Vault Linked</span>
                     </div>
 
-                    <div class="form-card" style="margin-bottom: 20px;">
+                    <div class="form-card stagger-anim" style="margin-bottom: 20px;">
                         <h3 style="color: var(--text-main); font-size: 16px;"><i class="fas fa-file-invoice"></i> Monthly Deductions (EPF & ESIC)</h3>
                         <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
                             <div class="input-group">
@@ -421,14 +423,14 @@
                         </div>
                     </div>
 
-                    <div class="att-stats-row">
+                    <div class="att-stats-row stagger-anim">
                         <div class="att-stat-card"><i class="fas fa-calendar-check" style="color:var(--text-accent);"></i><div class="val" id="stat-days">0</div><div class="lbl">Days</div></div>
                         <div class="att-stat-card"><i class="fas fa-money-bill" style="color:var(--text-main);"></i><div class="val" id="stat-gross">₹0</div><div class="lbl">Gross</div></div>
                         <div class="att-stat-card"><i class="fas fa-minus-circle" style="color:var(--danger);"></i><div class="val" style="color:var(--danger);" id="stat-ded">₹0</div><div class="lbl">Deducts</div></div>
                         <div class="att-stat-card"><i class="fas fa-wallet" style="color:var(--text-accent);"></i><div class="val" style="color:var(--text-accent);" id="stat-net">₹0</div><div class="lbl">Net Pay</div></div>
                     </div>
 
-                    <div class="table-wrap">
+                    <div class="table-wrap stagger-anim">
                         <table id="attendance-table">
                             <thead>
                                 <tr>
@@ -446,7 +448,7 @@
                     </div>
                 </div>
 
-                <div class="btn-flex-row" style="margin-top: 15px;">
+                <div class="btn-flex-row stagger-anim" style="margin-top: 15px;">
                     <button class="btn btn-primary" onclick="downloadPayslip()"><i class="fas fa-file-invoice-dollar"></i> Download Salary Slip (PDF)</button>
                     <button class="btn btn-primary" onclick="downloadTimesheet()"><i class="fas fa-list-alt"></i> Download Timesheet (PDF)</button>
                     <button class="btn btn-danger" onclick="clearShifts()"><i class="fas fa-trash-alt"></i> Clear All Shift Records</button>
@@ -455,12 +457,12 @@
 
             <!-- 3. LOANS -->
             <section id="loans-view" class="view-panel">
-                <div class="panel-heading">
+                <div class="panel-heading stagger-anim">
                     <span>Loan Manager</span>
                     <span style="font-size: 14px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-robot"></i> Auto-Deduct Ready</span>
                 </div>
                 
-                <div class="form-card" style="margin-bottom: 24px;">
+                <div class="form-card stagger-anim" style="margin-bottom: 24px;">
                     <h3 style="margin-bottom: 15px; color: var(--text-main); width: 100%;"><i class="fas fa-calculator"></i> New EMI Calculator</h3>
                     
                     <div class="input-group"><label>Loan Name / Purpose</label><input type="text" id="loan-name-input" class="form-control" placeholder="e.g. Bike Loan"></div>
@@ -487,20 +489,20 @@
                         <div><div style="font-size: 13px; color: var(--text-muted); font-weight: bold; text-transform: uppercase;">Total Interest</div><div style="font-weight: 900; font-size: 24px; color: var(--text-main);" id="int-calc-out">₹0</div></div>
                     </div>
 
-                    <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan</button>
+                    <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan & Activate System</button>
                 </div>
 
-                <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Active Loans Status</h3>
-                <div class="loans-grid" id="active-loans-grid"></div>
+                <h3 class="stagger-anim" style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Active Loans Status</h3>
+                <div class="loans-grid stagger-anim" id="active-loans-grid"></div>
             </section>
 
             <!-- 4. LEDGER -->
             <section id="history-view" class="view-panel">
-                <div class="panel-heading">
+                <div class="panel-heading stagger-anim">
                     <span>Ledger Records</span>
                     <span id="ledger-count" style="font-size: 14px; color: var(--text-muted); font-family: var(--app-font);">0 Records</span>
                 </div>
-                <div class="table-wrap">
+                <div class="table-wrap stagger-anim">
                     <table id="ledger-table">
                         <thead>
                             <tr>
@@ -518,18 +520,17 @@
 
             <!-- 5. ARCHIVES -->
             <section id="archives-view" class="view-panel">
-                <div class="panel-heading"><span>Past Months Archive</span></div>
-                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Completed months stored safely as separate records. Keeps your active dashboard fast.</p>
-                <div class="loans-grid" id="archives-grid"></div>
+                <div class="panel-heading stagger-anim"><span>Past Months Archive</span></div>
+                <p class="stagger-anim" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Completed months stored safely as separate records. Keeps your active dashboard fast.</p>
+                <div class="loans-grid stagger-anim" id="archives-grid"></div>
             </section>
 
             <!-- 6. SETTINGS & APP CENTER -->
             <section id="settings-view" class="view-panel">
-                <div class="panel-heading"><span>Settings & App Center</span></div>
+                <div class="panel-heading stagger-anim"><span>Settings & App Center</span></div>
                 
-                <div class="loans-grid" style="margin-bottom: 20px;">
+                <div class="loans-grid stagger-anim" style="margin-bottom: 20px;">
                     
-                    <!-- App Installation & Data Backup -->
                     <div class="loan-card" style="border-color: var(--text-accent);">
                         <div style="font-weight: 900; font-size: 18px; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
                             <i class="fas fa-mobile-alt"></i> Mobile App & Fullscreen
@@ -550,7 +551,6 @@
                         </div>
                     </div>
 
-                    <!-- Performance Optimization Settings -->
                     <div class="loan-card" style="justify-content: flex-start;">
                         <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
                             <i class="fas fa-bolt"></i> App Performance Config
@@ -567,8 +567,7 @@
 
                 </div>
 
-                <!-- Visual Adjusters -->
-                <div class="form-card" style="margin-bottom: 20px;">
+                <div class="form-card stagger-anim" style="margin-bottom: 20px;">
                     <div style="font-weight: 800; font-size: 16px; color: var(--text-main); margin-bottom: 10px;">
                         <i class="fas fa-layer-group"></i> Glass Transparency
                     </div>
@@ -580,8 +579,8 @@
                     <input type="range" id="dimmer-slider" min="0" max="1" step="0.05" oninput="updateVideoDimmer(this.value)">
                 </div>
 
-                <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">Color Themes</h3>
-                <div class="loans-grid" id="theme-gallery"></div>
+                <h3 class="stagger-anim" style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">Color Themes</h3>
+                <div class="loans-grid stagger-anim" id="theme-gallery"></div>
             </section>
         </main>
     </div>
@@ -645,7 +644,6 @@
             <h3 style="color: var(--text-main); font-family: var(--header-font); font-size: 22px;">Install Fullscreen App</h3>
             
             <div style="text-align: left; background: var(--bg-card-alt); padding: 16px; border-radius: 14px; border: 1px solid var(--border-color); font-size: 14px; line-height: 1.8; color: var(--text-muted);" id="install-instructions">
-                <!-- Injected dynamically based on browser -->
             </div>
             <button class="btn btn-success" onclick="closeModal('installGuideModal')">Got It</button>
         </div>
@@ -676,6 +674,19 @@
             setTimeout(() => {
                 window.location.reload(true);
             }, 800);
+        }
+
+        // We disabled internal list stagger animations for instant data load, but we keep this function if we want to animate static headers.
+        function triggerPanelAnimations(panelId) {
+            const panel = document.getElementById(panelId);
+            if(!panel) return;
+            const animElements = panel.querySelectorAll('.stagger-anim');
+            animElements.forEach(el => el.classList.remove('show'));
+            setTimeout(() => {
+                animElements.forEach((el, index) => {
+                    setTimeout(() => { el.classList.add('show'); }, index * 60); 
+                });
+            }, 50);
         }
 
         // 1. FULLSCREEN & PWA INSTALL CONTROLLER
@@ -769,7 +780,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-v12';
+                const CACHE_NAME = 'gokul-hub-v13';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -806,6 +817,7 @@
             const targetPanel = document.getElementById(`${panelId}-view`);
             if (targetPanel) {
                 targetPanel.classList.add('active');
+                triggerPanelAnimations(`${panelId}-view`); 
             }
 
             const desktopBtn = document.getElementById(`dnav-${panelId}`);
@@ -1066,7 +1078,6 @@
 
             if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) return alert("Fill all shift details");
 
-            // STRICT SINGLE DAY VALIDATION
             if (shifts.some(s => s.date === date)) {
                 return alert(`Restriction: A shift is already logged for ${date}. You can only log one shift per day.`);
             }
@@ -1081,7 +1092,6 @@
             const breakDeduct = gross > 4 ? 0.5 : 0;
             const net = Math.max(0, gross - breakDeduct);
             
-            // SUNDAY OT CHECK
             const shiftDate = new Date(date);
             const isSunday = shiftDate.getDay() === 0;
 
