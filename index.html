@@ -212,6 +212,7 @@
 </head>
 <body>
 
+    <!-- OFFLINE INDICATOR -->
     <div id="offline-badge"><i class="fas fa-wifi-slash"></i> Offline Mode: Synced Locally</div>
 
     <video id="app-bg-video" class="video-background" autoplay muted loop playsinline webkit-playsinline preload="auto">
@@ -220,6 +221,7 @@
     </video>
     <div class="video-overlay"></div>
 
+    <!-- MOBILE TOP BAR -->
     <div class="mobile-header">
         <div class="brand">
             <img id="header-avatar-img" src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'">
@@ -231,6 +233,7 @@
         </div>
     </div>
 
+    <!-- MOBILE BOTTOM TABS -->
     <div class="mobile-tab-bar">
         <button class="tab-item active" id="tab-vault" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i><span>Vault</span></button>
         <button class="tab-item" id="tab-att" onclick="navTo('attendance')"><i class="fas fa-business-time"></i><span>Work</span></button>
@@ -443,7 +446,7 @@
                         <div><div style="font-size: 13px; color: var(--text-muted); font-weight: bold; text-transform: uppercase;">Total Interest</div><div style="font-weight: 900; font-size: 24px; color: var(--text-main);" id="int-calc-out">₹0</div></div>
                     </div>
 
-                    <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan</button>
+                    <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan & Activate System</button>
                 </div>
 
                 <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Active Loans Status</h3>
@@ -695,7 +698,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-v8';
+                const CACHE_NAME = 'gokul-hub-v9';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -805,7 +808,7 @@
             closeModal('profileModal');
         }
 
-        // 6. VAULT & TRANSACTIONS 
+        // 6. VAULT & TRANSACTIONS
         let transactions = JSON.parse(localStorage.getItem('gokulVaultTx')) || [];
 
         function addEmoji(emojiText) {
@@ -853,7 +856,6 @@
             }
         }
 
-        // PERF UPDATE: Replaced innerHTML += inside loop with string accumulator.
         function updateVaultStats() {
             const inc = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
             const exp = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
@@ -891,7 +893,7 @@
             const dataToChart = transactions.filter(t => t.type === 'expense');
             const totals = {};
             dataToChart.forEach(t => {
-                let cleanCat = t.category.split(' ')[0]; // Group by first word/emoji roughly
+                let cleanCat = t.category.split(' ')[0]; 
                 if (cleanCat.length < 3) cleanCat = t.category.substring(0, 10);
                 totals[cleanCat] = (totals[cleanCat] || 0) + t.amount;
             });
@@ -911,7 +913,7 @@
             });
         }
 
-        // 7. ORDERLY WORK & ATTENDANCE ENGINE
+        // 7. ORDERLY WORK & ATTENDANCE ENGINE (Strict 1 Shift Per Day)
         let shifts = JSON.parse(localStorage.getItem('gokulAttRecords')) || [];
         const defaultJobs = ["Petrol Bunk Worker", "Instagram Influencer", "Content Creator"];
         let jobProfiles = JSON.parse(localStorage.getItem('gokulJobProfiles')) || defaultJobs;
@@ -922,7 +924,7 @@
 
         function openJobModal() {
             document.getElementById('job-profile-list').innerHTML = jobProfiles.map((j, i) => `
-                <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color);">
+                <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); padding: 10px; border-radius: 8px;">
                     <span style="font-weight: 700;">${j}</span>
                     <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px; width: auto;" onclick="removeJobProfile(${i})"><i class="fas fa-trash"></i></button>
                 </div>
@@ -990,8 +992,9 @@
 
             if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) return alert("Fill all shift details");
 
+            // STRICT SINGLE DAY VALIDATION
             if (shifts.some(s => s.date === date)) {
-                if (!confirm(`A shift is already logged for ${date}. Add another on this day?`)) return;
+                return alert(`Restriction: A shift is already logged for ${date}. You can only log one shift per day.`);
             }
 
             saveRates();
@@ -1030,7 +1033,6 @@
             }
         }
 
-        // PERF UPDATE: Replaced innerHTML += inside loop with string accumulator.
         function updateShiftStats() {
             const tbody = document.getElementById('att-table-body');
             
@@ -1440,9 +1442,18 @@
                     <div style="font-size: 12px;">Shifts: <b>${a.count}</b></div>
                     <div style="font-size: 12px;">Income: <b style="color:var(--text-accent)">+₹${a.earned.toFixed(2)}</b></div>
                     <div style="font-size: 12px;">Spending: <b style="color:var(--danger)">-₹${a.spent.toFixed(2)}</b></div>
+                    <button class="btn btn-danger" style="margin-top: 6px;" onclick="deleteArchiveItem(${a.id})"><i class="fas fa-trash"></i> Delete Archive</button>
                 </div>`;
             });
             grid.innerHTML = html;
+        }
+
+        function deleteArchiveItem(id) {
+            if (confirm("Delete archived file?")) {
+                archives = archives.filter(x => x.id !== id);
+                localStorage.setItem('gokulArchives', JSON.stringify(archives));
+                renderArchives();
+            }
         }
 
         function yearlyReset() {
@@ -1496,7 +1507,7 @@
             renderProfile(); 
             applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); 
             loadAppearanceSettings();
-            loadAppConfig(); // Loads performance mode
+            loadAppConfig(); 
             updateVaultStats(); renderJobDropdown(); updateShiftStats(); renderLoans(); renderArchives(); renderThemeGallery();
             autoCheckEMIs(); updateNetworkStatus(); preCacheAssets();
         };
