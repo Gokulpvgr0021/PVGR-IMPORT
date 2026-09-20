@@ -92,7 +92,7 @@
             --danger: #ff003c;
         }
 
-        /* Performance Optimizations & Overrides */
+        /* Performance Optimizations */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: var(--app-font); touch-action: manipulation; }
         img, video { max-width: 100%; height: auto; }
         input, select, textarea, button { max-width: 100%; font-family: inherit; font-size: 16px !important; }
@@ -107,7 +107,7 @@
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* ====== SPLASH SCREEN ====== */
+        /* ====== FIXED APP LOADING ANIMATION ====== */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh;
             background: #0d0c11; 
@@ -127,8 +127,8 @@
         @keyframes pulseLogo { 0% { transform: scale(0.95); box-shadow: 0 0 15px rgba(39, 174, 96, 0.4); } 100% { transform: scale(1.05); box-shadow: 0 0 40px rgba(39, 174, 96, 0.8); } }
         @keyframes spinRing { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .hide-splash { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
+        /* ========================================= */
 
-        /* ====== UI SHELL ====== */
         .video-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; object-fit: cover; z-index: -2; pointer-events: none; opacity: 0.95; will-change: opacity; }
         .video-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: radial-gradient(circle at center, rgba(13, 10, 18, 0.25) 0%, rgba(8, 6, 12, 0.75) 100%); z-index: -1; pointer-events: none; opacity: var(--video-dimmer); transition: opacity 0.3s ease; }
 
@@ -354,7 +354,7 @@
                             </div>
                         </div>
                         
-                        <div class="form-card">
+                        <div class="form-card" style="margin-bottom: 20px;">
                             <div class="input-group">
                                 <label>Amount (₹)</label>
                                 <input type="number" id="quick-tx-amount" class="form-control" placeholder="0.00" inputmode="decimal">
@@ -385,7 +385,7 @@
 
             <!-- 2. ATTENDANCE & WORK -->
             <section id="attendance-view" class="view-panel">
-                <div class="form-card">
+                <div class="form-card" style="margin-bottom: 20px;">
                     <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-plus-circle"></i> Log New Shift</h3>
                     <div class="input-group">
                         <label style="display: flex; justify-content: space-between;">
@@ -410,13 +410,13 @@
                     <button class="btn btn-success" onclick="recordShift()"><i class="fas fa-cloud-upload-alt"></i> Save Shift & Sync Money to Vault</button>
                 </div>
 
-                <div id="timesheet-export-area" style="margin-top: 24px;">
+                <div id="timesheet-export-area">
                     <div class="panel-heading">
                         <span>Work & Salary Log</span>
                         <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-link"></i> Vault Linked</span>
                     </div>
 
-                    <div class="form-card">
+                    <div class="form-card" style="margin-bottom: 20px;">
                         <h3 style="color: var(--text-main); font-size: 16px;"><i class="fas fa-file-invoice"></i> Monthly Deductions (EPF & ESIC)</h3>
                         <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
                             <div class="input-group">
@@ -470,7 +470,7 @@
                     <span style="font-size: 14px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-robot"></i> Independent Track</span>
                 </div>
                 
-                <div class="form-card">
+                <div class="form-card" style="margin-bottom: 24px;">
                     <h3 style="margin-bottom: 15px; color: var(--text-main); width: 100%;"><i class="fas fa-calculator"></i> New EMI Calculator</h3>
                     
                     <div class="input-group"><label>Loan Name / Purpose</label><input type="text" id="loan-name-input" class="form-control" placeholder="e.g. Bike Loan"></div>
@@ -481,11 +481,16 @@
                         <div class="input-group"><label>Tenure (Months)</label><input type="number" id="loan-tenure" class="form-control" placeholder="24" oninput="runEMICalc()"></div>
                     </div>
                     
+                    <div style="display: flex; gap: 12px; width: 100%;">
+                        <div class="input-group"><label>Start Date</label><input type="date" id="loan-start-date" class="form-control" onchange="calcLoanEndDate()"></div>
+                        <div class="input-group"><label>End Date (Est.)</label><input type="date" id="loan-end-date" class="form-control"></div>
+                    </div>
+
                     <div class="input-group"><label>Monthly Due Date (Day 1-31)</label><input type="number" id="loan-due-input" class="form-control" placeholder="5" min="1" max="31"></div>
                     
                     <div style="width: 100%; display: flex; flex-direction: column; gap: 12px; margin: 15px 0;">
                         <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
-                            <input type="checkbox" id="loan-autopay-check" checked style="width: 24px; height: 24px;"> Auto-update EMI payment every month
+                            <input type="checkbox" id="loan-autopay-check" checked style="width: 24px; height: 24px;"> Auto-update EMI progress every month
                         </label>
                     </div>
                     
@@ -497,7 +502,7 @@
                     <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan</button>
                 </div>
 
-                <h3 style="color: var(--text-main); margin-bottom: 15px; margin-top: 24px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Active Loans Status</h3>
+                <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Active Loans Status</h3>
                 <div class="loans-grid" id="active-loans-grid"></div>
             </section>
 
@@ -649,7 +654,6 @@
             <h3 style="color: var(--text-main); font-family: var(--header-font); font-size: 22px;">Install Fullscreen App</h3>
             
             <div style="text-align: left; background: var(--bg-card-alt); padding: 16px; border-radius: 14px; border: 1px solid var(--border-color); font-size: 14px; line-height: 1.8; color: var(--text-muted);" id="install-instructions">
-                <!-- Injected dynamically based on browser -->
             </div>
             <button class="btn btn-success" onclick="closeModal('installGuideModal')">Got It</button>
         </div>
@@ -772,7 +776,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-v17';
+                const CACHE_NAME = 'gokul-hub-v18';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -1069,7 +1073,6 @@
 
             if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) return alert("Fill all shift details");
 
-            // STRICT SINGLE DAY VALIDATION
             if (shifts.some(s => s.date === date)) {
                 return alert(`Restriction: A shift is already logged for ${date}. You can only log one shift per day.`);
             }
@@ -1084,7 +1087,6 @@
             const breakDeduct = gross > 4 ? 0.5 : 0;
             const net = Math.max(0, gross - breakDeduct);
             
-            // LOCAL TIMEZONE SUNDAY CHECK FIX
             const dateParts = date.split('-');
             const shiftDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
             const isSunday = shiftDate.getDay() === 0;
@@ -1380,9 +1382,30 @@
             doc.save(`Gokul_Timesheet_Report_${now.getTime()}.pdf`);
         }
 
-        // 8. LOAN CALCULATION & AUTO-PAY
+        // 8. LOAN TRACKER WITH SMART DATES
         let loans = JSON.parse(localStorage.getItem('gokulLoans')) || [];
+        
+        document.getElementById('loan-start-date').valueAsDate = new Date();
+
+        function calcLoanEndDate() {
+            const n = parseInt(document.getElementById('loan-tenure').value);
+            const startInput = document.getElementById('loan-start-date').value;
+            
+            if (n && startInput) {
+                const dateParts = startInput.split('-');
+                const sDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                sDate.setMonth(sDate.getMonth() + n);
+                
+                const y = sDate.getFullYear();
+                const m = String(sDate.getMonth() + 1).padStart(2, '0');
+                const d = String(sDate.getDate()).padStart(2, '0');
+                document.getElementById('loan-end-date').value = `${y}-${m}-${d}`;
+            }
+        }
+
         function runEMICalc() {
+            calcLoanEndDate();
+            
             const p = parseFloat(document.getElementById('loan-principal').value);
             const r_ann = parseFloat(document.getElementById('loan-rate').value);
             const n = parseInt(document.getElementById('loan-tenure').value);
@@ -1415,11 +1438,29 @@
             const due = parseInt(document.getElementById('loan-due-input').value) || 5;
             const autopay = document.getElementById('loan-autopay-check').checked;
             
+            const startDate = document.getElementById('loan-start-date').value;
+            const endDate = document.getElementById('loan-end-date').value;
+            
+            if (!startDate) return alert("Please select a Start Date.");
+
             const calc = runEMICalc();
             if (!calc) return alert("Please fill in Principal, Interest, and Tenure correctly.");
 
             const uniqueId = Date.now();
-            loans.push({ id: uniqueId, name, due, emi: calc.emi, principal: calc.p, tenure: calc.n, paid: 0, autopay, lastPaidMonth: "" });
+            loans.push({ 
+                id: uniqueId, 
+                name, 
+                due, 
+                emi: calc.emi, 
+                principal: calc.p, 
+                tenure: calc.n, 
+                paid: 0, 
+                autopay, 
+                lastPaidMonth: "",
+                startDate: startDate,
+                endDate: endDate 
+            });
+            
             localStorage.setItem('gokulLoans', JSON.stringify(loans));
             renderLoans();
             
@@ -1427,6 +1468,7 @@
             document.getElementById('loan-principal').value = '';
             document.getElementById('loan-rate').value = '';
             document.getElementById('loan-tenure').value = '';
+            document.getElementById('loan-end-date').value = '';
             runEMICalc();
             alert(`"${name}" added to Active Loans!`);
         }
@@ -1445,13 +1487,21 @@
                 const remBal = remMonths * l.emi;
                 const isDone = remMonths <= 0;
                 
+                const startDisp = l.startDate ? l.startDate : 'N/A';
+                const endDisp = l.endDate ? l.endDate : 'N/A';
+                
                 html += `<div class="loan-card" style="${isDone ? 'border: 2px solid var(--text-accent); background: rgba(39, 174, 96, 0.05);' : ''}">
                     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
                         <span style="font-weight: 900; font-size: 16px; color: ${isDone ? 'var(--text-accent)' : 'var(--text-main)'};">${l.name} ${isDone ? '✅' : ''}</span>
                         <button class="btn btn-danger" style="padding: 6px 10px; width: auto; font-size: 12px;" onclick="deleteLoan(${l.id})"><i class="fas fa-trash"></i></button>
                     </div>
                     
-                    <div style="display:flex; justify-content:space-between; font-size: 13px; margin-top: 6px;">
+                    <div style="display:flex; justify-content:space-between; font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+                        <span>Started: <b style="color:var(--text-main)">${startDisp}</b></span>
+                        <span>Ends: <b style="color:var(--text-main)">${endDisp}</b></span>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; font-size: 13px; margin-top: 8px;">
                         <span style="color: var(--text-muted);">Monthly EMI:</span>
                         <b style="color:var(--danger)">₹${l.emi.toLocaleString('en-IN')}</b>
                     </div>
@@ -1497,15 +1547,11 @@
             if (isNaN(count) || count <= 0) return alert("Enter a valid number of months.");
             if (l.paid + count > l.tenure) return alert(`You only have ${l.tenure - l.paid} months left!`);
             
-            const total = l.emi * count;
-            
             l.paid += count;
             l.lastPaidMonth = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
             
             localStorage.setItem('gokulLoans', JSON.stringify(loans));
             renderLoans();
-            
-            alert(`Successfully logged ₹${total.toLocaleString('en-IN')} payment for ${l.name}.`);
         }
 
         function deleteLoan(id) {
@@ -1623,7 +1669,7 @@
                 document.documentElement.style.setProperty('--glass-alpha', '1');
             } else {
                 document.body.classList.remove('fast-mode');
-                loadAppearanceSettings(); 
+                loadAppearanceSettings(); // Restore original slider value
             }
         }
 
