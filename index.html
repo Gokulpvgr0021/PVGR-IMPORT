@@ -156,7 +156,7 @@
 
         /* Vault Layout */
         #vault-dashboard-panel { flex-direction: row; padding: 0; width: 100%; height: 100%; }
-        .vault-summary-col { width: 320px; max-width: 100%; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 15px; }
+        .vault-summary-col { width: 320px; max-width: 100%; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 15px; transition: background-color 0.3s ease;}
         
         .profile-badge { background: linear-gradient(135deg, var(--bg-card), var(--bg-card-alt)); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; width: 100%; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.3); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .profile-badge::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, var(--text-accent), var(--text-main)); }
@@ -200,7 +200,7 @@
 
         /* Loan Cards */
         .loans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; width: 100%; }
-        .loan-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        .loan-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; width: 100%; transform: translateZ(0); transition: border-color 0.3s; }
         .progress-bar-bg { background: var(--bg-card-alt); height: 12px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); width: 100%; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); transition: width 0.4s ease; }
 
@@ -775,7 +775,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-v15';
+                const CACHE_NAME = 'gokul-hub-v16';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -1087,6 +1087,7 @@
             const breakDeduct = gross > 4 ? 0.5 : 0;
             const net = Math.max(0, gross - breakDeduct);
             
+            // LOCAL TIMEZONE SUNDAY CHECK
             const dateParts = date.split('-');
             const shiftDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
             const isSunday = shiftDate.getDay() === 0;
@@ -1389,15 +1390,24 @@
             const r_ann = parseFloat(document.getElementById('loan-rate').value);
             const n = parseInt(document.getElementById('loan-tenure').value);
 
-            if (!p || !r_ann || !n) {
+            if (isNaN(p) || isNaN(r_ann) || isNaN(n) || p <= 0 || n <= 0) {
                 document.getElementById('emi-calc-out').innerText = '₹0';
                 document.getElementById('int-calc-out').innerText = '₹0';
-                return;
+                return null;
             }
 
-            const r = r_ann / 12 / 100;
-            const emi = Math.round(p * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1));
-            const totalInt = (emi * n) - p;
+            let emi = 0;
+            let totalInt = 0;
+
+            if (r_ann === 0) {
+                emi = Math.round(p / n);
+                totalInt = 0;
+            } else {
+                const r = r_ann / 12 / 100;
+                emi = Math.round(p * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1));
+                totalInt = (emi * n) - p;
+            }
+
             document.getElementById('emi-calc-out').innerText = `₹${emi.toLocaleString('en-IN')}`;
             document.getElementById('int-calc-out').innerText = `₹${totalInt.toLocaleString('en-IN')}`;
             return { emi, p, n };
@@ -1410,47 +1420,74 @@
             const autopay = document.getElementById('loan-autopay-check').checked;
             
             const calc = runEMICalc();
-            if (!calc) return alert("Calculate loan values first");
+            if (!calc) return alert("Please fill in Principal, Interest, and Tenure correctly.");
 
             const uniqueId = Date.now();
             loans.push({ id: uniqueId, name, due, emi: calc.emi, principal: calc.p, tenure: calc.n, paid: 0, autopay, lastPaidMonth: "" });
             localStorage.setItem('gokulLoans', JSON.stringify(loans));
             renderLoans();
             
-            if (disburse) logVaultTx(`Loan Disbursed: ${name} 🏦`, 'income', true, calc.p, 'Auto Loan Disbursement');
+            if (disburse) logVaultTx(`Loan Disbursed: ${name} 🏦`, 'income', false, calc.p, 'Auto Loan Disbursement');
             
             document.getElementById('loan-name-input').value = '';
             document.getElementById('loan-principal').value = '';
+            document.getElementById('loan-rate').value = '';
+            document.getElementById('loan-tenure').value = '';
             runEMICalc();
             alert(`"${name}" added to Active Loans!`);
         }
 
         function renderLoans() {
             const grid = document.getElementById('active-loans-grid');
-            if (!loans.length) {
-                grid.innerHTML = '<div style="font-size: 13px; color: var(--text-muted);">No active loans.</div>';
+            if (!loans || !loans.length) {
+                grid.innerHTML = '<div style="font-size: 14px; color: var(--text-muted); padding: 10px;">No active loans. Track your EMIs here!</div>';
                 return;
             }
             
             let html = '';
             loans.forEach(l => {
-                const rem = l.tenure - l.paid;
+                const remMonths = l.tenure - l.paid;
                 const pct = (l.paid / l.tenure) * 100;
+                const remBal = remMonths * l.emi;
+                const isDone = remMonths <= 0;
                 
-                html += `<div class="loan-card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
-                        <span style="font-weight: 800; font-size: 15px;">${l.name}</span>
-                        <button class="btn btn-danger" style="padding: 4px 8px; width: auto;" onclick="deleteLoan(${l.id})"><i class="fas fa-trash"></i></button>
+                html += `<div class="loan-card" style="${isDone ? 'border: 2px solid var(--text-accent); background: rgba(39, 174, 96, 0.05);' : ''}">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                        <span style="font-weight: 900; font-size: 16px; color: ${isDone ? 'var(--text-accent)' : 'var(--text-main)'};">${l.name} ${isDone ? '✅' : ''}</span>
+                        <button class="btn btn-danger" style="padding: 6px 10px; width: auto; font-size: 12px;" onclick="deleteLoan(${l.id})"><i class="fas fa-trash"></i></button>
                     </div>
-                    <div style="display:flex; justify-content:space-between; font-size: 12px;"><span>Monthly EMI:</span><b style="color:var(--danger)">₹${l.emi.toLocaleString('en-IN')}</b></div>
-                    <div style="display:flex; justify-content:space-between; font-size: 12px;"><span>Remaining:</span><b>₹${(rem * l.emi).toLocaleString('en-IN')}</b></div>
-                    <div style="display:flex; justify-content:space-between; font-size: 12px;"><span>Due Date:</span><b>Day ${l.due}</b></div>
-                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${pct}%"></div></div>
-                    <div style="font-size: 11px; color: var(--text-muted); text-align: right;">${l.paid}/${l.tenure} Paid</div>
-                    <div style="display: flex; gap: 8px; align-items: center; margin-top: 6px;">
-                        <input type="number" id="seek-${l.id}" class="form-control" value="1" min="1" max="${rem}" style="width: 60px; padding: 6px;">
-                        <button class="btn btn-success" style="flex: 1; color: #000;" onclick="payLoanEMI(${l.id})" ${rem === 0 ? 'disabled' : ''}>${rem === 0 ? 'Fully Paid' : 'Pay EMI & Sync'}</button>
+                    
+                    <div style="display:flex; justify-content:space-between; font-size: 13px; margin-top: 6px;">
+                        <span style="color: var(--text-muted);">Monthly EMI:</span>
+                        <b style="color:var(--danger)">₹${l.emi.toLocaleString('en-IN')}</b>
                     </div>
+                    <div style="display:flex; justify-content:space-between; font-size: 13px;">
+                        <span style="color: var(--text-muted);">Remaining Bal:</span>
+                        <b>₹${remBal.toLocaleString('en-IN')}</b>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size: 13px;">
+                        <span style="color: var(--text-muted);">Auto-Pay Due:</span>
+                        <b>Day ${l.due} ${l.autopay ? '🔄' : '❌'}</b>
+                    </div>
+                    
+                    <div style="margin-top: 10px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; font-weight: 700;">
+                            <span style="color: var(--text-accent);">${l.paid} Paid</span>
+                            <span style="color: var(--text-muted);">${remMonths} Left</span>
+                        </div>
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${pct}%"></div></div>
+                    </div>
+                    
+                    ${!isDone ? `
+                    <div style="display: flex; gap: 10px; align-items: center; margin-top: 12px; background: var(--bg-card-alt); padding: 8px; border-radius: 10px; border: 1px solid var(--border-color);">
+                        <input type="number" id="seek-${l.id}" class="form-control" value="1" min="1" max="${remMonths}" style="width: 70px; padding: 10px; text-align: center; font-weight: 800;">
+                        <button class="btn btn-success" style="flex: 1; color: #000; padding: 10px;" onclick="payLoanEMI(${l.id})">Pay EMI & Sync</button>
+                    </div>
+                    ` : `
+                    <div style="margin-top: 12px; text-align: center; font-weight: 800; color: var(--text-accent); padding: 8px; background: var(--bg-card-alt); border-radius: 10px;">
+                        🎉 Loan Fully Paid
+                    </div>
+                    `}
                 </div>`;
             });
             grid.innerHTML = html;
@@ -1461,12 +1498,13 @@
             if (!l) return;
             
             const seekInput = document.getElementById(`seek-${loanId}`);
-            const count = parseInt(seekInput ? seekInput.value : 1) || 1;
+            const count = parseInt(seekInput ? seekInput.value : 1);
             
-            if (l.paid + count > l.tenure) return alert("Exceeds total tenure. You cannot pay more months than what remains.");
+            if (isNaN(count) || count <= 0) return alert("Enter a valid number of months.");
+            if (l.paid + count > l.tenure) return alert(`You only have ${l.tenure - l.paid} months left!`);
             
             const total = l.emi * count;
-            logVaultTx(`EMI: ${l.name} 🏦`, 'expense', true, total, `Manual EMI Payment (${count} months)`);
+            logVaultTx(`EMI: ${l.name} 🏦`, 'expense', false, total, `Manual EMI Payment (${count} months)`);
             
             l.paid += count;
             l.lastPaidMonth = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
@@ -1491,7 +1529,7 @@
             let count = 0;
             loans.forEach(l => {
                 if (l.autopay && l.paid < l.tenure && today.getDate() >= l.due && l.lastPaidMonth !== key) {
-                    logVaultTx(`Auto EMI: ${l.name} 🏦`, 'expense', true, l.emi, 'Scheduled Auto-Pay');
+                    logVaultTx(`Auto EMI: ${l.name} 🏦`, 'expense', false, l.emi, 'Scheduled Auto-Pay');
                     l.paid++; l.lastPaidMonth = key; count++;
                 }
             });
