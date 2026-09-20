@@ -26,7 +26,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- External Engines -->
+    <!-- External Engines & Separated Lexicon -->
+    <script src="lexicon.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
@@ -92,10 +93,9 @@
             --danger: #ff003c;
         }
 
+        /* Performance Optimizations */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: var(--app-font); touch-action: manipulation; }
         img, video { max-width: 100%; height: auto; }
-        
-        /* EXPANDED MOBILE TYPING FIX */
         input, select, textarea, button { max-width: 100%; font-family: inherit; font-size: 16px !important; }
 
         html, body {
@@ -103,22 +103,23 @@
             background: linear-gradient(135deg, #090414, #1b0d2d, #081a24, #1f0b18);
             background-size: 300% 300%; animation: ambientGradient 12s ease infinite;
             color: var(--text-main); user-select: none; -webkit-user-select: none; overscroll-behavior: none;
+            transform: translateZ(0); /* Hardware Acceleration */
         }
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        .video-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; object-fit: cover; z-index: -2; pointer-events: none; opacity: 0.95; }
+        .video-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; object-fit: cover; z-index: -2; pointer-events: none; opacity: 0.95; will-change: opacity; }
         .video-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: radial-gradient(circle at center, rgba(13, 10, 18, 0.25) 0%, rgba(8, 6, 12, 0.75) 100%); z-index: -1; pointer-events: none; opacity: var(--video-dimmer); transition: opacity 0.3s ease; }
 
-        .app-shell { width: 100%; height: 100dvh; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: background-color 0.3s ease; }
+        .app-shell { width: 100%; height: 100dvh; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: background-color 0.3s ease; transform: translateZ(0); }
 
-        .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(65px + var(--safe-top)); padding-top: var(--safe-top); background: var(--bg-sidebar); border-bottom: 1px solid var(--border-color); z-index: 100; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(65px + var(--safe-top)); padding-top: var(--safe-top); background: var(--bg-sidebar); border-bottom: 1px solid var(--border-color); z-index: 100; align-items: center; justify-content: space-between; padding-left: 16px; padding-right: 16px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         .mobile-header .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 18px; color: var(--text-main); font-family: var(--header-font); }
         .mobile-header .brand img { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-color); object-fit: cover; flex-shrink: 0; }
 
-        .sidebar { width: 250px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; flex-shrink: 0; z-index: 10; backdrop-filter: blur(12px); }
+        .sidebar { width: 250px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; flex-shrink: 0; z-index: 10; backdrop-filter: blur(8px); }
         
-        .mobile-tab-bar { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: calc(65px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--bg-sidebar); border-top: 1px solid var(--border-color); z-index: 100; justify-content: space-around; align-items: center; box-shadow: 0 -4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .mobile-tab-bar { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: calc(65px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--bg-sidebar); border-top: 1px solid var(--border-color); z-index: 100; justify-content: space-around; align-items: center; box-shadow: 0 -4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; border: none; color: var(--text-muted); font-size: 12px; font-weight: 700; gap: 4px; height: 100%; cursor: pointer; transition: color 0.2s; }
         .tab-item i { font-size: 20px; transition: transform 0.2s; }
         .tab-item.active { color: var(--text-main); }
@@ -177,7 +178,7 @@
 
         /* Loan Cards */
         .loans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; width: 100%; }
-        .loan-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        .loan-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; width: 100%; transform: translateZ(0); }
         .progress-bar-bg { background: var(--bg-card-alt); height: 12px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); width: 100%; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--text-main), var(--text-accent)); }
 
@@ -203,11 +204,14 @@
             .vault-grid-col { padding: 14px 0; }
             .att-stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
         }
+        
+        /* Utility class for performance mode */
+        body.fast-mode .video-background { display: none !important; }
+        body.fast-mode { animation: none !important; }
     </style>
 </head>
 <body>
 
-    <!-- OFFLINE INDICATOR -->
     <div id="offline-badge"><i class="fas fa-wifi-slash"></i> Offline Mode: Synced Locally</div>
 
     <video id="app-bg-video" class="video-background" autoplay muted loop playsinline webkit-playsinline preload="auto">
@@ -216,7 +220,6 @@
     </video>
     <div class="video-overlay"></div>
 
-    <!-- MOBILE TOP BAR -->
     <div class="mobile-header">
         <div class="brand">
             <img id="header-avatar-img" src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'">
@@ -228,7 +231,6 @@
         </div>
     </div>
 
-    <!-- MOBILE BOTTOM TABS -->
     <div class="mobile-tab-bar">
         <button class="tab-item active" id="tab-vault" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i><span>Vault</span></button>
         <button class="tab-item" id="tab-att" onclick="navTo('attendance')"><i class="fas fa-business-time"></i><span>Work</span></button>
@@ -260,7 +262,7 @@
 
             <div class="sidebar-footer" style="font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; padding-top: 14px; border-top: 1px solid var(--border-color);">
                 <div>Identity: <b>TVGR Vault</b></div>
-                <div>App Status: <span style="color: var(--text-accent);">PWA Ready</span></div>
+                <div>App Status: <span style="color: var(--text-accent);">PWA Optimized</span></div>
                 <button class="btn btn-primary" style="padding: 10px; font-size: 13px; margin-top: 4px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
             </div>
         </aside>
@@ -295,32 +297,26 @@
                         </div>
                     </div>
 
-                    <!-- Fast Note & Emoji Transaction Entry -->
                     <div class="vault-grid-col">
                         <div class="panel-heading" style="border: none; margin-bottom: 16px;">
                             <span>Log Transaction</span>
                         </div>
                         
                         <div class="form-card">
-                            <div style="display: flex; gap: 12px;">
-                                <div class="input-group" style="flex: 1;">
-                                    <label>Amount (₹)</label>
-                                    <input type="number" id="quick-tx-amount" class="form-control" placeholder="0.00" inputmode="decimal">
-                                </div>
+                            <div class="input-group">
+                                <label>Amount (₹)</label>
+                                <input type="number" id="quick-tx-amount" class="form-control" placeholder="0.00" inputmode="decimal">
                             </div>
                             
                             <div class="input-group">
-                                <label>Notes (What was this for?)</label>
+                                <label>Notes</label>
                                 <input type="text" id="quick-tx-note" class="form-control" placeholder="e.g. UPI Payment 💸, Lunch 🍔...">
-                                
                                 <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
                                     <span style="font-size: 12px; color: var(--text-muted); width: 100%; font-weight: 700;">Quick Add Emojis:</span>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Food 🍔')">🍔 Food</button>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Petrol ⛽')">⛽ Petrol</button>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('UPI 💸')">💸 UPI</button>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Shop 🛒')">🛒 Shop</button>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Snacks 🍿')">🍿 Snacks</button>
-                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px; font-weight: 700;" onclick="addEmoji('Salary 💰')">💰 Salary</button>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px;" onclick="addEmoji('Food 🍔')">🍔 Food</button>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px;" onclick="addEmoji('Petrol ⛽')">⛽ Petrol</button>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px;" onclick="addEmoji('UPI 💸')">💸 UPI</button>
+                                    <button class="btn btn-primary" style="padding: 6px 12px; width: auto; font-size: 13px;" onclick="addEmoji('Salary 💰')">💰 Salary</button>
                                 </div>
                             </div>
                             
@@ -333,7 +329,7 @@
                 </div>
             </section>
 
-            <!-- 2. AUTO MAINTAINABLE WORK & SALARY -->
+            <!-- 2. ATTENDANCE & WORK -->
             <section id="attendance-view" class="view-panel">
                 <div class="form-card" style="margin-bottom: 20px;">
                     <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-plus-circle"></i> Log New Shift</h3>
@@ -366,10 +362,9 @@
                         <span style="font-size: 13px; color: var(--text-accent); font-family: var(--app-font);"><i class="fas fa-link"></i> Vault Linked</span>
                     </div>
 
-                    <!-- Monthly EPF & ESIC Options -->
                     <div class="form-card" style="margin-bottom: 20px;">
                         <h3 style="color: var(--text-main); font-size: 16px;"><i class="fas fa-file-invoice"></i> Monthly Deductions (EPF & ESIC)</h3>
-                        <div style="display: flex; gap: 12px; width: 100%; align-items: flex-end;">
+                        <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
                             <div class="input-group">
                                 <label>EPF (₹ / Month)</label>
                                 <input type="number" id="monthly-epf" class="form-control" placeholder="0" onchange="saveMonthlyDeductions()">
@@ -378,9 +373,8 @@
                                 <label>ESIC (₹ / Month)</label>
                                 <input type="number" id="monthly-esic" class="form-control" placeholder="0" onchange="saveMonthlyDeductions()">
                             </div>
-                            <button class="btn btn-danger" style="width: auto; padding: 15px;" onclick="syncDeductionsToVault()"><i class="fas fa-minus-circle"></i> Sync</button>
+                            <button class="btn btn-danger" style="width: 100%;" onclick="syncDeductionsToVault()"><i class="fas fa-minus-circle"></i> Sync Deductions to Vault</button>
                         </div>
-                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Enter once per month. Click 'Sync' to deduct this total from your Vault.</div>
                     </div>
 
                     <div class="att-stats-row">
@@ -408,10 +402,9 @@
                     </div>
                 </div>
 
-                <!-- Split Download Buttons -->
                 <div class="btn-flex-row" style="margin-top: 15px;">
-                    <button class="btn btn-primary" onclick="downloadPayslip()"><i class="fas fa-file-invoice-dollar"></i> Download Salary Slip</button>
-                    <button class="btn btn-primary" onclick="downloadTimesheet()"><i class="fas fa-list-alt"></i> Download Timesheet</button>
+                    <button class="btn btn-primary" onclick="downloadPayslip()"><i class="fas fa-file-invoice-dollar"></i> Download Salary Slip (PDF)</button>
+                    <button class="btn btn-primary" onclick="downloadTimesheet()"><i class="fas fa-list-alt"></i> Download Timesheet (PDF)</button>
                     <button class="btn btn-danger" onclick="clearShifts()"><i class="fas fa-trash-alt"></i> Clear All Shift Records</button>
                 </div>
             </section>
@@ -441,7 +434,7 @@
                             <input type="checkbox" id="loan-disburse-check" checked style="width: 24px; height: 24px;"> Deposit Principal to Vault as Income now?
                         </label>
                         <label style="display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text-main);">
-                            <input type="checkbox" id="loan-autopay-check" checked style="width: 24px; height: 24px;"> Auto-Pay EMI from Vault every month on Due Date
+                            <input type="checkbox" id="loan-autopay-check" checked style="width: 24px; height: 24px;"> Auto-Pay EMI from Vault every month
                         </label>
                     </div>
                     
@@ -450,7 +443,7 @@
                         <div><div style="font-size: 13px; color: var(--text-muted); font-weight: bold; text-transform: uppercase;">Total Interest</div><div style="font-weight: 900; font-size: 24px; color: var(--text-main);" id="int-calc-out">₹0</div></div>
                     </div>
 
-                    <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan & Activate System</button>
+                    <button class="btn btn-success" onclick="saveActiveLoan()"><i class="fas fa-save"></i> Save Active Loan</button>
                 </div>
 
                 <h3 style="color: var(--text-main); margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">Active Loans Status</h3>
@@ -468,7 +461,7 @@
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Transaction Note</th>
+                                <th>Note / Category</th>
                                 <th>Flow</th>
                                 <th>Amount</th>
                                 <th style="width: 50px;">Del</th>
@@ -488,10 +481,11 @@
 
             <!-- 6. SETTINGS & APP CENTER -->
             <section id="settings-view" class="view-panel">
-                <div class="panel-heading"><span>Settings & App Download</span></div>
+                <div class="panel-heading"><span>Settings & App Center</span></div>
                 
                 <div class="loans-grid" style="margin-bottom: 20px;">
-                    <!-- App Install Card -->
+                    
+                    <!-- App Installation & Data Backup -->
                     <div class="loan-card" style="border-color: var(--text-accent);">
                         <div style="font-weight: 900; font-size: 18px; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
                             <i class="fas fa-mobile-alt"></i> Mobile App & Fullscreen
@@ -510,6 +504,22 @@
                             <button class="btn btn-danger" onclick="importData()"><i class="fas fa-upload"></i> Restore Backup File</button>
                         </div>
                     </div>
+
+                    <!-- Performance Optimization Settings -->
+                    <div class="loan-card" style="justify-content: flex-start;">
+                        <div style="font-weight: 900; font-size: 18px; color: var(--text-main); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+                            <i class="fas fa-bolt"></i> App Performance Config
+                        </div>
+                        <div class="input-group">
+                            <label>App Performance Mode</label>
+                            <select id="setting-perf-mode" class="form-control" onchange="saveAppConfig()">
+                                <option value="high">High Quality (Video + Glass UI)</option>
+                                <option value="fast">Lightning Fast (No Video, No Blurs)</option>
+                            </select>
+                        </div>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">Select 'Lightning Fast' if your phone is lagging or overheating.</p>
+                    </div>
+
                 </div>
 
                 <!-- Visual Adjusters -->
@@ -685,7 +695,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-v7';
+                const CACHE_NAME = 'gokul-hub-v8';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -795,7 +805,7 @@
             closeModal('profileModal');
         }
 
-        // 6. VAULT & TRANSACTIONS (New Quick Note System)
+        // 6. VAULT & TRANSACTIONS 
         let transactions = JSON.parse(localStorage.getItem('gokulVaultTx')) || [];
 
         function addEmoji(emojiText) {
@@ -843,6 +853,7 @@
             }
         }
 
+        // PERF UPDATE: Replaced innerHTML += inside loop with string accumulator.
         function updateVaultStats() {
             const inc = transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
             const exp = transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
@@ -854,14 +865,15 @@
             document.getElementById('ledger-count').innerText = `${transactions.length} Records`;
 
             const tbody = document.getElementById('ledger-table-body');
-            tbody.innerHTML = '';
+            let rowsHtml = '';
+            
             [...transactions].reverse().forEach((t, revIdx) => {
                 const actualIdx = transactions.length - 1 - revIdx;
                 const isInc = t.type === 'income';
                 const displayType = t.type === 'expense' ? 'Spending' : 'Income';
                 const noteHtml = t.note ? `<div style="font-size: 11px; color: var(--text-muted); font-weight: normal; margin-top: 4px;">📝 ${t.note}</div>` : '';
                 
-                tbody.innerHTML += `<tr>
+                rowsHtml += `<tr>
                     <td style="font-size: 11px;">${t.date.split(',')[0]}<br>${t.date.split(',')[1] || ''}</td>
                     <td style="font-weight: 700; text-align: left;">${t.category}${noteHtml}</td>
                     <td style="text-transform: capitalize; color: ${isInc ? 'var(--text-accent)' : 'var(--danger)'}">${displayType}</td>
@@ -869,7 +881,7 @@
                     <td><button class="btn btn-danger" style="padding: 4px 8px; width: auto; font-size: 11px;" onclick="deleteLedgerTx(${actualIdx})"><i class="fas fa-trash"></i></button></td>
                 </tr>`;
             });
-
+            tbody.innerHTML = rowsHtml;
             renderVaultChart();
         }
 
@@ -895,7 +907,7 @@
                         borderWidth: 1, borderColor: '#08060c'
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { display: false } } }
+                options: { animation: false, responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { display: false } } }
             });
         }
 
@@ -910,7 +922,7 @@
 
         function openJobModal() {
             document.getElementById('job-profile-list').innerHTML = jobProfiles.map((j, i) => `
-                <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); padding: 10px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color);">
                     <span style="font-weight: 700;">${j}</span>
                     <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px; width: auto;" onclick="removeJobProfile(${i})"><i class="fas fa-trash"></i></button>
                 </div>
@@ -939,7 +951,6 @@
         document.getElementById('att-base-rate').value = localStorage.getItem('gokulSavedBase') || '';
         document.getElementById('att-ot-rate').value = localStorage.getItem('gokulSavedOT') || '';
         
-        // Ensure monthly deductions are loaded
         document.getElementById('monthly-epf').value = localStorage.getItem('gokulMonthlyEPF') || '0';
         document.getElementById('monthly-esic').value = localStorage.getItem('gokulMonthlyESIC') || '0';
         document.getElementById('att-date').valueAsDate = new Date();
@@ -993,11 +1004,10 @@
             const breakDeduct = gross > 4 ? 0.5 : 0;
             const net = Math.max(0, gross - breakDeduct);
             
-            // Check if selected date is Sunday (0)
+            // SUNDAY OT CHECK
             const shiftDate = new Date(date);
             const isSunday = shiftDate.getDay() === 0;
 
-            // If Sunday, 100% of hours go to OT
             let regHours = isSunday ? 0 : Math.min(net, 8);
             let otHours = isSunday ? net : Math.max(0, net - 8);
 
@@ -1005,7 +1015,6 @@
             const otEarned = otHours * otRate;
             const grossEarned = baseEarned + otEarned;
 
-            // Store grossEarned under totalEarned so legacy code functions normally
             shifts.push({ date, jobType, inTime, outTime, net, otHours, totalEarned: grossEarned, grossEarned: grossEarned });
             shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
             localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
@@ -1021,9 +1030,9 @@
             }
         }
 
+        // PERF UPDATE: Replaced innerHTML += inside loop with string accumulator.
         function updateShiftStats() {
             const tbody = document.getElementById('att-table-body');
-            tbody.innerHTML = '';
             
             let totalGross = 0;
             shifts.forEach(s => { totalGross += (s.grossEarned || s.totalEarned); });
@@ -1033,11 +1042,12 @@
             const totalDed = epf + esic;
             const netPay = totalGross - totalDed;
 
+            let html = '';
             [...shifts].reverse().forEach((s, revIdx) => {
                 const actualIdx = shifts.length - 1 - revIdx;
                 const shortJob = s.jobType.length > 8 ? s.jobType.substring(0,8) + '..' : s.jobType;
                 
-                tbody.innerHTML += `<tr>
+                html += `<tr>
                     <td>${s.date}</td>
                     <td style="font-weight: 700; font-size: 11px;">${shortJob}</td>
                     <td style="font-size: 11px;">${s.inTime}-${s.outTime}</td>
@@ -1047,6 +1057,7 @@
                     <td><button class="btn btn-danger" style="padding: 4px 8px; width: auto; font-size: 11px;" onclick="deleteShift(${actualIdx})"><i class="fas fa-trash"></i></button></td>
                 </tr>`;
             });
+            tbody.innerHTML = html;
 
             document.getElementById('stat-days').innerText = shifts.length;
             document.getElementById('stat-gross').innerText = `₹${totalGross.toFixed(0)}`;
@@ -1070,11 +1081,11 @@
             }
         }
 
+        // CORPORATE PDF EXPORTS WITH PROFILE PHOTO
         function downloadPayslip() {
             if (shifts.length === 0) return alert("No shifts to export!");
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'mm', 'a4');
-            
             const green = [50, 130, 70];
             
             let totalGross = 0, totalOTHours = 0, totalNetHours = 0;
@@ -1337,10 +1348,12 @@
         function renderLoans() {
             const grid = document.getElementById('active-loans-grid');
             if (!loans.length) return grid.innerHTML = '<div style="font-size: 13px; color: var(--text-muted);">No active loans.</div>';
-            grid.innerHTML = loans.map(l => {
+            
+            let html = '';
+            loans.forEach(l => {
                 const rem = l.tenure - l.paid;
                 const pct = (l.paid / l.tenure) * 100;
-                return `<div class="loan-card">
+                html += `<div class="loan-card">
                     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
                         <span style="font-weight: 800; font-size: 15px;">${l.name}</span>
                         <button class="btn btn-danger" style="padding: 4px 8px; width: auto;" onclick="deleteLoan(${l.id})"><i class="fas fa-trash"></i></button>
@@ -1355,7 +1368,8 @@
                         <button class="btn btn-success" style="flex: 1; color: #000;" onclick="payLoanEMI(${l.id})" ${rem === 0 ? 'disabled' : ''}>${rem === 0 ? 'Fully Paid' : 'Pay EMI'}</button>
                     </div>
                 </div>`;
-            }).join('');
+            });
+            grid.innerHTML = html;
         }
 
         function payLoanEMI(loanId) {
@@ -1419,14 +1433,16 @@
         function renderArchives() {
             const archives = JSON.parse(localStorage.getItem('gokulArchives') || '[]');
             const grid = document.getElementById('archives-grid');
-            grid.innerHTML = archives.map(a => `
-                <div class="loan-card">
+            let html = '';
+            archives.forEach(a => {
+                html += `<div class="loan-card">
                     <div style="font-weight: 800; font-size: 16px;">${a.name}</div>
                     <div style="font-size: 12px;">Shifts: <b>${a.count}</b></div>
                     <div style="font-size: 12px;">Income: <b style="color:var(--text-accent)">+₹${a.earned.toFixed(2)}</b></div>
                     <div style="font-size: 12px;">Spending: <b style="color:var(--danger)">-₹${a.spent.toFixed(2)}</b></div>
-                </div>
-            `).join('');
+                </div>`;
+            });
+            grid.innerHTML = html;
         }
 
         function yearlyReset() {
@@ -1446,7 +1462,30 @@
             }
         }
 
-        // 10. APPEARANCE
+        // 10. APPEARANCE & PERFORMANCE MODE
+        function saveAppConfig() {
+            const perfMode = document.getElementById('setting-perf-mode').value;
+            localStorage.setItem('gokulPerfMode', perfMode);
+            applyPerformanceMode(perfMode);
+        }
+
+        function loadAppConfig() {
+            const perfMode = localStorage.getItem('gokulPerfMode') || 'high';
+            const perfSelect = document.getElementById('setting-perf-mode');
+            if (perfSelect) perfSelect.value = perfMode;
+            applyPerformanceMode(perfMode);
+        }
+
+        function applyPerformanceMode(mode) {
+            if (mode === 'fast') {
+                document.body.classList.add('fast-mode');
+                document.documentElement.style.setProperty('--glass-alpha', '1');
+            } else {
+                document.body.classList.remove('fast-mode');
+                loadAppearanceSettings(); // Restore original slider value
+            }
+        }
+
         const themeOpts = [{ id: 'harrypotter', name: 'Hogwarts Magic' }, { id: 'jarvis', name: 'J.A.R.V.I.S.' }, { id: 'default', name: 'Corporate Clean' }, { id: 'dark', name: 'Onyx Dark' }];
         function renderThemeGallery() {
             document.getElementById('theme-gallery').innerHTML = themeOpts.map(th => `<div class="loan-card" style="text-align: center; cursor: pointer;" onclick="applyTheme('${th.id}')"><div style="font-weight: 800;">${th.name}</div><button class="btn btn-primary" style="margin-top: 8px;">Apply Theme</button></div>`).join('');
@@ -1457,6 +1496,7 @@
             renderProfile(); 
             applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); 
             loadAppearanceSettings();
+            loadAppConfig(); // Loads performance mode
             updateVaultStats(); renderJobDropdown(); updateShiftStats(); renderLoans(); renderArchives(); renderThemeGallery();
             autoCheckEMIs(); updateNetworkStatus(); preCacheAssets();
         };
