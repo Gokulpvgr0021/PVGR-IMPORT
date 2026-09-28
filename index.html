@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Gokul Hub</title>
+    <title>Gokul Hub Premium</title>
     
     <!-- Mobile PWA Core Tags -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gokul Hub">
     <meta name="application-name" content="Gokul Hub">
-    <meta name="theme-color" content="#0d0c11">
+    <meta name="theme-color" content="#000000">
 
     <!-- Icons -->
     <link rel="icon" href="10276.png" type="image/png">
@@ -246,25 +246,6 @@
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* ====== SECURE APP LOCK SCREEN ====== */
-        #app-lock-screen {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh;
-            background: var(--bg-grad-1); z-index: 999990; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.5s ease-out, visibility 0.5s ease-out, transform 0.5s ease;
-            backdrop-filter: blur(24px) saturate(150%); -webkit-backdrop-filter: blur(24px) saturate(150%);
-        }
-        .hide-lock { opacity: 0; visibility: hidden; transform: scale(1.05); pointer-events: none; }
-        
-        .pin-input {
-            width: 220px; text-align: center; font-size: 36px !important; letter-spacing: 12px; 
-            padding: 16px; border-radius: 18px; border: 2px solid var(--border-color); 
-            background: rgba(0,0,0,0.3); color: var(--text-main); outline: none; 
-            font-family: monospace; transition: all 0.3s; box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
-            -webkit-text-security: disc;
-        }
-        .pin-input:focus { border-color: var(--text-accent); box-shadow: 0 0 20px var(--border-highlight); }
-
         /* ====== SPLASH SCREEN ANIMATION ====== */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh;
@@ -275,8 +256,8 @@
         .splash-logo-container { position: relative; display: flex; justify-content: center; align-items: center; }
         .splash-logo { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--text-accent); object-fit: cover; animation: pulseLogo 1.5s infinite alternate ease-in-out; z-index: 2; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
         .splash-ring { position: absolute; width: 150px; height: 150px; border-radius: 50%; border: 2px dashed var(--text-main); animation: spinRing 4s linear infinite; z-index: 1; }
-        .splash-text { margin-top: 30px; font-size: 38px; font-weight: 900; color: var(--text-main); font-family: var(--brand-font); letter-spacing: 4px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        .splash-sub { font-size: 14px; color: var(--text-accent); font-weight: 700; letter-spacing: 3px; margin-top: 8px; text-transform: uppercase; font-family: var(--app-font); }
+        .splash-text { margin-top: 30px; font-size: 38px; font-weight: 900; color: var(--text-main); font-family: var(--brand-font); letter-spacing: 4px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); text-align: center; }
+        .splash-sub { font-size: 14px; color: var(--text-accent); font-weight: 700; letter-spacing: 3px; margin-top: 8px; text-transform: uppercase; font-family: var(--app-font); text-align: center; }
         .splash-loader { width: 220px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 6px; margin-top: 40px; overflow: hidden; border: 1px solid var(--border-color); }
         .splash-loader-bar { height: 100%; width: 0%; background: var(--text-accent); border-radius: 6px; animation: loadBar 2s ease-in-out forwards; box-shadow: 0 0 10px var(--text-accent); }
         
@@ -353,6 +334,13 @@
         .chart-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; width: 100%; transition: all 0.4s ease; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
         .vault-grid-col { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; width: 100%; }
         
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr)); gap: 16px; width: 100%; }
+        .module-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 22px 10px; display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--text-muted); font-weight: 800; font-size: 13px; text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 100%; box-shadow: 0 6px 15px rgba(0,0,0,0.25); font-family: var(--app-font); position: relative; overflow: hidden; }
+        .module-btn:active { transform: scale(0.92); box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+        .module-btn:hover { border-color: var(--text-accent); color: var(--text-main); box-shadow: 0 10px 25px rgba(0,0,0,0.4); transform: translateY(-3px); }
+        .module-btn i { font-size: 32px; color: var(--text-accent); transition: transform 0.3s; }
+        .module-btn:hover i { transform: scale(1.15); text-shadow: 0 0 15px var(--text-accent); }
+        
         /* Stats Rows */
         .att-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; width: 100%; margin-bottom: 24px; }
         .att-stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px 10px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; box-shadow: 0 6px 15px rgba(0,0,0,0.3); transition: all 0.4s ease; }
@@ -426,22 +414,6 @@
 </head>
 <body>
 
-    <!-- SECURE APP LOCK SCREEN -->
-    <div id="app-lock-screen">
-        <div class="splash-logo-container" style="margin-bottom: 30px;">
-            <img class="splash-logo" src="10276.png" style="animation: none; box-shadow: 0 0 30px var(--text-accent);">
-        </div>
-        <h2 id="lock-title" style="color: var(--text-main); font-family: var(--header-font); font-size: 32px; margin-bottom: 10px; letter-spacing: 2px;">VAULT SECURED</h2>
-        <p id="lock-sub" style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px; font-family: var(--app-font);">Enter your secure PIN to access.</p>
-        
-        <input type="password" id="pin-input" inputmode="numeric" pattern="[0-9]*" placeholder="••••" class="pin-input" style="margin-bottom: 24px;" onkeypress="if(event.key==='Enter') window.savedPin ? handlePinSubmit() : handlePinSetup()">
-        
-        <button class="btn btn-success" id="unlock-btn" style="width: 220px; padding: 16px; font-size: 16px;" onclick="handlePinSubmit()"><i class="fas fa-unlock"></i> Unlock Vault</button>
-        <button class="btn btn-danger" id="setup-pin-btn" style="width: 220px; padding: 16px; font-size: 16px; display: none;" onclick="handlePinSetup()"><i class="fas fa-save"></i> Set New PIN</button>
-        
-        <div id="pin-error" style="color: var(--danger); font-weight: 800; font-size: 14px; margin-top: 20px; opacity: 0; transition: opacity 0.3s; font-family: var(--app-font);">Incorrect PIN!</div>
-    </div>
-
     <!-- CINEMATIC SPLASH SCREEN -->
     <div id="splash-screen">
         <div class="splash-logo-container">
@@ -487,12 +459,12 @@
     <div class="app-shell">
         <aside class="sidebar">
             <div>
-                <div class="sidebar-brand" style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
-                    <img id="sidebar-avatar-img" src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--text-accent); object-fit: cover;">
-                    <div style="font-weight: 900; font-size: 22px; color: var(--text-main); font-family: var(--brand-font);">GOKUL HUB</div>
+                <div class="sidebar-brand">
+                    <img id="sidebar-avatar-img" src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'">
+                    <div class="sidebar-brand-text">GOKUL HUB</div>
                 </div>
 
-                <div class="nav-list" style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="nav-list">
                     <button class="btn btn-primary active" id="dnav-vault-dashboard" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i> <span>Vault</span></button>
                     <button class="btn btn-primary" id="dnav-attendance" onclick="navTo('attendance')"><i class="fas fa-business-time"></i> <span>Work & Salary</span></button>
                     <button class="btn btn-primary" id="dnav-loans" onclick="navTo('loans')"><i class="fas fa-hand-holding-usd"></i> <span>Loans & EMI</span></button>
@@ -503,15 +475,16 @@
                     <div style="margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 24px; display: flex; flex-direction: column; gap: 10px;">
                         <button class="btn btn-success" onclick="triggerAppInstall()"><i class="fas fa-download"></i> <span>Install Standalone App</span></button>
                         <button class="btn btn-primary" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
-                        <button class="btn btn-danger" onclick="exitAppSafe()"><i class="fas fa-sign-out-alt"></i> <span>Secure Exit / Lock</span></button>
+                        <button class="btn btn-primary" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main);" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> <span>Reboot App Engine</span></button>
+                        <button class="btn btn-danger" onclick="yearlyReset()"><i class="fas fa-skull"></i> <span>Yearly Reset</span></button>
                     </div>
                 </div>
             </div>
 
-            <div class="sidebar-footer" style="font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px; padding-top: 14px; border-top: 1px solid var(--border-color);">
+            <div class="sidebar-footer">
                 <div>Identity: <b style="color: var(--text-main);">TVGR Vault</b></div>
                 <div>App Status: <span style="color: var(--text-accent);">Premium PWA</span></div>
-                <button class="btn btn-primary" style="padding: 10px; font-size: 13px; margin-top: 4px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
+                <button class="btn btn-primary" style="padding: 12px; font-size: 14px; margin-top: 8px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
             </div>
         </aside>
 
@@ -580,7 +553,8 @@
             <!-- 2. ATTENDANCE & WORK -->
             <section id="attendance-view" class="view-panel">
                 <div class="form-card" style="margin-bottom: 26px;">
-                    <h3 style="color: var(--text-main); font-size: 22px; font-family: var(--header-font);"><i class="fas fa-plus-circle"></i> Log New Shift</h3>
+                    <h3 style="color: var(--text-main); font-size: 22px; font-family: var(--header-font);"><i class="fas fa-plus-circle"></i> Log Dual Shift</h3>
+                    
                     <div class="input-group">
                         <label style="display: flex; justify-content: space-between;">
                             <span>Select Job Profile</span>
@@ -596,9 +570,20 @@
 
                     <div class="input-group"><label>Date (Sundays = 100% OT)</label><input type="date" id="att-date" class="form-control"></div>
                     
-                    <div style="display: flex; gap: 16px; width: 100%;">
-                        <div class="input-group"><label>In Time</label><input type="time" id="att-in" class="form-control" value="09:30"></div>
-                        <div class="input-group"><label>Out Time</label><input type="time" id="att-out" class="form-control" value="18:00"></div>
+                    <div style="display: flex; flex-direction: column; gap: 12px; background: rgba(0,0,0,0.2); padding: 16px; border-radius: 12px; border: 1px dashed var(--border-color); margin-top: 10px;">
+                        <label style="font-size: 14px; font-weight: 800; color: var(--text-accent);"><i class="fas fa-sun"></i> Morning Shift</label>
+                        <div style="display: flex; gap: 16px; width: 100%;">
+                            <div class="input-group"><label>In</label><input type="time" id="att-morn-in" class="form-control"></div>
+                            <div class="input-group"><label>Out</label><input type="time" id="att-morn-out" class="form-control"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 12px; background: rgba(0,0,0,0.2); padding: 16px; border-radius: 12px; border: 1px dashed var(--border-color); margin-top: 10px;">
+                        <label style="font-size: 14px; font-weight: 800; color: var(--text-muted);"><i class="fas fa-moon"></i> Evening Shift (Optional)</label>
+                        <div style="display: flex; gap: 16px; width: 100%;">
+                            <div class="input-group"><label>In</label><input type="time" id="att-eve-in" class="form-control"></div>
+                            <div class="input-group"><label>Out</label><input type="time" id="att-eve-out" class="form-control"></div>
+                        </div>
                     </div>
                     
                     <button class="btn btn-success" onclick="recordShift()"><i class="fas fa-cloud-upload-alt"></i> Save Shift & Sync Money to Vault</button>
@@ -740,13 +725,14 @@
                     
                     <div class="loan-card" style="border-color: var(--text-accent);">
                         <div style="font-weight: 900; font-size: 20px; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-family: var(--header-font);">
-                            <i class="fas fa-shield-alt"></i> Security & Backup
+                            <i class="fas fa-shield-alt"></i> Data & Backup
                         </div>
-                        <p style="font-size: 14px; color: var(--text-muted); font-weight: 600;">Manage your offline Vault securely.</p>
+                        <p style="font-size: 14px; color: var(--text-muted); font-weight: 600;">Install this app directly onto your phone home screen for true fullscreen with zero browser bars.</p>
                         
                         <div class="btn-flex-row">
                             <button class="btn btn-success" onclick="triggerAppInstall()"><i class="fas fa-download"></i> Install Standalone App</button>
-                            <button class="btn btn-danger" onclick="resetAppPin()"><i class="fas fa-key"></i> Reset Secure PIN</button>
+                            <button class="btn btn-primary" onclick="enterFullScreen()"><i class="fas fa-expand"></i> Force Fullscreen Now</button>
+                            <button class="btn btn-primary" style="background: transparent; color: var(--text-main); border: 2px solid var(--border-color);" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> Reboot App Engine</button>
                             <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-file-export"></i> Backup Vault Data (.json)</button>
                         </div>
                         
@@ -827,9 +813,8 @@
     <!-- MODAL: BOTTOM SHEET MENU -->
     <div class="modal-mask" id="menuSheetModal">
         <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom)); border-radius: 26px 26px 0 0;">
-            <div style="font-weight: 900; font-size: 22px; color: var(--text-main); text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 14px; margin-bottom: 12px; font-family: var(--header-font);">App Menu</div>
+            <div style="font-weight: 900; font-size: 22px; color: var(--text-main); text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 14px; margin-bottom: 12px; font-family: var(--header-font);">App Menu</div>
             <button class="btn btn-success" onclick="triggerAppInstall(); closeModal('menuSheetModal')"><i class="fas fa-download"></i> Install App</button>
-            <button class="btn btn-danger" onclick="exitAppSafe()"><i class="fas fa-sign-out-alt"></i> Secure Lock & Exit</button>
             
             <button class="btn btn-primary" style="background: transparent; border: 2px solid var(--border-color); color: var(--text-main);" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> Reboot App Engine</button>
             
@@ -855,99 +840,6 @@
     </div>
 
     <script>
-        // 0. SECURITY SECURE APP LOCK
-        let savedPin = localStorage.getItem('gokulAppPin');
-
-        function initLockScreen() {
-            const title = document.getElementById('lock-title');
-            const sub = document.getElementById('lock-sub');
-            const unlockBtn = document.getElementById('unlock-btn');
-            const setupBtn = document.getElementById('setup-pin-btn');
-
-            if (!savedPin) {
-                title.innerText = "SETUP SECURE PIN";
-                sub.innerText = "Create a 4-to-6 digit PIN to secure your vault.";
-                unlockBtn.style.display = "none";
-                setupBtn.style.display = "flex";
-            } else {
-                title.innerText = "VAULT SECURED";
-                sub.innerText = "Enter your PIN to access.";
-                unlockBtn.style.display = "flex";
-                setupBtn.style.display = "none";
-            }
-        }
-
-        function handlePinSetup() {
-            const pin = document.getElementById('pin-input').value.trim();
-            if (pin.length < 4) return showPinError("PIN must be at least 4 digits.");
-            localStorage.setItem('gokulAppPin', pin);
-            savedPin = pin;
-            unlockApp();
-        }
-
-        function handlePinSubmit() {
-            const pin = document.getElementById('pin-input').value.trim();
-            if (pin === savedPin) unlockApp();
-            else { showPinError("Incorrect PIN!"); document.getElementById('pin-input').value = ''; }
-        }
-
-        function showPinError(msg) {
-            const err = document.getElementById('pin-error');
-            err.innerText = msg; err.style.opacity = '1';
-            setTimeout(() => { err.style.opacity = '0'; }, 2000);
-        }
-
-        function unlockApp() {
-            document.getElementById('pin-input').value = '';
-            document.getElementById('app-lock-screen').classList.add('hide-lock');
-            setTimeout(() => document.getElementById('app-lock-screen').style.display = 'none', 500);
-            renderVaultChart(); // Render chart once unlocked
-        }
-
-        function lockApp() {
-            const lock = document.getElementById('app-lock-screen');
-            lock.style.display = 'flex';
-            void lock.offsetWidth; // Force Reflow
-            lock.classList.remove('hide-lock');
-            initLockScreen();
-        }
-
-        function resetAppPin() {
-            if(confirm("Are you sure you want to reset your PIN? You will be locked out and asked to create a new one.")) {
-                localStorage.removeItem('gokulAppPin');
-                savedPin = null;
-                window.location.reload();
-            }
-        }
-
-        // SPLASH SCREEN & REBOOT LOGIC
-        document.addEventListener("DOMContentLoaded", () => {
-            initLockScreen(); // Initialize lock data
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                if(splash) {
-                    splash.classList.add('hide-splash');
-                    setTimeout(() => splash.style.display = 'none', 600); 
-                }
-            }, 2000); 
-        });
-
-        function rebootApp() {
-            const splash = document.getElementById('splash-screen');
-            if(splash) {
-                splash.style.display = 'flex';
-                void splash.offsetWidth;
-                splash.classList.remove('hide-splash');
-            }
-            setTimeout(() => { window.location.reload(true); }, 800);
-        }
-
-        function exitAppSafe() {
-            closeModal('menuSheetModal');
-            lockApp(); // Securely lock UI first
-            setTimeout(() => { window.close(); }, 1000); // Attempt to close window (Works on PWA, blocked on some iOS browsers which is why Lock is required)
-        }
-
         // 1. FULLSCREEN & PWA INSTALL CONTROLLER
         let deferredPrompt;
         const isStandalone = window.matchMedia('(display-mode: fullscreen)').matches || 
@@ -1026,7 +918,7 @@
         // 3. SERVICE WORKER FOR OFFLINE
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-premium-v1';
+                const CACHE_NAME = 'gokul-hub-premium-v5';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -1236,7 +1128,7 @@
             });
         }
 
-        // 7. ORDERLY WORK & ATTENDANCE ENGINE
+        // 7. ORDERLY WORK & ATTENDANCE ENGINE (Dual Shift Update)
         let shifts = JSON.parse(localStorage.getItem('gokulAttRecords')) || [];
         const defaultJobs = ["Petrol Bunk Worker", "Instagram Influencer", "Content Creator"];
         let jobProfiles = JSON.parse(localStorage.getItem('gokulJobProfiles')) || defaultJobs;
@@ -1292,25 +1184,46 @@
 
         function recordShift() {
             const date = document.getElementById('att-date').value;
-            const inTime = document.getElementById('att-in').value;
-            const outTime = document.getElementById('att-out').value;
             const baseSalary = parseFloat(document.getElementById('att-base-rate').value);
             const otRate = parseFloat(document.getElementById('att-ot-rate').value);
             const jobType = document.getElementById('att-job-select').value;
 
-            if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) return alert("Fill all shift details");
-            if (shifts.some(s => s.date === date)) return alert(`Restriction: A shift is already logged for ${date}. You can only log one shift per day.`);
+            const mornIn = document.getElementById('att-morn-in').value;
+            const mornOut = document.getElementById('att-morn-out').value;
+            const eveIn = document.getElementById('att-eve-in').value;
+            const eveOut = document.getElementById('att-eve-out').value;
+
+            if (!date || isNaN(baseSalary) || isNaN(otRate)) return alert("Fill date, base rate, and OT rate details.");
+
+            if (shifts.some(s => s.date === date)) {
+                return alert(`Restriction: A shift is already logged for ${date}. You can only log one record per day. Delete the existing one to replace it.`);
+            }
+
+            let net = 0;
+            let timingsArr = [];
+
+            if (mornIn && mornOut) {
+                let start = new Date(`1970-01-01T${mornIn}:00`);
+                let end = new Date(`1970-01-01T${mornOut}:00`);
+                if (end < start) end.setDate(end.getDate() + 1);
+                net += (end - start) / (1000 * 60 * 60);
+                timingsArr.push(`☀️ ${mornIn}-${mornOut}`);
+            }
+
+            if (eveIn && eveOut) {
+                let start = new Date(`1970-01-01T${eveIn}:00`);
+                let end = new Date(`1970-01-01T${eveOut}:00`);
+                if (end < start) end.setDate(end.getDate() + 1);
+                net += (end - start) / (1000 * 60 * 60);
+                timingsArr.push(`🌙 ${eveIn}-${eveOut}`);
+            }
+
+            if (net === 0) return alert("Please enter at least one valid shift timing (Morning or Evening).");
 
             saveRates();
-
-            const start = new Date(`1970-01-01T${inTime}:00`);
-            let end = new Date(`1970-01-01T${outTime}:00`);
-            if (end < start) end.setDate(end.getDate() + 1);
-
-            const gross = (end - start) / (1000 * 60 * 60);
-            const breakDeduct = gross > 4 ? 0.5 : 0;
-            const net = Math.max(0, gross - breakDeduct);
             
+            const combinedTiming = timingsArr.join(' | ');
+
             const dateParts = date.split('-');
             const shiftDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
             const isSunday = shiftDate.getDay() === 0;
@@ -1322,7 +1235,11 @@
             const otEarned = otHours * otRate;
             const grossEarned = baseEarned + otEarned;
 
-            shifts.push({ date, jobType, inTime, outTime, net, otHours, totalEarned: grossEarned, grossEarned: grossEarned });
+            shifts.push({ 
+                date, jobType, 
+                timing: combinedTiming, 
+                net, otHours, totalEarned: grossEarned, grossEarned: grossEarned 
+            });
             shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
             localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
             updateShiftStats();
@@ -1330,6 +1247,10 @@
             logVaultTx(`Shift Salary: ${jobType} 💰`, 'income', true, grossEarned, `Date: ${date}`);
             
             document.getElementById('att-date').valueAsDate = new Date();
+            
+            document.getElementById('att-morn-in').value = ''; document.getElementById('att-morn-out').value = '';
+            document.getElementById('att-eve-in').value = ''; document.getElementById('att-eve-out').value = '';
+
             if(isSunday) alert(`SUNDAY SHIFT! 100% calculated as OT. ₹${grossEarned.toFixed(2)} deposited to Vault.`);
             else alert(`Shift Gross Pay saved! ₹${grossEarned.toFixed(2)} deposited to Vault.`);
         }
@@ -1348,10 +1269,12 @@
             [...shifts].reverse().forEach((s, revIdx) => {
                 const actualIdx = shifts.length - 1 - revIdx;
                 const shortJob = s.jobType.length > 8 ? s.jobType.substring(0,8) + '..' : s.jobType;
+                const timingDisp = s.timing || `${s.inTime}-${s.outTime}`;
+                
                 html += `<tr>
                     <td>${s.date}</td>
                     <td style="font-weight: 700; font-size: 11px;">${shortJob}</td>
-                    <td style="font-size: 11px;">${s.inTime}-${s.outTime}</td>
+                    <td style="font-size: 10px; white-space: pre-wrap;">${timingDisp.replace(' | ', '\n')}</td>
                     <td>${s.net.toFixed(1)}h</td>
                     <td style="color: var(--text-accent); font-weight: 700;">${s.otHours.toFixed(1)}h</td>
                     <td style="font-weight: 900;">₹${(s.grossEarned || s.totalEarned).toFixed(0)}</td>
@@ -1382,7 +1305,7 @@
             }
         }
 
-        // CORPORATE PDF EXPORTS WITH PROFILE PHOTO
+        // CORPORATE PDF EXPORTS
         function downloadPayslip() {
             if (shifts.length === 0) return alert("No shifts to export!");
             const { jsPDF } = window.jspdf;
@@ -1390,86 +1313,51 @@
             const green = [50, 130, 70];
             
             let totalGross = 0, totalOTHours = 0, totalNetHours = 0;
-            shifts.forEach(s => {
-                totalGross += (s.grossEarned || s.totalEarned);
-                totalNetHours += s.net;
-                totalOTHours += s.otHours;
-            });
+            shifts.forEach(s => { totalGross += (s.grossEarned || s.totalEarned); totalNetHours += s.net; totalOTHours += s.otHours; });
 
             const totalEpf = parseFloat(localStorage.getItem('gokulMonthlyEPF')) || 0;
             const totalEsic = parseFloat(localStorage.getItem('gokulMonthlyESIC')) || 0;
 
             const otPay = totalOTHours > 0 ? (totalGross * (totalOTHours / totalNetHours)) : 0;
             const basePay = totalGross - otPay;
-            const basic = basePay * 0.6;
-            const hra = basePay * 0.4;
-            const totalDed = totalEpf + totalEsic;
+            const basic = basePay * 0.6; const hra = basePay * 0.4; const totalDed = totalEpf + totalEsic;
 
             try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 15, 20, 20); } catch(e) {}
 
-            doc.setTextColor(green[0], green[1], green[2]);
-            doc.setFontSize(16);
-            doc.setFont("helvetica", "bold");
-            doc.text("GOKUL HUB / MAGNUM CLOTHING PVT. LTD.", 105, 20, { align: "center" });
+            doc.setTextColor(green[0], green[1], green[2]); doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.text("GOKUL HUB / MAGNUM CLOTHING PVT. LTD.", 105, 20, { align: "center" });
+            doc.setFontSize(10); doc.setFont("helvetica", "normal"); const monthName = new Date().toLocaleString('default', { month: 'long', year: 'numeric' }); doc.text(`Payslip For The Month of ${monthName}`, 105, 26, { align: "center" });
 
-            doc.setFontSize(10);
-            doc.setFont("helvetica", "normal");
-            const monthName = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
-            doc.text(`Payslip For The Month of ${monthName}`, 105, 26, { align: "center" });
+            doc.setDrawColor(green[0], green[1], green[2]); doc.setLineWidth(0.4); doc.rect(14, 38, 182, 145);
+            doc.line(14, 52, 196, 52); doc.line(14, 62, 196, 62);
 
-            doc.setDrawColor(green[0], green[1], green[2]);
-            doc.setLineWidth(0.4);
-            doc.rect(14, 38, 182, 145);
-
-            doc.line(14, 52, 196, 52);
-            doc.line(14, 62, 196, 62);
-
-            doc.setTextColor(0, 0, 0);
-            doc.setFontSize(9);
-            doc.text(`Emp. No/Card No : ${profile.idStr}`, 16, 44);
-            doc.text(`Name : ${profile.name.toUpperCase()}`, 80, 44);
-            doc.text(`Des. : ${profile.role.substring(0, 20)}`, 140, 44);
+            doc.setTextColor(0, 0, 0); doc.setFontSize(9);
+            doc.text(`Emp. No/Card No : ${profile.idStr}`, 16, 44); doc.text(`Name : ${profile.name.toUpperCase()}`, 80, 44); doc.text(`Des. : ${profile.role.substring(0, 20)}`, 140, 44);
 
             const days = shifts.length;
-            doc.text(`Days pre : ${days}`, 16, 58);
-            doc.text(`PH : 0`, 50, 58);
-            doc.text(`EL : 0`, 70, 58);
-            doc.text(`ELB : 0`, 95, 58);
-            doc.text(`O.ALL : 0`, 115, 58);
-            doc.text(`P days : ${days}`, 145, 58);
-            doc.text(`LOP : 0`, 175, 58);
+            doc.text(`Days pre : ${days}`, 16, 58); doc.text(`PH : 0`, 50, 58); doc.text(`EL : 0`, 70, 58); doc.text(`ELB : 0`, 95, 58); doc.text(`O.ALL : 0`, 115, 58); doc.text(`P days : ${days}`, 145, 58); doc.text(`LOP : 0`, 175, 58);
 
-            doc.setFont("helvetica", "bold");
-            doc.setTextColor(green[0], green[1], green[2]);
-            doc.text("EARNINGS", 55, 68, { align: "center" });
-            doc.text("DEDUCTIONS", 145, 68, { align: "center" });
+            doc.setFont("helvetica", "bold"); doc.setTextColor(green[0], green[1], green[2]); doc.text("EARNINGS", 55, 68, { align: "center" }); doc.text("DEDUCTIONS", 145, 68, { align: "center" });
+            doc.line(14, 72, 196, 72); doc.line(105, 62, 105, 183);
 
-            doc.line(14, 72, 196, 72);
-            doc.line(105, 62, 105, 183);
-
-            doc.setTextColor(0, 0, 0);
-            doc.setFont("helvetica", "normal");
-            let y = 80;
-            const gap = 8;
-            const leftX = 16, valLeftX = 98, rightX = 108, valRightX = 190;
-            doc.text("Basic", leftX, y);                doc.text(basic.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
-            doc.text("HRA", leftX, y);                  doc.text(hra.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
-            doc.text("EDA/O.ALL", leftX, y);            doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
-            doc.text("OT", leftX, y);                   doc.text(otPay.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
-            doc.text("Misc. Ear 1", leftX, y);          doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
-            doc.text("Misc. 2", leftX, y);              doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
-            doc.text("OTHER", leftX, y);                doc.text("0.00", valLeftX, y, { align: "right" });
+            doc.setTextColor(0, 0, 0); doc.setFont("helvetica", "normal");
+            let y = 80; const gap = 8; const leftX = 16, valLeftX = 98, rightX = 108, valRightX = 190;
+            doc.text("Basic", leftX, y); doc.text(basic.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("HRA", leftX, y); doc.text(hra.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("EDA/O.ALL", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("OT", leftX, y); doc.text(otPay.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("Misc. Ear 1", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("Misc. 2", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("OTHER", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" });
 
             y = 80;
-            doc.text("EPF", rightX, y);                 doc.text(totalEpf.toFixed(2), valRightX, y, { align: "right" }); y += gap;
-            doc.text("ESI", rightX, y);                 doc.text(totalEsic.toFixed(2), valRightX, y, { align: "right" }); y += gap;
-            doc.text("PT", rightX, y);                  doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
-            doc.text("Loan", rightX, y);                doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
-            doc.text("Adv.", rightX, y);                doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
-            doc.text("TDS", rightX, y);                 doc.text("0.00", valRightX, y, { align: "right" });
+            doc.text("EPF", rightX, y); doc.text(totalEpf.toFixed(2), valRightX, y, { align: "right" }); y += gap;
+            doc.text("ESI", rightX, y); doc.text(totalEsic.toFixed(2), valRightX, y, { align: "right" }); y += gap;
+            doc.text("PT", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("Loan", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("Adv.", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("TDS", rightX, y); doc.text("0.00", valRightX, y, { align: "right" });
 
-            doc.line(14, 160, 196, 160);
-            doc.line(105, 170, 196, 170);
+            doc.line(14, 160, 196, 160); doc.line(105, 170, 196, 170);
             
             doc.setFont("helvetica", "bold");
             doc.text("Gross", leftX, 167); doc.text(totalGross.toFixed(2), valLeftX, 167, { align: "right" });
@@ -1481,51 +1369,37 @@
 
         function downloadTimesheet() {
             if (shifts.length === 0) return alert("No shifts to export!");
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'mm', 'a4');
+            const { jsPDF } = window.jspdf; const doc = new jsPDF('p', 'mm', 'a4');
             const primaryColor = [28, 69, 135], accentColor = [22, 163, 74], darkText = [40, 40, 40], lightText = [100, 100, 100];
 
-            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-            doc.rect(0, 0, 210, 40, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(22); doc.setFont("helvetica", "bold");
-            
+            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.rect(0, 0, 210, 40, 'F');
+            doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.setFont("helvetica", "bold");
             try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 10, 20, 20); } catch(e) {}
+
             const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14;
-            doc.text("GOKUL HUB INC.", textStartX, 20);
-            doc.setFontSize(12); doc.setFont("helvetica", "normal");
-            doc.text("OFFICIAL TIMESHEET & SALARY REPORT", textStartX, 30);
+            doc.text("GOKUL HUB INC.", textStartX, 20); doc.setFontSize(12); doc.setFont("helvetica", "normal"); doc.text("OFFICIAL TIMESHEET & SALARY REPORT", textStartX, 30);
             
-            const now = new Date();
-            doc.setFontSize(10); doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
-            
-            doc.setTextColor(darkText[0], darkText[1], darkText[2]);
-            doc.setFontSize(12); doc.setFont("helvetica", "bold"); doc.text("EMPLOYEE DETAILS", 14, 50);
-            doc.setFontSize(10); doc.setFont("helvetica", "normal");
-            doc.text(`Name: ${profile.name}`, 14, 58); doc.text(`ID: ${profile.idStr}`, 14, 64); doc.text(`Role: ${profile.role}`, 14, 70);
+            const now = new Date(); doc.setFontSize(10); doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
+            doc.setTextColor(darkText[0], darkText[1], darkText[2]); doc.setFontSize(12); doc.setFont("helvetica", "bold"); doc.text("EMPLOYEE DETAILS", 14, 50);
+            doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.text(`Name: ${profile.name}`, 14, 58); doc.text(`ID: ${profile.idStr}`, 14, 64); doc.text(`Role: ${profile.role}`, 14, 70);
             
             let totalPay = 0, totalHrs = 0, totalOT = 0;
             shifts.forEach(s => { totalPay += (s.grossEarned || s.totalEarned); totalHrs += s.net; totalOT += s.otHours; });
 
-            doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-            doc.setLineWidth(0.5); doc.roundedRect(120, 45, 75, 38, 3, 3, 'S');
-            doc.setFont("helvetica", "bold"); doc.text("SUMMARY", 125, 52);
-            doc.setFont("helvetica", "normal");
+            doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.setLineWidth(0.5); doc.roundedRect(120, 45, 75, 38, 3, 3, 'S');
+            doc.setFont("helvetica", "bold"); doc.text("SUMMARY", 125, 52); doc.setFont("helvetica", "normal");
             doc.text(`Total Days: ${shifts.length}`, 125, 60); doc.text(`Reg Hours: ${totalHrs.toFixed(1)}h`, 125, 66); doc.text(`OT Hours: ${totalOT.toFixed(1)}h`, 125, 72);
-            doc.setFont("helvetica", "bold"); doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]);
-            doc.text(`Gross Salary: INR ${totalPay.toFixed(2)}`, 125, 78);
+            doc.setFont("helvetica", "bold"); doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]); doc.text(`Gross Salary: INR ${totalPay.toFixed(2)}`, 125, 78);
 
             doc.setTextColor(darkText[0], darkText[1], darkText[2]);
             const tableColumn = ["Date", "Job Title", "Timing", "Reg (Hrs)", "OT (Hrs)", "Earned (INR)"];
-            const tableRows = shifts.map(s => [s.date, s.jobType, `${s.inTime} - ${s.outTime}`, (s.net - s.otHours).toFixed(1), s.otHours.toFixed(1), `Rs. ${(s.grossEarned || s.totalEarned).toFixed(2)}`]);
+            const tableRows = shifts.map(s => [s.date, s.jobType, s.timing || `${s.inTime} - ${s.outTime}`, (s.net - s.otHours).toFixed(1), s.otHours.toFixed(1), `Rs. ${(s.grossEarned || s.totalEarned).toFixed(2)}`]);
 
             doc.autoTable({ startY: 95, head: [tableColumn], body: tableRows, theme: 'striped', headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' }, bodyStyles: { textColor: darkText, halign: 'center' }, alternateRowStyles: { fillColor: [240, 244, 248] }, styles: { font: 'helvetica', fontSize: 10, cellPadding: 6 }, columnStyles: { 1: { halign: 'left' }, 5: { fontStyle: 'bold', textColor: [22, 163, 74] } }, margin: { top: 10, right: 14, bottom: 20, left: 14 } });
 
             const finalY = doc.lastAutoTable.finalY || 95;
-            doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30);
-            doc.setLineWidth(0.5); doc.line(14, finalY + 25, 70, finalY + 25);
-            doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(lightText[0], lightText[1], lightText[2]);
-            doc.text("System Generated Report - Gokul Hub Automated Offline PWA", 14, finalY + 45);
+            doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30); doc.setLineWidth(0.5); doc.line(14, finalY + 25, 70, finalY + 25);
+            doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(lightText[0], lightText[1], lightText[2]); doc.text("System Generated Report - Gokul Hub Automated Offline PWA", 14, finalY + 45);
 
             doc.save(`Gokul_Timesheet_Report_${now.getTime()}.pdf`);
         }
@@ -1581,9 +1455,9 @@
             const calc = runEMICalc();
             if (!calc) return alert("Please fill in Principal, Interest, and Tenure correctly.");
 
-            loans.push({ id: Date.now(), name, due, emi: calc.emi, principal: calc.p, tenure: calc.n, paid: 0, autopay, lastPaidMonth: "", startDate: startDate, endDate: endDate });
-            localStorage.setItem('gokulLoans', JSON.stringify(loans));
-            renderLoans();
+            const uniqueId = Date.now();
+            loans.push({ id: uniqueId, name, due, emi: calc.emi, principal: calc.p, tenure: calc.n, paid: 0, autopay, lastPaidMonth: "", startDate: startDate, endDate: endDate });
+            localStorage.setItem('gokulLoans', JSON.stringify(loans)); renderLoans();
             
             document.getElementById('loan-name-input').value = ''; document.getElementById('loan-principal').value = '';
             document.getElementById('loan-rate').value = ''; document.getElementById('loan-tenure').value = ''; document.getElementById('loan-end-date').value = '';
@@ -1651,8 +1525,7 @@
             const total = l.emi * count;
             l.paid += count; l.lastPaidMonth = `${new Date().getFullYear()}-${new Date().getMonth() + 1}`;
             
-            localStorage.setItem('gokulLoans', JSON.stringify(loans));
-            renderLoans(); alert(`Successfully logged ₹${total.toLocaleString('en-IN')} payment for ${l.name}.`);
+            localStorage.setItem('gokulLoans', JSON.stringify(loans)); renderLoans(); alert(`Successfully logged ₹${total.toLocaleString('en-IN')} payment for ${l.name}.`);
         }
 
         function deleteLoan(id) {
@@ -1747,11 +1620,51 @@
             }
         }
 
+        const themeOpts = [
+            { id: 'rajput', name: '👑 Royal Rajput' }, 
+            { id: 'peacock', name: '🦚 Peacock Emerald' }, 
+            { id: 'saffron', name: '🕉️ Varanasi Saffron' }, 
+            { id: 'mughal', name: '🕌 Mughal Magenta' }, 
+            { id: 'maratha', name: '⚔️ Maratha Navy' }, 
+            { id: 'chola', name: '🏛️ Chola Bronze' }, 
+            { id: 'sapphire', name: '💎 Sapphire Ocean' }, 
+            { id: 'amethyst', name: '🔮 Amethyst Lotus' }, 
+            { id: 'jade', name: '🌿 Jade Forest' }, 
+            { id: 'ruby', name: '🌹 Crimson Ruby' }, 
+            { id: 'gold', name: '✨ Golden Temple' }, 
+            { id: 'slate', name: '⛰️ Himalayan Slate' }, 
+            { id: 'desert', name: '🐪 Thar Desert' }, 
+            { id: 'sunset', name: '🌅 Sunset Orange' }, 
+            { id: 'lavender', name: '🪻 Kashmiri Lavender' }, 
+            { id: 'platinum', name: '💍 Platinum Pearl' }, 
+            { id: 'obsidian', name: '🌑 Obsidian Gold' },
+            { id: 'light', name: '🕊️ Ivory Palace' }, 
+            { id: 'jarvis', name: '🤖 J.A.R.V.I.S.' }, 
+            { id: 'dark', name: '🖤 Onyx Dark' }
+        ];
+
+        function renderThemeGallery() {
+            document.getElementById('theme-gallery').innerHTML = themeOpts.map(th => `<div class="loan-card" style="text-align: center; cursor: pointer; border: 2px solid var(--border-color);" onclick="applyTheme('${th.id}')"><div style="font-weight: 900; font-size: 16px; font-family: var(--header-font);">${th.name}</div><button class="btn btn-primary" style="margin-top: 12px; font-size: 13px;">Apply Theme</button></div>`).join('');
+        }
+        
+        function applyTheme(id) { 
+            document.documentElement.setAttribute('data-theme', id); 
+            localStorage.setItem('gokulTheme', id); 
+            
+            const rootStyles = getComputedStyle(document.documentElement);
+            const grad1 = rootStyles.getPropertyValue('--bg-grad-1').trim();
+            const splash = document.getElementById('splash-screen');
+            if (splash && grad1) {
+                splash.style.background = grad1;
+            }
+            
+            renderVaultChart(); 
+        }
+
         // ==========================================
         // 11. HORIZONTAL SWIPE NAVIGATION (SAFE MATH)
         // ==========================================
-        let touchStartX = null;
-        let touchStartY = null;
+        let touchStartX = null; let touchStartY = null;
         const appPages = ['vault-dashboard', 'attendance', 'loans', 'history', 'archives', 'settings'];
 
         document.addEventListener('touchstart', e => {
@@ -1777,15 +1690,48 @@
         }, {passive: true});
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Wait for lock screen resolution before rendering
-            if (savedPin) return; // Will render when unlocked
-            
             renderProfile(); 
             applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); 
-            loadAppearanceSettings(); loadAppConfig(); 
-            updateVaultStats(); renderJobDropdown(); updateShiftStats(); renderLoans(); renderArchives(); renderThemeGallery();
-            autoCheckEMIs(); updateNetworkStatus(); 
+            // Setting loading calls
+            const savedAlpha = localStorage.getItem('gokulGlassAlpha');
+            if (savedAlpha) {
+                document.documentElement.style.setProperty('--glass-alpha', savedAlpha);
+                if (document.getElementById('opacity-slider')) document.getElementById('opacity-slider').value = savedAlpha;
+            }
+            const savedDimmer = localStorage.getItem('gokulVideoDimmer');
+            if (savedDimmer) {
+                document.documentElement.style.setProperty('--video-dimmer', savedDimmer);
+                if (document.getElementById('dimmer-slider')) document.getElementById('dimmer-slider').value = savedDimmer;
+            }
+            
+            loadAppConfig(); 
+            updateVaultStats(); 
+            renderJobDropdown(); 
+            updateShiftStats(); 
+            renderLoans(); 
+            renderArchives(); 
+            renderThemeGallery();
+            autoCheckEMIs(); 
+            updateNetworkStatus(); 
+
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                if(splash) {
+                    splash.classList.add('hide-splash');
+                    setTimeout(() => splash.style.display = 'none', 600); 
+                }
+            }, 2000); 
         });
+
+        // Exposing specific appearance updates globally to support the sliders
+        window.updateGlassOpacity = function(val) {
+            document.documentElement.style.setProperty('--glass-alpha', val);
+            localStorage.setItem('gokulGlassAlpha', val);
+        }
+        window.updateVideoDimmer = function(val) {
+            document.documentElement.style.setProperty('--video-dimmer', val);
+            localStorage.setItem('gokulVideoDimmer', val);
+        }
     </script>
 </body>
 </html>
