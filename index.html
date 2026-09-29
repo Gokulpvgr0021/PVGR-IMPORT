@@ -242,29 +242,28 @@
             background-size: 300% 300%; animation: ambientGradient 12s ease infinite;
             color: var(--text-main); user-select: none; -webkit-user-select: none; 
             overscroll-behavior: none; touch-action: pan-y pinch-zoom; transform: translateZ(0); 
+            transition: opacity 0.3s ease;
         }
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* ====== SPLASH SCREEN ANIMATION ====== */
-        #splash-screen {
+        /* ====== SECURE APP LOCK SCREEN ====== */
+        #app-lock-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh;
-            background: var(--bg-grad-1); 
-            z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+            background: var(--bg-grad-1); z-index: 999990; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out, transform 0.5s ease;
+            backdrop-filter: blur(24px) saturate(150%); -webkit-backdrop-filter: blur(24px) saturate(150%);
         }
-        .splash-logo-container { position: relative; display: flex; justify-content: center; align-items: center; }
-        .splash-logo { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--text-accent); object-fit: cover; animation: pulseLogo 1.5s infinite alternate ease-in-out; z-index: 2; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        .splash-ring { position: absolute; width: 150px; height: 150px; border-radius: 50%; border: 2px dashed var(--text-main); animation: spinRing 4s linear infinite; z-index: 1; }
-        .splash-text { margin-top: 30px; font-size: 38px; font-weight: 900; color: var(--text-main); font-family: var(--brand-font); letter-spacing: 4px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); text-align: center; }
-        .splash-sub { font-size: 14px; color: var(--text-accent); font-weight: 700; letter-spacing: 3px; margin-top: 8px; text-transform: uppercase; font-family: var(--app-font); text-align: center; }
-        .splash-loader { width: 220px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 6px; margin-top: 40px; overflow: hidden; border: 1px solid var(--border-color); }
-        .splash-loader-bar { height: 100%; width: 0%; background: var(--text-accent); border-radius: 6px; animation: loadBar 2s ease-in-out forwards; box-shadow: 0 0 10px var(--text-accent); }
+        .hide-lock { opacity: 0; visibility: hidden; transform: scale(1.05); pointer-events: none; }
         
-        @keyframes loadBar { 0% { width: 0%; } 50% { width: 70%; } 100% { width: 100%; } }
-        @keyframes pulseLogo { 0% { transform: scale(0.95); box-shadow: 0 0 15px var(--border-color); } 100% { transform: scale(1.05); box-shadow: 0 0 40px var(--border-highlight); border-color: var(--text-main); } }
-        @keyframes spinRing { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .hide-splash { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
+        .auth-input {
+            width: 100%; text-align: center; font-size: 18px !important; letter-spacing: 2px; 
+            padding: 16px; border-radius: 12px; border: 2px solid var(--border-color); 
+            background: rgba(0,0,0,0.4); color: var(--text-main); outline: none; 
+            font-family: var(--app-font); transition: all 0.3s; box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .auth-input:focus { border-color: var(--text-accent); box-shadow: 0 0 20px var(--border-highlight); background: rgba(0,0,0,0.6); }
 
         /* ====== UI SHELL ====== */
         .video-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; object-fit: cover; z-index: -2; pointer-events: none; opacity: 0.95; will-change: opacity; }
@@ -333,13 +332,6 @@
 
         .chart-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; width: 100%; transition: all 0.4s ease; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
         .vault-grid-col { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; width: 100%; }
-        
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr)); gap: 16px; width: 100%; }
-        .module-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 22px 10px; display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--text-muted); font-weight: 800; font-size: 13px; text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 100%; box-shadow: 0 6px 15px rgba(0,0,0,0.25); font-family: var(--app-font); position: relative; overflow: hidden; }
-        .module-btn:active { transform: scale(0.92); box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-        .module-btn:hover { border-color: var(--text-accent); color: var(--text-main); box-shadow: 0 10px 25px rgba(0,0,0,0.4); transform: translateY(-3px); }
-        .module-btn i { font-size: 32px; color: var(--text-accent); transition: transform 0.3s; }
-        .module-btn:hover i { transform: scale(1.15); text-shadow: 0 0 15px var(--text-accent); }
         
         /* Stats Rows */
         .att-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; width: 100%; margin-bottom: 24px; }
@@ -414,19 +406,6 @@
 </head>
 <body>
 
-    <!-- CINEMATIC SPLASH SCREEN -->
-    <div id="splash-screen">
-        <div class="splash-logo-container">
-            <div class="splash-ring"></div>
-            <img id="splash-avatar-img" class="splash-logo" src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'">
-        </div>
-        <div class="splash-text">GOKUL HUB</div>
-        <div class="splash-sub">SECURE OFFLINE SYSTEM</div>
-        <div class="splash-loader">
-            <div class="splash-loader-bar"></div>
-        </div>
-    </div>
-    
     <!-- OFFLINE INDICATOR -->
     <div id="offline-badge"><i class="fas fa-wifi-slash"></i> Offline Mode: Synced Locally</div>
 
@@ -476,7 +455,6 @@
                         <button class="btn btn-success" onclick="triggerAppInstall()"><i class="fas fa-download"></i> <span>Install Standalone App</span></button>
                         <button class="btn btn-primary" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
                         <button class="btn btn-primary" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main);" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> <span>Reboot App Engine</span></button>
-                        <button class="btn btn-danger" onclick="yearlyReset()"><i class="fas fa-skull"></i> <span>Yearly Reset</span></button>
                     </div>
                 </div>
             </div>
@@ -815,7 +793,6 @@
         <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom)); border-radius: 26px 26px 0 0;">
             <div style="font-weight: 900; font-size: 22px; color: var(--text-main); text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 14px; margin-bottom: 12px; font-family: var(--header-font);">App Menu</div>
             <button class="btn btn-success" onclick="triggerAppInstall(); closeModal('menuSheetModal')"><i class="fas fa-download"></i> Install App</button>
-            
             <button class="btn btn-primary" style="background: transparent; border: 2px solid var(--border-color); color: var(--text-main);" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> Reboot App Engine</button>
             
             <button class="btn btn-primary" onclick="navTo('history'); closeModal('menuSheetModal')"><i class="fas fa-scroll"></i> Ledger Records</button>
@@ -872,15 +849,6 @@
             loadAppearanceSettings(); 
             loadAppConfig(); 
 
-            // Fail-safe timeout to destroy splash screen no matter what
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                if(splash) {
-                    splash.classList.add('hide-splash');
-                    setTimeout(() => splash.style.display = 'none', 600); 
-                }
-            }, 2000); 
-
             updateNetworkStatus(); 
             renderProfile(); 
             updateVaultStats(); 
@@ -893,17 +861,11 @@
         });
 
         function rebootApp() {
-            const splash = document.getElementById('splash-screen');
-            if(splash) {
-                splash.style.display = 'flex';
-                void splash.offsetWidth;
-                splash.classList.remove('hide-splash');
-                splash.style.opacity = '1';
-                splash.style.visibility = 'visible';
-            }
+            // Instantly blank out the screen to hide transition
+            document.body.style.opacity = '0';
             setTimeout(() => {
                 window.location.reload(true);
-            }, 800);
+            }, 300);
         }
 
         // --- 2. FULLSCREEN & PWA INSTALL CONTROLLER ---
@@ -984,7 +946,7 @@
         // --- 4. SERVICE WORKER FOR OFFLINE ---
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-premium-v7';
+                const CACHE_NAME = 'gokul-hub-premium-v8';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
