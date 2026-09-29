@@ -247,16 +247,23 @@
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* ====== EXIT SCREEN ====== */
-        #exit-screen {
+        /* ====== SPLASH SCREEN ANIMATION ====== */
+        #splash-screen, #exit-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh;
             background: var(--bg-grad-1); 
             z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
         }
+        .splash-logo-container { position: relative; display: flex; justify-content: center; align-items: center; }
+        .splash-logo { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--text-accent); object-fit: cover; animation: pulseLogo 1.5s infinite alternate ease-in-out; z-index: 2; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .splash-ring { position: absolute; width: 150px; height: 150px; border-radius: 50%; border: 2px dashed var(--text-main); animation: spinRing 4s linear infinite; z-index: 1; }
         .splash-text { margin-top: 30px; font-size: 38px; font-weight: 900; color: var(--text-main); font-family: var(--brand-font); letter-spacing: 4px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); text-align: center; }
         .splash-sub { font-size: 14px; color: var(--text-accent); font-weight: 700; letter-spacing: 3px; margin-top: 8px; text-transform: uppercase; font-family: var(--app-font); text-align: center; }
+        
         .hide-splash { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
+
+        @keyframes pulseLogo { 0% { transform: scale(0.95); box-shadow: 0 0 15px var(--border-color); } 100% { transform: scale(1.05); box-shadow: 0 0 40px var(--border-highlight); border-color: var(--text-main); } }
+        @keyframes spinRing { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* ====== UI SHELL ====== */
         .video-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; object-fit: cover; z-index: -2; pointer-events: none; opacity: 0.95; will-change: opacity; }
@@ -406,12 +413,8 @@
 </head>
 <body>
 
-    <!-- EXIT SCREEN (Simple Message before close) -->
-    <div id="exit-screen" class="hide-splash">
-        <div style="font-size: 60px; color: var(--text-accent); margin-bottom: 20px;"><i class="fas fa-door-open"></i></div>
-        <div class="splash-text" style="font-size: 32px;">GOODBYE!</div>
-        <div class="splash-sub" style="text-transform: none; font-size: 16px; margin-top: 15px; color: var(--text-muted);">You may now securely close this app.</div>
-    </div>
+    <!-- LIVE CLOCK (HIDDEN ON START, ONLY IN VAULT) -->
+    <!-- (Moved inside Vault Dashboard code) -->
 
     <!-- OFFLINE INDICATOR -->
     <div id="offline-badge"><i class="fas fa-wifi-slash"></i> Offline Mode: Synced Locally</div>
@@ -834,8 +837,8 @@
         <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom)); border-radius: 26px 26px 0 0;">
             <div style="font-weight: 900; font-size: 22px; color: var(--text-main); text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 14px; margin-bottom: 12px; font-family: var(--header-font);">App Menu</div>
             <button class="btn btn-success" onclick="triggerAppInstall(); closeModal('menuSheetModal')"><i class="fas fa-download"></i> Install App</button>
-            
             <button class="btn btn-primary" style="background: transparent; border: 2px solid var(--border-color); color: var(--text-main);" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> Reboot App Engine</button>
+            <button class="btn btn-danger" onclick="exitAppSafe()"><i class="fas fa-sign-out-alt"></i> Close App</button>
             
             <button class="btn btn-primary" onclick="navTo('history'); closeModal('menuSheetModal')"><i class="fas fa-scroll"></i> Ledger Records</button>
             <button class="btn btn-primary" onclick="navTo('archives'); closeModal('menuSheetModal')"><i class="fas fa-archive"></i> Past Months</button>
@@ -952,7 +955,7 @@
             
             startLiveClock(); 
 
-            // NO LOCK SCREEN: directly load data
+            // NO LOCK SCREEN: directly load data instantly
             renderProfile(); 
             updateVaultStats(); 
             renderJobDropdown(); 
@@ -1619,11 +1622,15 @@
         function calcLoanEndDate() {
             const n = parseInt(document.getElementById('loan-tenure').value);
             const startInput = document.getElementById('loan-start-date').value;
+            
             if (n && startInput) {
                 const dateParts = startInput.split('-');
                 const sDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
                 sDate.setMonth(sDate.getMonth() + n);
-                const y = sDate.getFullYear(); const m = String(sDate.getMonth() + 1).padStart(2, '0'); const d = String(sDate.getDate()).padStart(2, '0');
+                
+                const y = sDate.getFullYear();
+                const m = String(sDate.getMonth() + 1).padStart(2, '0');
+                const d = String(sDate.getDate()).padStart(2, '0');
                 document.getElementById('loan-end-date').value = `${y}-${m}-${d}`;
             }
         }
@@ -1870,7 +1877,7 @@
             { id: 'gold', name: '✨ Golden Temple' }, { id: 'slate', name: '⛰️ Himalayan Slate' }, 
             { id: 'desert', name: '🐪 Thar Desert' }, { id: 'sunset', name: '🌅 Sunset Orange' }, 
             { id: 'lavender', name: '🪻 Kashmiri Lavender' }, { id: 'platinum', name: '💍 Platinum Pearl' }, 
-            { id: 'obsidian', name: '🌑 Obsidian Gold' }, { id: 'light', name: '🕊️️ Ivory Palace' }
+            { id: 'obsidian', name: '🌑 Obsidian Gold' }, { id: 'light', name: '🕊 Ivory Palace' }
         ];
 
         function renderThemeGallery() {
