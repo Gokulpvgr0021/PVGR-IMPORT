@@ -246,26 +246,8 @@
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* ====== SECURE APP LOCK SCREEN ====== */
-        #app-lock-screen {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh;
-            background: var(--bg-grad-1); z-index: 999990; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.5s ease-out, visibility 0.5s ease-out, transform 0.5s ease;
-            backdrop-filter: blur(24px) saturate(150%); -webkit-backdrop-filter: blur(24px) saturate(150%);
-        }
-        .hide-lock { opacity: 0; visibility: hidden; transform: scale(1.05); pointer-events: none; }
-        
-        .auth-input {
-            width: 100%; text-align: center; font-size: 18px !important; letter-spacing: 2px; 
-            padding: 16px; border-radius: 12px; border: 2px solid var(--border-color); 
-            background: rgba(0,0,0,0.4); color: var(--text-main); outline: none; 
-            font-family: var(--app-font); transition: all 0.3s; box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
-        }
-        .auth-input:focus { border-color: var(--text-accent); box-shadow: 0 0 20px var(--border-highlight); background: rgba(0,0,0,0.6); }
-
         /* ====== SPLASH SCREEN ANIMATION ====== */
-        #splash-screen, #exit-screen {
+        #splash-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh;
             background: var(--bg-grad-1); 
             z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -432,25 +414,6 @@
 </head>
 <body>
 
-    <!-- SECURE APP LOCK SCREEN -->
-    <div id="app-lock-screen">
-        <div class="splash-logo-container" style="margin-bottom: 30px;">
-            <img class="splash-logo" src="10276.png" style="animation: none; box-shadow: 0 0 30px var(--text-accent);">
-        </div>
-        <h2 id="lock-title" style="color: var(--text-main); font-family: var(--header-font); font-size: 32px; margin-bottom: 10px; letter-spacing: 2px;">VAULT SECURED</h2>
-        <p id="lock-sub" style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px; font-family: var(--app-font);">Enter your credentials to access.</p>
-        
-        <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; width: 280px;">
-            <input type="text" id="login-id-input" placeholder="Login ID" class="auth-input" onkeypress="if(event.key==='Enter') document.getElementById('login-pass-input').focus()">
-            <input type="password" id="login-pass-input" placeholder="Password" class="auth-input" onkeypress="if(event.key==='Enter') window.savedAuth ? handleAuthSubmit() : handleAuthSetup()">
-        </div>
-        
-        <button class="btn btn-success" id="unlock-btn" style="width: 280px; padding: 18px; font-size: 16px;" onclick="handleAuthSubmit()"><i class="fas fa-unlock"></i> Secure Login</button>
-        <button class="btn btn-danger" id="setup-pin-btn" style="width: 280px; padding: 18px; font-size: 16px; display: none;" onclick="handleAuthSetup()"><i class="fas fa-save"></i> Register Credentials</button>
-        
-        <div id="pin-error" style="color: var(--danger); font-weight: 800; font-size: 14px; margin-top: 20px; opacity: 0; transition: opacity 0.3s; font-family: var(--app-font);">Incorrect Credentials!</div>
-    </div>
-
     <!-- CINEMATIC SPLASH SCREEN -->
     <div id="splash-screen">
         <div class="splash-logo-container">
@@ -464,13 +427,6 @@
         </div>
     </div>
     
-    <!-- EXIT SCREEN -->
-    <div id="exit-screen" class="hide-splash">
-        <div style="font-size: 60px; color: var(--text-accent); margin-bottom: 20px;"><i class="fas fa-shield-alt"></i></div>
-        <div class="splash-text" style="font-size: 32px;">VAULT LOCKED</div>
-        <div class="splash-sub" style="text-transform: none; font-size: 16px; margin-top: 15px; color: var(--text-muted);">Secure Exit Complete. You may now close the app.</div>
-    </div>
-
     <!-- OFFLINE INDICATOR -->
     <div id="offline-badge"><i class="fas fa-wifi-slash"></i> Offline Mode: Synced Locally</div>
 
@@ -519,7 +475,8 @@
                     <div style="margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 24px; display: flex; flex-direction: column; gap: 10px;">
                         <button class="btn btn-success" onclick="triggerAppInstall()"><i class="fas fa-download"></i> <span>Install Standalone App</span></button>
                         <button class="btn btn-primary" onclick="completeMonth()"><i class="fas fa-calendar-check"></i> <span>Complete Month</span></button>
-                        <button class="btn btn-danger" onclick="exitAppSafe()"><i class="fas fa-sign-out-alt"></i> <span>Secure Exit / Lock</span></button>
+                        <button class="btn btn-primary" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main);" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> <span>Reboot App Engine</span></button>
+                        <button class="btn btn-danger" onclick="yearlyReset()"><i class="fas fa-skull"></i> <span>Yearly Reset</span></button>
                     </div>
                 </div>
             </div>
@@ -527,7 +484,7 @@
             <div class="sidebar-footer">
                 <div>Identity: <b style="color: var(--text-main);">TVGR Vault</b></div>
                 <div>App Status: <span style="color: var(--text-accent);">Premium PWA</span></div>
-                <button class="btn btn-primary" style="padding: 10px; font-size: 13px; margin-top: 4px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
+                <button class="btn btn-primary" style="padding: 12px; font-size: 14px; margin-top: 8px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
             </div>
         </aside>
 
@@ -563,7 +520,7 @@
 
                     <div class="vault-grid-col">
                         <div class="panel-heading" style="border: none; margin-bottom: 18px;">
-                            <span>Quick Log Expense</span>
+                            <span id="grid-mode-title">Quick Log Expense</span>
                         </div>
                         
                         <div class="form-card" style="margin-bottom: 26px;">
@@ -768,13 +725,14 @@
                     
                     <div class="loan-card" style="border-color: var(--text-accent);">
                         <div style="font-weight: 900; font-size: 20px; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-family: var(--header-font);">
-                            <i class="fas fa-shield-alt"></i> Security & Backup
+                            <i class="fas fa-shield-alt"></i> Data & Backup
                         </div>
-                        <p style="font-size: 14px; color: var(--text-muted); font-weight: 600;">Manage your offline Vault securely.</p>
+                        <p style="font-size: 14px; color: var(--text-muted); font-weight: 600;">Install this app directly onto your phone home screen for true fullscreen with zero browser bars.</p>
                         
                         <div class="btn-flex-row">
                             <button class="btn btn-success" onclick="triggerAppInstall()"><i class="fas fa-download"></i> Install Standalone App</button>
-                            <button class="btn btn-danger" onclick="resetAppAuth()"><i class="fas fa-key"></i> Reset Login Credentials</button>
+                            <button class="btn btn-primary" onclick="enterFullScreen()"><i class="fas fa-expand"></i> Force Fullscreen Now</button>
+                            <button class="btn btn-primary" style="background: transparent; color: var(--text-main); border: 2px solid var(--border-color);" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> Reboot App Engine</button>
                             <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-file-export"></i> Backup Vault Data (.json)</button>
                         </div>
                         
@@ -858,8 +816,6 @@
             <div style="font-weight: 900; font-size: 22px; color: var(--text-main); text-align: center; border-bottom: 2px solid var(--border-color); padding-bottom: 14px; margin-bottom: 12px; font-family: var(--header-font);">App Menu</div>
             <button class="btn btn-success" onclick="triggerAppInstall(); closeModal('menuSheetModal')"><i class="fas fa-download"></i> Install App</button>
             
-            <button class="btn btn-danger" onclick="exitAppSafe()"><i class="fas fa-sign-out-alt"></i> Secure Lock & Exit</button>
-            
             <button class="btn btn-primary" style="background: transparent; border: 2px solid var(--border-color); color: var(--text-main);" onclick="rebootApp()"><i class="fas fa-sync-alt"></i> Reboot App Engine</button>
             
             <button class="btn btn-primary" onclick="navTo('history'); closeModal('menuSheetModal')"><i class="fas fa-scroll"></i> Ledger Records</button>
@@ -884,94 +840,19 @@
     </div>
 
     <script>
-        // 0. SECURITY & DUAL AUTH LOGIC
-        let savedAuth = JSON.parse(localStorage.getItem('gokulAppAuth'));
-
-        function initLockScreen() {
-            const title = document.getElementById('lock-title');
-            const sub = document.getElementById('lock-sub');
-            const unlockBtn = document.getElementById('unlock-btn');
-            const setupBtn = document.getElementById('setup-pin-btn');
-
-            if (!savedAuth || !savedAuth.id) {
-                title.innerText = "REGISTER DEVICE";
-                sub.innerText = "Create a new Login ID and Password to secure your vault.";
-                unlockBtn.style.display = "none";
-                setupBtn.style.display = "flex";
-            } else {
-                title.innerText = "VAULT SECURED";
-                sub.innerText = "Enter your credentials to access.";
-                unlockBtn.style.display = "flex";
-                setupBtn.style.display = "none";
-            }
-        }
-
-        function handleAuthSetup() {
-            const id = document.getElementById('login-id-input').value.trim();
-            const pass = document.getElementById('login-pass-input').value.trim();
-            if (id.length < 3) return showAuthError("Login ID must be at least 3 characters.");
-            if (pass.length < 4) return showAuthError("Password must be at least 4 characters.");
-            
-            const credentials = { id: btoa(id), pass: btoa(pass) };
-            localStorage.setItem('gokulAppAuth', JSON.stringify(credentials));
-            savedAuth = credentials;
-            unlockApp();
-        }
-
-        function handleAuthSubmit() {
-            const id = document.getElementById('login-id-input').value.trim();
-            const pass = document.getElementById('login-pass-input').value.trim();
-            
-            if (savedAuth && btoa(id) === savedAuth.id && btoa(pass) === savedAuth.pass) {
-                unlockApp();
-            } else { 
-                showAuthError("Incorrect ID or Password!"); 
-                document.getElementById('login-pass-input').value = ''; 
-            }
-        }
-
-        function showAuthError(msg) {
-            const err = document.getElementById('pin-error');
-            err.innerText = msg; err.style.opacity = '1';
-            setTimeout(() => { err.style.opacity = '0'; }, 2500);
-        }
-
-        function unlockApp() {
-            document.getElementById('login-id-input').value = '';
-            document.getElementById('login-pass-input').value = '';
-            document.getElementById('app-lock-screen').classList.add('hide-lock');
-            setTimeout(() => { document.getElementById('app-lock-screen').style.display = 'none'; }, 500);
-            
-            renderProfile(); updateVaultStats(); renderJobDropdown(); updateShiftStats(); 
-            renderLoans(); renderArchives(); renderThemeGallery(); autoCheckEMIs(); 
-        }
-
-        function lockApp() {
-            const lock = document.getElementById('app-lock-screen');
-            lock.style.display = 'flex';
-            void lock.offsetWidth; 
-            lock.classList.remove('hide-lock');
-            initLockScreen();
-        }
-
-        function resetAppAuth() {
-            if(confirm("Are you sure you want to reset your credentials? You will be locked out and asked to register new ones.")) {
-                localStorage.removeItem('gokulAppAuth');
-                savedAuth = null;
-                window.location.reload();
-            }
-        }
-
+        // --- 0. APPEARANCE SETTINGS (HOISTED FOR SAFETY) ---
         function loadAppearanceSettings() {
             const savedAlpha = localStorage.getItem('gokulGlassAlpha');
             if (savedAlpha) {
                 document.documentElement.style.setProperty('--glass-alpha', savedAlpha);
-                if (document.getElementById('opacity-slider')) document.getElementById('opacity-slider').value = savedAlpha;
+                const opSlider = document.getElementById('opacity-slider');
+                if (opSlider) opSlider.value = savedAlpha;
             }
             const savedDimmer = localStorage.getItem('gokulVideoDimmer');
             if (savedDimmer) {
                 document.documentElement.style.setProperty('--video-dimmer', savedDimmer);
-                if (document.getElementById('dimmer-slider')) document.getElementById('dimmer-slider').value = savedDimmer;
+                const dimSlider = document.getElementById('dimmer-slider');
+                if (dimSlider) dimSlider.value = savedDimmer;
             }
         }
 
@@ -984,14 +865,14 @@
             localStorage.setItem('gokulVideoDimmer', val);
         }
 
-        // SPLASH SCREEN & REBOOT
+        // --- 1. BOOT SEQUENCE ---
         document.addEventListener("DOMContentLoaded", () => {
-            initLockScreen(); 
+            // Apply aesthetics immediately
             applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); 
             loadAppearanceSettings(); 
             loadAppConfig(); 
-            updateNetworkStatus();
 
+            // Fail-safe timeout to destroy splash screen no matter what
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 if(splash) {
@@ -999,6 +880,16 @@
                     setTimeout(() => splash.style.display = 'none', 600); 
                 }
             }, 2000); 
+
+            updateNetworkStatus(); 
+            renderProfile(); 
+            updateVaultStats(); 
+            renderJobDropdown(); 
+            updateShiftStats(); 
+            renderLoans(); 
+            renderArchives(); 
+            renderThemeGallery();
+            autoCheckEMIs();
         });
 
         function rebootApp() {
@@ -1015,13 +906,7 @@
             }, 800);
         }
 
-        function exitAppSafe() {
-            closeModal('menuSheetModal');
-            lockApp(); 
-            setTimeout(() => { window.close(); }, 1500); 
-        }
-
-        // 1. FULLSCREEN & PWA INSTALL CONTROLLER
+        // --- 2. FULLSCREEN & PWA INSTALL CONTROLLER ---
         let deferredPrompt;
         const isStandalone = window.matchMedia('(display-mode: fullscreen)').matches || 
                              window.matchMedia('(display-mode: standalone)').matches || 
@@ -1070,7 +955,7 @@
             if (!document.fullscreenElement && isStandalone) enterFullScreen();
         }, { passive: true });
 
-        // 2. DYNAMIC MANIFEST & APP ICON SYNC BUILDER
+        // --- 3. DYNAMIC MANIFEST & APP ICON SYNC BUILDER ---
         function buildDynamicManifest() {
             const avatarSrc = (profile && profile.avatar) ? profile.avatar : '10276.png';
             const svgIcon = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="%230d0c11"/><text x="50%" y="54%" font-family="sans-serif" font-weight="900" font-size="200" fill="%23f0c75e" text-anchor="middle" dominant-baseline="middle">G</text></svg>`;
@@ -1096,10 +981,10 @@
             document.getElementById('pwa-manifest').setAttribute('href', URL.createObjectURL(manifestBlob));
         }
 
-        // 3. SERVICE WORKER FOR OFFLINE
+        // --- 4. SERVICE WORKER FOR OFFLINE ---
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'gokul-hub-premium-v6';
+                const CACHE_NAME = 'gokul-hub-premium-v7';
                 self.addEventListener('install', (e) => { self.skipWaiting(); });
                 self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
                 self.addEventListener('fetch', (e) => {
@@ -1127,7 +1012,7 @@
         window.addEventListener('offline', updateNetworkStatus);
         window.addEventListener('online', updateNetworkStatus);
 
-        // 4. NAVIGATION CONTROLLER
+        // --- 5. NAVIGATION CONTROLLER ---
         function navTo(panelId, direction = 'up') {
             document.querySelectorAll('.view-panel').forEach(p => {
                 p.classList.remove('active', 'slide-left', 'slide-right');
@@ -1151,14 +1036,14 @@
                 if (mobileTab) mobileTab.classList.add('active');
             }
 
-            if (panelId === 'vault-dashboard' && savedAuth) renderVaultChart();
+            if (panelId === 'vault-dashboard') renderVaultChart();
         }
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         function openMenuSheet() { openModal('menuSheetModal'); }
 
-        // 5. PROFILE CONTROLLER
+        // --- 6. PROFILE CONTROLLER ---
         const defaultProfile = { name: "GOKUL", role: "Influencer & Petrol Bunk Worker", idStr: "TVGR", height: "5'4\"", avatar: "10276.png" };
         let profile = JSON.parse(localStorage.getItem('gokulProfile')) || defaultProfile;
         if (!profile.avatar) profile.avatar = "10276.png";
@@ -1216,7 +1101,7 @@
             closeModal('profileModal');
         }
 
-        // 6. VAULT & TRANSACTIONS
+        // --- 7. VAULT & TRANSACTIONS ---
         let transactions = JSON.parse(localStorage.getItem('gokulVaultTx')) || [];
 
         function addEmoji(emojiText) {
@@ -1309,7 +1194,7 @@
             });
         }
 
-        // 7. ORDERLY WORK & ATTENDANCE ENGINE
+        // --- 8. ORDERLY WORK & ATTENDANCE ENGINE ---
         let shifts = JSON.parse(localStorage.getItem('gokulAttRecords')) || [];
         const defaultJobs = ["Petrol Bunk Worker", "Instagram Influencer", "Content Creator"];
         let jobProfiles = JSON.parse(localStorage.getItem('gokulJobProfiles')) || defaultJobs;
@@ -1469,7 +1354,7 @@
             }
         }
 
-        // CORPORATE PDF EXPORTS
+        // --- 9. CORPORATE PDF EXPORTS ---
         function downloadPayslip() {
             if (shifts.length === 0) return alert("No shifts to export!");
             const { jsPDF } = window.jspdf;
@@ -1568,7 +1453,7 @@
             doc.save(`Gokul_Timesheet_Report_${now.getTime()}.pdf`);
         }
 
-        // 8. LOAN TRACKER WITH SMART DATES
+        // --- 10. LOAN TRACKER WITH SMART DATES ---
         let loans = JSON.parse(localStorage.getItem('gokulLoans')) || [];
         
         document.getElementById('loan-start-date').valueAsDate = new Date();
@@ -1708,7 +1593,7 @@
             if (count > 0) { localStorage.setItem('gokulLoans', JSON.stringify(loans)); renderLoans(); }
         }
 
-        // 9. ARCHIVES
+        // --- 11. ARCHIVES ---
         function completeMonth() {
             if (!transactions.length && !shifts.length) return alert("No active data to archive");
             const name = prompt("Archive Name:", new Date().toLocaleString('default', { month: 'long', year: 'numeric' }));
@@ -1760,7 +1645,7 @@
             }
         }
 
-        // 10. APPEARANCE & PERFORMANCE MODE
+        // --- 12. APPEARANCE & PERFORMANCE MODE ---
         function saveAppConfig() {
             const perfMode = document.getElementById('setting-perf-mode').value;
             localStorage.setItem('gokulPerfMode', perfMode);
@@ -1784,9 +1669,7 @@
             }
         }
 
-        // ==========================================
-        // 11. HORIZONTAL SWIPE NAVIGATION (SAFE MATH)
-        // ==========================================
+        // --- 13. HORIZONTAL SWIPE NAVIGATION (SAFE MATH) ---
         let touchStartX = null; let touchStartY = null;
         const appPages = ['vault-dashboard', 'attendance', 'loans', 'history', 'archives', 'settings'];
 
