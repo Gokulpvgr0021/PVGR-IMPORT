@@ -16,7 +16,6 @@
     <!-- Icons -->
     <link rel="icon" href="10276.png" type="image/png">
     <link rel="apple-touch-icon" href="10276.png">
-    <link rel="manifest" id="pwa-manifest" href="">
 
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -268,35 +267,70 @@
 
             <!-- 2. ATTENDANCE & WORK -->
             <section id="attendance-view" class="view-panel">
+                
+                <!-- LIVE PUNCH UI -->
                 <div class="form-card" style="margin-bottom: 26px;">
-                    <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-plus-circle"></i> Log New Shift</h3>
+                    <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-stopwatch"></i> Daily Punch System</h3>
                     
-                    <div class="input-group">
-                        <label>Select Job Profile</label>
-                        <select id="att-job-select" class="form-control"></select>
-                    </div>
-                    
-                    <div style="display: flex; gap: 16px; width: 100%;">
-                        <div class="input-group"><label>Base (8h) ₹</label><input type="number" id="att-base-rate" class="form-control" onchange="saveRates()"></div>
-                        <div class="input-group"><label>OT Rate/hr ₹</label><input type="number" id="att-ot-rate" class="form-control" onchange="saveRates()"></div>
+                    <!-- PUNCH IN VIEW -->
+                    <div id="punch-in-view">
+                        <div class="input-group" style="margin-bottom: 12px;">
+                            <label style="display: flex; justify-content: space-between;">
+                                <span>Select Job Profile</span>
+                                <span style="color: var(--text-accent); cursor: pointer; text-decoration: underline;" onclick="openJobModal()"><i class="fas fa-edit"></i> Edit Jobs</span>
+                            </label>
+                            <select id="att-job-select" class="form-control"></select>
+                        </div>
+                        
+                        <div style="display: flex; gap: 16px; width: 100%; margin-bottom: 18px;">
+                            <div class="input-group"><label>Base (8h) ₹</label><input type="number" id="att-base-rate" class="form-control" onchange="saveRates()"></div>
+                            <div class="input-group"><label>OT Rate/hr ₹</label><input type="number" id="att-ot-rate" class="form-control" onchange="saveRates()"></div>
+                        </div>
+
+                        <button class="btn btn-success" style="padding: 20px; font-size: 18px;" onclick="punchIn()"><i class="fas fa-sign-in-alt"></i> PUNCH IN NOW</button>
+                        
+                        <div style="text-align: center; margin-top: 15px;">
+                            <a href="#" style="color: var(--text-muted); font-size: 13px; text-decoration: none;" onclick="toggleManualShift()">Log Missed Shift Manually</a>
+                        </div>
                     </div>
 
-                    <div class="input-group"><label>Date</label><input type="date" id="att-date" class="form-control"></div>
+                    <!-- PUNCH OUT VIEW -->
+                    <div id="punch-out-view" style="display: none; text-align: center;">
+                        <div style="color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Active Shift</div>
+                        <div id="active-shift-job" style="font-size: 24px; color: var(--text-main); font-weight: 800; margin-bottom: 12px;">Job Name</div>
+                        
+                        <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 20px;">
+                            <span style="color: var(--text-accent); font-weight: 700;"><i class="fas fa-clock"></i> Punched In: <span id="active-shift-time" style="color: #fff;">00:00</span></span>
+                        </div>
+                        
+                        <button class="btn btn-danger" style="padding: 20px; font-size: 18px; margin-bottom: 12px;" onclick="punchOut()"><i class="fas fa-sign-out-alt"></i> PUNCH OUT & SAVE</button>
+                        <a href="#" style="color: var(--text-muted); font-size: 13px; text-decoration: none;" onclick="cancelPunch()">Cancel Active Shift</a>
+                    </div>
+                </div>
+
+                <!-- MANUAL ENTRY VIEW (Hidden by default) -->
+                <div id="manual-shift-view" class="form-card" style="display: none; margin-bottom: 26px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-history"></i> Manual Entry</h3>
+                        <button class="btn btn-danger" style="width: auto; padding: 6px 12px; font-size: 12px;" onclick="toggleManualShift()">Close</button>
+                    </div>
+
+                    <div class="input-group"><label>Date (Sundays = 100% OT)</label><input type="date" id="att-date" class="form-control"></div>
                     
-                    <div style="display: flex; gap: 16px; width: 100%;">
+                    <div style="display: flex; gap: 16px; width: 100%; margin-top: 10px;">
                         <div class="input-group"><label>In Time</label><input type="time" id="att-in" class="form-control" value="09:30"></div>
                         <div class="input-group"><label>Out Time</label><input type="time" id="att-out" class="form-control" value="18:00"></div>
                     </div>
                     
-                    <button class="btn btn-success" style="margin-top: 10px;" onclick="recordShift()"><i class="fas fa-cloud-upload-alt"></i> Save Shift & Sync</button>
+                    <button class="btn btn-primary" style="margin-top: 15px;" onclick="recordShiftManual()"><i class="fas fa-save"></i> Save Shift</button>
                 </div>
 
+                <!-- EXPORT & LOG -->
                 <div class="panel-heading"><span>Work & Salary Log</span></div>
 
                 <div class="att-stats-row">
                     <div class="att-stat-card"><i class="fas fa-calendar-check" style="color:var(--text-accent);"></i><div class="val" id="stat-days">0</div><div class="lbl">Days</div></div>
                     <div class="att-stat-card"><i class="fas fa-money-bill" style="color:var(--text-main);"></i><div class="val" id="stat-gross">₹0</div><div class="lbl">Gross</div></div>
-                    <div class="att-stat-card"><i class="fas fa-minus-circle" style="color:var(--danger);"></i><div class="val" style="color:var(--danger);" id="stat-ded">₹0</div><div class="lbl">Deducts</div></div>
                     <div class="att-stat-card"><i class="fas fa-wallet" style="color:#2ecc71;"></i><div class="val" style="color:#2ecc71;" id="stat-net">₹0</div><div class="lbl">Net Pay</div></div>
                 </div>
 
@@ -318,6 +352,8 @@
                 </div>
 
                 <div class="btn-flex-row" style="margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="downloadPayslip()"><i class="fas fa-file-invoice-dollar"></i> Download Salary Slip (PDF)</button>
+                    <button class="btn btn-primary" onclick="downloadTimesheet()"><i class="fas fa-list-alt"></i> Download Timesheet (PDF)</button>
                     <button class="btn btn-danger" onclick="clearShifts()"><i class="fas fa-trash-alt"></i> Clear All Shift Records</button>
                 </div>
             </section>
@@ -440,12 +476,14 @@
 
     <script>
         let vaultChart = null; 
+        let activeShift = JSON.parse(localStorage.getItem('gokulActiveShift')) || null;
 
-        // --- 1. BOOT SEQUENCE (NO SPLASH, NO LOCK) ---
+        // --- 1. BOOT SEQUENCE ---
         document.addEventListener("DOMContentLoaded", () => {
             renderProfile(); 
             updateVaultStats(); 
             renderJobDropdown(); 
+            checkActiveShift();
             updateShiftStats(); 
             renderLoans(); 
             renderArchives(); 
@@ -584,7 +622,7 @@
             });
         }
 
-        // --- 5. WORK ENGINE (SIMPLE SINGLE SHIFT) ---
+        // --- 5. WORK ENGINE (LIVE PUNCH SYSTEM) ---
         let shifts = JSON.parse(localStorage.getItem('gokulAttRecords')) || [];
         let jobProfiles = JSON.parse(localStorage.getItem('gokulJobProfiles')) || ["Petrol Bunk Worker", "Content Creator"];
 
@@ -618,7 +656,122 @@
             localStorage.setItem('gokulSavedOT', document.getElementById('att-ot-rate').value);
         }
 
-        function recordShift() {
+        function checkActiveShift() {
+            const inView = document.getElementById('punch-in-view');
+            const outView = document.getElementById('punch-out-view');
+            const manualView = document.getElementById('manual-shift-view');
+            
+            if (activeShift) {
+                inView.style.display = 'none';
+                outView.style.display = 'block';
+                manualView.style.display = 'none';
+                
+                document.getElementById('active-shift-job').innerText = activeShift.jobType;
+                const dateObj = new Date(activeShift.inTimeObj);
+                document.getElementById('active-shift-time').innerText = dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            } else {
+                inView.style.display = 'block';
+                outView.style.display = 'none';
+            }
+        }
+
+        function toggleManualShift() {
+            const inView = document.getElementById('punch-in-view');
+            const manualView = document.getElementById('manual-shift-view');
+            if (manualView.style.display === 'none') {
+                inView.style.display = 'none';
+                manualView.style.display = 'flex';
+            } else {
+                manualView.style.display = 'none';
+                inView.style.display = 'block';
+            }
+        }
+
+        function punchIn() {
+            const baseSalary = parseFloat(document.getElementById('att-base-rate').value);
+            const otRate = parseFloat(document.getElementById('att-ot-rate').value);
+            const jobType = document.getElementById('att-job-select').value;
+            
+            if (isNaN(baseSalary) || isNaN(otRate)) return alert("Set Base and OT rates first.");
+            
+            const now = new Date();
+            const dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+
+            if (shifts.some(s => s.date === dateStr)) {
+                return alert(`A shift is already completed for today (${dateStr}).`);
+            }
+
+            activeShift = {
+                date: dateStr,
+                jobType: jobType,
+                baseSalary: baseSalary,
+                otRate: otRate,
+                inTimeObj: now.getTime()
+            };
+            
+            localStorage.setItem('gokulActiveShift', JSON.stringify(activeShift));
+            saveRates();
+            checkActiveShift();
+        }
+
+        function punchOut() {
+            if (!activeShift) return;
+            
+            const now = new Date();
+            const start = new Date(activeShift.inTimeObj);
+            
+            let diffHours = (now.getTime() - start.getTime()) / (1000 * 60 * 60);
+            
+            // Standard Break deduction
+            const breakDeduct = diffHours > 4 ? 0.5 : 0;
+            const net = Math.max(0, diffHours - breakDeduct);
+            
+            const isSunday = start.getDay() === 0;
+
+            let regHours = isSunday ? 0 : Math.min(net, 8);
+            let otHours = isSunday ? net : Math.max(0, net - 8);
+
+            const baseEarned = (regHours / 8) * activeShift.baseSalary;
+            const otEarned = otHours * activeShift.otRate;
+            const grossEarned = baseEarned + otEarned;
+
+            const inTimeStr = start.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false});
+            const outTimeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false});
+            const timingStr = `${inTimeStr} - ${outTimeStr}`;
+
+            shifts.push({ 
+                date: activeShift.date, 
+                jobType: activeShift.jobType, 
+                timing: timingStr, 
+                net, otHours, totalEarned: grossEarned, grossEarned: grossEarned 
+            });
+            
+            shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
+            localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
+            
+            // Sync to vault
+            transactions.push({ date: new Date().toLocaleString('en-GB'), category: `Shift: ${activeShift.jobType}`, type: 'income', amount: grossEarned });
+            localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
+            
+            activeShift = null;
+            localStorage.removeItem('gokulActiveShift');
+            
+            updateVaultStats();
+            updateShiftStats();
+            checkActiveShift();
+            
+            alert(`Shift Completed! ₹${grossEarned.toFixed(2)} added to Vault.`);
+        }
+
+        function cancelPunch() {
+            if(confirm("Cancel current active shift? No data will be saved.")) {
+                activeShift = null;
+                localStorage.removeItem('gokulActiveShift');
+                checkActiveShift();
+            }
+        }
+
+        function recordShiftManual() {
             const date = document.getElementById('att-date').value;
             const inTime = document.getElementById('att-in').value;
             const outTime = document.getElementById('att-out').value;
@@ -627,6 +780,7 @@
             const jobType = document.getElementById('att-job-select').value;
 
             if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) return alert("Fill all details.");
+            if (shifts.some(s => s.date === date)) return alert(`Shift already logged for ${date}.`);
 
             saveRates();
 
@@ -647,8 +801,9 @@
             const baseEarned = (regHours / 8) * baseSalary;
             const otEarned = otHours * otRate;
             const grossEarned = baseEarned + otEarned;
+            const timingStr = `${inTime} - ${outTime}`;
 
-            shifts.push({ date, jobType, inTime, outTime, net, otHours, totalEarned: grossEarned, grossEarned: grossEarned });
+            shifts.push({ date, jobType, timing: timingStr, net, otHours, totalEarned: grossEarned, grossEarned: grossEarned });
             shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
             localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
             
@@ -660,6 +815,7 @@
             updateShiftStats();
 
             document.getElementById('att-date').valueAsDate = new Date();
+            toggleManualShift(); // close manual UI
             alert(`Shift saved! ₹${grossEarned.toFixed(2)} added to Vault.`);
         }
 
@@ -672,11 +828,12 @@
             [...shifts].reverse().forEach((s, revIdx) => {
                 const actualIdx = shifts.length - 1 - revIdx;
                 const shortJob = s.jobType.length > 8 ? s.jobType.substring(0,8) + '..' : s.jobType;
-                
+                const timingDisp = s.timing || `${s.inTime}-${s.outTime}`;
+
                 html += `<tr>
                     <td>${s.date}</td>
                     <td style="font-weight: 700; font-size: 11px;">${shortJob}</td>
-                    <td style="font-size: 11px;">${s.inTime}-${s.outTime}</td>
+                    <td style="font-size: 11px;">${timingDisp}</td>
                     <td>${s.net.toFixed(1)}h</td>
                     <td style="color: var(--text-accent); font-weight: 700;">${s.otHours.toFixed(1)}h</td>
                     <td style="font-weight: 700;">₹${(s.grossEarned || s.totalEarned).toFixed(0)}</td>
