@@ -17,6 +17,9 @@
     <link rel="icon" href="10276.png" type="image/png">
     <link rel="apple-touch-icon" href="10276.png">
 
+    <!-- Dynamic PWA Manifest -->
+    <link rel="manifest" id="pwa-manifest" href="">
+
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -268,69 +271,50 @@
             <!-- 2. ATTENDANCE & WORK -->
             <section id="attendance-view" class="view-panel">
                 
-                <!-- LIVE PUNCH UI -->
                 <div class="form-card" style="margin-bottom: 26px;">
-                    <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-stopwatch"></i> Daily Punch System</h3>
+                    <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-plus-circle"></i> Log Shift Entry</h3>
                     
-                    <!-- PUNCH IN VIEW -->
-                    <div id="punch-in-view">
-                        <div class="input-group" style="margin-bottom: 12px;">
-                            <label style="display: flex; justify-content: space-between;">
-                                <span>Select Job Profile</span>
-                                <span style="color: var(--text-accent); cursor: pointer; text-decoration: underline;" onclick="openJobModal()"><i class="fas fa-edit"></i> Edit Jobs</span>
-                            </label>
-                            <select id="att-job-select" class="form-control"></select>
-                        </div>
-                        
-                        <div style="display: flex; gap: 16px; width: 100%; margin-bottom: 18px;">
-                            <div class="input-group"><label>Base (8h) ₹</label><input type="number" id="att-base-rate" class="form-control" onchange="saveRates()"></div>
-                            <div class="input-group"><label>OT Rate/hr ₹</label><input type="number" id="att-ot-rate" class="form-control" onchange="saveRates()"></div>
-                        </div>
-
-                        <button class="btn btn-success" style="padding: 20px; font-size: 18px;" onclick="punchIn()"><i class="fas fa-sign-in-alt"></i> PUNCH IN NOW</button>
-                        
-                        <div style="text-align: center; margin-top: 15px;">
-                            <a href="#" style="color: var(--text-muted); font-size: 13px; text-decoration: none;" onclick="toggleManualShift()">Log Missed Shift Manually</a>
-                        </div>
+                    <div class="input-group">
+                        <label>Select Job Profile</label>
+                        <select id="att-job-select" class="form-control"></select>
                     </div>
-
-                    <!-- PUNCH OUT VIEW -->
-                    <div id="punch-out-view" style="display: none; text-align: center;">
-                        <div style="color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Active Shift</div>
-                        <div id="active-shift-job" style="font-size: 24px; color: var(--text-main); font-weight: 800; margin-bottom: 12px;">Job Name</div>
-                        
-                        <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 20px;">
-                            <span style="color: var(--text-accent); font-weight: 700;"><i class="fas fa-clock"></i> Punched In: <span id="active-shift-time" style="color: #fff;">00:00</span></span>
-                        </div>
-                        
-                        <button class="btn btn-danger" style="padding: 20px; font-size: 18px; margin-bottom: 12px;" onclick="punchOut()"><i class="fas fa-sign-out-alt"></i> PUNCH OUT & SAVE</button>
-                        <a href="#" style="color: var(--text-muted); font-size: 13px; text-decoration: none;" onclick="cancelPunch()">Cancel Active Shift</a>
-                    </div>
-                </div>
-
-                <!-- MANUAL ENTRY VIEW (Hidden by default) -->
-                <div id="manual-shift-view" class="form-card" style="display: none; margin-bottom: 26px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-history"></i> Manual Entry</h3>
-                        <button class="btn btn-danger" style="width: auto; padding: 6px 12px; font-size: 12px;" onclick="toggleManualShift()">Close</button>
+                    
+                    <div style="display: flex; gap: 16px; width: 100%;">
+                        <div class="input-group"><label>Base (8h) ₹</label><input type="number" id="att-base-rate" class="form-control" onchange="saveRates()"></div>
+                        <div class="input-group"><label>OT Rate/hr ₹</label><input type="number" id="att-ot-rate" class="form-control" onchange="saveRates()"></div>
                     </div>
 
                     <div class="input-group"><label>Date (Sundays = 100% OT)</label><input type="date" id="att-date" class="form-control"></div>
                     
-                    <div style="display: flex; gap: 16px; width: 100%; margin-top: 10px;">
+                    <div style="display: flex; gap: 16px; width: 100%;">
                         <div class="input-group"><label>In Time</label><input type="time" id="att-in" class="form-control" value="09:30"></div>
                         <div class="input-group"><label>Out Time</label><input type="time" id="att-out" class="form-control" value="18:00"></div>
                     </div>
                     
-                    <button class="btn btn-primary" style="margin-top: 15px;" onclick="recordShiftManual()"><i class="fas fa-save"></i> Save Shift</button>
+                    <button class="btn btn-success" style="margin-top: 10px;" onclick="recordShift()"><i class="fas fa-save"></i> Save Shift & Sync</button>
                 </div>
 
-                <!-- EXPORT & LOG -->
+                <div class="form-card" style="margin-bottom: 24px;">
+                    <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-file-invoice"></i> Monthly Deductions (EPF & ESIC)</h3>
+                    <div style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
+                        <div class="input-group">
+                            <label>EPF (₹ / Month)</label>
+                            <input type="number" id="monthly-epf" class="form-control" placeholder="0" onchange="saveMonthlyDeductions()">
+                        </div>
+                        <div class="input-group">
+                            <label>ESIC (₹ / Month)</label>
+                            <input type="number" id="monthly-esic" class="form-control" placeholder="0" onchange="saveMonthlyDeductions()">
+                        </div>
+                        <button class="btn btn-danger" style="width: 100%;" onclick="syncDeductionsToVault()"><i class="fas fa-minus-circle"></i> Sync Deductions to Vault</button>
+                    </div>
+                </div>
+
                 <div class="panel-heading"><span>Work & Salary Log</span></div>
 
                 <div class="att-stats-row">
                     <div class="att-stat-card"><i class="fas fa-calendar-check" style="color:var(--text-accent);"></i><div class="val" id="stat-days">0</div><div class="lbl">Days</div></div>
                     <div class="att-stat-card"><i class="fas fa-money-bill" style="color:var(--text-main);"></i><div class="val" id="stat-gross">₹0</div><div class="lbl">Gross</div></div>
+                    <div class="att-stat-card"><i class="fas fa-minus-circle" style="color:var(--danger);"></i><div class="val" style="color:var(--danger);" id="stat-ded">₹0</div><div class="lbl">Deducts</div></div>
                     <div class="att-stat-card"><i class="fas fa-wallet" style="color:#2ecc71;"></i><div class="val" style="color:#2ecc71;" id="stat-net">₹0</div><div class="lbl">Net Pay</div></div>
                 </div>
 
@@ -426,6 +410,14 @@
                         <button class="btn btn-danger" onclick="importData()"><i class="fas fa-upload"></i> Restore Backup</button>
                     </div>
                 </div>
+
+                <div class="form-card" style="margin-bottom: 40px;">
+                    <div style="font-weight: 800; font-size: 16px; color: var(--text-main); margin-bottom: 12px;">Glass Transparency</div>
+                    <input type="range" id="opacity-slider" min="0" max="1" step="0.05" oninput="updateGlassOpacity(this.value)">
+
+                    <div style="font-weight: 800; font-size: 16px; color: var(--text-main); margin-top: 24px; margin-bottom: 12px;">Video Dimmer</div>
+                    <input type="range" id="dimmer-slider" min="0" max="1" step="0.05" oninput="updateVideoDimmer(this.value)">
+                </div>
                 
             </section>
         </main>
@@ -476,18 +468,41 @@
 
     <script>
         let vaultChart = null; 
-        let activeShift = JSON.parse(localStorage.getItem('gokulActiveShift')) || null;
 
         // --- 1. BOOT SEQUENCE ---
         document.addEventListener("DOMContentLoaded", () => {
             renderProfile(); 
             updateVaultStats(); 
             renderJobDropdown(); 
-            checkActiveShift();
             updateShiftStats(); 
             renderLoans(); 
             renderArchives(); 
+            loadAppearanceSettings();
         });
+
+        function loadAppearanceSettings() {
+            const savedAlpha = localStorage.getItem('gokulGlassAlpha');
+            if (savedAlpha) {
+                document.documentElement.style.setProperty('--glass-alpha', savedAlpha);
+                const opSlider = document.getElementById('opacity-slider');
+                if (opSlider) opSlider.value = savedAlpha;
+            }
+            const savedDimmer = localStorage.getItem('gokulVideoDimmer');
+            if (savedDimmer) {
+                document.documentElement.style.setProperty('--video-dimmer', savedDimmer);
+                const dimSlider = document.getElementById('dimmer-slider');
+                if (dimSlider) dimSlider.value = savedDimmer;
+            }
+        }
+
+        window.updateGlassOpacity = function(val) {
+            document.documentElement.style.setProperty('--glass-alpha', val);
+            localStorage.setItem('gokulGlassAlpha', val);
+        }
+        window.updateVideoDimmer = function(val) {
+            document.documentElement.style.setProperty('--video-dimmer', val);
+            localStorage.setItem('gokulVideoDimmer', val);
+        }
 
         // --- 2. NAVIGATION CONTROLLER ---
         function navTo(panelId) {
@@ -622,7 +637,7 @@
             });
         }
 
-        // --- 5. WORK ENGINE (LIVE PUNCH SYSTEM) ---
+        // --- 5. WORK ENGINE (SIMPLE ENTRY & DEDUCTIONS) ---
         let shifts = JSON.parse(localStorage.getItem('gokulAttRecords')) || [];
         let jobProfiles = JSON.parse(localStorage.getItem('gokulJobProfiles')) || ["Petrol Bunk Worker", "Content Creator"];
 
@@ -649,6 +664,8 @@
 
         document.getElementById('att-base-rate').value = localStorage.getItem('gokulSavedBase') || '';
         document.getElementById('att-ot-rate').value = localStorage.getItem('gokulSavedOT') || '';
+        document.getElementById('monthly-epf').value = localStorage.getItem('gokulMonthlyEPF') || '0';
+        document.getElementById('monthly-esic').value = localStorage.getItem('gokulMonthlyESIC') || '0';
         document.getElementById('att-date').valueAsDate = new Date();
 
         function saveRates() {
@@ -656,122 +673,24 @@
             localStorage.setItem('gokulSavedOT', document.getElementById('att-ot-rate').value);
         }
 
-        function checkActiveShift() {
-            const inView = document.getElementById('punch-in-view');
-            const outView = document.getElementById('punch-out-view');
-            const manualView = document.getElementById('manual-shift-view');
-            
-            if (activeShift) {
-                inView.style.display = 'none';
-                outView.style.display = 'block';
-                manualView.style.display = 'none';
-                
-                document.getElementById('active-shift-job').innerText = activeShift.jobType;
-                const dateObj = new Date(activeShift.inTimeObj);
-                document.getElementById('active-shift-time').innerText = dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            } else {
-                inView.style.display = 'block';
-                outView.style.display = 'none';
-            }
-        }
-
-        function toggleManualShift() {
-            const inView = document.getElementById('punch-in-view');
-            const manualView = document.getElementById('manual-shift-view');
-            if (manualView.style.display === 'none') {
-                inView.style.display = 'none';
-                manualView.style.display = 'flex';
-            } else {
-                manualView.style.display = 'none';
-                inView.style.display = 'block';
-            }
-        }
-
-        function punchIn() {
-            const baseSalary = parseFloat(document.getElementById('att-base-rate').value);
-            const otRate = parseFloat(document.getElementById('att-ot-rate').value);
-            const jobType = document.getElementById('att-job-select').value;
-            
-            if (isNaN(baseSalary) || isNaN(otRate)) return alert("Set Base and OT rates first.");
-            
-            const now = new Date();
-            const dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
-
-            if (shifts.some(s => s.date === dateStr)) {
-                return alert(`A shift is already completed for today (${dateStr}).`);
-            }
-
-            activeShift = {
-                date: dateStr,
-                jobType: jobType,
-                baseSalary: baseSalary,
-                otRate: otRate,
-                inTimeObj: now.getTime()
-            };
-            
-            localStorage.setItem('gokulActiveShift', JSON.stringify(activeShift));
-            saveRates();
-            checkActiveShift();
-        }
-
-        function punchOut() {
-            if (!activeShift) return;
-            
-            const now = new Date();
-            const start = new Date(activeShift.inTimeObj);
-            
-            let diffHours = (now.getTime() - start.getTime()) / (1000 * 60 * 60);
-            
-            // Standard Break deduction
-            const breakDeduct = diffHours > 4 ? 0.5 : 0;
-            const net = Math.max(0, diffHours - breakDeduct);
-            
-            const isSunday = start.getDay() === 0;
-
-            let regHours = isSunday ? 0 : Math.min(net, 8);
-            let otHours = isSunday ? net : Math.max(0, net - 8);
-
-            const baseEarned = (regHours / 8) * activeShift.baseSalary;
-            const otEarned = otHours * activeShift.otRate;
-            const grossEarned = baseEarned + otEarned;
-
-            const inTimeStr = start.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false});
-            const outTimeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false});
-            const timingStr = `${inTimeStr} - ${outTimeStr}`;
-
-            shifts.push({ 
-                date: activeShift.date, 
-                jobType: activeShift.jobType, 
-                timing: timingStr, 
-                net, otHours, totalEarned: grossEarned, grossEarned: grossEarned 
-            });
-            
-            shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
-            localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
-            
-            // Sync to vault
-            transactions.push({ date: new Date().toLocaleString('en-GB'), category: `Shift: ${activeShift.jobType}`, type: 'income', amount: grossEarned });
-            localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
-            
-            activeShift = null;
-            localStorage.removeItem('gokulActiveShift');
-            
-            updateVaultStats();
+        function saveMonthlyDeductions() {
+            localStorage.setItem('gokulMonthlyEPF', document.getElementById('monthly-epf').value || '0');
+            localStorage.setItem('gokulMonthlyESIC', document.getElementById('monthly-esic').value || '0');
             updateShiftStats();
-            checkActiveShift();
-            
-            alert(`Shift Completed! ₹${grossEarned.toFixed(2)} added to Vault.`);
         }
 
-        function cancelPunch() {
-            if(confirm("Cancel current active shift? No data will be saved.")) {
-                activeShift = null;
-                localStorage.removeItem('gokulActiveShift');
-                checkActiveShift();
-            }
+        function syncDeductionsToVault() {
+            const epf = parseFloat(document.getElementById('monthly-epf').value) || 0;
+            const esic = parseFloat(document.getElementById('monthly-esic').value) || 0;
+            const totalDed = epf + esic;
+            if (totalDed > 0) {
+                if(!confirm(`Deduct exactly ₹${totalDed} from your Vault balance right now?`)) return;
+                logVaultTx(`Monthly EPF & ESIC 🏦`, 'expense', true, totalDed, `EPF: ₹${epf}, ESIC: ₹${esic}`);
+                alert(`₹${totalDed.toFixed(2)} deducted from Vault for EPF & ESIC!`);
+            } else { alert("Please enter EPF/ESIC amounts first."); }
         }
 
-        function recordShiftManual() {
+        function recordShift() {
             const date = document.getElementById('att-date').value;
             const inTime = document.getElementById('att-in').value;
             const outTime = document.getElementById('att-out').value;
@@ -780,7 +699,6 @@
             const jobType = document.getElementById('att-job-select').value;
 
             if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) return alert("Fill all details.");
-            if (shifts.some(s => s.date === date)) return alert(`Shift already logged for ${date}.`);
 
             saveRates();
 
@@ -807,7 +725,6 @@
             shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
             localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
             
-            // Sync to vault
             transactions.push({ date: new Date().toLocaleString('en-GB'), category: `Shift: ${jobType}`, type: 'income', amount: grossEarned });
             localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
             
@@ -815,7 +732,6 @@
             updateShiftStats();
 
             document.getElementById('att-date').valueAsDate = new Date();
-            toggleManualShift(); // close manual UI
             alert(`Shift saved! ₹${grossEarned.toFixed(2)} added to Vault.`);
         }
 
@@ -824,12 +740,17 @@
             let totalGross = 0;
             shifts.forEach(s => { totalGross += (s.grossEarned || s.totalEarned); });
 
+            const epf = parseFloat(document.getElementById('monthly-epf').value) || 0;
+            const esic = parseFloat(document.getElementById('monthly-esic').value) || 0;
+            const totalDed = epf + esic;
+            const netPay = totalGross - totalDed;
+
             let html = '';
             [...shifts].reverse().forEach((s, revIdx) => {
                 const actualIdx = shifts.length - 1 - revIdx;
                 const shortJob = s.jobType.length > 8 ? s.jobType.substring(0,8) + '..' : s.jobType;
                 const timingDisp = s.timing || `${s.inTime}-${s.outTime}`;
-
+                
                 html += `<tr>
                     <td>${s.date}</td>
                     <td style="font-weight: 700; font-size: 11px;">${shortJob}</td>
@@ -844,7 +765,8 @@
 
             document.getElementById('stat-days').innerText = shifts.length;
             document.getElementById('stat-gross').innerText = `₹${totalGross.toFixed(0)}`;
-            document.getElementById('stat-net').innerText = `₹${totalGross.toFixed(0)}`;
+            document.getElementById('stat-ded').innerText = `₹${totalDed.toFixed(0)}`;
+            document.getElementById('stat-net').innerText = `₹${netPay.toFixed(0)}`;
         }
 
         function deleteShift(idx) {
@@ -863,7 +785,106 @@
             }
         }
 
-        // --- 6. LOANS ---
+        // --- 6. PDF DOWNLOADS ---
+        function downloadPayslip() {
+            if (shifts.length === 0) return alert("No shifts to export!");
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const green = [50, 130, 70];
+            
+            let totalGross = 0, totalOTHours = 0, totalNetHours = 0;
+            shifts.forEach(s => { totalGross += (s.grossEarned || s.totalEarned); totalNetHours += s.net; totalOTHours += s.otHours; });
+
+            const totalEpf = parseFloat(localStorage.getItem('gokulMonthlyEPF')) || 0;
+            const totalEsic = parseFloat(localStorage.getItem('gokulMonthlyESIC')) || 0;
+
+            const otPay = totalOTHours > 0 ? (totalGross * (totalOTHours / totalNetHours)) : 0;
+            const basePay = totalGross - otPay;
+            const basic = basePay * 0.6; const hra = basePay * 0.4; const totalDed = totalEpf + totalEsic;
+
+            try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 15, 20, 20); } catch(e) {}
+
+            doc.setTextColor(green[0], green[1], green[2]); doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.text("GOKUL HUB / MAGNUM CLOTHING PVT. LTD.", 105, 20, { align: "center" });
+            doc.setFontSize(10); doc.setFont("helvetica", "normal"); const monthName = new Date().toLocaleString('default', { month: 'long', year: 'numeric' }); doc.text(`Payslip For The Month of ${monthName}`, 105, 26, { align: "center" });
+
+            doc.setDrawColor(green[0], green[1], green[2]); doc.setLineWidth(0.4); doc.rect(14, 38, 182, 145);
+            doc.line(14, 52, 196, 52); doc.line(14, 62, 196, 62);
+
+            doc.setTextColor(0, 0, 0); doc.setFontSize(9);
+            doc.text(`Emp. No/Card No : ${profile.idStr}`, 16, 44); doc.text(`Name : ${profile.name.toUpperCase()}`, 80, 44); doc.text(`Des. : ${profile.role.substring(0, 20)}`, 140, 44);
+
+            const days = shifts.length;
+            doc.text(`Days pre : ${days}`, 16, 58); doc.text(`PH : 0`, 50, 58); doc.text(`EL : 0`, 70, 58); doc.text(`ELB : 0`, 95, 58); doc.text(`O.ALL : 0`, 115, 58); doc.text(`P days : ${days}`, 145, 58); doc.text(`LOP : 0`, 175, 58);
+
+            doc.setFont("helvetica", "bold"); doc.setTextColor(green[0], green[1], green[2]); doc.text("EARNINGS", 55, 68, { align: "center" }); doc.text("DEDUCTIONS", 145, 68, { align: "center" });
+            doc.line(14, 72, 196, 72); doc.line(105, 62, 105, 183);
+
+            doc.setTextColor(0, 0, 0); doc.setFont("helvetica", "normal");
+            let y = 80; const gap = 8; const leftX = 16, valLeftX = 98, rightX = 108, valRightX = 190;
+            doc.text("Basic", leftX, y); doc.text(basic.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("HRA", leftX, y); doc.text(hra.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("EDA/O.ALL", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("OT", leftX, y); doc.text(otPay.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("Misc. Ear 1", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("Misc. 2", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("OTHER", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" });
+
+            y = 80;
+            doc.text("EPF", rightX, y); doc.text(totalEpf.toFixed(2), valRightX, y, { align: "right" }); y += gap;
+            doc.text("ESI", rightX, y); doc.text(totalEsic.toFixed(2), valRightX, y, { align: "right" }); y += gap;
+            doc.text("PT", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("Loan", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("Adv.", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("TDS", rightX, y); doc.text("0.00", valRightX, y, { align: "right" });
+
+            doc.line(14, 160, 196, 160); doc.line(105, 170, 196, 170);
+            
+            doc.setFont("helvetica", "bold");
+            doc.text("Gross", leftX, 167); doc.text(totalGross.toFixed(2), valLeftX, 167, { align: "right" });
+            doc.text("Tot Ded", rightX, 167); doc.text(totalDed.toFixed(2), valRightX, 167, { align: "right" });
+            doc.text("Net Pay", rightX, 177); doc.text((totalGross - totalDed).toFixed(2), valRightX, 177, { align: "right" });
+
+            doc.save(`Payslip_${monthName.replace(' ', '_')}.pdf`);
+        }
+
+        function downloadTimesheet() {
+            if (shifts.length === 0) return alert("No shifts to export!");
+            const { jsPDF } = window.jspdf; const doc = new jsPDF('p', 'mm', 'a4');
+            const primaryColor = [28, 69, 135], accentColor = [22, 163, 74], darkText = [40, 40, 40], lightText = [100, 100, 100];
+
+            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.rect(0, 0, 210, 40, 'F');
+            doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.setFont("helvetica", "bold");
+            try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 10, 20, 20); } catch(e) {}
+
+            const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14;
+            doc.text("GOKUL HUB INC.", textStartX, 20); doc.setFontSize(12); doc.setFont("helvetica", "normal"); doc.text("OFFICIAL TIMESHEET & SALARY REPORT", textStartX, 30);
+            
+            const now = new Date(); doc.setFontSize(10); doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
+            doc.setTextColor(darkText[0], darkText[1], darkText[2]); doc.setFontSize(12); doc.setFont("helvetica", "bold"); doc.text("EMPLOYEE DETAILS", 14, 50);
+            doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.text(`Name: ${profile.name}`, 14, 58); doc.text(`ID: ${profile.idStr}`, 14, 64); doc.text(`Role: ${profile.role}`, 14, 70);
+            
+            let totalPay = 0, totalHrs = 0, totalOT = 0;
+            shifts.forEach(s => { totalPay += (s.grossEarned || s.totalEarned); totalHrs += s.net; totalOT += s.otHours; });
+
+            doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.setLineWidth(0.5); doc.roundedRect(120, 45, 75, 38, 3, 3, 'S');
+            doc.setFont("helvetica", "bold"); doc.text("SUMMARY", 125, 52); doc.setFont("helvetica", "normal");
+            doc.text(`Total Days: ${shifts.length}`, 125, 60); doc.text(`Reg Hours: ${totalHrs.toFixed(1)}h`, 125, 66); doc.text(`OT Hours: ${totalOT.toFixed(1)}h`, 125, 72);
+            doc.setFont("helvetica", "bold"); doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]); doc.text(`Gross Salary: INR ${totalPay.toFixed(2)}`, 125, 78);
+
+            doc.setTextColor(darkText[0], darkText[1], darkText[2]);
+            const tableColumn = ["Date", "Job Title", "Timing", "Reg (Hrs)", "OT (Hrs)", "Earned (INR)"];
+            const tableRows = shifts.map(s => [s.date, s.jobType, s.timing || `${s.inTime} - ${s.outTime}`, (s.net - s.otHours).toFixed(1), s.otHours.toFixed(1), `Rs. ${(s.grossEarned || s.totalEarned).toFixed(2)}`]);
+
+            doc.autoTable({ startY: 95, head: [tableColumn], body: tableRows, theme: 'striped', headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' }, bodyStyles: { textColor: darkText, halign: 'center' }, alternateRowStyles: { fillColor: [240, 244, 248] }, styles: { font: 'helvetica', fontSize: 10, cellPadding: 6 }, columnStyles: { 1: { halign: 'left' }, 5: { fontStyle: 'bold', textColor: [22, 163, 74] } }, margin: { top: 10, right: 14, bottom: 20, left: 14 } });
+
+            const finalY = doc.lastAutoTable.finalY || 95;
+            doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30); doc.setLineWidth(0.5); doc.line(14, finalY + 25, 70, finalY + 25);
+            doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(lightText[0], lightText[1], lightText[2]); doc.text("System Generated Report - Gokul Hub Automated Offline PWA", 14, finalY + 45);
+
+            doc.save(`Gokul_Timesheet_Report_${now.getTime()}.pdf`);
+        }
+
+        // --- 7. LOANS ---
         let loans = JSON.parse(localStorage.getItem('gokulLoans')) || [];
         document.getElementById('loan-start-date').valueAsDate = new Date();
 
@@ -937,7 +958,7 @@
             if (confirm("Delete loan?")) { loans = loans.filter(x => x.id !== id); localStorage.setItem('gokulLoans', JSON.stringify(loans)); renderLoans(); }
         }
 
-        // --- 7. ARCHIVES ---
+        // --- 8. ARCHIVES ---
         function completeMonth() {
             if (!transactions.length && !shifts.length) return alert("No active data to archive");
             const name = prompt("Archive Name:", new Date().toLocaleString('default', { month: 'long', year: 'numeric' }));
@@ -985,7 +1006,7 @@
             }
         }
 
-        // --- 8. DATA BACKUP ---
+        // --- 9. DATA BACKUP ---
         function exportData() {
             const data = {
                 profile: JSON.parse(localStorage.getItem('gokulProfile')),
