@@ -21,6 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     
     <style>
         :root {
@@ -66,7 +67,7 @@
         [data-theme="light"] { --bg-grad-1: #fdfbf7; --bg-grad-2: #f4eee0; --bg-grad-3: #e8ded1; --bg-grad-4: #faf7f2; --text-main: #4a3b2c; --text-accent: #b32400; --text-muted: #8c735a; --bg-app: rgba(253, 251, 247, var(--glass-alpha)); --bg-sidebar: rgba(244, 238, 224, calc(var(--glass-alpha) + 0.3)); --bg-card: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.5)); --bg-card-alt: rgba(240, 235, 225, calc(var(--glass-alpha) + 0.6)); --border-color: rgba(0, 0, 0, 0.1); --total-box: linear-gradient(135deg, rgba(200, 170, 140, 0.9), rgba(230, 210, 180, 0.9)); }
         [data-theme="jarvis"] { --bg-grad-1: #090414; --bg-grad-2: #1b0d2d; --bg-grad-3: #081a24; --bg-grad-4: #1f0b18; --text-main: #ffffff; --text-accent: #d4af37; }
 
-        /* Essential Normalizations */
+        /* Normalizations */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
         img, video { max-width: 100%; height: auto; }
         input, select, textarea, button { max-width: 100%; font-family: inherit; font-size: 16px !important; }
@@ -118,6 +119,7 @@
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
         
         .total-box { background: var(--total-box); border-radius: 16px; padding: 22px; width: 100%; color: #ffffff; box-shadow: 0 8px 24px rgba(0,0,0,0.5); border: 1px solid var(--border-color); }
+        .chart-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; width: 100%; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
         .vault-grid-col { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; width: 100%; }
         
         /* Stats Rows */
@@ -179,6 +181,7 @@
     <div class="mobile-tab-bar">
         <button class="tab-item active" id="tab-vault" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i><span>Vault</span></button>
         <button class="tab-item" id="tab-att" onclick="navTo('attendance')"><i class="fas fa-business-time"></i><span>Work</span></button>
+        <button class="tab-item" id="tab-history" onclick="navTo('history')"><i class="fas fa-list"></i><span>Time List</span></button>
         <button class="tab-item" id="tab-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i><span>Settings</span></button>
     </div>
 
@@ -191,8 +194,9 @@
                 </div>
                 <div class="nav-list">
                     <button class="btn btn-primary active" id="dnav-vault-dashboard" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i> <span>Vault</span></button>
-                    <button class="btn btn-primary" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main);" id="dnav-attendance" onclick="navTo('attendance')"><i class="fas fa-business-time"></i> <span>Work & Salary</span></button>
-                    <button class="btn btn-primary" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main);" id="dnav-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i> <span>Settings</span></button>
+                    <button class="btn btn-primary" style="background: transparent; border: 1px solid var(--border-color); color: #fff;" id="dnav-attendance" onclick="navTo('attendance')"><i class="fas fa-business-time"></i> <span>Work & Salary</span></button>
+                    <button class="btn btn-primary" style="background: transparent; border: 1px solid var(--border-color); color: #fff;" id="dnav-history" onclick="navTo('history')"><i class="fas fa-list"></i> <span>Time List</span></button>
+                    <button class="btn btn-primary" style="background: transparent; border: 1px solid var(--border-color); color: #fff;" id="dnav-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i> <span>Settings</span></button>
                 </div>
             </div>
             <div class="sidebar-footer">
@@ -220,8 +224,8 @@
                             <div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Total Balance</div>
                             <div style="font-size: 38px; font-weight: 800; margin: 10px 0;" id="total-balance">₹0.00</div>
                             <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 700;">
-                                <span style="color: var(--success);" id="total-in">+₹0.00</span>
-                                <span style="color: var(--danger);" id="total-out">-₹0.00</span>
+                                <span style="color: #2ecc71;" id="total-in">+₹0.00</span>
+                                <span style="color: #ff4757;" id="total-out">-₹0.00</span>
                             </div>
                         </div>
                     </div>
@@ -246,25 +250,6 @@
                                 <button class="btn btn-danger" onclick="saveQuickTx('expense')"><i class="fas fa-minus-circle"></i> Spend Out</button>
                                 <button class="btn btn-success" onclick="saveQuickTx('income')"><i class="fas fa-plus-circle"></i> Income In</button>
                             </div>
-                        </div>
-
-                        <!-- Mini Ledger View inside Vault -->
-                        <div class="panel-heading" style="border: none; margin-top: 20px;">
-                            <span style="font-size: 20px;">Recent Ledger</span>
-                        </div>
-                        <div class="table-wrap">
-                            <table id="ledger-table">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Note</th>
-                                        <th>Flow</th>
-                                        <th>Amount</th>
-                                        <th style="width: 50px;">Del</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="ledger-table-body"></tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
@@ -350,7 +335,9 @@
                     <button class="btn btn-primary" style="margin-top: 15px;" onclick="recordShiftManual()"><i class="fas fa-save"></i> Save Manual Shift</button>
                 </div>
 
-                <div class="panel-heading"><span>Work & Salary Log</span></div>
+                <div class="panel-heading">
+                    <span>Work & Salary Log</span>
+                </div>
 
                 <div class="form-card" style="margin-bottom: 24px;">
                     <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-file-invoice"></i> Monthly Deductions (EPF & ESIC)</h3>
@@ -367,7 +354,6 @@
                     </div>
                 </div>
 
-                <!-- TIME LIST SHOWING -->
                 <div class="att-stats-row">
                     <div class="att-stat-card"><i class="fas fa-calendar-check" style="color:var(--text-accent);"></i><div class="val" id="stat-days">0</div><div class="lbl">Days</div></div>
                     <div class="att-stat-card"><i class="fas fa-money-bill" style="color:var(--text-main);"></i><div class="val" id="stat-gross">₹0</div><div class="lbl">Gross</div></div>
@@ -399,7 +385,29 @@
                 </div>
             </section>
 
-            <!-- 3. SETTINGS & THEMES -->
+            <!-- 3. TIME LIST & LEDGER (NEW DEDICATED TAB) -->
+            <section id="history-view" class="view-panel">
+                <div class="panel-heading">
+                    <span>Time List & Ledger</span>
+                    <span id="ledger-count" style="font-size: 14px; color: var(--text-muted);">0 Records</span>
+                </div>
+                <div class="table-wrap">
+                    <table id="ledger-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th style="width: 50px;">Del</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ledger-table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 4. SETTINGS & THEMES -->
             <section id="settings-view" class="view-panel">
                 <div class="panel-heading"><span>Settings & Themes</span></div>
                 
@@ -469,30 +477,7 @@
     </div>
 
     <script>
-        // --- 1. LIVE CLOCK ENGINE ---
-        function startLiveClock() {
-            setInterval(() => {
-                const now = new Date();
-                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-                
-                const dayName = days[now.getDay()];
-                const day = String(now.getDate()).padStart(2, '0');
-                const month = months[now.getMonth()];
-                const year = now.getFullYear();
-                
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-                const seconds = String(now.getSeconds()).padStart(2, '0');
-                
-                const timeStr = `${dayName}, ${day} ${month} ${year}, ${hours}:${minutes}:${seconds}`;
-                
-                const clock1 = document.getElementById('live-clock');
-                if (clock1) clock1.innerText = timeStr;
-            }, 1000);
-        }
-
-        // --- 2. BOOT SEQUENCE & LIVE PUNCH INIT ---
+        // --- 1. BOOT SEQUENCE & LIVE PUNCH INIT ---
         let activeShift = JSON.parse(localStorage.getItem('gokulActiveShift')) || null;
 
         function checkActiveShift() {
@@ -540,7 +525,42 @@
             }
         }
 
-        // --- NAVIGATION CONTROLLER ---
+        document.addEventListener("DOMContentLoaded", () => {
+            try { applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); } catch(e) {}
+            try { startLiveClock(); } catch(e) {}
+            try { renderProfile(); } catch(e) {}
+            try { updateVaultStats(); } catch(e) {}
+            try { renderJobDropdown(); } catch(e) {}
+            try { checkActiveShift(); } catch(e) {}
+            try { updateShiftStats(); } catch(e) {}
+            try { renderThemeGallery(); } catch(e) {}
+            navTo('vault-dashboard'); // Ensure UI opens properly
+        });
+
+        // --- 2. LIVE CLOCK ENGINE ---
+        function startLiveClock() {
+            setInterval(() => {
+                const now = new Date();
+                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+                
+                const dayName = days[now.getDay()];
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = months[now.getMonth()];
+                const year = now.getFullYear();
+                
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                
+                const timeStr = `${dayName}, ${day} ${month} ${year}, ${hours}:${minutes}:${seconds}`;
+                
+                const clock1 = document.getElementById('live-clock');
+                if (clock1) clock1.innerText = timeStr;
+            }, 1000);
+        }
+
+        // --- 3. NAVIGATION CONTROLLER ---
         function navTo(panelId) {
             document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
@@ -552,7 +572,7 @@
             const desktopBtn = document.getElementById(`dnav-${panelId}`);
             if (desktopBtn) desktopBtn.classList.add('active');
 
-            const tabMap = { 'vault-dashboard': 'tab-vault', 'attendance': 'tab-att', 'settings': 'tab-settings' };
+            const tabMap = { 'vault-dashboard': 'tab-vault', 'attendance': 'tab-att', 'history': 'tab-history', 'settings': 'tab-settings' };
             if (tabMap[panelId]) {
                 const mobileTab = document.getElementById(tabMap[panelId]);
                 if (mobileTab) mobileTab.classList.add('active');
@@ -563,7 +583,7 @@
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         function openMenuSheet() { openModal('menuSheetModal'); }
 
-        // --- PROFILE CONTROLLER ---
+        // --- 4. PROFILE CONTROLLER ---
         let profile = JSON.parse(localStorage.getItem('gokulProfile')) || { name: "GOKUL", role: "Influencer & Petrol Bunk Worker", idStr: "TVGR", height: "5'4\"", avatar: "10276.png" };
         if (!profile.avatar) profile.avatar = "10276.png";
 
@@ -614,7 +634,7 @@
             renderProfile(); closeModal('profileModal');
         }
 
-        // --- VAULT & TRANSACTIONS ---
+        // --- 5. VAULT & TRANSACTIONS ---
         let transactions = JSON.parse(localStorage.getItem('gokulVaultTx')) || [];
 
         function saveQuickTx(type) {
@@ -630,7 +650,7 @@
         }
 
         function deleteLedgerTx(idx) {
-            if (confirm("Delete this transaction?")) {
+            if (confirm("Delete this transaction? Your Vault balance will update.")) {
                 transactions.splice(idx, 1);
                 localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
                 updateVaultStats();
@@ -654,6 +674,9 @@
             const outEl = document.getElementById('total-out');
             if(outEl) outEl.innerText = `-₹${exp.toFixed(2)}`;
             
+            const countEl = document.getElementById('ledger-count');
+            if(countEl) countEl.innerText = `${transactions.length} Records`;
+
             const tbody = document.getElementById('ledger-table-body');
             if(tbody) {
                 let rowsHtml = '';
@@ -676,7 +699,7 @@
             }
         }
 
-        // --- WORK ENGINE (LIVE PUNCH & DEDUCTIONS) ---
+        // --- 6. WORK ENGINE (LIVE PUNCH & DEDUCTIONS) ---
         let shifts = JSON.parse(localStorage.getItem('gokulAttRecords')) || [];
         let jobProfiles = JSON.parse(localStorage.getItem('gokulJobProfiles')) || ["Petrol Bunk Worker", "Content Creator"];
 
@@ -937,7 +960,7 @@
             }
         }
 
-        // --- PDF DOWNLOADS ---
+        // --- 7. PDF DOWNLOADS ---
         function downloadPayslip() {
             if (shifts.length === 0) return alert("No shifts to export!");
             const { jsPDF } = window.jspdf;
@@ -1051,7 +1074,7 @@
             doc.save(`Gokul_Timesheet_Report_${now.getTime()}.pdf`);
         }
 
-        // --- PREMIUM THEMES ---
+        // --- 8. PREMIUM THEMES ---
         const themeOpts = [
             { id: 'jarvis', name: '🤖 J.A.R.V.I.S.' }, { id: 'rajput', name: '👑 Royal Rajput' }, { id: 'peacock', name: '🦚 Peacock Emerald' }, 
             { id: 'saffron', name: '🕉️ Varanasi Saffron' }, { id: 'mughal', name: '🕌 Mughal Magenta' }, { id: 'maratha', name: '⚔️ Maratha Navy' }, 
@@ -1073,7 +1096,7 @@
             localStorage.setItem('gokulTheme', id); 
         }
 
-        // --- DATA EXPORT / IMPORT ---
+        // --- 9. DATA EXPORT / IMPORT ---
         function exportData() {
             const data = { profile: JSON.parse(localStorage.getItem('gokulProfile')), vaultTx: JSON.parse(localStorage.getItem('gokulVaultTx')), attRecords: JSON.parse(localStorage.getItem('gokulAttRecords')) };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
@@ -1096,19 +1119,6 @@
             }
             reader.readAsText(file);
         }
-
-        // Execute boot sequence
-        document.addEventListener("DOMContentLoaded", () => {
-            try { applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); } catch(e) {}
-            try { startLiveClock(); } catch(e) {}
-            try { renderProfile(); } catch(e) {}
-            try { updateVaultStats(); } catch(e) {}
-            try { renderJobDropdown(); } catch(e) {}
-            try { checkActiveShift(); } catch(e) {}
-            try { updateShiftStats(); } catch(e) {}
-            try { renderThemeGallery(); } catch(e) {}
-            navTo('vault-dashboard');
-        });
 
     </script>
 </body>
