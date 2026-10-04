@@ -41,6 +41,7 @@
             --border-color: rgba(255, 255, 255, 0.1);
             --total-box: linear-gradient(135deg, rgba(30, 50, 100, 0.8) 0%, rgba(10, 20, 40, 0.9) 100%);
             --danger: #ff4757;
+            --success: #2ed573;
 
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -64,10 +65,9 @@
         [data-theme="lavender"] { --bg-grad-1: #1a0d26; --bg-grad-2: #26133a; --bg-grad-3: #0d0613; --bg-grad-4: #402060; --text-main: #f0e6ff; --text-accent: #d9b3ff; --text-muted: #b380ff; --total-box: linear-gradient(135deg, rgba(64, 32, 96, 0.8), rgba(26, 13, 38, 0.8)); }
         [data-theme="platinum"] { --bg-grad-1: #e6e9f0; --bg-grad-2: #eef1f5; --bg-grad-3: #ffffff; --bg-grad-4: #d9e0e8; --text-main: #2c3e50; --text-accent: #b8860b; --text-muted: #7f8c8d; --bg-app: rgba(255, 255, 255, var(--glass-alpha)); --bg-sidebar: rgba(230, 233, 240, calc(var(--glass-alpha) + 0.2)); --bg-card: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.4)); --bg-card-alt: rgba(240, 244, 248, calc(var(--glass-alpha) + 0.5)); --border-color: rgba(0, 0, 0, 0.1); --total-box: linear-gradient(135deg, rgba(236, 240, 241, 0.9), rgba(189, 195, 199, 0.9)); }
         [data-theme="obsidian"] { --bg-grad-1: #050505; --bg-grad-2: #111111; --bg-grad-3: #000000; --bg-grad-4: #0a0a0a; --text-main: #ffd700; --text-accent: #daa520; --text-muted: #a9a9a9; --total-box: linear-gradient(135deg, rgba(26, 26, 26, 0.9), rgba(0, 0, 0, 0.9)); }
-        [data-theme="light"] { --bg-grad-1: #fdfbf7; --bg-grad-2: #f4eee0; --bg-grad-3: #e8ded1; --bg-grad-4: #faf7f2; --text-main: #4a3b2c; --text-accent: #b32400; --text-muted: #8c735a; --bg-app: rgba(253, 251, 247, var(--glass-alpha)); --bg-sidebar: rgba(244, 238, 224, calc(var(--glass-alpha) + 0.3)); --bg-card: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.5)); --bg-card-alt: rgba(240, 235, 225, calc(var(--glass-alpha) + 0.6)); --border-color: rgba(0, 0, 0, 0.1); --total-box: linear-gradient(135deg, rgba(200, 170, 140, 0.9), rgba(230, 210, 180, 0.9)); }
         [data-theme="jarvis"] { --bg-grad-1: #090414; --bg-grad-2: #1b0d2d; --bg-grad-3: #081a24; --bg-grad-4: #1f0b18; --text-main: #ffffff; --text-accent: #d4af37; }
 
-        /* Essential Normalizations */
+        /* Normalizations */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
         img { max-width: 100%; height: auto; }
         input, select, textarea, button { max-width: 100%; font-family: inherit; font-size: 16px !important; }
@@ -78,6 +78,7 @@
             background-size: 300% 300%; animation: ambientGradient 12s ease infinite;
             color: var(--text-main); user-select: none; -webkit-user-select: none;
             overscroll-behavior: none;
+            transition: background 0.5s ease;
         }
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -118,6 +119,7 @@
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
         
         .total-box { background: var(--total-box); border-radius: 16px; padding: 22px; width: 100%; color: #ffffff; box-shadow: 0 8px 24px rgba(0,0,0,0.5); border: 1px solid var(--border-color); }
+        .chart-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; width: 100%; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
         .vault-grid-col { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; width: 100%; }
         
         /* Stats Rows */
@@ -225,6 +227,11 @@
                                 <span style="color: #2ecc71;" id="total-in">+₹0.00</span>
                                 <span style="color: #ff4757;" id="total-out">-₹0.00</span>
                             </div>
+                        </div>
+
+                        <div class="chart-box">
+                            <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Spending Summary</div>
+                            <div style="height: 160px;"><canvas id="financeChart"></canvas></div>
                         </div>
                     </div>
 
@@ -371,16 +378,17 @@
                     </div>
                 </div>
 
-                <!-- OVERALL STATS -->
+                <!-- TIME LIST SHOWING -->
                 <div class="att-stats-row">
                     <div class="att-stat-card"><i class="fas fa-calendar-check" style="color:var(--text-accent);"></i><div class="val" id="stat-days">0</div><div class="lbl">Days</div></div>
                     <div class="att-stat-card"><i class="fas fa-money-bill" style="color:var(--text-main);"></i><div class="val" id="stat-gross">₹0</div><div class="lbl">Gross</div></div>
                     <div class="att-stat-card"><i class="fas fa-minus-circle" style="color:var(--danger);"></i><div class="val" style="color:var(--danger);" id="stat-ded">₹0</div><div class="lbl">Deducts</div></div>
                     <div class="att-stat-card"><i class="fas fa-wallet" style="color:var(--success);"></i><div class="val" style="color:var(--success);" id="stat-net">₹0</div><div class="lbl">Net Pay</div></div>
                 </div>
+
             </section>
 
-            <!-- 3. TIME LIST & LEDGER (NEW DEDICATED TAB) -->
+            <!-- 3. TIME LIST (TAB VIEW) -->
             <section id="history-view" class="view-panel">
                 <div class="panel-heading">
                     <span>Time List (Shifts)</span>
@@ -436,7 +444,14 @@
                         <label style="font-size: 13px; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 8px;">Upload Photo (Max 3.5MB)</label>
                         <input type="file" accept="image/*" style="font-size: 14px; color: var(--text-muted); width: 100%; margin-bottom: 10px; padding: 8px; background: rgba(0,0,0,0.3); border-radius: 8px; border: 1px dashed var(--border-color);" onchange="setCustomWallpaper(this)">
                     </div>
-                    <button class="btn btn-danger" style="margin-top: 10px; width: 100%;" onclick="removeWallpaper()"><i class="fas fa-trash"></i> Remove Wallpaper</button>
+                    
+                    <div class="input-group" style="margin-top: 10px;">
+                        <label style="color: var(--text-main); font-size: 13px;"><i class="fas fa-adjust"></i> Wallpaper Brightness / Clearance</label>
+                        <input type="range" id="wallpaper-dimmer-slider" min="0" max="0.9" step="0.1" value="0.5" oninput="updateWallpaperDimmer(this.value)">
+                        <p style="font-size: 11px; color: var(--text-muted); margin-top: 5px;">Adjust this if the background makes the text hard to read.</p>
+                    </div>
+
+                    <button class="btn btn-danger" style="margin-top: 15px; width: 100%;" onclick="removeWallpaper()"><i class="fas fa-trash"></i> Remove Wallpaper</button>
                 </div>
 
                 <div class="form-card" style="margin-bottom: 24px;">
@@ -451,6 +466,11 @@
                     </div>
                 </div>
                 
+                <div class="form-card" style="margin-bottom: 40px;">
+                    <div style="font-weight: 800; font-size: 16px; color: var(--text-main); margin-bottom: 12px;">Glass UI Transparency</div>
+                    <input type="range" id="opacity-slider" min="0.2" max="1" step="0.05" oninput="updateGlassOpacity(this.value)">
+                </div>
+
             </section>
         </main>
     </div>
@@ -568,6 +588,14 @@
                 applyWallpaper(savedWallpaper);
             }
 
+            // Apply Glass Opacity
+            const savedAlpha = localStorage.getItem('gokulGlassAlpha');
+            if (savedAlpha) {
+                document.documentElement.style.setProperty('--glass-alpha', savedAlpha);
+                const opSlider = document.getElementById('opacity-slider');
+                if (opSlider) opSlider.value = savedAlpha;
+            }
+
             try { startLiveClock(); } catch(e) {}
             try { renderProfile(); } catch(e) {}
             try { updateVaultStats(); } catch(e) {}
@@ -577,6 +605,11 @@
             try { renderThemeGallery(); } catch(e) {}
             navTo('vault-dashboard'); // Ensure UI opens properly
         });
+
+        window.updateGlassOpacity = function(val) {
+            document.documentElement.style.setProperty('--glass-alpha', val);
+            localStorage.setItem('gokulGlassAlpha', val);
+        }
 
         // --- 1.1 CUSTOM WALLPAPER ENGINE ---
         function setCustomWallpaper(element) {
@@ -600,7 +633,21 @@
 
         function applyWallpaper(bgData) {
             if(bgData) {
-                document.body.style.background = `url(${bgData}) no-repeat center center fixed`;
+                let dim = localStorage.getItem('gokulWallpaperDim') || '0.5';
+                document.body.style.background = `linear-gradient(rgba(0,0,0,${dim}), rgba(0,0,0,${dim})), url(${bgData}) no-repeat center center fixed`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.animation = 'none';
+                
+                const slider = document.getElementById('wallpaper-dimmer-slider');
+                if(slider) slider.value = dim;
+            }
+        }
+
+        window.updateWallpaperDimmer = function(val) {
+            localStorage.setItem('gokulWallpaperDim', val);
+            const bgData = localStorage.getItem('gokulWallpaper');
+            if(bgData) {
+                document.body.style.background = `linear-gradient(rgba(0,0,0,${val}), rgba(0,0,0,${val})), url(${bgData}) no-repeat center center fixed`;
                 document.body.style.backgroundSize = 'cover';
                 document.body.style.animation = 'none';
             }
@@ -688,6 +735,8 @@
                 const mobileTab = document.getElementById(tabMap[panelId]);
                 if (mobileTab) mobileTab.classList.add('active');
             }
+
+            if (panelId === 'vault-dashboard') renderVaultChart();
         }
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
@@ -804,6 +853,40 @@
                     </tr>`;
                 });
                 tbody.innerHTML = rowsHtml;
+            }
+            renderVaultChart();
+        }
+
+        function renderVaultChart() {
+            if (typeof Chart === 'undefined') return;
+            const canvas = document.getElementById('financeChart');
+            if(!canvas) return; 
+            
+            try {
+                const ctx = canvas.getContext('2d');
+                const dataToChart = transactions.filter(t => t.type === 'expense');
+                const totals = {};
+                dataToChart.forEach(t => {
+                    let catName = t.category ? String(t.category) : 'Other';
+                    let cleanCat = catName.split(' ')[0]; 
+                    totals[cleanCat] = (totals[cleanCat] || 0) + (Number(t.amount) || 0);
+                });
+
+                if (vaultChart) vaultChart.destroy();
+                vaultChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(totals).length ? Object.keys(totals) : ['No Data'],
+                        datasets: [{
+                            data: Object.values(totals).length ? Object.values(totals) : [1],
+                            backgroundColor: ['#ff4757', '#3498db', '#f1c40f', '#2ecc71', '#9b59b6'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: { animation: false, responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { display: false } } }
+                });
+            } catch(e) {
+                console.log("Chart Error Handled");
             }
         }
 
@@ -1185,7 +1268,7 @@
         // --- 8. PREMIUM THEMES ---
         const themeOpts = [
             { id: 'jarvis', name: '🤖 J.A.R.V.I.S.' }, { id: 'rajput', name: '👑 Royal Rajput' }, { id: 'peacock', name: '🦚 Peacock Emerald' }, 
-            { id: 'saffron', name: '🕉️️ Varanasi Saffron' }, { id: 'mughal', name: '🕌 Mughal Magenta' }, { id: 'maratha', name: '⚔️ Maratha Navy' }, 
+            { id: 'saffron', name: '🕉️ Varanasi Saffron' }, { id: 'mughal', name: '🕌 Mughal Magenta' }, { id: 'maratha', name: '⚔️ Maratha Navy' }, 
             { id: 'chola', name: '🏛️ Chola Bronze' }, { id: 'sapphire', name: '💎 Sapphire Ocean' }, { id: 'amethyst', name: '🔮 Amethyst Lotus' }, 
             { id: 'jade', name: '🌿 Jade Forest' }, { id: 'ruby', name: '🌹 Crimson Ruby' }, { id: 'gold', name: '✨ Golden Temple' }, 
             { id: 'slate', name: '⛰️ Himalayan Slate' }, { id: 'desert', name: '🐪 Thar Desert' }, { id: 'sunset', name: '🌅 Sunset Orange' }, 
