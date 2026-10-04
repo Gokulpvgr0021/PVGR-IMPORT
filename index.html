@@ -18,10 +18,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- External Engines (PDF Only - Chart removed) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     
     <style>
         :root {
@@ -41,7 +41,6 @@
             --border-color: rgba(255, 255, 255, 0.1);
             --total-box: linear-gradient(135deg, rgba(30, 50, 100, 0.8) 0%, rgba(10, 20, 40, 0.9) 100%);
             --danger: #ff4757;
-            --success: #2ed573;
 
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -68,7 +67,7 @@
         [data-theme="light"] { --bg-grad-1: #fdfbf7; --bg-grad-2: #f4eee0; --bg-grad-3: #e8ded1; --bg-grad-4: #faf7f2; --text-main: #4a3b2c; --text-accent: #b32400; --text-muted: #8c735a; --bg-app: rgba(253, 251, 247, var(--glass-alpha)); --bg-sidebar: rgba(244, 238, 224, calc(var(--glass-alpha) + 0.3)); --bg-card: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.5)); --bg-card-alt: rgba(240, 235, 225, calc(var(--glass-alpha) + 0.6)); --border-color: rgba(0, 0, 0, 0.1); --total-box: linear-gradient(135deg, rgba(200, 170, 140, 0.9), rgba(230, 210, 180, 0.9)); }
         [data-theme="jarvis"] { --bg-grad-1: #090414; --bg-grad-2: #1b0d2d; --bg-grad-3: #081a24; --bg-grad-4: #1f0b18; --text-main: #ffffff; --text-accent: #d4af37; }
 
-        /* Normalizations */
+        /* Essential Normalizations */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
         img { max-width: 100%; height: auto; }
         input, select, textarea, button { max-width: 100%; font-family: inherit; font-size: 16px !important; }
@@ -223,8 +222,8 @@
                             <div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Total Balance</div>
                             <div style="font-size: 38px; font-weight: 800; margin: 10px 0;" id="total-balance">₹0.00</div>
                             <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 700;">
-                                <span style="color: var(--success);" id="total-in">+₹0.00</span>
-                                <span style="color: var(--danger);" id="total-out">-₹0.00</span>
+                                <span style="color: #2ecc71;" id="total-in">+₹0.00</span>
+                                <span style="color: #ff4757;" id="total-out">-₹0.00</span>
                             </div>
                         </div>
                     </div>
@@ -353,6 +352,10 @@
                     <button class="btn btn-primary" style="margin-top: 15px;" onclick="recordShiftManual()"><i class="fas fa-save"></i> Save Manual Shift</button>
                 </div>
 
+                <div class="panel-heading">
+                    <span>Work & Salary Log</span>
+                </div>
+
                 <div class="form-card" style="margin-bottom: 24px;">
                     <h3 style="color: var(--text-main); font-size: 18px;"><i class="fas fa-file-invoice"></i> Monthly Deductions (EPF & ESIC)</h3>
                     <div style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
@@ -377,7 +380,7 @@
                 </div>
             </section>
 
-            <!-- 3. TIME LIST (TAB VIEW) -->
+            <!-- 3. TIME LIST & LEDGER (NEW DEDICATED TAB) -->
             <section id="history-view" class="view-panel">
                 <div class="panel-heading">
                     <span>Time List (Shifts)</span>
@@ -426,6 +429,15 @@
                 
                 <!-- THEME GALLERY -->
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 12px; margin-bottom: 30px;" id="theme-gallery"></div>
+
+                <div class="form-card" style="margin-bottom: 24px;">
+                    <h3 style="margin-bottom: 15px; font-size: 18px;"><i class="fas fa-image"></i> Custom Background Wallpaper</h3>
+                    <div class="input-group">
+                        <label style="font-size: 13px; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 8px;">Upload Photo (Max 3.5MB)</label>
+                        <input type="file" accept="image/*" style="font-size: 14px; color: var(--text-muted); width: 100%; margin-bottom: 10px; padding: 8px; background: rgba(0,0,0,0.3); border-radius: 8px; border: 1px dashed var(--border-color);" onchange="setCustomWallpaper(this)">
+                    </div>
+                    <button class="btn btn-danger" style="margin-top: 10px; width: 100%;" onclick="removeWallpaper()"><i class="fas fa-trash"></i> Remove Wallpaper</button>
+                </div>
 
                 <div class="form-card" style="margin-bottom: 24px;">
                     <h3 style="margin-bottom: 15px; font-size: 18px;"><i class="fas fa-database"></i> Backup & Restore</h3>
@@ -550,6 +562,12 @@
                 try { applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); } catch(e) {}
             }
 
+            // Apply Custom Wallpaper if it exists
+            const savedWallpaper = localStorage.getItem('gokulWallpaper');
+            if(savedWallpaper) {
+                applyWallpaper(savedWallpaper);
+            }
+
             try { startLiveClock(); } catch(e) {}
             try { renderProfile(); } catch(e) {}
             try { updateVaultStats(); } catch(e) {}
@@ -559,6 +577,50 @@
             try { renderThemeGallery(); } catch(e) {}
             navTo('vault-dashboard'); // Ensure UI opens properly
         });
+
+        // --- 1.1 CUSTOM WALLPAPER ENGINE ---
+        function setCustomWallpaper(element) {
+            const file = element.files[0];
+            if (file) {
+                if(file.size > 3.5 * 1024 * 1024) {
+                    alert("Macha, photo size romba perusa irukku (3.5MB mela). App slow aagidum. Chinnadha oru photo upload pannu da.");
+                    element.value = '';
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const bgData = reader.result;
+                    localStorage.setItem('gokulWallpaper', bgData);
+                    applyWallpaper(bgData);
+                    alert('Custom Wallpaper Set Successfully!');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function applyWallpaper(bgData) {
+            if(bgData) {
+                document.body.style.background = `url(${bgData}) no-repeat center center fixed`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.animation = 'none';
+            }
+        }
+
+        function removeWallpaper() {
+            localStorage.removeItem('gokulWallpaper');
+            document.body.style.background = '';
+            document.body.style.backgroundSize = '';
+            document.body.style.animation = '';
+            
+            // Reapply theme to bring back the default gradient
+            const isAuto = localStorage.getItem('gokulAutoTheme') === 'true';
+            if (isAuto) {
+                autoThemeSwitcher();
+            } else {
+                applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); 
+            }
+            alert('Wallpaper removed! Themes activated.');
+        }
 
         // --- 2. LIVE CLOCK & AUTO THEME ENGINE ---
         function startLiveClock() {
@@ -1123,7 +1185,7 @@
         // --- 8. PREMIUM THEMES ---
         const themeOpts = [
             { id: 'jarvis', name: '🤖 J.A.R.V.I.S.' }, { id: 'rajput', name: '👑 Royal Rajput' }, { id: 'peacock', name: '🦚 Peacock Emerald' }, 
-            { id: 'saffron', name: '🕉️ Varanasi Saffron' }, { id: 'mughal', name: '🕌 Mughal Magenta' }, { id: 'maratha', name: '⚔️ Maratha Navy' }, 
+            { id: 'saffron', name: '🕉️️ Varanasi Saffron' }, { id: 'mughal', name: '🕌 Mughal Magenta' }, { id: 'maratha', name: '⚔️ Maratha Navy' }, 
             { id: 'chola', name: '🏛️ Chola Bronze' }, { id: 'sapphire', name: '💎 Sapphire Ocean' }, { id: 'amethyst', name: '🔮 Amethyst Lotus' }, 
             { id: 'jade', name: '🌿 Jade Forest' }, { id: 'ruby', name: '🌹 Crimson Ruby' }, { id: 'gold', name: '✨ Golden Temple' }, 
             { id: 'slate', name: '⛰️ Himalayan Slate' }, { id: 'desert', name: '🐪 Thar Desert' }, { id: 'sunset', name: '🌅 Sunset Orange' }, 
