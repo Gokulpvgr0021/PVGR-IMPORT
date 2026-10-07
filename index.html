@@ -25,7 +25,6 @@
     <style>
         :root {
             --glass-alpha: 0.75;
-            --video-dimmer: 1;
 
             --bg-grad-1: #090414; --bg-grad-2: #1b0d2d; --bg-grad-3: #081a24; --bg-grad-4: #1f0b18;
             --bg-app: rgba(4, 9, 20, var(--glass-alpha));
@@ -46,7 +45,7 @@
             --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
-        /* --- THEMES --- */
+        /* --- PREMIUM THEMES --- */
         [data-theme="rajput"] { --bg-grad-1: #2b0000; --bg-grad-2: #4a0404; --bg-grad-3: #1a0000; --bg-grad-4: #330000; --text-main: #ffdf00; --text-accent: #ff6600; --text-muted: #ffaa00; --total-box: linear-gradient(135deg, rgba(153, 0, 0, 0.8), rgba(204, 85, 0, 0.8)); }
         [data-theme="peacock"] { --bg-grad-1: #001a11; --bg-grad-2: #003322; --bg-grad-3: #001a33; --bg-grad-4: #000d1a; --text-main: #00ffcc; --text-accent: #ffcc00; --text-muted: #3399ff; --total-box: linear-gradient(135deg, rgba(0, 77, 51, 0.8), rgba(0, 51, 102, 0.8)); }
         [data-theme="saffron"] { --bg-grad-1: #331100; --bg-grad-2: #4d1a00; --bg-grad-3: #662200; --bg-grad-4: #2b0d00; --text-main: #ffcc00; --text-accent: #ff3300; --text-muted: #ff9966; --total-box: linear-gradient(135deg, rgba(153, 51, 0, 0.8), rgba(204, 102, 0, 0.8)); }
@@ -119,6 +118,7 @@
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
         
         .total-box { background: var(--total-box); border-radius: 16px; padding: 22px; width: 100%; color: #ffffff; box-shadow: 0 8px 24px rgba(0,0,0,0.5); border: 1px solid var(--border-color); }
+        
         .vault-grid-col { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; width: 100%; }
         
         /* Stats Rows */
@@ -227,6 +227,13 @@
                                 <span style="color: #ff4757;" id="total-out">-₹0.00</span>
                             </div>
                         </div>
+
+                        <!-- NEW CASHBACK WALLET -->
+                        <div class="total-box" style="margin-top: 0px; background: rgba(0,0,0,0.4); border: 1px solid var(--text-accent);">
+                            <div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);">🎁 Cashback Wallet</div>
+                            <div style="font-size: 32px; font-weight: 800; margin: 10px 0; color: var(--text-main);" id="cashback-balance">₹0.00</div>
+                            <button class="btn btn-primary" style="padding: 12px; font-size: 14px; width: 100%; border-radius: 12px; border: 1px solid var(--text-accent); color: var(--text-main); background: transparent;" onclick="redeemCashback()"><i class="fas fa-exchange-alt"></i> Redeem to Vault</button>
+                        </div>
                     </div>
 
                     <div class="vault-grid-col">
@@ -258,6 +265,7 @@
                                 <button class="btn btn-danger" onclick="saveQuickTx('expense')"><i class="fas fa-minus-circle"></i> Spend Out</button>
                                 <button class="btn btn-success" onclick="saveQuickTx('income')"><i class="fas fa-plus-circle"></i> Income In</button>
                             </div>
+                            <button class="btn btn-primary" style="margin-top: 5px; width: 100%; background: rgba(155, 89, 182, 0.2); border: 1px solid #9b59b6; color: #fff;" onclick="saveQuickTx('cashback')"><i class="fas fa-gift"></i> Save as Cashback</button>
                         </div>
 
                         <!-- Mini Ledger View inside Vault -->
@@ -531,6 +539,7 @@
     <script>
         // --- 1. BOOT SEQUENCE & LIVE PUNCH INIT ---
         let activeShift = JSON.parse(localStorage.getItem('gokulActiveShift')) || null;
+        let cashbackBalance = parseFloat(localStorage.getItem('gokulCashbackBal')) || 0;
 
         function checkActiveShift() {
             const inView = document.getElementById('punch-in-view');
@@ -545,6 +554,7 @@
                 const jobEl = document.getElementById('active-shift-job');
                 if(jobEl) jobEl.innerText = activeShift.jobType;
                 
+                // Keep the live timer updating every second when punched in
                 if (!window.shiftTimerInterval) {
                     window.shiftTimerInterval = setInterval(() => {
                         if (!activeShift) return clearInterval(window.shiftTimerInterval);
@@ -578,6 +588,7 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
+            // Apply Auto-theme if enabled, else manual theme
             const isAuto = localStorage.getItem('gokulAutoTheme') === 'true';
             if (document.getElementById('auto-theme-toggle')) {
                 document.getElementById('auto-theme-toggle').checked = isAuto;
@@ -589,11 +600,13 @@
                 try { applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); } catch(e) {}
             }
 
+            // Apply Custom Wallpaper if it exists
             const savedWallpaper = localStorage.getItem('gokulWallpaper');
             if(savedWallpaper) {
                 applyWallpaper(savedWallpaper);
             }
 
+            // Apply Glass Opacity
             const savedAlpha = localStorage.getItem('gokulGlassAlpha');
             if (savedAlpha) {
                 document.documentElement.style.setProperty('--glass-alpha', savedAlpha);
@@ -608,7 +621,8 @@
             try { checkActiveShift(); } catch(e) {}
             try { updateShiftStats(); } catch(e) {}
             try { renderThemeGallery(); } catch(e) {}
-            navTo('vault-dashboard');
+            try { updateCashbackStats(); } catch(e) {}
+            navTo('vault-dashboard'); // Ensure UI opens properly
         });
 
         window.updateGlassOpacity = function(val) {
@@ -616,10 +630,11 @@
             localStorage.setItem('gokulGlassAlpha', val);
         }
 
-        // --- 1.1 CUSTOM WALLPAPER ENGINE ---
+        // --- 1.1 CUSTOM WALLPAPER ENGINE (FIXED) ---
         function setCustomWallpaper(element) {
             const file = element.files[0];
             if (file) {
+                // Reduced size to 2MB to strictly avoid browser localStorage failure
                 if(file.size > 2 * 1024 * 1024) {
                     alert("Macha, photo size 2MB kulla irukka madhiri paathuko da. Browser memory pathadhu.");
                     element.value = '';
@@ -672,6 +687,7 @@
             document.body.style.backgroundAttachment = '';
             document.body.style.animation = '';
             
+            // Reapply theme to bring back the default gradient
             const isAuto = localStorage.getItem('gokulAutoTheme') === 'true';
             if (isAuto) {
                 autoThemeSwitcher();
@@ -704,6 +720,7 @@
             }, 1000);
         }
 
+        // Auto Theme logic
         function toggleAutoTheme() {
             const isAuto = document.getElementById('auto-theme-toggle').checked;
             localStorage.setItem('gokulAutoTheme', isAuto);
@@ -718,16 +735,16 @@
                 const hour = new Date().getHours();
                 let newTheme = 'jarvis';
                 
-                if (hour >= 6 && hour < 12) newTheme = 'sapphire';
-                else if (hour >= 12 && hour < 18) newTheme = 'platinum';
-                else newTheme = 'obsidian';
+                if (hour >= 6 && hour < 12) newTheme = 'sapphire'; // Morning (6 AM to 11:59 AM)
+                else if (hour >= 12 && hour < 18) newTheme = 'platinum'; // Afternoon (12 PM to 5:59 PM)
+                else newTheme = 'obsidian'; // Night (6 PM to 5:59 AM)
                 
                 if (document.documentElement.getAttribute('data-theme') !== newTheme) {
                     document.documentElement.setAttribute('data-theme', newTheme);
                 }
             }
         }
-        setInterval(autoThemeSwitcher, 60000);
+        setInterval(autoThemeSwitcher, 60000); // Check every minute for theme change
 
         // --- 3. NAVIGATION CONTROLLER ---
         function navTo(panelId) {
@@ -815,14 +832,47 @@
 
         function saveQuickTx(type) {
             const amount = parseFloat(document.getElementById('quick-tx-amount').value);
-            const note = document.getElementById('quick-tx-note').value.trim() || (type === 'expense' ? 'Spending' : 'Income');
+            let note = document.getElementById('quick-tx-note').value.trim();
+            
             if (isNaN(amount) || amount <= 0) return alert("Enter amount.");
 
+            if (type === 'cashback') {
+                note = note || 'Cashback Reward 🎁';
+                cashbackBalance += amount;
+                localStorage.setItem('gokulCashbackBal', cashbackBalance);
+                updateCashbackStats();
+                document.getElementById('quick-tx-amount').value = '';
+                document.getElementById('quick-tx-note').value = '';
+                alert(`₹${amount.toFixed(2)} added to Cashback Wallet!`);
+                return;
+            }
+
+            note = note || (type === 'expense' ? 'Spending' : 'Income');
             transactions.push({ date: new Date().toLocaleString('en-GB'), category: note, type: type, amount: amount });
             localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
             updateVaultStats();
             document.getElementById('quick-tx-amount').value = '';
             document.getElementById('quick-tx-note').value = '';
+        }
+
+        function redeemCashback() {
+            if (cashbackBalance <= 0) return alert("No cashback available to redeem.");
+            if (confirm(`Redeem ₹${cashbackBalance.toFixed(2)} to your main Vault?`)) {
+                transactions.push({ date: new Date().toLocaleString('en-GB'), category: "Cashback Redeemed 🎁", type: 'income', amount: cashbackBalance });
+                localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
+                
+                cashbackBalance = 0;
+                localStorage.setItem('gokulCashbackBal', 0);
+                
+                updateVaultStats();
+                updateCashbackStats();
+                alert("Cashback successfully added to Vault!");
+            }
+        }
+
+        function updateCashbackStats() {
+            const cbEl = document.getElementById('cashback-balance');
+            if (cbEl) cbEl.innerText = `₹${cashbackBalance.toFixed(2)}`;
         }
 
         function deleteLedgerTx(idx) {
@@ -877,13 +927,20 @@
             if (confirm("Are you sure you want to completely reset your Vault Dashboard? All transaction history and balance will be deleted. Attendance and Work data will remain safe.")) {
                 transactions = [];
                 localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
+                
+                cashbackBalance = 0;
+                localStorage.setItem('gokulCashbackBal', 0);
+                
                 updateVaultStats();
+                updateCashbackStats();
+                
                 alert("Vault Dashboard has been successfully reset.");
                 navTo('vault-dashboard');
             }
         }
 
         // --- 6. WORK ENGINE (LIVE PUNCH & DEDUCTIONS) ---
+        // COMPLETELY UNLINKED FROM VAULT
         let shifts = JSON.parse(localStorage.getItem('gokulAttRecords')) || [];
         let jobProfiles = JSON.parse(localStorage.getItem('gokulJobProfiles')) || ["Petrol Bunk Worker", "Content Creator"];
 
@@ -929,6 +986,15 @@
             localStorage.setItem('gokulMonthlyEPF', document.getElementById('monthly-epf').value || '0');
             localStorage.setItem('gokulMonthlyESIC', document.getElementById('monthly-esic').value || '0');
             updateShiftStats();
+        }
+
+        function syncDeductionsToVault() {
+            const epf = parseFloat(document.getElementById('monthly-epf').value) || 0;
+            const esic = parseFloat(document.getElementById('monthly-esic').value) || 0;
+            const totalDed = epf + esic;
+            if (totalDed > 0) {
+                alert(`Total Deductions of ₹${totalDed.toFixed(2)} have been noted in Work stats. (Vault is unlinked, no balance was changed).`);
+            } else { alert("Please enter EPF/ESIC amounts first."); }
         }
 
         function punchIn() {
