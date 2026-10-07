@@ -25,6 +25,7 @@
     <style>
         :root {
             --glass-alpha: 0.75;
+            --video-dimmer: 1;
 
             --bg-grad-1: #090414; --bg-grad-2: #1b0d2d; --bg-grad-3: #081a24; --bg-grad-4: #1f0b18;
             --bg-app: rgba(4, 9, 20, var(--glass-alpha));
@@ -61,7 +62,7 @@
         [data-theme="desert"] { --bg-grad-1: #331a00; --bg-grad-2: #4d2600; --bg-grad-3: #1a0d00; --bg-grad-4: #804000; --text-main: #ffebd6; --text-accent: #ff9933; --text-muted: #ffb366; --total-box: linear-gradient(135deg, rgba(128, 64, 0, 0.8), rgba(51, 26, 0, 0.8)); }
         [data-theme="sunset"] { --bg-grad-1: #33001a; --bg-grad-2: #4d0026; --bg-grad-3: #1a000d; --bg-grad-4: #800040; --text-main: #ffe6f0; --text-accent: #ff6600; --text-muted: #ff80bf; --total-box: linear-gradient(135deg, rgba(128, 0, 64, 0.8), rgba(51, 0, 26, 0.8)); }
         [data-theme="lavender"] { --bg-grad-1: #1a0d26; --bg-grad-2: #26133a; --bg-grad-3: #0d0613; --bg-grad-4: #402060; --text-main: #f0e6ff; --text-accent: #d9b3ff; --text-muted: #b380ff; --total-box: linear-gradient(135deg, rgba(64, 32, 96, 0.8), rgba(26, 13, 38, 0.8)); }
-        [data-theme="platinum"] { --bg-grad-1: #e6e9f0; --bg-grad-2: #eef1f5; --bg-grad-3: #ffffff; --bg-grad-4: #d9e0e8; --text-main: #2c3e50; --text-accent: #b8860b; --text-muted: #7f8c8d; --bg-app: rgba(255, 255, 255, var(--glass-alpha)); --bg-sidebar: rgba(230, 233, 240, calc(var(--glass-alpha) + 0.2)); --bg-card: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.4)); --bg-card-alt: rgba(240, 244, 248, calc(var(--glass-alpha) + 0.5)); --border-color: rgba(0, 0, 0, 0.1); --total-box: linear-gradient(135deg, rgba(236, 240, 241, 0.9), rgba(189, 195, 199, 0.9)); }
+        [data-theme="platinum"] { --bg-grad-1: #151515; --bg-grad-2: #363636; --bg-grad-3: #0a0a0a; --bg-grad-4: #4d4d4d; --text-main: #fdfbf7; --text-accent: #e5e4e2; --text-muted: #a3a3a3; --total-box: linear-gradient(135deg, rgba(54, 54, 54, 0.8), rgba(21, 21, 21, 0.8)); }
         [data-theme="obsidian"] { --bg-grad-1: #050505; --bg-grad-2: #111111; --bg-grad-3: #000000; --bg-grad-4: #0a0a0a; --text-main: #ffd700; --text-accent: #daa520; --text-muted: #a9a9a9; --total-box: linear-gradient(135deg, rgba(26, 26, 26, 0.9), rgba(0, 0, 0, 0.9)); }
         [data-theme="light"] { --bg-grad-1: #fdfbf7; --bg-grad-2: #f4eee0; --bg-grad-3: #e8ded1; --bg-grad-4: #faf7f2; --text-main: #4a3b2c; --text-accent: #b32400; --text-muted: #8c735a; --bg-app: rgba(253, 251, 247, var(--glass-alpha)); --bg-sidebar: rgba(244, 238, 224, calc(var(--glass-alpha) + 0.3)); --bg-card: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.5)); --bg-card-alt: rgba(240, 235, 225, calc(var(--glass-alpha) + 0.6)); --border-color: rgba(0, 0, 0, 0.1); --total-box: linear-gradient(135deg, rgba(200, 170, 140, 0.9), rgba(230, 210, 180, 0.9)); }
         [data-theme="jarvis"] { --bg-grad-1: #090414; --bg-grad-2: #1b0d2d; --bg-grad-3: #081a24; --bg-grad-4: #1f0b18; --text-main: #ffffff; --text-accent: #d4af37; }
@@ -223,8 +224,8 @@
                             <div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Total Balance</div>
                             <div style="font-size: 38px; font-weight: 800; margin: 10px 0;" id="total-balance">₹0.00</div>
                             <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 700;">
-                                <span style="color: #2ecc71;" id="total-in">+₹0.00</span>
-                                <span style="color: #ff4757;" id="total-out">-₹0.00</span>
+                                <span style="color: var(--success);" id="total-in">+₹0.00</span>
+                                <span style="color: var(--danger);" id="total-out">-₹0.00</span>
                             </div>
                         </div>
 
@@ -1325,6 +1326,9 @@
         function applyTheme(id) { 
             document.documentElement.setAttribute('data-theme', id); 
             localStorage.setItem('gokulTheme', id); 
+            if(!localStorage.getItem('gokulWallpaper')) {
+                document.body.style.animation = 'ambientGradient 12s ease infinite';
+            }
         }
 
         // --- 9. DATA EXPORT / IMPORT ---
