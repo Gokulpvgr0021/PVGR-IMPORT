@@ -25,6 +25,7 @@
     <style>
         :root {
             --glass-alpha: 0.75;
+            --video-dimmer: 1;
 
             --bg-grad-1: #090414; --bg-grad-2: #1b0d2d; --bg-grad-3: #081a24; --bg-grad-4: #1f0b18;
             --bg-app: rgba(4, 9, 20, var(--glass-alpha));
@@ -39,12 +40,13 @@
             --border-color: rgba(255, 255, 255, 0.1);
             --total-box: linear-gradient(135deg, rgba(30, 50, 100, 0.8) 0%, rgba(10, 20, 40, 0.9) 100%);
             --danger: #ff4757;
+            --success: #2ed573;
 
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
-        /* --- PREMIUM THEMES --- */
+        /* --- THEMES --- */
         [data-theme="rajput"] { --bg-grad-1: #2b0000; --bg-grad-2: #4a0404; --bg-grad-3: #1a0000; --bg-grad-4: #330000; --text-main: #ffdf00; --text-accent: #ff6600; --text-muted: #ffaa00; --total-box: linear-gradient(135deg, rgba(153, 0, 0, 0.8), rgba(204, 85, 0, 0.8)); }
         [data-theme="peacock"] { --bg-grad-1: #001a11; --bg-grad-2: #003322; --bg-grad-3: #001a33; --bg-grad-4: #000d1a; --text-main: #00ffcc; --text-accent: #ffcc00; --text-muted: #3399ff; --total-box: linear-gradient(135deg, rgba(0, 77, 51, 0.8), rgba(0, 51, 102, 0.8)); }
         [data-theme="saffron"] { --bg-grad-1: #331100; --bg-grad-2: #4d1a00; --bg-grad-3: #662200; --bg-grad-4: #2b0d00; --text-main: #ffcc00; --text-accent: #ff3300; --text-muted: #ff9966; --total-box: linear-gradient(135deg, rgba(153, 51, 0, 0.8), rgba(204, 102, 0, 0.8)); }
@@ -229,7 +231,7 @@
 
                     <div class="vault-grid-col">
                         <div class="panel-heading" style="border: none; margin-bottom: 15px;">
-                            <span>Quick Log Expense</span>
+                            <span>Quick Log Expense / Income</span>
                         </div>
                         
                         <div class="form-card" style="margin-bottom: 26px;">
@@ -240,7 +242,16 @@
                             
                             <div class="input-group">
                                 <label>Notes</label>
-                                <input type="text" id="quick-tx-note" class="form-control" placeholder="e.g. UPI Payment, Lunch...">
+                                <input type="text" id="quick-tx-note" class="form-control" placeholder="e.g. UPI Payment, Lunch, Cashback...">
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;">
+                                    <span style="font-size: 13px; color: var(--text-muted); width: 100%; font-weight: 800;">Quick Add Tags:</span>
+                                    <button class="btn btn-primary" style="padding: 8px 14px; width: auto; font-size: 13px;" onclick="addEmoji('UPI 💸')">💸 UPI</button>
+                                    <button class="btn btn-primary" style="padding: 8px 14px; width: auto; font-size: 13px;" onclick="addEmoji('Cashback 🎁')">🎁 Cashback</button>
+                                    <button class="btn btn-primary" style="padding: 8px 14px; width: auto; font-size: 13px;" onclick="addEmoji('Wallet 👛')">👛 Wallet</button>
+                                    <button class="btn btn-primary" style="padding: 8px 14px; width: auto; font-size: 13px;" onclick="addEmoji('Food 🍔')">🍔 Food</button>
+                                    <button class="btn btn-primary" style="padding: 8px 14px; width: auto; font-size: 13px;" onclick="addEmoji('Petrol ⛽')">⛽ Petrol</button>
+                                    <button class="btn btn-primary" style="padding: 8px 14px; width: auto; font-size: 13px;" onclick="addEmoji('Salary 💰')">💰 Salary</button>
+                                </div>
                             </div>
                             
                             <div style="display: flex; gap: 14px; margin-top: 14px;">
@@ -366,7 +377,7 @@
                             <label>ESIC (₹ / Month)</label>
                             <input type="number" id="monthly-esic" class="form-control" placeholder="0" onchange="saveMonthlyDeductions()">
                         </div>
-                        <button class="btn btn-danger" style="width: 100%;" onclick="syncDeductionsToVault()"><i class="fas fa-minus-circle"></i> Deduct from Vault</button>
+                        <button class="btn btn-success" style="width: 100%;" onclick="saveMonthlyDeductions(); alert('Deductions Saved!');"><i class="fas fa-save"></i> Save Deductions</button>
                     </div>
                 </div>
 
@@ -414,7 +425,7 @@
                 <div class="panel-heading"><span>Settings & Themes</span></div>
 
                 <div class="form-card" style="margin-bottom: 24px;">
-                    <h3 style="margin-bottom: 15px; font-size: 18px;"><i class="fas fa-trash-alt"></i> Reset Data</h3>
+                    <h3 style="margin-bottom: 15px; font-size: 18px;"><i class="fas fa-trash-restore"></i> Reset Data</h3>
                     <button class="btn btn-danger" style="width: 100%;" onclick="resetVaultOnly()"><i class="fas fa-coins"></i> Reset Vault Dashboard Only</button>
                     <p style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">This will delete only your vault balance and transactions. Work shifts will remain safe.</p>
                 </div>
@@ -511,7 +522,7 @@
     <div class="modal-mask" id="menuSheetModal">
         <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom)); border-radius: 20px 20px 0 0;">
             <div style="font-weight: 800; font-size: 18px; text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 14px; margin-bottom: 12px;">App Menu</div>
-            <button class="btn btn-primary" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main);" onclick="openProfileModal(); closeModal('menuSheetModal')"><i class="fas fa-user-edit"></i> Edit Profile</button>
+            <button class="btn btn-primary" style="background: transparent; border: 1px solid var(--border-color); color: #fff;" onclick="openProfileModal(); closeModal('menuSheetModal')"><i class="fas fa-user-edit"></i> Edit Profile</button>
             <button class="btn btn-danger" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); margin-top: 10px;" onclick="resetVaultOnly(); closeModal('menuSheetModal')"><i class="fas fa-trash-restore"></i> Reset Vault Only</button>
             <button class="btn btn-primary" style="margin-top: 10px;" onclick="closeModal('menuSheetModal')">Close</button>
         </div>
@@ -534,7 +545,6 @@
                 const jobEl = document.getElementById('active-shift-job');
                 if(jobEl) jobEl.innerText = activeShift.jobType;
                 
-                // Keep the live timer updating every second when punched in
                 if (!window.shiftTimerInterval) {
                     window.shiftTimerInterval = setInterval(() => {
                         if (!activeShift) return clearInterval(window.shiftTimerInterval);
@@ -568,7 +578,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Apply Auto-theme if enabled, else manual theme
             const isAuto = localStorage.getItem('gokulAutoTheme') === 'true';
             if (document.getElementById('auto-theme-toggle')) {
                 document.getElementById('auto-theme-toggle').checked = isAuto;
@@ -580,13 +589,11 @@
                 try { applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); } catch(e) {}
             }
 
-            // Apply Custom Wallpaper if it exists
             const savedWallpaper = localStorage.getItem('gokulWallpaper');
             if(savedWallpaper) {
                 applyWallpaper(savedWallpaper);
             }
 
-            // Apply Glass Opacity
             const savedAlpha = localStorage.getItem('gokulGlassAlpha');
             if (savedAlpha) {
                 document.documentElement.style.setProperty('--glass-alpha', savedAlpha);
@@ -601,7 +608,7 @@
             try { checkActiveShift(); } catch(e) {}
             try { updateShiftStats(); } catch(e) {}
             try { renderThemeGallery(); } catch(e) {}
-            navTo('vault-dashboard'); // Ensure UI opens properly
+            navTo('vault-dashboard');
         });
 
         window.updateGlassOpacity = function(val) {
@@ -609,11 +616,10 @@
             localStorage.setItem('gokulGlassAlpha', val);
         }
 
-        // --- 1.1 CUSTOM WALLPAPER ENGINE (FIXED) ---
+        // --- 1.1 CUSTOM WALLPAPER ENGINE ---
         function setCustomWallpaper(element) {
             const file = element.files[0];
             if (file) {
-                // Reduced size to 2MB to strictly avoid browser localStorage failure
                 if(file.size > 2 * 1024 * 1024) {
                     alert("Macha, photo size 2MB kulla irukka madhiri paathuko da. Browser memory pathadhu.");
                     element.value = '';
@@ -666,7 +672,6 @@
             document.body.style.backgroundAttachment = '';
             document.body.style.animation = '';
             
-            // Reapply theme to bring back the default gradient
             const isAuto = localStorage.getItem('gokulAutoTheme') === 'true';
             if (isAuto) {
                 autoThemeSwitcher();
@@ -699,7 +704,6 @@
             }, 1000);
         }
 
-        // Auto Theme logic
         function toggleAutoTheme() {
             const isAuto = document.getElementById('auto-theme-toggle').checked;
             localStorage.setItem('gokulAutoTheme', isAuto);
@@ -714,16 +718,16 @@
                 const hour = new Date().getHours();
                 let newTheme = 'jarvis';
                 
-                if (hour >= 6 && hour < 12) newTheme = 'sapphire'; // Morning (6 AM to 11:59 AM)
-                else if (hour >= 12 && hour < 18) newTheme = 'platinum'; // Afternoon (12 PM to 5:59 PM)
-                else newTheme = 'obsidian'; // Night (6 PM to 5:59 AM)
+                if (hour >= 6 && hour < 12) newTheme = 'sapphire';
+                else if (hour >= 12 && hour < 18) newTheme = 'platinum';
+                else newTheme = 'obsidian';
                 
                 if (document.documentElement.getAttribute('data-theme') !== newTheme) {
                     document.documentElement.setAttribute('data-theme', newTheme);
                 }
             }
         }
-        setInterval(autoThemeSwitcher, 60000); // Check every minute for theme change
+        setInterval(autoThemeSwitcher, 60000);
 
         // --- 3. NAVIGATION CONTROLLER ---
         function navTo(panelId) {
@@ -801,6 +805,13 @@
 
         // --- 5. VAULT & TRANSACTIONS ---
         let transactions = JSON.parse(localStorage.getItem('gokulVaultTx')) || [];
+
+        function addEmoji(emojiText) {
+            const noteInput = document.getElementById('quick-tx-note');
+            if(noteInput.value) noteInput.value = noteInput.value + ' ' + emojiText;
+            else noteInput.value = emojiText;
+            noteInput.focus();
+        }
 
         function saveQuickTx(type) {
             const amount = parseFloat(document.getElementById('quick-tx-amount').value);
@@ -920,17 +931,6 @@
             updateShiftStats();
         }
 
-        function syncDeductionsToVault() {
-            const epf = parseFloat(document.getElementById('monthly-epf').value) || 0;
-            const esic = parseFloat(document.getElementById('monthly-esic').value) || 0;
-            const totalDed = epf + esic;
-            if (totalDed > 0) {
-                if(!confirm(`Deduct exactly ₹${totalDed} from your Vault balance right now?`)) return;
-                logVaultTx(`Monthly EPF & ESIC 🏦`, 'expense', true, totalDed, `EPF: ₹${epf}, ESIC: ₹${esic}`);
-                alert(`₹${totalDed.toFixed(2)} deducted from Vault for EPF & ESIC!`);
-            } else { alert("Please enter EPF/ESIC amounts first."); }
-        }
-
         function punchIn() {
             const baseSalary = parseFloat(document.getElementById('att-base-rate').value);
             const otRate = parseFloat(document.getElementById('att-ot-rate').value);
@@ -989,18 +989,14 @@
             shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
             localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
             
-            transactions.push({ date: new Date().toLocaleString('en-GB'), category: `Shift Salary`, type: 'income', amount: grossEarned });
-            localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
-            
             activeShift = null;
             localStorage.removeItem('gokulActiveShift');
             
-            updateVaultStats();
             updateShiftStats();
             checkActiveShift();
             
-            if(isFullOT) alert(`FULL OT SHIFT COMPLETED! 100% calculated as OT. ₹${grossEarned.toFixed(2)} added to Vault.`);
-            else alert(`Shift Completed! ₹${grossEarned.toFixed(2)} added to Vault.`);
+            if(isFullOT) alert(`FULL OT SHIFT COMPLETED! 100% calculated as OT.`);
+            else alert(`Shift Completed!`);
         }
 
         function cancelPunch() {
@@ -1056,10 +1052,6 @@
             shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
             localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
             
-            transactions.push({ date: new Date().toLocaleString('en-GB'), category: `Shift Salary`, type: 'income', amount: grossEarned });
-            localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
-            
-            updateVaultStats();
             updateShiftStats();
 
             document.getElementById('att-date').valueAsDate = new Date();
@@ -1069,8 +1061,8 @@
 
             toggleManualShift();
             
-            if(isFullOT) alert(`FULL OT SHIFT! ₹${grossEarned.toFixed(2)} added to Vault.`);
-            else alert(`Shift saved! ₹${grossEarned.toFixed(2)} added to Vault.`);
+            if(isFullOT) alert(`FULL OT SHIFT! Shift saved.`);
+            else alert(`Shift saved!`);
         }
 
         function updateShiftStats() {
