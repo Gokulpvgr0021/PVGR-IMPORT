@@ -15,7 +15,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -118,6 +118,7 @@
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
         
         .total-box { background: var(--total-box); border-radius: 16px; padding: 22px; width: 100%; color: #ffffff; box-shadow: 0 8px 24px rgba(0,0,0,0.5); border: 1px solid var(--border-color); }
+        
         .vault-grid-col { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; width: 100%; }
         
         /* Stats Rows */
@@ -287,7 +288,7 @@
                         </div>
                         
                         <div class="btn-flex-row" style="margin-top: 10px;">
-                            <button class="btn btn-primary" style="background: linear-gradient(135deg, rgba(20, 30, 50, 0.9), rgba(212, 175, 55, 0.8)); color: #fff; border: 1px solid var(--border-highlight);" onclick="downloadVaultLedger()"><i class="fas fa-file-pdf"></i> Download Premium Vault Ledger</button>
+                            <button class="btn btn-primary" style="background: linear-gradient(135deg, rgba(20, 30, 55, 0.95), rgba(212, 175, 55, 0.4)); color: #fff; border: 1px solid rgba(212, 175, 55, 0.6); box-shadow: 0 4px 15px rgba(0,0,0,0.4);" onclick="downloadVaultLedger()"><i class="fas fa-file-pdf"></i> Download Premium Vault Ledger</button>
                         </div>
                     </div>
                 </div>
@@ -633,11 +634,10 @@
             localStorage.setItem('gokulGlassAlpha', val);
         }
 
-        // --- 1.1 CUSTOM WALLPAPER ENGINE (FIXED) ---
+        // --- 1.1 CUSTOM WALLPAPER ENGINE ---
         function setCustomWallpaper(element) {
             const file = element.files[0];
             if (file) {
-                // Reduced size to 2MB to strictly avoid browser localStorage failure
                 if(file.size > 2 * 1024 * 1024) {
                     alert("Macha, photo size 2MB kulla irukka madhiri paathuko da. Browser memory pathadhu.");
                     element.value = '';
@@ -1194,47 +1194,17 @@
             }
         }
 
-        // --- 7. PDF DOWNLOADS ---
+        // --- 7. PREMIUM VAULT LEDGER DOWNLOAD WITH HTML2PDF (EMOJI SUPPORT) ---
         function downloadVaultLedger() {
             if (transactions.length === 0) return alert("No transactions to export!");
-            const { jsPDF } = window.jspdf; 
-            const doc = new jsPDF('p', 'mm', 'a4');
-            
-            const primaryColor = [20, 30, 55]; 
-            const accentColor = [212, 175, 55]; 
-            const incomeColor = [46, 213, 115]; 
-            const expenseColor = [255, 71, 87]; 
-            const darkText = [40, 40, 40]; 
-            const lightText = [100, 100, 100];
 
-            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]); 
-            doc.rect(0, 0, 210, 40, 'F');
-            doc.setTextColor(255, 255, 255); 
-            doc.setFontSize(22); 
-            doc.setFont("helvetica", "bold");
-            
-            try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 10, 20, 20); } catch(e) {}
+            // Create temporary container for HTML rendering
+            const exportContainer = document.createElement('div');
+            exportContainer.style.padding = '24px';
+            exportContainer.style.color = '#111';
+            exportContainer.style.background = '#ffffff';
+            exportContainer.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
 
-            const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14;
-            doc.text("GOKUL HUB INC.", textStartX, 20); 
-            doc.setFontSize(12); 
-            doc.setFont("helvetica", "normal"); 
-            doc.text("OFFICIAL VAULT LEDGER REPORT", textStartX, 30);
-            
-            const now = new Date(); 
-            doc.setFontSize(10); 
-            doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
-            
-            doc.setTextColor(darkText[0], darkText[1], darkText[2]); 
-            doc.setFontSize(12); 
-            doc.setFont("helvetica", "bold"); 
-            doc.text("ACCOUNT HOLDER DETAILS", 14, 50);
-            doc.setFontSize(10); 
-            doc.setFont("helvetica", "normal"); 
-            doc.text(`Name: ${profile.name}`, 14, 58); 
-            doc.text(`ID: ${profile.idStr}`, 14, 64); 
-            doc.text(`Role: ${profile.role}`, 14, 70);
-            
             let inc = 0, exp = 0;
             transactions.forEach(t => {
                 if (t.type === 'income') inc += (Number(t.amount) || 0);
@@ -1242,67 +1212,65 @@
             });
             const bal = inc - exp;
 
-            doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]); 
-            doc.setLineWidth(0.5); 
-            doc.roundedRect(120, 45, 75, 38, 3, 3, 'S');
-            doc.setFont("helvetica", "bold"); 
-            doc.text("FINANCIAL SUMMARY", 125, 52); 
-            doc.setFont("helvetica", "normal");
-            doc.text(`Total Income: INR ${inc.toFixed(2)}`, 125, 60); 
-            doc.text(`Total Expense: INR ${exp.toFixed(2)}`, 125, 66); 
-            doc.setFont("helvetica", "bold"); 
-            doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]); 
-            doc.text(`Net Balance: INR ${bal.toFixed(2)}`, 125, 76);
+            exportContainer.innerHTML = `
+                <div style="background:#0f172a; color:#fff; padding:20px; border-radius:12px; margin-bottom:20px; border-bottom: 4px solid #d4af37;">
+                    <h2 style="margin:0; font-size:24px; font-family: 'Playfair Display', serif; letter-spacing: 1px;">GOKUL HUB INC.</h2>
+                    <p style="margin:6px 0 0; font-size:12px; color:#d4af37; font-weight: bold; letter-spacing: 2px;">PREMIUM VAULT LEDGER REPORT</p>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:24px; font-size:13px; background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <div>
+                        <strong style="color: #475569;">ACCOUNT HOLDER:</strong><br>
+                        <span style="font-size: 16px; font-weight: 800; color: #0f172a;">${profile.name.toUpperCase()}</span><br>
+                        <span style="color: #64748b;">ID: ${profile.idStr} | Role: ${profile.role}</span><br>
+                        <span style="color: #64748b;">Date: ${new Date().toLocaleDateString()}</span>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="color: #27ae60; margin-bottom: 4px;"><strong>Total Income:</strong> +₹${inc.toFixed(2)}</div>
+                        <div style="color: #e74c3c; margin-bottom: 4px;"><strong>Total Expense:</strong> -₹${exp.toFixed(2)}</div>
+                        <div style="font-size: 16px; color: #b48500; margin-top: 8px;"><strong>Net Balance: ₹${bal.toFixed(2)}</strong></div>
+                    </div>
+                </div>
+                <table style="width:100%; border-collapse:collapse; font-size:12px; text-align:left;">
+                    <thead>
+                        <tr style="background:#1e293b; color:#fff;">
+                            <th style="padding:12px 8px; border-radius: 6px 0 0 0;">Date</th>
+                            <th style="padding:12px 8px;">Description</th>
+                            <th style="padding:12px 8px;">Flow</th>
+                            <th style="padding:12px 8px; text-align:right; border-radius: 0 6px 0 0;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${[...transactions].reverse().map((t, i) => `
+                            <tr style="background:${i % 2 === 0 ? '#ffffff' : '#f8fafc'}; border-bottom:1px solid #e2e8f0;">
+                                <td style="padding:10px 8px; color: #475569;">${t.date ? String(t.date).split(',')[0] : ''}</td>
+                                <td style="padding:10px 8px; font-weight: 600; color: #0f172a;">${t.category}</td>
+                                <td style="padding:10px 8px; font-weight:bold; color:${t.type === 'income' ? '#27ae60' : '#e74c3c'};">${t.type.toUpperCase()}</td>
+                                <td style="padding:10px 8px; text-align:right; font-weight:bold; color:${t.type === 'income' ? '#27ae60' : '#e74c3c'};">${t.type === 'income' ? '+' : '-'}₹${Number(t.amount).toFixed(2)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                <div style="margin-top: 40px; border-top: 2px solid #e2e8f0; padding-top: 20px;">
+                    <p style="font-weight: bold; font-size: 11px; margin: 0; color: #0f172a;">AUTHORIZED SIGNATURE</p>
+                    <div style="width: 150px; height: 1px; background: #94a3b8; margin: 30px 0 10px;"></div>
+                    <p style="font-size: 9px; color: #94a3b8; margin: 0;">System Generated Ledger - Gokul Hub Premium PWA</p>
+                </div>
+            `;
 
-            doc.setTextColor(darkText[0], darkText[1], darkText[2]);
-            const tableColumn = ["Date", "Description", "Flow", "Amount (INR)"];
-            const tableRows = [...transactions].reverse().map(t => [
-                t.date ? String(t.date).split(',')[0] : '', 
-                t.category || '', 
-                t.type ? t.type.toUpperCase() : '', 
-                `${t.type === 'income' ? '+' : '-'} Rs. ${(Number(t.amount) || 0).toFixed(2)}`
-            ]);
+            document.body.appendChild(exportContainer);
 
-            doc.autoTable({ 
-                startY: 95, 
-                head: [tableColumn], 
-                body: tableRows, 
-                theme: 'striped', 
-                headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' }, 
-                bodyStyles: { textColor: darkText, halign: 'center' }, 
-                alternateRowStyles: { fillColor: [240, 244, 248] }, 
-                styles: { font: 'helvetica', fontSize: 10, cellPadding: 6 }, 
-                columnStyles: { 
-                    1: { halign: 'left' }, 
-                    2: { fontStyle: 'bold' },
-                    3: { fontStyle: 'bold' } 
-                },
-                didParseCell: function(data) {
-                    if (data.section === 'body' && data.column.index === 2) {
-                        if (data.cell.raw === 'INCOME') data.cell.styles.textColor = incomeColor;
-                        if (data.cell.raw === 'EXPENSE') data.cell.styles.textColor = expenseColor;
-                    }
-                    if (data.section === 'body' && data.column.index === 3) {
-                        if (data.cell.raw.startsWith('+')) data.cell.styles.textColor = incomeColor;
-                        if (data.cell.raw.startsWith('-')) data.cell.styles.textColor = expenseColor;
-                    }
-                },
-                margin: { top: 10, right: 14, bottom: 20, left: 14 } 
+            // Configure html2pdf to process emojis seamlessly
+            const opt = {
+                margin: 10,
+                filename: `Gokul_Vault_Ledger_${Date.now()}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, logging: false },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(exportContainer).save().then(() => {
+                document.body.removeChild(exportContainer);
             });
-
-            const finalY = doc.lastAutoTable.finalY || 95;
-            doc.setFontSize(10); 
-            doc.setFont("helvetica", "bold"); 
-            doc.setTextColor(darkText[0], darkText[1], darkText[2]);
-            doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30); 
-            doc.setLineWidth(0.5); 
-            doc.line(14, finalY + 25, 70, finalY + 25);
-            doc.setFontSize(8); 
-            doc.setFont("helvetica", "normal"); 
-            doc.setTextColor(lightText[0], lightText[1], lightText[2]); 
-            doc.text("System Generated Ledger - Gokul Hub Premium PWA", 14, finalY + 45);
-
-            doc.save(`Gokul_Vault_Ledger_${now.getTime()}.pdf`);
         }
 
         function downloadPayslip() {
