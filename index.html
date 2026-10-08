@@ -25,7 +25,6 @@
     <style>
         :root {
             --glass-alpha: 0.75;
-            --video-dimmer: 1;
 
             --bg-grad-1: #090414; --bg-grad-2: #1b0d2d; --bg-grad-3: #081a24; --bg-grad-4: #1f0b18;
             --bg-app: rgba(4, 9, 20, var(--glass-alpha));
@@ -119,7 +118,6 @@
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
         
         .total-box { background: var(--total-box); border-radius: 16px; padding: 22px; width: 100%; color: #ffffff; box-shadow: 0 8px 24px rgba(0,0,0,0.5); border: 1px solid var(--border-color); }
-        
         .vault-grid-col { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; width: 100%; }
         
         /* Stats Rows */
@@ -286,6 +284,10 @@
                                 </thead>
                                 <tbody id="ledger-table-body"></tbody>
                             </table>
+                        </div>
+                        
+                        <div class="btn-flex-row" style="margin-top: 10px;">
+                            <button class="btn btn-primary" style="background: linear-gradient(135deg, rgba(20, 30, 50, 0.9), rgba(212, 175, 55, 0.8)); color: #fff; border: 1px solid var(--border-highlight);" onclick="downloadVaultLedger()"><i class="fas fa-file-pdf"></i> Download Premium Vault Ledger</button>
                         </div>
                     </div>
                 </div>
@@ -1193,6 +1195,116 @@
         }
 
         // --- 7. PDF DOWNLOADS ---
+        function downloadVaultLedger() {
+            if (transactions.length === 0) return alert("No transactions to export!");
+            const { jsPDF } = window.jspdf; 
+            const doc = new jsPDF('p', 'mm', 'a4');
+            
+            const primaryColor = [20, 30, 55]; 
+            const accentColor = [212, 175, 55]; 
+            const incomeColor = [46, 213, 115]; 
+            const expenseColor = [255, 71, 87]; 
+            const darkText = [40, 40, 40]; 
+            const lightText = [100, 100, 100];
+
+            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]); 
+            doc.rect(0, 0, 210, 40, 'F');
+            doc.setTextColor(255, 255, 255); 
+            doc.setFontSize(22); 
+            doc.setFont("helvetica", "bold");
+            
+            try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 10, 20, 20); } catch(e) {}
+
+            const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14;
+            doc.text("GOKUL HUB INC.", textStartX, 20); 
+            doc.setFontSize(12); 
+            doc.setFont("helvetica", "normal"); 
+            doc.text("OFFICIAL VAULT LEDGER REPORT", textStartX, 30);
+            
+            const now = new Date(); 
+            doc.setFontSize(10); 
+            doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
+            
+            doc.setTextColor(darkText[0], darkText[1], darkText[2]); 
+            doc.setFontSize(12); 
+            doc.setFont("helvetica", "bold"); 
+            doc.text("ACCOUNT HOLDER DETAILS", 14, 50);
+            doc.setFontSize(10); 
+            doc.setFont("helvetica", "normal"); 
+            doc.text(`Name: ${profile.name}`, 14, 58); 
+            doc.text(`ID: ${profile.idStr}`, 14, 64); 
+            doc.text(`Role: ${profile.role}`, 14, 70);
+            
+            let inc = 0, exp = 0;
+            transactions.forEach(t => {
+                if (t.type === 'income') inc += (Number(t.amount) || 0);
+                if (t.type === 'expense') exp += (Number(t.amount) || 0);
+            });
+            const bal = inc - exp;
+
+            doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]); 
+            doc.setLineWidth(0.5); 
+            doc.roundedRect(120, 45, 75, 38, 3, 3, 'S');
+            doc.setFont("helvetica", "bold"); 
+            doc.text("FINANCIAL SUMMARY", 125, 52); 
+            doc.setFont("helvetica", "normal");
+            doc.text(`Total Income: INR ${inc.toFixed(2)}`, 125, 60); 
+            doc.text(`Total Expense: INR ${exp.toFixed(2)}`, 125, 66); 
+            doc.setFont("helvetica", "bold"); 
+            doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]); 
+            doc.text(`Net Balance: INR ${bal.toFixed(2)}`, 125, 76);
+
+            doc.setTextColor(darkText[0], darkText[1], darkText[2]);
+            const tableColumn = ["Date", "Description", "Flow", "Amount (INR)"];
+            const tableRows = [...transactions].reverse().map(t => [
+                t.date ? String(t.date).split(',')[0] : '', 
+                t.category || '', 
+                t.type ? t.type.toUpperCase() : '', 
+                `${t.type === 'income' ? '+' : '-'} Rs. ${(Number(t.amount) || 0).toFixed(2)}`
+            ]);
+
+            doc.autoTable({ 
+                startY: 95, 
+                head: [tableColumn], 
+                body: tableRows, 
+                theme: 'striped', 
+                headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' }, 
+                bodyStyles: { textColor: darkText, halign: 'center' }, 
+                alternateRowStyles: { fillColor: [240, 244, 248] }, 
+                styles: { font: 'helvetica', fontSize: 10, cellPadding: 6 }, 
+                columnStyles: { 
+                    1: { halign: 'left' }, 
+                    2: { fontStyle: 'bold' },
+                    3: { fontStyle: 'bold' } 
+                },
+                didParseCell: function(data) {
+                    if (data.section === 'body' && data.column.index === 2) {
+                        if (data.cell.raw === 'INCOME') data.cell.styles.textColor = incomeColor;
+                        if (data.cell.raw === 'EXPENSE') data.cell.styles.textColor = expenseColor;
+                    }
+                    if (data.section === 'body' && data.column.index === 3) {
+                        if (data.cell.raw.startsWith('+')) data.cell.styles.textColor = incomeColor;
+                        if (data.cell.raw.startsWith('-')) data.cell.styles.textColor = expenseColor;
+                    }
+                },
+                margin: { top: 10, right: 14, bottom: 20, left: 14 } 
+            });
+
+            const finalY = doc.lastAutoTable.finalY || 95;
+            doc.setFontSize(10); 
+            doc.setFont("helvetica", "bold"); 
+            doc.setTextColor(darkText[0], darkText[1], darkText[2]);
+            doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30); 
+            doc.setLineWidth(0.5); 
+            doc.line(14, finalY + 25, 70, finalY + 25);
+            doc.setFontSize(8); 
+            doc.setFont("helvetica", "normal"); 
+            doc.setTextColor(lightText[0], lightText[1], lightText[2]); 
+            doc.text("System Generated Ledger - Gokul Hub Premium PWA", 14, finalY + 45);
+
+            doc.save(`Gokul_Vault_Ledger_${now.getTime()}.pdf`);
+        }
+
         function downloadPayslip() {
             if (shifts.length === 0) return alert("No shifts to export!");
             const { jsPDF } = window.jspdf;
@@ -1326,9 +1438,6 @@
         function applyTheme(id) { 
             document.documentElement.setAttribute('data-theme', id); 
             localStorage.setItem('gokulTheme', id); 
-            if(!localStorage.getItem('gokulWallpaper')) {
-                document.body.style.animation = 'ambientGradient 12s ease infinite';
-            }
         }
 
         // --- 9. DATA EXPORT / IMPORT ---
