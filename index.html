@@ -223,8 +223,8 @@
                             <div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Total Balance</div>
                             <div style="font-size: 38px; font-weight: 800; margin: 10px 0;" id="total-balance">₹0.00</div>
                             <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 700;">
-                                <span style="color: var(--success);" id="total-in">+₹0.00</span>
-                                <span style="color: var(--danger);" id="total-out">-₹0.00</span>
+                                <span style="color: #2ecc71;" id="total-in">+₹0.00</span>
+                                <span style="color: #ff4757;" id="total-out">-₹0.00</span>
                             </div>
                         </div>
 
@@ -437,6 +437,18 @@
                 <div class="panel-heading"><span>Settings & Themes</span></div>
 
                 <div class="form-card" style="margin-bottom: 24px;">
+                    <h3 style="margin-bottom: 15px; font-size: 18px;"><i class="fas fa-calendar-check"></i> Scheduled Auto-Download</h3>
+                    <div class="input-group">
+                        <label style="display:flex; align-items:center; gap:10px; font-weight:700; color:var(--text-accent);">
+                            <input type="checkbox" id="auto-pdf-toggle" style="width:20px;height:20px;" onchange="toggleAutoPdf()">
+                            Enable Monthly Auto-Download (1st of every month)
+                        </label>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Note: App must be opened at least once on or after the 1st of the month to trigger the background download.</p>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 15px; width: 100%;" onclick="downloadAllPdfsNow()"><i class="fas fa-download"></i> Download All PDFs Now</button>
+                </div>
+
+                <div class="form-card" style="margin-bottom: 24px;">
                     <h3 style="margin-bottom: 15px; font-size: 18px;"><i class="fas fa-trash-restore"></i> Reset Data</h3>
                     <button class="btn btn-danger" style="width: 100%;" onclick="resetVaultOnly()"><i class="fas fa-coins"></i> Reset Vault Dashboard Only</button>
                     <p style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">This will delete only your vault balance and transactions. Work shifts will remain safe.</p>
@@ -626,6 +638,13 @@
             try { updateShiftStats(); } catch(e) {}
             try { renderThemeGallery(); } catch(e) {}
             try { updateCashbackStats(); } catch(e) {}
+            
+            // Apply Auto-PDF Download Settings
+            if (document.getElementById('auto-pdf-toggle')) {
+                document.getElementById('auto-pdf-toggle').checked = localStorage.getItem('gokulAutoPdf') === 'true';
+            }
+            try { checkAutoPdfDownload(); } catch(e) {}
+
             navTo('vault-dashboard'); // Ensure UI opens properly
         });
 
@@ -634,10 +653,11 @@
             localStorage.setItem('gokulGlassAlpha', val);
         }
 
-        // --- 1.1 CUSTOM WALLPAPER ENGINE ---
+        // --- 1.1 CUSTOM WALLPAPER ENGINE (FIXED) ---
         function setCustomWallpaper(element) {
             const file = element.files[0];
             if (file) {
+                // Reduced size to 2MB to strictly avoid browser localStorage failure
                 if(file.size > 2 * 1024 * 1024) {
                     alert("Macha, photo size 2MB kulla irukka madhiri paathuko da. Browser memory pathadhu.");
                     element.value = '';
@@ -1194,7 +1214,34 @@
             }
         }
 
-        // --- 7. PREMIUM VAULT LEDGER DOWNLOAD WITH HTML2PDF (EMOJI SUPPORT) ---
+        // --- 7. AUTO-DOWNLOAD PDF SETTINGS ---
+        function toggleAutoPdf() {
+            localStorage.setItem('gokulAutoPdf', document.getElementById('auto-pdf-toggle').checked);
+        }
+
+        function checkAutoPdfDownload() {
+            if(localStorage.getItem('gokulAutoPdf') === 'true') {
+                const now = new Date();
+                const currentMonthKey = now.getFullYear() + '-' + now.getMonth();
+                const lastDownload = localStorage.getItem('gokulLastAutoPdf');
+
+                if (now.getDate() >= 1 && lastDownload !== currentMonthKey) {
+                    setTimeout(() => {
+                        downloadAllPdfsNow();
+                        localStorage.setItem('gokulLastAutoPdf', currentMonthKey);
+                    }, 3000);
+                }
+            }
+        }
+
+        function downloadAllPdfsNow() {
+            alert("Starting automated download for all reports...");
+            setTimeout(downloadVaultLedger, 500);
+            setTimeout(downloadPayslip, 2500);
+            setTimeout(downloadTimesheet, 4500);
+        }
+
+        // --- 8. PREMIUM VAULT LEDGER DOWNLOAD WITH HTML2PDF (EMOJI SUPPORT) ---
         function downloadVaultLedger() {
             if (transactions.length === 0) return alert("No transactions to export!");
 
@@ -1386,7 +1433,7 @@
             doc.save(`Gokul_Timesheet_Report_${now.getTime()}.pdf`);
         }
 
-        // --- 8. PREMIUM THEMES ---
+        // --- 9. PREMIUM THEMES ---
         const themeOpts = [
             { id: 'jarvis', name: '🤖 J.A.R.V.I.S.' }, { id: 'rajput', name: '👑 Royal Rajput' }, { id: 'peacock', name: '🦚 Peacock Emerald' }, 
             { id: 'saffron', name: '🕉️ Varanasi Saffron' }, { id: 'mughal', name: '🕌 Mughal Magenta' }, { id: 'maratha', name: '⚔️ Maratha Navy' }, 
@@ -1408,7 +1455,7 @@
             localStorage.setItem('gokulTheme', id); 
         }
 
-        // --- 9. DATA EXPORT / IMPORT ---
+        // --- 10. DATA EXPORT / IMPORT ---
         function exportData() {
             const data = { profile: JSON.parse(localStorage.getItem('gokulProfile')), vaultTx: JSON.parse(localStorage.getItem('gokulVaultTx')), attRecords: JSON.parse(localStorage.getItem('gokulAttRecords')) };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
