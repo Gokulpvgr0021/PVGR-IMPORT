@@ -1680,7 +1680,12 @@
 
         function downloadTimesheet() {
             if (shifts.length === 0) return alert("No shifts to export!");
-            const { jsPDF } = window.jspdf; const doc = new jsPDF('p', 'mm', 'a4');
+            const { jsPDF } = window.jspdf; 
+            
+            // Dynamic page height calculations to fit all shifts in a single continuous page
+            const pageHeight = Math.max(297, 140 + (shifts.length * 10));
+            const doc = new jsPDF('p', 'mm', [210, pageHeight]);
+            
             const primaryColor = [28, 69, 135], accentColor = [22, 163, 74], darkText = [40, 40, 40], lightText = [100, 100, 100];
 
             doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.rect(0, 0, 210, 40, 'F');
@@ -1717,7 +1722,18 @@
                 `Rs. ${(Number(s.grossEarned) || Number(s.totalEarned) || 0).toFixed(2)}`
             ]);
 
-            doc.autoTable({ startY: 95, head: [tableColumn], body: tableRows, theme: 'striped', headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' }, bodyStyles: { textColor: darkText, halign: 'center' }, alternateRowStyles: { fillColor: [240, 244, 248] }, styles: { font: 'helvetica', fontSize: 10, cellPadding: 6 }, columnStyles: { 1: { halign: 'left' }, 5: { fontStyle: 'bold', textColor: [22, 163, 74] } }, margin: { top: 10, right: 14, bottom: 20, left: 14 } });
+            doc.autoTable({ 
+                startY: 95, 
+                head: [tableColumn], 
+                body: tableRows, 
+                theme: 'striped', 
+                headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' }, 
+                bodyStyles: { textColor: darkText, halign: 'center' }, 
+                alternateRowStyles: { fillColor: [240, 244, 248] }, 
+                styles: { font: 'helvetica', fontSize: 10, cellPadding: 6 }, 
+                columnStyles: { 1: { halign: 'left' }, 5: { fontStyle: 'bold', textColor: [22, 163, 74] } }, 
+                margin: { top: 10, right: 14, bottom: 20, left: 14 } 
+            });
 
             const finalY = doc.lastAutoTable.finalY || 95;
             doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30); doc.setLineWidth(0.5); doc.line(14, finalY + 25, 70, finalY + 25);
