@@ -700,6 +700,10 @@
                             <label>End Date</label>
                             <input type="date" id="emi-reg-end" class="form-control">
                         </div>
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>Auto Pay Date (Day of Month)</label>
+                            <input type="number" id="emi-reg-paydate" class="form-control" placeholder="e.g. 5" min="1" max="31">
+                        </div>
                     </div>
                     
                     <div style="display: flex; justify-content: space-around; text-align: center; margin-bottom: 16px; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; border: 1px solid var(--border-highlight);">
@@ -1458,17 +1462,22 @@
 
         // --- 5.2 EMI REGISTRY & TRACKING (UNLINKED FROM VAULT) ---
         
+        function autoCalcEmiEndDate() {
+            let startVal = document.getElementById('emi-reg-start').value;
+            let monthsVal = parseInt(document.getElementById('emi-reg-months').value);
+            if(startVal && !isNaN(monthsVal) && monthsVal > 0) {
+                let d = new Date(startVal);
+                d.setMonth(d.getMonth() + monthsVal);
+                document.getElementById('emi-reg-end').value = d.toISOString().split('T')[0];
+            }
+        }
+
         function liveCalcEmiReg() {
             let p = parseFloat(document.getElementById('emi-reg-principal').value);
             let r = parseFloat(document.getElementById('emi-reg-rate').value);
             let n = parseInt(document.getElementById('emi-reg-months').value);
             
-            let startVal = document.getElementById('emi-reg-start').value;
-            if(startVal && !isNaN(n) && n > 0) {
-                let d = new Date(startVal);
-                d.setMonth(d.getMonth() + n);
-                document.getElementById('emi-reg-end').value = d.toISOString().split('T')[0];
-            }
+            autoCalcEmiEndDate();
 
             if (p > 0 && r >= 0 && n > 0) {
                 let monthlyRate = r / 12 / 100;
@@ -1498,6 +1507,7 @@
             let n = parseInt(document.getElementById('emi-reg-months').value);
             let startInput = document.getElementById('emi-reg-start').value;
             let endInput = document.getElementById('emi-reg-end').value;
+            let payDateInput = parseInt(document.getElementById('emi-reg-paydate').value);
 
             if (!name || isNaN(p) || p <= 0 || isNaN(r) || r < 0 || isNaN(n) || n <= 0) {
                 return alert("Please fill all valid details to register an EMI.");
@@ -1515,6 +1525,7 @@
 
             let startDateStr = startInput ? new Date(startInput).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'}) : new Date().toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'});
             let endDateStr = endInput ? new Date(endInput).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'}) : "N/A";
+            let payDateStr = (!isNaN(payDateInput) && payDateInput > 0 && payDateInput <= 31) ? payDateInput : "N/A";
 
             let newLoan = {
                 id: Date.now(),
@@ -1527,7 +1538,8 @@
                 totalInterest: totalInterest,
                 totalPayable: totalAmount,
                 startDate: startDateStr,
-                endDate: endDateStr
+                endDate: endDateStr,
+                autoPayDate: payDateStr
             };
 
             emiRegistry.push(newLoan);
@@ -1539,6 +1551,7 @@
             document.getElementById('emi-reg-months').value = '';
             document.getElementById('emi-reg-start').value = '';
             document.getElementById('emi-reg-end').value = '';
+            document.getElementById('emi-reg-paydate').value = '';
             
             document.getElementById('reg-live-emi').innerText = '₹0.00';
             document.getElementById('reg-live-int').innerText = '₹0.00';
@@ -1627,6 +1640,10 @@
                     <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px;">
                         <span style="color: var(--text-muted);">End Date (Payoff):</span>
                         <span style="font-weight: 800; color: ${isCompleted ? 'var(--success)' : 'var(--text-main)'};">${loan.endDate}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px;">
+                        <span style="color: var(--text-muted);">Auto Pay Date:</span>
+                        <span style="font-weight: 800; color: var(--text-accent);">${loan.autoPayDate !== "N/A" ? 'Day ' + loan.autoPayDate + ' of every month' : 'Not Set'}</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 13px;">
                         <span style="color: var(--text-muted);">Pending Amount:</span>
@@ -1721,15 +1738,15 @@
                     loan.name,
                     `Rs. ${loan.principal.toFixed(2)}`,
                     `Rs. ${loan.monthlyEmi.toFixed(2)}`,
+                    loan.autoPayDate !== "N/A" ? `Day ${loan.autoPayDate}` : "-",
                     `${loan.paidMonths} / ${loan.totalMonths}`,
-                    pending,
                     loan.endDate
                 ]);
             });
             
             doc.autoTable({
                 startY: 95,
-                head: [["Loan Name", "Borrowed", "EMI/Month", "Paid/Total M.", "Pending M.", "End Date"]],
+                head: [["Loan Name", "Borrowed", "EMI/M", "Pay Date", "Paid/Total", "End Date"]],
                 body: tableRows,
                 theme: 'striped',
                 headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' },
