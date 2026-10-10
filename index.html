@@ -260,11 +260,22 @@
         .form-control { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.4); color: var(--text-main); font-size: 16px !important; outline: none; width: 100%; font-weight: 600; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); transition: border-color 0.3s ease, box-shadow 0.3s ease; }
         .form-control:focus { border-color: var(--text-accent); box-shadow: 0 0 10px var(--border-highlight), inset 0 2px 5px rgba(0,0,0,0.5); }
 
-        /* --- 💎 PREMIUM ROYALTY BUTTONS (GPU Accelerated) --- */
+        /* --- 🧞‍♂️ GENIE TOUCH EFFECTS FOR ALL BUTTONS --- */
+        @keyframes premiumBtnFade {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
         @keyframes premiumBtnShine {
-            0% { transform: translateX(-150%) skewX(-25deg); }
-            20% { transform: translateX(250%) skewX(-25deg); }
-            100% { transform: translateX(250%) skewX(-25deg); }
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+        @keyframes genieMagic {
+            0% { border-radius: 12px; transform: scale(1); filter: hue-rotate(0deg) brightness(1); }
+            30% { border-radius: 30px 10px 30px 10px; transform: scale(0.9) translateY(4px); filter: hue-rotate(90deg) brightness(1.5) drop-shadow(0 10px 20px var(--text-accent)); }
+            70% { border-radius: 10px 30px 10px 30px; transform: scale(1.05) translateY(-2px); filter: hue-rotate(180deg) brightness(1.2) drop-shadow(0 -10px 30px var(--text-main)); }
+            100% { border-radius: 12px; transform: scale(1); filter: hue-rotate(0deg) brightness(1); }
         }
 
         .btn { 
@@ -285,14 +296,20 @@
             position: relative;
             overflow: hidden;
             color: #ffffff !important;
-            will-change: transform, box-shadow;
+            will-change: transform, box-shadow, border-radius, filter;
         }
         .btn::after {
             content: ''; position: absolute; top: 0; left: 0; width: 50%; height: 100%;
             background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
             transform: translateX(-150%) skewX(-25deg); animation: premiumBtnShine 4s infinite linear; pointer-events: none;
         }
-        .btn:active { transform: scale(0.95); box-shadow: inset 0 4px 10px rgba(0,0,0,0.5) !important; }
+        .btn:active { 
+            animation: genieMagic 0.5s ease-out !important; 
+            box-shadow: inset 0 4px 15px rgba(0,0,0,0.6), 0 0 20px var(--text-accent) !important; 
+        }
+        .tab-item:active i {
+            animation: genieMagic 0.5s ease-out !important;
+        }
         
         .btn-primary { 
             background: linear-gradient(135deg, #8B6508 0%, #FFD700 25%, #D4AF37 50%, #F9F047 75%, #8B6508 100%) !important;
@@ -427,7 +444,7 @@
                             </div>
                         </div>
 
-                        <!-- NEW CASHBACK WALLET -->
+                        <!-- CASHBACK WALLET -->
                         <div class="total-box" style="margin-top: 0px; background: rgba(0,0,0,0.4); border: 1px solid var(--text-accent);">
                             <div style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);">🎁 Cashback Wallet</div>
                             <div style="font-size: 32px; font-weight: 800; margin: 10px 0; color: var(--text-main);" id="cashback-balance">₹0.00</div>
@@ -478,6 +495,50 @@
                                 <div style="display: flex; flex-direction: column; text-align: right;">
                                     <span style="font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Last Mileage</span>
                                     <span id="last-petrol-mileage" style="font-size: 16px; font-weight: 900; color: var(--text-accent);">-- km/l</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 💳 EMI SETTLEMENT ENGINE -->
+                        <div class="panel-heading" style="border: none; margin-top: 20px; margin-bottom: 15px;">
+                            <span style="font-size: 20px;">💳 EMI Settlement Engine</span>
+                        </div>
+                        <div class="form-card" style="margin-bottom: 26px;">
+                            <div style="display: flex; gap: 16px; width: 100%; margin-bottom: 14px; flex-wrap: wrap;">
+                                <div class="input-group" style="flex: 1; min-width: 100%;">
+                                    <label>Loan Amount / Principal (₹)</label>
+                                    <input type="number" id="emi-principal" class="form-control" placeholder="e.g. 50000" inputmode="numeric" oninput="calculateEmi()">
+                                </div>
+                                <div class="input-group" style="flex: 1; min-width: 45%;">
+                                    <label>Interest Rate (% P.A.)</label>
+                                    <input type="number" id="emi-rate" class="form-control" placeholder="12" inputmode="decimal" oninput="calculateEmi()">
+                                </div>
+                                <div class="input-group" style="flex: 1; min-width: 45%;">
+                                    <label>Tenure (Months)</label>
+                                    <input type="number" id="emi-months" class="form-control" placeholder="12" inputmode="numeric" oninput="calculateEmi()">
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; justify-content: space-around; text-align: center; margin-bottom: 16px; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; border: 1px solid var(--border-highlight);">
+                                <div>
+                                    <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Monthly EMI</div>
+                                    <div id="emi-monthly-display" style="font-size: 20px; font-weight: 800; color: var(--text-accent);">₹0.00</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Total Interest</div>
+                                    <div id="emi-interest-display" style="font-size: 20px; font-weight: 800; color: var(--danger);">₹0.00</div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 14px; margin-top: 14px; flex-wrap: wrap;">
+                                <button class="btn btn-danger" onclick="payEmiFromVault()"><i class="fas fa-hand-holding-usd"></i> Pay EMI & Deduct</button>
+                                <button class="btn btn-primary" onclick="downloadEmiSettlement()"><i class="fas fa-file-invoice"></i> Download Settlement PDF</button>
+                            </div>
+
+                            <div style="margin-top: 16px; border-top: 1px dashed var(--border-highlight); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <span style="font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Total Payable Amount</span>
+                                    <span id="emi-total-display" style="font-size: 16px; font-weight: 900; color: var(--text-main);">₹0.00</span>
                                 </div>
                             </div>
                         </div>
@@ -981,6 +1042,7 @@
             // Init Petrol Tracker
             document.getElementById('petrol-price').value = localStorage.getItem('gokulPetrolPrice') || '';
             try { updatePetrolStats(); } catch(e) {}
+            try { calculateEmi(); } catch(e) {}
             
             // Apply Auto-PDF Download Settings
             if (document.getElementById('auto-pdf-toggle')) {
@@ -1373,6 +1435,133 @@
             if (milEl) milEl.innerText = lastMileage;
         }
 
+        // --- 5.2 EMI CALCULATOR & LOGGING ---
+        window.currentEmiDetails = null;
+
+        function calculateEmi() {
+            let p = parseFloat(document.getElementById('emi-principal').value);
+            let r = parseFloat(document.getElementById('emi-rate').value);
+            let n = parseInt(document.getElementById('emi-months').value);
+
+            if (p > 0 && r >= 0 && n > 0) {
+                let monthlyRate = r / 12 / 100;
+                let emi = 0;
+                if (monthlyRate === 0) {
+                    emi = p / n;
+                } else {
+                    emi = p * monthlyRate * (Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1);
+                }
+                let totalAmount = emi * n;
+                let totalInterest = totalAmount - p;
+
+                document.getElementById('emi-monthly-display').innerText = '₹' + emi.toFixed(2);
+                document.getElementById('emi-interest-display').innerText = '₹' + totalInterest.toFixed(2);
+                document.getElementById('emi-total-display').innerText = '₹' + totalAmount.toFixed(2);
+                
+                window.currentEmiDetails = { p, r, n, emi, totalInterest, totalAmount };
+            } else {
+                document.getElementById('emi-monthly-display').innerText = '₹0.00';
+                document.getElementById('emi-interest-display').innerText = '₹0.00';
+                document.getElementById('emi-total-display').innerText = '₹0.00';
+                window.currentEmiDetails = null;
+            }
+        }
+
+        function payEmiFromVault() {
+            if(!window.currentEmiDetails) return alert("Please enter correct values to calculate EMI first!");
+            let emi = window.currentEmiDetails.emi;
+            let p = window.currentEmiDetails.p;
+            
+            if(confirm(`Deduct exact ₹${emi.toFixed(2)} from your Vault for this month's EMI?`)) {
+                transactions.push({ date: new Date().toLocaleString('en-GB'), category: `EMI Payment 💳 (Loan: ₹${p})`, type: 'expense', amount: emi });
+                localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
+                updateVaultStats();
+                alert(`EMI of ₹${emi.toFixed(2)} paid successfully & deducted from Vault!`);
+            }
+        }
+
+        function downloadEmiSettlement() {
+            if(!window.currentEmiDetails) return alert("Please calculate EMI first to generate report!");
+            
+            const { p, r, n, emi, totalInterest, totalAmount } = window.currentEmiDetails;
+            const { jsPDF } = window.jspdf;
+            
+            const pageHeight = Math.max(297, 120 + (n * 8));
+            const doc = new jsPDF('p', 'mm', [210, pageHeight]);
+            
+            const primaryColor = [20, 30, 55];
+            const accentColor = [212, 175, 55];
+            const darkText = [40, 40, 40];
+            const lightText = [100, 100, 100];
+
+            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+            doc.rect(0, 0, 210, 40, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(22); doc.setFont("helvetica", "bold");
+            
+            try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 10, 20, 20); } catch(e) {}
+
+            const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14;
+            doc.text("GOKUL HUB INC.", textStartX, 20);
+            doc.setFontSize(12); doc.setFont("helvetica", "normal");
+            doc.text("OFFICIAL EMI SETTLEMENT SCHEDULE", textStartX, 30);
+            
+            const now = new Date(); doc.setFontSize(10); doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
+            
+            doc.setTextColor(darkText[0], darkText[1], darkText[2]); doc.setFontSize(12); doc.setFont("helvetica", "bold");
+            doc.text("LOAN DETAILS", 14, 50);
+            doc.setFontSize(10); doc.setFont("helvetica", "normal");
+            doc.text(`Principal Amount: INR ${p.toFixed(2)}`, 14, 58);
+            doc.text(`Interest Rate: ${r}% P.A.`, 14, 64);
+            doc.text(`Tenure: ${n} Months`, 14, 70);
+            
+            doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.setLineWidth(0.5); doc.roundedRect(120, 45, 75, 38, 3, 3, 'S');
+            doc.setFont("helvetica", "bold"); doc.text("SUMMARY", 125, 52); doc.setFont("helvetica", "normal");
+            doc.text(`Monthly EMI: INR ${emi.toFixed(2)}`, 125, 60);
+            doc.text(`Total Interest: INR ${totalInterest.toFixed(2)}`, 125, 66);
+            doc.setFont("helvetica", "bold"); doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]);
+            doc.text(`Total Payable: INR ${totalAmount.toFixed(2)}`, 125, 76);
+            
+            // Amortization Table
+            let balance = p;
+            let monthlyRate = r / 12 / 100;
+            let tableRows = [];
+            
+            for(let i = 1; i <= n; i++) {
+                let interestForMonth = balance * monthlyRate;
+                let principalForMonth = emi - interestForMonth;
+                balance -= principalForMonth;
+                if(balance < 0) balance = 0;
+                
+                tableRows.push([
+                    `Month ${i}`,
+                    `Rs. ${emi.toFixed(2)}`,
+                    `Rs. ${principalForMonth.toFixed(2)}`,
+                    `Rs. ${interestForMonth.toFixed(2)}`,
+                    `Rs. ${balance.toFixed(2)}`
+                ]);
+            }
+            
+            doc.autoTable({
+                startY: 95,
+                head: [["Month", "EMI", "Principal", "Interest", "Remaining Balance"]],
+                body: tableRows,
+                theme: 'striped',
+                headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' },
+                bodyStyles: { textColor: darkText, halign: 'center' },
+                alternateRowStyles: { fillColor: [240, 244, 248] },
+                styles: { font: 'helvetica', fontSize: 9, cellPadding: 5 },
+                margin: { left: 14, right: 14 }
+            });
+            
+            const finalY = doc.lastAutoTable.finalY || 95;
+            doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(darkText[0], darkText[1], darkText[2]);
+            doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30); doc.setLineWidth(0.5); doc.line(14, finalY + 25, 70, finalY + 25);
+            doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(lightText[0], lightText[1], lightText[2]); doc.text("System Generated Report - Gokul Hub Premium PWA", 14, finalY + 45);
+
+            doc.save(`Gokul_EMI_Settlement_${Date.now()}.pdf`);
+        }
+
         // --- VAULT RESET ONLY ---
         function resetVaultOnly() {
             if (confirm("Are you sure you want to completely reset your Vault Dashboard? All transaction history, petrol records, and balance will be deleted. Attendance and Work data will remain safe.")) {
@@ -1738,6 +1927,7 @@
 
             document.body.appendChild(exportContainer);
 
+            // Configure html2pdf to process emojis seamlessly
             const opt = {
                 margin: 10,
                 filename: `Gokul_Vault_Ledger_${Date.now()}.pdf`,
@@ -1882,7 +2072,7 @@
 
         // --- 9. PREMIUM THEMES ---
         const themeOpts = [
-            { id: 'jarvis', name: '🤖 JARVIS THEME' }, { id: 'rajput', name: '👑 Royal Rajput' }, { id: 'peacock', name: '🦚 Peacock Emerald' }, 
+            { id: 'jarvis', name: '🤖 J.A.R.V.I.S.' }, { id: 'rajput', name: '👑 Royal Rajput' }, { id: 'peacock', name: '🦚 Peacock Emerald' }, 
             { id: 'saffron', name: '🕉️ Varanasi Saffron' }, { id: 'mughal', name: '🕌 Mughal Magenta' }, { id: 'maratha', name: '⚔️ Maratha Navy' }, 
             { id: 'chola', name: '🏛️ Chola Bronze' }, { id: 'sapphire', name: '💎 Sapphire Ocean' }, { id: 'amethyst', name: '🔮 Amethyst Lotus' }, 
             { id: 'jade', name: '🌿 Jade Forest' }, { id: 'ruby', name: '🌹 Crimson Ruby' }, { id: 'gold', name: '✨ Golden Temple' }, 
