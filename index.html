@@ -396,7 +396,8 @@
     <div class="mobile-tab-bar">
         <button class="tab-item active" id="tab-vault" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i><span>Vault</span></button>
         <button class="tab-item" id="tab-att" onclick="navTo('attendance')"><i class="fas fa-business-time"></i><span>Work</span></button>
-        <button class="tab-item" id="tab-history" onclick="navTo('history')"><i class="fas fa-list"></i><span>Time List</span></button>
+        <button class="tab-item" id="tab-emi" onclick="navTo('emi-dashboard')"><i class="fas fa-calculator"></i><span>EMI</span></button>
+        <button class="tab-item" id="tab-history" onclick="navTo('history')"><i class="fas fa-list"></i><span>History</span></button>
         <button class="tab-item" id="tab-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i><span>Settings</span></button>
     </div>
 
@@ -410,6 +411,7 @@
                 <div class="nav-list">
                     <button class="btn btn-primary active" id="dnav-vault-dashboard" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i> <span>Vault</span></button>
                     <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" id="dnav-attendance" onclick="navTo('attendance')"><i class="fas fa-business-time"></i> <span>Work & Salary</span></button>
+                    <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" id="dnav-emi-dashboard" onclick="navTo('emi-dashboard')"><i class="fas fa-calculator"></i> <span>EMI Tracker</span></button>
                     <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" id="dnav-history" onclick="navTo('history')"><i class="fas fa-list"></i> <span>Time List</span></button>
                     <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" id="dnav-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i> <span>Settings</span></button>
                 </div>
@@ -495,50 +497,6 @@
                                 <div style="display: flex; flex-direction: column; text-align: right;">
                                     <span style="font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Last Mileage</span>
                                     <span id="last-petrol-mileage" style="font-size: 16px; font-weight: 900; color: var(--text-accent);">-- km/l</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 💳 EMI SETTLEMENT ENGINE -->
-                        <div class="panel-heading" style="border: none; margin-top: 20px; margin-bottom: 15px;">
-                            <span style="font-size: 20px;">💳 EMI Settlement Engine</span>
-                        </div>
-                        <div class="form-card" style="margin-bottom: 26px;">
-                            <div style="display: flex; gap: 16px; width: 100%; margin-bottom: 14px; flex-wrap: wrap;">
-                                <div class="input-group" style="flex: 1; min-width: 100%;">
-                                    <label>Loan Amount / Principal (₹)</label>
-                                    <input type="number" id="emi-principal" class="form-control" placeholder="e.g. 50000" inputmode="numeric" oninput="calculateEmi()">
-                                </div>
-                                <div class="input-group" style="flex: 1; min-width: 45%;">
-                                    <label>Interest Rate (% P.A.)</label>
-                                    <input type="number" id="emi-rate" class="form-control" placeholder="12" inputmode="decimal" oninput="calculateEmi()">
-                                </div>
-                                <div class="input-group" style="flex: 1; min-width: 45%;">
-                                    <label>Tenure (Months)</label>
-                                    <input type="number" id="emi-months" class="form-control" placeholder="12" inputmode="numeric" oninput="calculateEmi()">
-                                </div>
-                            </div>
-                            
-                            <div style="display: flex; justify-content: space-around; text-align: center; margin-bottom: 16px; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; border: 1px solid var(--border-highlight);">
-                                <div>
-                                    <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Monthly EMI</div>
-                                    <div id="emi-monthly-display" style="font-size: 20px; font-weight: 800; color: var(--text-accent);">₹0.00</div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Total Interest</div>
-                                    <div id="emi-interest-display" style="font-size: 20px; font-weight: 800; color: var(--danger);">₹0.00</div>
-                                </div>
-                            </div>
-                            
-                            <div style="display: flex; gap: 14px; margin-top: 14px; flex-wrap: wrap;">
-                                <button class="btn btn-danger" onclick="payEmiFromVault()"><i class="fas fa-hand-holding-usd"></i> Pay EMI & Deduct</button>
-                                <button class="btn btn-primary" onclick="downloadEmiSettlement()"><i class="fas fa-file-invoice"></i> Download Settlement PDF</button>
-                            </div>
-
-                            <div style="margin-top: 16px; border-top: 1px dashed var(--border-highlight); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                                <div style="display: flex; flex-direction: column;">
-                                    <span style="font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Total Payable Amount</span>
-                                    <span id="emi-total-display" style="font-size: 16px; font-weight: 900; color: var(--text-main);">₹0.00</span>
                                 </div>
                             </div>
                         </div>
@@ -707,8 +665,56 @@
                     <div class="att-stat-card"><i class="fas fa-wallet" style="color:var(--success);"></i><div class="val" style="color:var(--success);" id="stat-net">₹0</div><div class="lbl">Net Pay</div></div>
                 </div>
             </section>
+            
+            <!-- 3. EMI DASHBOARD -->
+            <section id="emi-dashboard-view" class="view-panel">
+                <!-- 💳 EMI SETTLEMENT ENGINE -->
+                <div class="panel-heading" style="border: none; margin-bottom: 15px;">
+                    <span style="font-size: 20px;">💳 EMI Calculator & Planner</span>
+                </div>
+                <div class="form-card" style="margin-bottom: 26px;">
+                    <div style="display: flex; gap: 16px; width: 100%; margin-bottom: 14px; flex-wrap: wrap;">
+                        <div class="input-group" style="flex: 1; min-width: 100%;">
+                            <label>Loan Amount / Principal (₹)</label>
+                            <input type="number" id="emi-principal" class="form-control" placeholder="e.g. 50000" inputmode="numeric" oninput="calculateEmi()">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>Interest Rate (% P.A.)</label>
+                            <input type="number" id="emi-rate" class="form-control" placeholder="12" inputmode="decimal" oninput="calculateEmi()">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>Tenure (Months)</label>
+                            <input type="number" id="emi-months" class="form-control" placeholder="12" inputmode="numeric" oninput="calculateEmi()">
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-around; text-align: center; margin-bottom: 16px; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; border: 1px solid var(--border-highlight);">
+                        <div>
+                            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Monthly EMI</div>
+                            <div id="emi-monthly-display" style="font-size: 20px; font-weight: 800; color: var(--text-accent);">₹0.00</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Total Interest</div>
+                            <div id="emi-interest-display" style="font-size: 20px; font-weight: 800; color: var(--danger);">₹0.00</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 14px; margin-top: 14px; flex-wrap: wrap;">
+                        <button class="btn btn-success" onclick="markEmiPaid()"><i class="fas fa-check-circle"></i> Mark EMI as Paid</button>
+                        <button class="btn btn-primary" onclick="downloadEmiSettlement()"><i class="fas fa-file-invoice"></i> Download Settlement PDF</button>
+                    </div>
+                    <p style="font-size: 11px; color: var(--text-muted); margin-top: 10px; text-align: center; font-weight: 700;">*EMI payments are tracked separately and do NOT affect your Vault balance.</p>
 
-            <!-- 3. TIME LIST (TAB VIEW) -->
+                    <div style="margin-top: 16px; border-top: 1px dashed var(--border-highlight); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Total Payable Amount</span>
+                            <span id="emi-total-display" style="font-size: 16px; font-weight: 900; color: var(--text-main);">₹0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. TIME LIST (TAB VIEW) -->
             <section id="history-view" class="view-panel">
                 <div class="panel-heading">
                     <span>Time List (Shifts)</span>
@@ -738,7 +744,7 @@
                 </div>
             </section>
 
-            <!-- 4. SETTINGS & THEMES -->
+            <!-- 5. SETTINGS & THEMES -->
             <section id="settings-view" class="view-panel">
                 <div class="panel-heading"><span>Settings & Themes</span></div>
 
@@ -1039,7 +1045,7 @@
             try { renderThemeGallery(); } catch(e) {}
             try { updateCashbackStats(); } catch(e) {}
             
-            // Init Petrol Tracker
+            // Init Petrol Tracker & EMI
             document.getElementById('petrol-price').value = localStorage.getItem('gokulPetrolPrice') || '';
             try { updatePetrolStats(); } catch(e) {}
             try { calculateEmi(); } catch(e) {}
@@ -1186,7 +1192,7 @@
             const desktopBtn = document.getElementById(`dnav-${panelId}`);
             if (desktopBtn) desktopBtn.classList.add('active');
 
-            const tabMap = { 'vault-dashboard': 'tab-vault', 'attendance': 'tab-att', 'history': 'tab-history', 'settings': 'tab-settings' };
+            const tabMap = { 'vault-dashboard': 'tab-vault', 'attendance': 'tab-att', 'emi-dashboard': 'tab-emi', 'history': 'tab-history', 'settings': 'tab-settings' };
             if (tabMap[panelId]) {
                 const mobileTab = document.getElementById(tabMap[panelId]);
                 if (mobileTab) mobileTab.classList.add('active');
@@ -1467,16 +1473,12 @@
             }
         }
 
-        function payEmiFromVault() {
+        function markEmiPaid() {
             if(!window.currentEmiDetails) return alert("Please enter correct values to calculate EMI first!");
             let emi = window.currentEmiDetails.emi;
-            let p = window.currentEmiDetails.p;
             
-            if(confirm(`Deduct exact ₹${emi.toFixed(2)} from your Vault for this month's EMI?`)) {
-                transactions.push({ date: new Date().toLocaleString('en-GB'), category: `EMI Payment 💳 (Loan: ₹${p})`, type: 'expense', amount: emi });
-                localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
-                updateVaultStats();
-                alert(`EMI of ₹${emi.toFixed(2)} paid successfully & deducted from Vault!`);
+            if(confirm(`Mark this month's EMI of ₹${emi.toFixed(2)} as Paid?\n\n(Note: This is tracked separately and will NOT deduct from your Vault balance)`)) {
+                alert(`EMI of ₹${emi.toFixed(2)} marked as Paid successfully!`);
             }
         }
 
