@@ -682,25 +682,41 @@
                         </div>
                         <div class="input-group" style="flex: 1; min-width: 45%;">
                             <label>Total Loan Amount (₹)</label>
-                            <input type="number" id="emi-reg-principal" class="form-control" placeholder="50000" inputmode="numeric">
+                            <input type="number" id="emi-reg-principal" class="form-control" placeholder="50000" inputmode="numeric" oninput="liveCalcEmiReg()">
                         </div>
                         <div class="input-group" style="flex: 1; min-width: 45%;">
                             <label>Interest Rate (% P.A.)</label>
-                            <input type="number" id="emi-reg-rate" class="form-control" placeholder="12" inputmode="decimal">
+                            <input type="number" id="emi-reg-rate" class="form-control" placeholder="12" inputmode="decimal" oninput="liveCalcEmiReg()">
                         </div>
                         <div class="input-group" style="flex: 1; min-width: 100%;">
                             <label>Total Tenure (Months)</label>
-                            <input type="number" id="emi-reg-months" class="form-control" placeholder="12" inputmode="numeric" oninput="autoCalcEmiEndDate()">
+                            <input type="number" id="emi-reg-months" class="form-control" placeholder="12" inputmode="numeric" oninput="liveCalcEmiReg()">
                         </div>
                         <div class="input-group" style="flex: 1; min-width: 45%;">
                             <label>Start Date</label>
-                            <input type="date" id="emi-reg-start" class="form-control" onchange="autoCalcEmiEndDate()">
+                            <input type="date" id="emi-reg-start" class="form-control" onchange="liveCalcEmiReg()">
                         </div>
                         <div class="input-group" style="flex: 1; min-width: 45%;">
                             <label>End Date</label>
                             <input type="date" id="emi-reg-end" class="form-control">
                         </div>
                     </div>
+                    
+                    <div style="display: flex; justify-content: space-around; text-align: center; margin-bottom: 16px; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; border: 1px solid var(--border-highlight);">
+                        <div>
+                            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">EMI / Month</div>
+                            <div id="reg-live-emi" style="font-size: 20px; font-weight: 800; color: var(--text-accent);">₹0.00</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Total Interest</div>
+                            <div id="reg-live-int" style="font-size: 20px; font-weight: 800; color: var(--danger);">₹0.00</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Total Payable</div>
+                            <div id="reg-live-total" style="font-size: 20px; font-weight: 800; color: var(--text-main);">₹0.00</div>
+                        </div>
+                    </div>
+
                     <button class="btn btn-success" onclick="registerNewEmi()"><i class="fas fa-save"></i> Register EMI</button>
                 </div>
 
@@ -1442,13 +1458,36 @@
 
         // --- 5.2 EMI REGISTRY & TRACKING (UNLINKED FROM VAULT) ---
         
-        function autoCalcEmiEndDate() {
+        function liveCalcEmiReg() {
+            let p = parseFloat(document.getElementById('emi-reg-principal').value);
+            let r = parseFloat(document.getElementById('emi-reg-rate').value);
+            let n = parseInt(document.getElementById('emi-reg-months').value);
+            
             let startVal = document.getElementById('emi-reg-start').value;
-            let monthsVal = parseInt(document.getElementById('emi-reg-months').value);
-            if(startVal && !isNaN(monthsVal) && monthsVal > 0) {
+            if(startVal && !isNaN(n) && n > 0) {
                 let d = new Date(startVal);
-                d.setMonth(d.getMonth() + monthsVal);
+                d.setMonth(d.getMonth() + n);
                 document.getElementById('emi-reg-end').value = d.toISOString().split('T')[0];
+            }
+
+            if (p > 0 && r >= 0 && n > 0) {
+                let monthlyRate = r / 12 / 100;
+                let emi = 0;
+                if (monthlyRate === 0) {
+                    emi = p / n;
+                } else {
+                    emi = p * monthlyRate * (Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1);
+                }
+                let totalAmount = emi * n;
+                let totalInterest = totalAmount - p;
+
+                document.getElementById('reg-live-emi').innerText = '₹' + emi.toFixed(2);
+                document.getElementById('reg-live-int').innerText = '₹' + totalInterest.toFixed(2);
+                document.getElementById('reg-live-total').innerText = '₹' + totalAmount.toFixed(2);
+            } else {
+                document.getElementById('reg-live-emi').innerText = '₹0.00';
+                document.getElementById('reg-live-int').innerText = '₹0.00';
+                document.getElementById('reg-live-total').innerText = '₹0.00';
             }
         }
 
@@ -1500,6 +1539,10 @@
             document.getElementById('emi-reg-months').value = '';
             document.getElementById('emi-reg-start').value = '';
             document.getElementById('emi-reg-end').value = '';
+            
+            document.getElementById('reg-live-emi').innerText = '₹0.00';
+            document.getElementById('reg-live-int').innerText = '₹0.00';
+            document.getElementById('reg-live-total').innerText = '₹0.00';
             
             renderEmiRegistry();
             alert(`Loan '${name}' Registered successfully!`);
@@ -1559,6 +1602,8 @@
                 let pending = loan.totalMonths - loan.paidMonths;
                 let progressPercent = (loan.paidMonths / loan.totalMonths) * 100;
                 let isCompleted = pending === 0;
+                let pendingAmount = loan.totalPayable - (loan.monthlyEmi * loan.paidMonths);
+                if(pendingAmount < 0) pendingAmount = 0;
 
                 html += `
                 <div class="emi-card" style="padding: 16px; position: relative;">
@@ -1579,9 +1624,13 @@
                         <span style="color: var(--text-muted);">Start Date:</span>
                         <span style="font-weight: 800; color: var(--text-main);">${loan.startDate}</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 13px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px;">
                         <span style="color: var(--text-muted);">End Date (Payoff):</span>
-                        <span style="font-weight: 800; color: ${isCompleted ? 'var(--success)' : 'var(--danger)'};">${loan.endDate}</span>
+                        <span style="font-weight: 800; color: ${isCompleted ? 'var(--success)' : 'var(--text-main)'};">${loan.endDate}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 13px;">
+                        <span style="color: var(--text-muted);">Pending Amount:</span>
+                        <span style="font-weight: 800; color: var(--danger);">₹${pendingAmount.toFixed(2)}</span>
                     </div>
 
                     <div style="background: rgba(0,0,0,0.4); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 8px;">
