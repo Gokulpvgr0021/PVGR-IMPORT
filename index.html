@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Gokul Hub Premium</title>
     
+    <!-- PWA Fullscreen Manifest & Meta Tags -->
+    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiR29rdWwgSHViIFByZW1pdW0iLCJzaG9ydF9uYW1lIjoiR29rdWwgSHViIiwiZGlzcGxheSI6ImZ1bGxzY3JlZW4iLCJzdGFydF91cmwiOiIuLyIsImJhY2tncm91bmRfY29sb3ciOiIjMDAwMDAwIiwidGhlbWVfY29sb3ciOiIjMDAwMDAwIn0=">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -768,6 +770,19 @@
             <section id="settings-view" class="view-panel">
                 <div class="panel-heading"><span>Settings & Themes</span></div>
 
+                <!-- App Fullscreen / PWA toggle -->
+                <div class="form-card" style="margin-bottom: 24px;">
+                    <h3 style="margin-bottom: 15px; font-size: 18px;"><i class="fas fa-expand"></i> Full-Screen Experience</h3>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">For the best experience, add this site to your Home Screen. It will automatically run in full screen.</p>
+                    <div class="input-group">
+                        <label style="display:flex; align-items:center; gap:10px; font-weight:700; color:var(--text-accent);">
+                            <input type="checkbox" id="fullscreen-toggle" style="width:20px;height:20px;" onchange="toggleFullScreenManual()">
+                            Force Browser Full-Screen Mode
+                        </label>
+                        <p style="font-size: 11px; color: var(--text-muted); margin-top: 5px;">Note: This will hide browser bars. You must tap the screen once to activate.</p>
+                    </div>
+                </div>
+
                 <div class="form-card" style="margin-bottom: 24px;">
                     <h3 style="margin-bottom: 15px; font-size: 18px;"><i class="fas fa-calendar-check"></i> Scheduled Auto-Download</h3>
                     <div class="input-group">
@@ -929,6 +944,46 @@
             reader.readAsDataURL(file);
         }
 
+        // --- 11. IMMERSIVE FULLSCREEN ENGINE ---
+        function requestAppFullScreen() {
+            const doc = window.document;
+            const docEl = doc.documentElement;
+
+            const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullscreen || docEl.msRequestFullscreen;
+            
+            if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+                if(requestFullScreen) {
+                    requestFullScreen.call(docEl).catch(err => {
+                        console.log("Fullscreen ignored by browser until user interacts further.");
+                    });
+                }
+            }
+        }
+
+        const initFS = () => {
+            if(localStorage.getItem('gokulAutoFS') !== 'false') {
+                requestAppFullScreen();
+            }
+            document.removeEventListener('click', initFS);
+            document.removeEventListener('touchstart', initFS);
+        };
+        document.addEventListener('click', initFS);
+        document.addEventListener('touchstart', initFS);
+
+        function toggleFullScreenManual() {
+            const toggle = document.getElementById('fullscreen-toggle');
+            if(toggle && toggle.checked) {
+                localStorage.setItem('gokulAutoFS', 'true');
+                requestAppFullScreen();
+            } else {
+                localStorage.setItem('gokulAutoFS', 'false');
+                const exitFS = document.exitFullscreen || document.mozCancelFullScreen || document.webkitExitFullscreen || document.msExitFullscreen;
+                if(exitFS) {
+                    exitFS.call(document).catch(err => console.log(err));
+                }
+            }
+        }
+
         // --- DUAL MODE TOGGLE (LIGHT / DARK) ---
         function toggleDayNight() {
             const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -1028,6 +1083,11 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             renderAppLogo(); // Initial load for App Logos
+
+            // Full Screen init toggle state
+            if(document.getElementById('fullscreen-toggle')) {
+                document.getElementById('fullscreen-toggle').checked = localStorage.getItem('gokulAutoFS') !== 'false';
+            }
 
             // Apply Auto-theme if enabled, else manual theme
             const isAuto = localStorage.getItem('gokulAutoTheme') === 'true';
