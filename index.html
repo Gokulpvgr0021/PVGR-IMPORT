@@ -1509,9 +1509,23 @@
             let loanIndex = emiRegistry.findIndex(l => l.id === loanId);
             if(loanIndex > -1) {
                 let loan = emiRegistry[loanIndex];
+                let pending = loan.totalMonths - loan.paidMonths;
+                
+                let monthInput = document.getElementById(`pay-months-${loan.id}`);
+                let monthsToPay = monthInput ? parseInt(monthInput.value) : 1;
+
+                if (isNaN(monthsToPay) || monthsToPay <= 0) {
+                    return alert("Please enter a valid number of months.");
+                }
+                if (monthsToPay > pending) {
+                    return alert(`You only have ${pending} months pending!`);
+                }
+
+                let totalPayment = loan.monthlyEmi * monthsToPay;
+
                 if (loan.paidMonths < loan.totalMonths) {
-                    if(confirm(`Mark 1 month EMI (₹${loan.monthlyEmi.toFixed(2)}) as Paid for ${loan.name}?\n\n(Note: This is tracked separately and will NOT deduct from your Vault balance)`)) {
-                        loan.paidMonths += 1;
+                    if(confirm(`Mark ${monthsToPay} month(s) EMI (₹${totalPayment.toFixed(2)}) as Paid for ${loan.name}?\n\n(Note: This is tracked separately and will NOT deduct from your Vault balance)`)) {
+                        loan.paidMonths += monthsToPay;
                         emiRegistry[loanIndex] = loan;
                         localStorage.setItem('gokulEmiRegistry', JSON.stringify(emiRegistry));
                         renderEmiRegistry();
@@ -1581,7 +1595,10 @@
                     ${isCompleted ? 
                         `<div style="text-align: center; color: var(--success); font-weight: 800; padding: 10px; border: 1px dashed var(--success); border-radius: 8px;"><i class="fas fa-check-circle"></i> LOAN CLEARED</div>` 
                         : 
-                        `<button class="btn btn-success" style="padding: 12px; font-size: 13px;" onclick="markEmiPaid(${loan.id})"><i class="fas fa-hand-holding-usd"></i> Pay 1 Month EMI</button>`
+                        `<div style="display: flex; gap: 10px; align-items: stretch;">
+                            <input type="number" id="pay-months-${loan.id}" class="form-control" style="width: 80px; padding: 10px; text-align: center; font-weight: 800;" value="1" min="1" max="${pending}">
+                            <button class="btn btn-success" style="padding: 12px; font-size: 13px; flex: 1; margin: 0;" onclick="markEmiPaid(${loan.id})"><i class="fas fa-hand-holding-usd"></i> Pay EMI</button>
+                        </div>`
                     }
                 </div>
                 `;
@@ -2052,7 +2069,6 @@
 
             document.body.appendChild(exportContainer);
 
-            // Configure html2pdf to process emojis seamlessly
             const opt = {
                 margin: 10,
                 filename: `Gokul_Vault_Ledger_${Date.now()}.pdf`,
