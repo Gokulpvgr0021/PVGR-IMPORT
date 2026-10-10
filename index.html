@@ -436,6 +436,34 @@
                     </div>
 
                     <div class="vault-grid-col">
+                        
+                        <!-- ⛽ PETROL TRACKER -->
+                        <div class="panel-heading" style="border: none; margin-bottom: 15px;">
+                            <span style="font-size: 20px;">⛽ Petrol Expense Tracker</span>
+                        </div>
+                        <div class="form-card" style="margin-bottom: 26px;">
+                            <div style="display: flex; gap: 16px; width: 100%; margin-bottom: 14px;">
+                                <div class="input-group">
+                                    <label>Price / Litre (₹)</label>
+                                    <input type="number" id="petrol-price" class="form-control" placeholder="102.63" inputmode="decimal" oninput="calculatePetrolLitre()">
+                                </div>
+                                <div class="input-group">
+                                    <label>Amount Spent (₹)</label>
+                                    <input type="number" id="petrol-amount" class="form-control" placeholder="0" inputmode="decimal" oninput="calculatePetrolLitre()">
+                                </div>
+                            </div>
+                            <div style="text-align: center; margin-bottom: 16px;">
+                                <span style="font-size: 13px; color: var(--text-muted); font-weight: 700;">Litres Filled Today: </span>
+                                <span id="petrol-litre-display" style="font-size: 24px; font-weight: 800; color: var(--text-accent);">0.00 L</span>
+                            </div>
+                            <button class="btn btn-danger" onclick="logPetrolExpense()"><i class="fas fa-gas-pump"></i> Log Petrol & Deduct Vault</button>
+
+                            <div style="margin-top: 16px; border-top: 1px dashed var(--border-highlight); padding-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 13px; color: var(--text-muted); font-weight: 800;">Total Petrol Litres:</span>
+                                <span id="total-petrol-litres" style="font-size: 18px; font-weight: 900; color: var(--text-main);">0.00 L</span>
+                            </div>
+                        </div>
+
                         <div class="panel-heading" style="border: none; margin-bottom: 15px;">
                             <span>Quick Log Expense / Income</span>
                         </div>
@@ -817,6 +845,7 @@
         // --- 1. BOOT SEQUENCE & APP LOGO LOGIC ---
         let activeShift = JSON.parse(localStorage.getItem('gokulActiveShift')) || null;
         let cashbackBalance = parseFloat(localStorage.getItem('gokulCashbackBal')) || 0;
+        let petrolRecords = JSON.parse(localStorage.getItem('gokulPetrolRecords')) || [];
 
         function renderAppLogo() {
             const logoSrc = localStorage.getItem('gokulAppLogo') || '10276.png';
@@ -930,6 +959,10 @@
             try { updateShiftStats(); } catch(e) {}
             try { renderThemeGallery(); } catch(e) {}
             try { updateCashbackStats(); } catch(e) {}
+            
+            // Init Petrol Tracker
+            document.getElementById('petrol-price').value = localStorage.getItem('gokulPetrolPrice') || '';
+            try { updatePetrolStats(); } catch(e) {}
             
             // Apply Auto-PDF Download Settings
             if (document.getElementById('auto-pdf-toggle')) {
@@ -1238,17 +1271,62 @@
             }
         }
 
+        // --- 5.1 PETROL TRACKER ---
+        function calculatePetrolLitre() {
+            let price = parseFloat(document.getElementById('petrol-price').value);
+            let amount = parseFloat(document.getElementById('petrol-amount').value);
+            if (price > 0 && amount > 0) {
+                let litres = amount / price;
+                document.getElementById('petrol-litre-display').innerText = litres.toFixed(2) + ' L';
+            } else {
+                document.getElementById('petrol-litre-display').innerText = '0.00 L';
+            }
+        }
+
+        function logPetrolExpense() {
+            let price = parseFloat(document.getElementById('petrol-price').value);
+            let amount = parseFloat(document.getElementById('petrol-amount').value);
+            if (isNaN(price) || isNaN(amount) || price <= 0 || amount <= 0) return alert("Enter valid price and amount!");
+
+            let litres = amount / price;
+            localStorage.setItem('gokulPetrolPrice', price);
+
+            petrolRecords.push({ date: new Date().toLocaleString('en-GB'), amount: amount, price: price, litres: litres });
+            localStorage.setItem('gokulPetrolRecords', JSON.stringify(petrolRecords));
+
+            transactions.push({ date: new Date().toLocaleString('en-GB'), category: `Petrol ⛽ (${litres.toFixed(2)}L @ ₹${price})`, type: 'expense', amount: amount });
+            localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
+
+            updateVaultStats();
+            updatePetrolStats();
+
+            document.getElementById('petrol-amount').value = '';
+            document.getElementById('petrol-litre-display').innerText = '0.00 L';
+            alert(`Logged ${litres.toFixed(2)} Litres of Petrol & ₹${amount} deducted from Vault!`);
+        }
+
+        function updatePetrolStats() {
+            let totalL = 0;
+            petrolRecords.forEach(r => totalL += (Number(r.litres) || 0));
+            let el = document.getElementById('total-petrol-litres');
+            if (el) el.innerText = totalL.toFixed(2) + ' L';
+        }
+
         // --- VAULT RESET ONLY ---
         function resetVaultOnly() {
-            if (confirm("Are you sure you want to completely reset your Vault Dashboard? All transaction history and balance will be deleted. Attendance and Work data will remain safe.")) {
+            if (confirm("Are you sure you want to completely reset your Vault Dashboard? All transaction history, petrol records, and balance will be deleted. Attendance and Work data will remain safe.")) {
                 transactions = [];
                 localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
                 
                 cashbackBalance = 0;
                 localStorage.setItem('gokulCashbackBal', 0);
                 
+                petrolRecords = [];
+                localStorage.setItem('gokulPetrolRecords', JSON.stringify(petrolRecords));
+
                 updateVaultStats();
                 updateCashbackStats();
+                updatePetrolStats();
                 
                 alert("Vault Dashboard has been successfully reset.");
                 navTo('vault-dashboard');
@@ -1599,7 +1677,6 @@
 
             document.body.appendChild(exportContainer);
 
-            // Configure html2pdf to process emojis seamlessly
             const opt = {
                 margin: 10,
                 filename: `Gokul_Vault_Ledger_${Date.now()}.pdf`,
@@ -1778,7 +1855,7 @@
 
         // --- 10. DATA EXPORT / IMPORT ---
         function exportData() {
-            const data = { profile: JSON.parse(localStorage.getItem('gokulProfile')), vaultTx: JSON.parse(localStorage.getItem('gokulVaultTx')), attRecords: JSON.parse(localStorage.getItem('gokulAttRecords')) };
+            const data = { profile: JSON.parse(localStorage.getItem('gokulProfile')), vaultTx: JSON.parse(localStorage.getItem('gokulVaultTx')), attRecords: JSON.parse(localStorage.getItem('gokulAttRecords')), petrolRecords: JSON.parse(localStorage.getItem('gokulPetrolRecords')) };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
             const downloadAnchorNode = document.createElement('a'); downloadAnchorNode.setAttribute("href", dataStr); downloadAnchorNode.setAttribute("download", "GokulHub_Backup.json");
             document.body.appendChild(downloadAnchorNode); downloadAnchorNode.click(); downloadAnchorNode.remove();
@@ -1794,6 +1871,7 @@
                     if(data.profile) localStorage.setItem('gokulProfile', JSON.stringify(data.profile));
                     if(data.vaultTx) localStorage.setItem('gokulVaultTx', JSON.stringify(data.vaultTx));
                     if(data.attRecords) localStorage.setItem('gokulAttRecords', JSON.stringify(data.attRecords));
+                    if(data.petrolRecords) localStorage.setItem('gokulPetrolRecords', JSON.stringify(data.petrolRecords));
                     alert("Backup Restored! Refreshing..."); window.location.reload();
                 } catch(err) { alert("Invalid file!"); }
             }
