@@ -476,14 +476,14 @@
                                 </div>
                             </div>
                             
-                            <div style="display: flex; justify-content: space-around; text-align: center; margin-bottom: 16px; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; border: 1px solid var(--border-highlight);">
-                                <div>
-                                    <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Litres Filled</div>
-                                    <div id="petrol-litre-display" style="font-size: 20px; font-weight: 800; color: var(--text-main);">0.00 L</div>
+                            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; background: rgba(0,0,0,0.3); padding: 16px; border-radius: 12px; border: 1px solid var(--border-highlight);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 10px;">
+                                    <span style="font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Litres Filled</span>
+                                    <span id="petrol-litre-display" style="font-size: 22px; font-weight: 800; color: var(--text-main);">0.00 L</span>
                                 </div>
-                                <div>
-                                    <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Est. Mileage</div>
-                                    <div id="petrol-mileage-display" style="font-size: 20px; font-weight: 800; color: var(--text-accent);">-- km/l</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Est. Mileage</span>
+                                    <span id="petrol-mileage-display" style="font-size: 22px; font-weight: 800; color: var(--text-accent);">-- km/l</span>
                                 </div>
                             </div>
                             
@@ -706,18 +706,18 @@
                         </div>
                     </div>
                     
-                    <div style="display: flex; justify-content: space-around; text-align: center; margin-bottom: 16px; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; border: 1px solid var(--border-highlight);">
-                        <div>
-                            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">EMI / Month</div>
-                            <div id="reg-live-emi" style="font-size: 20px; font-weight: 800; color: var(--text-accent);">₹0.00</div>
+                    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; background: rgba(0,0,0,0.3); padding: 16px; border-radius: 12px; border: 1px solid var(--border-highlight);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 10px;">
+                            <span style="font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">EMI / Month</span>
+                            <span id="reg-live-emi" style="font-size: 22px; font-weight: 800; color: var(--text-accent);">₹0.00</span>
                         </div>
-                        <div>
-                            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Total Interest</div>
-                            <div id="reg-live-int" style="font-size: 20px; font-weight: 800; color: var(--danger);">₹0.00</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 10px;">
+                            <span style="font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Total Interest</span>
+                            <span id="reg-live-int" style="font-size: 22px; font-weight: 800; color: var(--danger);">₹0.00</span>
                         </div>
-                        <div>
-                            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Total Payable</div>
-                            <div id="reg-live-total" style="font-size: 20px; font-weight: 800; color: var(--text-main);">₹0.00</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Total Payable</span>
+                            <span id="reg-live-total" style="font-size: 24px; font-weight: 900; color: var(--text-main);">₹0.00</span>
                         </div>
                     </div>
 
@@ -1647,7 +1647,7 @@
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 13px;">
                         <span style="color: var(--text-muted);">Pending Amount:</span>
-                        <span style="font-weight: 800; color: var(--danger);">₹${pendingAmount.toFixed(2)}</span>
+                        <span style="font-weight: 800; color: var(--danger); font-size: 16px;">₹${pendingAmount.toFixed(2)}</span>
                     </div>
 
                     <div style="background: rgba(0,0,0,0.4); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 8px;">
@@ -1746,7 +1746,7 @@
             
             doc.autoTable({
                 startY: 95,
-                head: [["Loan Name", "Borrowed", "EMI/M", "Pay Date", "Paid/Total", "End Date"]],
+                head: [["Loan Name", "Borrowed", "EMI/Month", "Pay Date", "Paid/Total", "End Date"]],
                 body: tableRows,
                 theme: 'striped',
                 headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' },
