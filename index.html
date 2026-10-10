@@ -442,25 +442,43 @@
                             <span style="font-size: 20px;">⛽ Petrol Expense Tracker</span>
                         </div>
                         <div class="form-card" style="margin-bottom: 26px;">
-                            <div style="display: flex; gap: 16px; width: 100%; margin-bottom: 14px;">
-                                <div class="input-group">
+                            <div style="display: flex; gap: 16px; width: 100%; margin-bottom: 14px; flex-wrap: wrap;">
+                                <div class="input-group" style="flex: 1; min-width: 45%;">
                                     <label>Price / Litre (₹)</label>
                                     <input type="number" id="petrol-price" class="form-control" placeholder="102.63" inputmode="decimal" oninput="calculatePetrolLitre()">
                                 </div>
-                                <div class="input-group">
+                                <div class="input-group" style="flex: 1; min-width: 45%;">
                                     <label>Amount Spent (₹)</label>
                                     <input type="number" id="petrol-amount" class="form-control" placeholder="0" inputmode="decimal" oninput="calculatePetrolLitre()">
                                 </div>
+                                <div class="input-group" style="flex: 1; min-width: 100%;">
+                                    <label>Current Odometer (km)</label>
+                                    <input type="number" id="petrol-odometer" class="form-control" placeholder="e.g. 15200" inputmode="numeric" oninput="calculatePetrolLitre()">
+                                </div>
                             </div>
-                            <div style="text-align: center; margin-bottom: 16px;">
-                                <span style="font-size: 13px; color: var(--text-muted); font-weight: 700;">Litres Filled Today: </span>
-                                <span id="petrol-litre-display" style="font-size: 24px; font-weight: 800; color: var(--text-accent);">0.00 L</span>
+                            
+                            <div style="display: flex; justify-content: space-around; text-align: center; margin-bottom: 16px; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; border: 1px solid var(--border-highlight);">
+                                <div>
+                                    <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Litres Filled</div>
+                                    <div id="petrol-litre-display" style="font-size: 20px; font-weight: 800; color: var(--text-main);">0.00 L</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Est. Mileage</div>
+                                    <div id="petrol-mileage-display" style="font-size: 20px; font-weight: 800; color: var(--text-accent);">-- km/l</div>
+                                </div>
                             </div>
+                            
                             <button class="btn btn-danger" onclick="logPetrolExpense()"><i class="fas fa-gas-pump"></i> Log Petrol & Deduct Vault</button>
 
-                            <div style="margin-top: 16px; border-top: 1px dashed var(--border-highlight); padding-top: 16px; display: flex; justify-content: space-between; align-items: center;">
-                                <span style="font-size: 13px; color: var(--text-muted); font-weight: 800;">Total Petrol Litres:</span>
-                                <span id="total-petrol-litres" style="font-size: 18px; font-weight: 900; color: var(--text-main);">0.00 L</span>
+                            <div style="margin-top: 16px; border-top: 1px dashed var(--border-highlight); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <span style="font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Total Litres</span>
+                                    <span id="total-petrol-litres" style="font-size: 16px; font-weight: 900; color: var(--text-main);">0.00 L</span>
+                                </div>
+                                <div style="display: flex; flex-direction: column; text-align: right;">
+                                    <span style="font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Last Mileage</span>
+                                    <span id="last-petrol-mileage" style="font-size: 16px; font-weight: 900; color: var(--text-accent);">-- km/l</span>
+                                </div>
                             </div>
                         </div>
 
@@ -1275,41 +1293,84 @@
         function calculatePetrolLitre() {
             let price = parseFloat(document.getElementById('petrol-price').value);
             let amount = parseFloat(document.getElementById('petrol-amount').value);
+            let currentOdo = parseFloat(document.getElementById('petrol-odometer').value);
+            
+            let litres = 0;
             if (price > 0 && amount > 0) {
-                let litres = amount / price;
+                litres = amount / price;
                 document.getElementById('petrol-litre-display').innerText = litres.toFixed(2) + ' L';
             } else {
                 document.getElementById('petrol-litre-display').innerText = '0.00 L';
+            }
+
+            // Mileage calculation preview
+            if (litres > 0 && currentOdo > 0 && petrolRecords.length > 0) {
+                let lastRecord = petrolRecords[petrolRecords.length - 1];
+                let lastOdo = lastRecord.odometer || 0;
+                if (lastOdo > 0 && currentOdo > lastOdo) {
+                    let mileage = (currentOdo - lastOdo) / litres;
+                    document.getElementById('petrol-mileage-display').innerText = mileage.toFixed(1) + ' km/l';
+                } else {
+                    document.getElementById('petrol-mileage-display').innerText = 'N/A';
+                }
+            } else {
+                document.getElementById('petrol-mileage-display').innerText = '-- km/l';
             }
         }
 
         function logPetrolExpense() {
             let price = parseFloat(document.getElementById('petrol-price').value);
             let amount = parseFloat(document.getElementById('petrol-amount').value);
+            let odo = parseFloat(document.getElementById('petrol-odometer').value) || 0;
+            
             if (isNaN(price) || isNaN(amount) || price <= 0 || amount <= 0) return alert("Enter valid price and amount!");
 
             let litres = amount / price;
+            
+            let mileageStr = "First Fill";
+            if (petrolRecords.length > 0) {
+                let lastOdo = petrolRecords[petrolRecords.length - 1].odometer || 0;
+                if (lastOdo > 0 && odo > lastOdo) {
+                    let mileage = (odo - lastOdo) / litres;
+                    mileageStr = mileage.toFixed(1) + " km/l";
+                } else if (odo <= lastOdo && odo > 0) {
+                    return alert(`Current odometer must be greater than previous reading (${lastOdo} km)!`);
+                }
+            }
+
             localStorage.setItem('gokulPetrolPrice', price);
 
-            petrolRecords.push({ date: new Date().toLocaleString('en-GB'), amount: amount, price: price, litres: litres });
+            petrolRecords.push({ date: new Date().toLocaleString('en-GB'), amount: amount, price: price, litres: litres, odometer: odo, mileage: mileageStr });
             localStorage.setItem('gokulPetrolRecords', JSON.stringify(petrolRecords));
 
-            transactions.push({ date: new Date().toLocaleString('en-GB'), category: `Petrol ⛽ (${litres.toFixed(2)}L @ ₹${price})`, type: 'expense', amount: amount });
+            transactions.push({ date: new Date().toLocaleString('en-GB'), category: `Petrol ⛽ (${litres.toFixed(2)}L | ${mileageStr})`, type: 'expense', amount: amount });
             localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
 
             updateVaultStats();
             updatePetrolStats();
 
             document.getElementById('petrol-amount').value = '';
+            document.getElementById('petrol-odometer').value = '';
             document.getElementById('petrol-litre-display').innerText = '0.00 L';
-            alert(`Logged ${litres.toFixed(2)} Litres of Petrol & ₹${amount} deducted from Vault!`);
+            document.getElementById('petrol-mileage-display').innerText = '-- km/l';
+            
+            alert(`Logged ${litres.toFixed(2)} Litres! Mileage: ${mileageStr}. ₹${amount} deducted from Vault.`);
         }
 
         function updatePetrolStats() {
             let totalL = 0;
-            petrolRecords.forEach(r => totalL += (Number(r.litres) || 0));
+            let lastMileage = '-- km/l';
+            petrolRecords.forEach(r => {
+                totalL += (Number(r.litres) || 0);
+                if(r.mileage && r.mileage !== 'First Fill' && r.mileage !== '-- km/l') {
+                    lastMileage = r.mileage;
+                }
+            });
             let el = document.getElementById('total-petrol-litres');
             if (el) el.innerText = totalL.toFixed(2) + ' L';
+            
+            let milEl = document.getElementById('last-petrol-mileage');
+            if (milEl) milEl.innerText = lastMileage;
         }
 
         // --- VAULT RESET ONLY ---
