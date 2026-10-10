@@ -690,7 +690,15 @@
                         </div>
                         <div class="input-group" style="flex: 1; min-width: 100%;">
                             <label>Total Tenure (Months)</label>
-                            <input type="number" id="emi-reg-months" class="form-control" placeholder="12" inputmode="numeric">
+                            <input type="number" id="emi-reg-months" class="form-control" placeholder="12" inputmode="numeric" oninput="autoCalcEmiEndDate()">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>Start Date</label>
+                            <input type="date" id="emi-reg-start" class="form-control" onchange="autoCalcEmiEndDate()">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>End Date</label>
+                            <input type="date" id="emi-reg-end" class="form-control">
                         </div>
                     </div>
                     <button class="btn btn-success" onclick="registerNewEmi()"><i class="fas fa-save"></i> Register EMI</button>
@@ -1434,11 +1442,23 @@
 
         // --- 5.2 EMI REGISTRY & TRACKING (UNLINKED FROM VAULT) ---
         
+        function autoCalcEmiEndDate() {
+            let startVal = document.getElementById('emi-reg-start').value;
+            let monthsVal = parseInt(document.getElementById('emi-reg-months').value);
+            if(startVal && !isNaN(monthsVal) && monthsVal > 0) {
+                let d = new Date(startVal);
+                d.setMonth(d.getMonth() + monthsVal);
+                document.getElementById('emi-reg-end').value = d.toISOString().split('T')[0];
+            }
+        }
+
         function registerNewEmi() {
             let name = document.getElementById('emi-reg-name').value.trim();
             let p = parseFloat(document.getElementById('emi-reg-principal').value);
             let r = parseFloat(document.getElementById('emi-reg-rate').value);
             let n = parseInt(document.getElementById('emi-reg-months').value);
+            let startInput = document.getElementById('emi-reg-start').value;
+            let endInput = document.getElementById('emi-reg-end').value;
 
             if (!name || isNaN(p) || p <= 0 || isNaN(r) || r < 0 || isNaN(n) || n <= 0) {
                 return alert("Please fill all valid details to register an EMI.");
@@ -1454,6 +1474,9 @@
             let totalAmount = emi * n;
             let totalInterest = totalAmount - p;
 
+            let startDateStr = startInput ? new Date(startInput).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'}) : new Date().toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'});
+            let endDateStr = endInput ? new Date(endInput).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'}) : "N/A";
+
             let newLoan = {
                 id: Date.now(),
                 name: name,
@@ -1464,7 +1487,8 @@
                 monthlyEmi: emi,
                 totalInterest: totalInterest,
                 totalPayable: totalAmount,
-                startDate: new Date().toLocaleDateString('en-GB')
+                startDate: startDateStr,
+                endDate: endDateStr
             };
 
             emiRegistry.push(newLoan);
@@ -1474,6 +1498,8 @@
             document.getElementById('emi-reg-principal').value = '';
             document.getElementById('emi-reg-rate').value = '';
             document.getElementById('emi-reg-months').value = '';
+            document.getElementById('emi-reg-start').value = '';
+            document.getElementById('emi-reg-end').value = '';
             
             renderEmiRegistry();
             alert(`Loan '${name}' Registered successfully!`);
@@ -1520,11 +1546,6 @@
                 let progressPercent = (loan.paidMonths / loan.totalMonths) * 100;
                 let isCompleted = pending === 0;
 
-                // Predict Payoff Date loosely based on months remaining from today
-                let payoffDate = new Date();
-                payoffDate.setMonth(payoffDate.getMonth() + pending);
-                let payoffStr = isCompleted ? "Completed" : payoffDate.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
-
                 html += `
                 <div class="emi-card" style="padding: 16px; position: relative;">
                     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-highlight); padding-bottom: 10px; margin-bottom: 15px;">
@@ -1540,9 +1561,13 @@
                         <span style="color: var(--text-muted);">Total Borrowed:</span>
                         <span style="font-weight: 800; color: var(--text-main);">₹${loan.principal.toFixed(2)}</span>
                     </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px;">
+                        <span style="color: var(--text-muted);">Start Date:</span>
+                        <span style="font-weight: 800; color: var(--text-main);">${loan.startDate}</span>
+                    </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 13px;">
-                        <span style="color: var(--text-muted);">Est. Payoff By:</span>
-                        <span style="font-weight: 800; color: ${isCompleted ? 'var(--success)' : 'var(--danger)'};">${payoffStr}</span>
+                        <span style="color: var(--text-muted);">End Date (Payoff):</span>
+                        <span style="font-weight: 800; color: ${isCompleted ? 'var(--success)' : 'var(--danger)'};">${loan.endDate}</span>
                     </div>
 
                     <div style="background: rgba(0,0,0,0.4); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 8px;">
@@ -1625,9 +1650,6 @@
             
             emiRegistry.forEach(loan => {
                 let pending = loan.totalMonths - loan.paidMonths;
-                let payoffDate = new Date();
-                payoffDate.setMonth(payoffDate.getMonth() + pending);
-                let payoffStr = pending === 0 ? "Completed" : payoffDate.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
 
                 tableRows.push([
                     loan.name,
@@ -1635,13 +1657,13 @@
                     `Rs. ${loan.monthlyEmi.toFixed(2)}`,
                     `${loan.paidMonths} / ${loan.totalMonths}`,
                     pending,
-                    payoffStr
+                    loan.endDate
                 ]);
             });
             
             doc.autoTable({
                 startY: 95,
-                head: [["Loan Name", "Borrowed", "EMI/Month", "Paid/Total M.", "Pending M.", "Est. Payoff"]],
+                head: [["Loan Name", "Borrowed", "EMI/Month", "Paid/Total M.", "Pending M.", "End Date"]],
                 body: tableRows,
                 theme: 'striped',
                 headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' },
@@ -2030,6 +2052,7 @@
 
             document.body.appendChild(exportContainer);
 
+            // Configure html2pdf to process emojis seamlessly
             const opt = {
                 margin: 10,
                 filename: `Gokul_Vault_Ledger_${Date.now()}.pdf`,
