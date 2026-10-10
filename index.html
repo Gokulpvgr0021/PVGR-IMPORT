@@ -223,7 +223,7 @@
         .vault-summary-col { width: 320px; max-width: 100%; background: linear-gradient(180deg, var(--bg-sidebar), transparent); border-right: 1px solid var(--border-highlight); padding: 20px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 18px; will-change: scroll-position; }
         
         /* PREMIUM CARDS */
-        .profile-badge, .total-box, .chart-box, .form-card, .att-stat-card, .table-wrap { 
+        .profile-badge, .total-box, .chart-box, .form-card, .att-stat-card, .table-wrap, .emi-card { 
             background: linear-gradient(145deg, var(--bg-card-alt) 0%, var(--bg-card) 100%); 
             border-top: 1px solid var(--border-highlight);
             border-bottom: 1px solid var(--border-color);
@@ -254,13 +254,13 @@
         th, td { padding: 16px 14px; text-align: center; border-bottom: 1px solid var(--border-color); }
         th { background: linear-gradient(90deg, var(--bg-card-alt), var(--bg-card)); color: var(--text-main); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid var(--border-highlight); }
 
-        .form-card { width: 100%; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 18px; margin-bottom: 24px; }
+        .form-card, .emi-card { width: 100%; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 18px; margin-bottom: 24px; }
         .input-group { display: flex; flex-direction: column; gap: 8px; width: 100%; }
         .input-group label { font-size: 13px; font-weight: 700; color: var(--text-main); }
         .form-control { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.4); color: var(--text-main); font-size: 16px !important; outline: none; width: 100%; font-weight: 600; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); transition: border-color 0.3s ease, box-shadow 0.3s ease; }
         .form-control:focus { border-color: var(--text-accent); box-shadow: 0 0 10px var(--border-highlight), inset 0 2px 5px rgba(0,0,0,0.5); }
 
-        /* --- 🧞‍♂️ GENIE TOUCH EFFECTS FOR ALL BUTTONS --- */
+        /* --- 💎 PREMIUM ROYALTY BUTTONS (GPU Accelerated) --- */
         @keyframes premiumBtnFade {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -666,51 +666,43 @@
                 </div>
             </section>
             
-            <!-- 3. EMI DASHBOARD -->
+            <!-- 3. EMI REGISTRY DASHBOARD -->
             <section id="emi-dashboard-view" class="view-panel">
-                <!-- 💳 EMI SETTLEMENT ENGINE -->
                 <div class="panel-heading" style="border: none; margin-bottom: 15px;">
-                    <span style="font-size: 20px;">💳 EMI Calculator & Planner</span>
+                    <span style="font-size: 20px;">💳 EMI Registry & Tracking</span>
                 </div>
-                <div class="form-card" style="margin-bottom: 26px;">
+
+                <!-- Add New EMI Form -->
+                <div class="emi-card">
+                    <h3 style="color: var(--text-main); font-size: 16px; margin-bottom: 10px;"><i class="fas fa-plus-circle"></i> Register New EMI</h3>
                     <div style="display: flex; gap: 16px; width: 100%; margin-bottom: 14px; flex-wrap: wrap;">
                         <div class="input-group" style="flex: 1; min-width: 100%;">
-                            <label>Loan Amount / Principal (₹)</label>
-                            <input type="number" id="emi-principal" class="form-control" placeholder="e.g. 50000" inputmode="numeric" oninput="calculateEmi()">
+                            <label>Loan Name / Item (e.g. iPhone 15)</label>
+                            <input type="text" id="emi-reg-name" class="form-control" placeholder="Loan Name">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>Total Loan Amount (₹)</label>
+                            <input type="number" id="emi-reg-principal" class="form-control" placeholder="50000" inputmode="numeric">
                         </div>
                         <div class="input-group" style="flex: 1; min-width: 45%;">
                             <label>Interest Rate (% P.A.)</label>
-                            <input type="number" id="emi-rate" class="form-control" placeholder="12" inputmode="decimal" oninput="calculateEmi()">
+                            <input type="number" id="emi-reg-rate" class="form-control" placeholder="12" inputmode="decimal">
                         </div>
-                        <div class="input-group" style="flex: 1; min-width: 45%;">
-                            <label>Tenure (Months)</label>
-                            <input type="number" id="emi-months" class="form-control" placeholder="12" inputmode="numeric" oninput="calculateEmi()">
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; justify-content: space-around; text-align: center; margin-bottom: 16px; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; border: 1px solid var(--border-highlight);">
-                        <div>
-                            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Monthly EMI</div>
-                            <div id="emi-monthly-display" style="font-size: 20px; font-weight: 800; color: var(--text-accent);">₹0.00</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Total Interest</div>
-                            <div id="emi-interest-display" style="font-size: 20px; font-weight: 800; color: var(--danger);">₹0.00</div>
+                        <div class="input-group" style="flex: 1; min-width: 100%;">
+                            <label>Total Tenure (Months)</label>
+                            <input type="number" id="emi-reg-months" class="form-control" placeholder="12" inputmode="numeric">
                         </div>
                     </div>
-                    
-                    <div style="display: flex; gap: 14px; margin-top: 14px; flex-wrap: wrap;">
-                        <button class="btn btn-success" onclick="markEmiPaid()"><i class="fas fa-check-circle"></i> Mark EMI as Paid</button>
-                        <button class="btn btn-primary" onclick="downloadEmiSettlement()"><i class="fas fa-file-invoice"></i> Download Settlement PDF</button>
-                    </div>
-                    <p style="font-size: 11px; color: var(--text-muted); margin-top: 10px; text-align: center; font-weight: 700;">*EMI payments are tracked separately and do NOT affect your Vault balance.</p>
+                    <button class="btn btn-success" onclick="registerNewEmi()"><i class="fas fa-save"></i> Register EMI</button>
+                </div>
 
-                    <div style="margin-top: 16px; border-top: 1px dashed var(--border-highlight); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                        <div style="display: flex; flex-direction: column;">
-                            <span style="font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase;">Total Payable Amount</span>
-                            <span id="emi-total-display" style="font-size: 16px; font-weight: 900; color: var(--text-main);">₹0.00</span>
-                        </div>
-                    </div>
+                <!-- Active EMIs List -->
+                <div id="emi-registry-list" style="display: flex; flex-direction: column; gap: 20px;">
+                    <!-- Dynamically populated EMI Cards go here -->
+                </div>
+
+                <div class="btn-flex-row" style="margin-top: 24px;">
+                    <button class="btn btn-primary" style="background: linear-gradient(135deg, rgba(20, 30, 55, 0.95), rgba(212, 175, 55, 0.4)); color: #fff; border: 1px solid rgba(212, 175, 55, 0.6); box-shadow: 0 4px 15px rgba(0,0,0,0.4);" onclick="downloadMasterEmiReport()"><i class="fas fa-file-pdf"></i> Download Master EMI Report</button>
                 </div>
             </section>
 
@@ -915,12 +907,10 @@
             const icon = document.getElementById('mode-icon');
             
             if (currentTheme === 'light') {
-                // Switch back to last dark theme used (or jarvis default)
                 const lastDark = localStorage.getItem('gokulLastDarkTheme') || 'jarvis';
                 applyTheme(lastDark);
                 if(icon) { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
             } else {
-                // Save current theme as last dark theme before switching to light
                 localStorage.setItem('gokulLastDarkTheme', currentTheme);
                 applyTheme('light');
                 if(icon) { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); }
@@ -931,6 +921,7 @@
         let activeShift = JSON.parse(localStorage.getItem('gokulActiveShift')) || null;
         let cashbackBalance = parseFloat(localStorage.getItem('gokulCashbackBal')) || 0;
         let petrolRecords = JSON.parse(localStorage.getItem('gokulPetrolRecords')) || [];
+        let emiRegistry = JSON.parse(localStorage.getItem('gokulEmiRegistry')) || [];
 
         function renderAppLogo() {
             const logoSrc = localStorage.getItem('gokulAppLogo') || '10276.png';
@@ -1045,10 +1036,10 @@
             try { renderThemeGallery(); } catch(e) {}
             try { updateCashbackStats(); } catch(e) {}
             
-            // Init Petrol Tracker & EMI
+            // Init Petrol Tracker & EMI Registry
             document.getElementById('petrol-price').value = localStorage.getItem('gokulPetrolPrice') || '';
             try { updatePetrolStats(); } catch(e) {}
-            try { calculateEmi(); } catch(e) {}
+            try { renderEmiRegistry(); } catch(e) {}
             
             // Apply Auto-PDF Download Settings
             if (document.getElementById('auto-pdf-toggle')) {
@@ -1441,54 +1432,146 @@
             if (milEl) milEl.innerText = lastMileage;
         }
 
-        // --- 5.2 EMI CALCULATOR & LOGGING ---
-        window.currentEmiDetails = null;
+        // --- 5.2 EMI REGISTRY & TRACKING (UNLINKED FROM VAULT) ---
+        
+        function registerNewEmi() {
+            let name = document.getElementById('emi-reg-name').value.trim();
+            let p = parseFloat(document.getElementById('emi-reg-principal').value);
+            let r = parseFloat(document.getElementById('emi-reg-rate').value);
+            let n = parseInt(document.getElementById('emi-reg-months').value);
 
-        function calculateEmi() {
-            let p = parseFloat(document.getElementById('emi-principal').value);
-            let r = parseFloat(document.getElementById('emi-rate').value);
-            let n = parseInt(document.getElementById('emi-months').value);
+            if (!name || isNaN(p) || p <= 0 || isNaN(r) || r < 0 || isNaN(n) || n <= 0) {
+                return alert("Please fill all valid details to register an EMI.");
+            }
 
-            if (p > 0 && r >= 0 && n > 0) {
-                let monthlyRate = r / 12 / 100;
-                let emi = 0;
-                if (monthlyRate === 0) {
-                    emi = p / n;
-                } else {
-                    emi = p * monthlyRate * (Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1);
-                }
-                let totalAmount = emi * n;
-                let totalInterest = totalAmount - p;
-
-                document.getElementById('emi-monthly-display').innerText = '₹' + emi.toFixed(2);
-                document.getElementById('emi-interest-display').innerText = '₹' + totalInterest.toFixed(2);
-                document.getElementById('emi-total-display').innerText = '₹' + totalAmount.toFixed(2);
-                
-                window.currentEmiDetails = { p, r, n, emi, totalInterest, totalAmount };
+            let monthlyRate = r / 12 / 100;
+            let emi = 0;
+            if (monthlyRate === 0) {
+                emi = p / n;
             } else {
-                document.getElementById('emi-monthly-display').innerText = '₹0.00';
-                document.getElementById('emi-interest-display').innerText = '₹0.00';
-                document.getElementById('emi-total-display').innerText = '₹0.00';
-                window.currentEmiDetails = null;
+                emi = p * monthlyRate * (Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1);
+            }
+            let totalAmount = emi * n;
+            let totalInterest = totalAmount - p;
+
+            let newLoan = {
+                id: Date.now(),
+                name: name,
+                principal: p,
+                rate: r,
+                totalMonths: n,
+                paidMonths: 0,
+                monthlyEmi: emi,
+                totalInterest: totalInterest,
+                totalPayable: totalAmount,
+                startDate: new Date().toLocaleDateString('en-GB')
+            };
+
+            emiRegistry.push(newLoan);
+            localStorage.setItem('gokulEmiRegistry', JSON.stringify(emiRegistry));
+            
+            document.getElementById('emi-reg-name').value = '';
+            document.getElementById('emi-reg-principal').value = '';
+            document.getElementById('emi-reg-rate').value = '';
+            document.getElementById('emi-reg-months').value = '';
+            
+            renderEmiRegistry();
+            alert(`Loan '${name}' Registered successfully!`);
+        }
+
+        function markEmiPaid(loanId) {
+            let loanIndex = emiRegistry.findIndex(l => l.id === loanId);
+            if(loanIndex > -1) {
+                let loan = emiRegistry[loanIndex];
+                if (loan.paidMonths < loan.totalMonths) {
+                    if(confirm(`Mark 1 month EMI (₹${loan.monthlyEmi.toFixed(2)}) as Paid for ${loan.name}?\n\n(Note: This is tracked separately and will NOT deduct from your Vault balance)`)) {
+                        loan.paidMonths += 1;
+                        emiRegistry[loanIndex] = loan;
+                        localStorage.setItem('gokulEmiRegistry', JSON.stringify(emiRegistry));
+                        renderEmiRegistry();
+                        alert(`EMI marked as Paid! Pending months: ${loan.totalMonths - loan.paidMonths}`);
+                    }
+                } else {
+                    alert("This loan is already fully paid!");
+                }
             }
         }
 
-        function markEmiPaid() {
-            if(!window.currentEmiDetails) return alert("Please enter correct values to calculate EMI first!");
-            let emi = window.currentEmiDetails.emi;
-            
-            if(confirm(`Mark this month's EMI of ₹${emi.toFixed(2)} as Paid?\n\n(Note: This is tracked separately and will NOT deduct from your Vault balance)`)) {
-                alert(`EMI of ₹${emi.toFixed(2)} marked as Paid successfully!`);
+        function deleteEmi(loanId) {
+            if(confirm("Are you sure you want to delete this loan record permanently?")) {
+                emiRegistry = emiRegistry.filter(l => l.id !== loanId);
+                localStorage.setItem('gokulEmiRegistry', JSON.stringify(emiRegistry));
+                renderEmiRegistry();
             }
         }
 
-        function downloadEmiSettlement() {
-            if(!window.currentEmiDetails) return alert("Please calculate EMI first to generate report!");
+        function renderEmiRegistry() {
+            const listEl = document.getElementById('emi-registry-list');
+            if(!listEl) return;
             
-            const { p, r, n, emi, totalInterest, totalAmount } = window.currentEmiDetails;
+            if(emiRegistry.length === 0) {
+                listEl.innerHTML = `<div style="text-align:center; color: var(--text-muted); font-size: 14px; padding: 20px;">No Active Loans. Register one above.</div>`;
+                return;
+            }
+
+            let html = '';
+            emiRegistry.forEach(loan => {
+                let pending = loan.totalMonths - loan.paidMonths;
+                let progressPercent = (loan.paidMonths / loan.totalMonths) * 100;
+                let isCompleted = pending === 0;
+
+                // Predict Payoff Date loosely based on months remaining from today
+                let payoffDate = new Date();
+                payoffDate.setMonth(payoffDate.getMonth() + pending);
+                let payoffStr = isCompleted ? "Completed" : payoffDate.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+
+                html += `
+                <div class="emi-card" style="padding: 16px; position: relative;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-highlight); padding-bottom: 10px; margin-bottom: 15px;">
+                        <div style="font-size: 18px; font-weight: 800; color: var(--text-main);">${loan.name}</div>
+                        <button style="background:transparent; border:none; color: var(--danger); font-size: 16px; cursor: pointer;" onclick="deleteEmi(${loan.id})"><i class="fas fa-trash"></i></button>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px;">
+                        <span style="color: var(--text-muted);">EMI / Month:</span>
+                        <span style="font-weight: 800; color: var(--text-accent);">₹${loan.monthlyEmi.toFixed(2)}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px;">
+                        <span style="color: var(--text-muted);">Total Borrowed:</span>
+                        <span style="font-weight: 800; color: var(--text-main);">₹${loan.principal.toFixed(2)}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 13px;">
+                        <span style="color: var(--text-muted);">Est. Payoff By:</span>
+                        <span style="font-weight: 800; color: ${isCompleted ? 'var(--success)' : 'var(--danger)'};">${payoffStr}</span>
+                    </div>
+
+                    <div style="background: rgba(0,0,0,0.4); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 8px;">
+                        <div style="height: 100%; width: ${progressPercent}%; background: var(--success); transition: width 0.3s ease;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 15px;">
+                        <span>Paid: ${loan.paidMonths}M</span>
+                        <span>Pending: ${pending}M</span>
+                    </div>
+
+                    ${isCompleted ? 
+                        `<div style="text-align: center; color: var(--success); font-weight: 800; padding: 10px; border: 1px dashed var(--success); border-radius: 8px;"><i class="fas fa-check-circle"></i> LOAN CLEARED</div>` 
+                        : 
+                        `<button class="btn btn-success" style="padding: 12px; font-size: 13px;" onclick="markEmiPaid(${loan.id})"><i class="fas fa-hand-holding-usd"></i> Pay 1 Month EMI</button>`
+                    }
+                </div>
+                `;
+            });
+            
+            listEl.innerHTML = html;
+        }
+
+        function downloadMasterEmiReport() {
+            if(emiRegistry.length === 0) return alert("No active loans to generate report!");
+            
             const { jsPDF } = window.jspdf;
             
-            const pageHeight = Math.max(297, 120 + (n * 8));
+            // Dynamic page height calculations to fit all loans in a single continuous page
+            const pageHeight = Math.max(297, 140 + (emiRegistry.length * 15));
             const doc = new jsPDF('p', 'mm', [210, pageHeight]);
             
             const primaryColor = [20, 30, 55];
@@ -1506,53 +1589,66 @@
             const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14;
             doc.text("GOKUL HUB INC.", textStartX, 20);
             doc.setFontSize(12); doc.setFont("helvetica", "normal");
-            doc.text("OFFICIAL EMI SETTLEMENT SCHEDULE", textStartX, 30);
+            doc.text("MASTER EMI TRACKING REPORT", textStartX, 30);
             
             const now = new Date(); doc.setFontSize(10); doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
             
             doc.setTextColor(darkText[0], darkText[1], darkText[2]); doc.setFontSize(12); doc.setFont("helvetica", "bold");
-            doc.text("LOAN DETAILS", 14, 50);
+            doc.text("ACCOUNT HOLDER DETAILS", 14, 50);
             doc.setFontSize(10); doc.setFont("helvetica", "normal");
-            doc.text(`Principal Amount: INR ${p.toFixed(2)}`, 14, 58);
-            doc.text(`Interest Rate: ${r}% P.A.`, 14, 64);
-            doc.text(`Tenure: ${n} Months`, 14, 70);
+            doc.text(`Name: ${profile.name}`, 14, 58);
+            doc.text(`ID: ${profile.idStr}`, 14, 64);
             
+            let overallBorrowed = 0;
+            let overallPayable = 0;
+            let overallMonthlyEmi = 0;
+            let activeLoans = 0;
+
+            emiRegistry.forEach(l => {
+                overallBorrowed += l.principal;
+                overallPayable += l.totalPayable;
+                if(l.paidMonths < l.totalMonths) {
+                    overallMonthlyEmi += l.monthlyEmi;
+                    activeLoans++;
+                }
+            });
+
             doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.setLineWidth(0.5); doc.roundedRect(120, 45, 75, 38, 3, 3, 'S');
-            doc.setFont("helvetica", "bold"); doc.text("SUMMARY", 125, 52); doc.setFont("helvetica", "normal");
-            doc.text(`Monthly EMI: INR ${emi.toFixed(2)}`, 125, 60);
-            doc.text(`Total Interest: INR ${totalInterest.toFixed(2)}`, 125, 66);
+            doc.setFont("helvetica", "bold"); doc.text("OVERALL SUMMARY", 125, 52); doc.setFont("helvetica", "normal");
+            doc.text(`Active Loans: ${activeLoans}`, 125, 60);
+            doc.text(`Total Borrowed: INR ${overallBorrowed.toFixed(2)}`, 125, 66);
+            doc.text(`Comb. Monthly EMI: INR ${overallMonthlyEmi.toFixed(2)}`, 125, 72);
             doc.setFont("helvetica", "bold"); doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]);
-            doc.text(`Total Payable: INR ${totalAmount.toFixed(2)}`, 125, 76);
+            doc.text(`Total Payable: INR ${overallPayable.toFixed(2)}`, 125, 78);
             
-            // Amortization Table
-            let balance = p;
-            let monthlyRate = r / 12 / 100;
             let tableRows = [];
             
-            for(let i = 1; i <= n; i++) {
-                let interestForMonth = balance * monthlyRate;
-                let principalForMonth = emi - interestForMonth;
-                balance -= principalForMonth;
-                if(balance < 0) balance = 0;
-                
+            emiRegistry.forEach(loan => {
+                let pending = loan.totalMonths - loan.paidMonths;
+                let payoffDate = new Date();
+                payoffDate.setMonth(payoffDate.getMonth() + pending);
+                let payoffStr = pending === 0 ? "Completed" : payoffDate.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+
                 tableRows.push([
-                    `Month ${i}`,
-                    `Rs. ${emi.toFixed(2)}`,
-                    `Rs. ${principalForMonth.toFixed(2)}`,
-                    `Rs. ${interestForMonth.toFixed(2)}`,
-                    `Rs. ${balance.toFixed(2)}`
+                    loan.name,
+                    `Rs. ${loan.principal.toFixed(2)}`,
+                    `Rs. ${loan.monthlyEmi.toFixed(2)}`,
+                    `${loan.paidMonths} / ${loan.totalMonths}`,
+                    pending,
+                    payoffStr
                 ]);
-            }
+            });
             
             doc.autoTable({
                 startY: 95,
-                head: [["Month", "EMI", "Principal", "Interest", "Remaining Balance"]],
+                head: [["Loan Name", "Borrowed", "EMI/Month", "Paid/Total M.", "Pending M.", "Est. Payoff"]],
                 body: tableRows,
                 theme: 'striped',
                 headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' },
                 bodyStyles: { textColor: darkText, halign: 'center' },
                 alternateRowStyles: { fillColor: [240, 244, 248] },
                 styles: { font: 'helvetica', fontSize: 9, cellPadding: 5 },
+                columnStyles: { 0: { halign: 'left', fontStyle: 'bold' } },
                 margin: { left: 14, right: 14 }
             });
             
@@ -1561,12 +1657,12 @@
             doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30); doc.setLineWidth(0.5); doc.line(14, finalY + 25, 70, finalY + 25);
             doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(lightText[0], lightText[1], lightText[2]); doc.text("System Generated Report - Gokul Hub Premium PWA", 14, finalY + 45);
 
-            doc.save(`Gokul_EMI_Settlement_${Date.now()}.pdf`);
+            doc.save(`Gokul_Master_EMI_Report_${Date.now()}.pdf`);
         }
 
         // --- VAULT RESET ONLY ---
         function resetVaultOnly() {
-            if (confirm("Are you sure you want to completely reset your Vault Dashboard? All transaction history, petrol records, and balance will be deleted. Attendance and Work data will remain safe.")) {
+            if (confirm("Are you sure you want to completely reset your Vault Dashboard? All transaction history, petrol records, EMI registry, and balance will be deleted. Attendance and Work data will remain safe.")) {
                 transactions = [];
                 localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
                 
@@ -1576,9 +1672,13 @@
                 petrolRecords = [];
                 localStorage.setItem('gokulPetrolRecords', JSON.stringify(petrolRecords));
 
+                emiRegistry = [];
+                localStorage.setItem('gokulEmiRegistry', JSON.stringify(emiRegistry));
+
                 updateVaultStats();
                 updateCashbackStats();
                 updatePetrolStats();
+                renderEmiRegistry();
                 
                 alert("Vault Dashboard has been successfully reset.");
                 navTo('vault-dashboard');
@@ -1862,6 +1962,7 @@
             setTimeout(downloadVaultLedger, 500);
             setTimeout(downloadPayslip, 2500);
             setTimeout(downloadTimesheet, 4500);
+            setTimeout(downloadMasterEmiReport, 6500);
         }
 
         // --- 8. PREMIUM VAULT LEDGER DOWNLOAD WITH HTML2PDF (EMOJI SUPPORT) ---
@@ -1929,7 +2030,6 @@
 
             document.body.appendChild(exportContainer);
 
-            // Configure html2pdf to process emojis seamlessly
             const opt = {
                 margin: 10,
                 filename: `Gokul_Vault_Ledger_${Date.now()}.pdf`,
@@ -2108,7 +2208,7 @@
 
         // --- 10. DATA EXPORT / IMPORT ---
         function exportData() {
-            const data = { profile: JSON.parse(localStorage.getItem('gokulProfile')), vaultTx: JSON.parse(localStorage.getItem('gokulVaultTx')), attRecords: JSON.parse(localStorage.getItem('gokulAttRecords')), petrolRecords: JSON.parse(localStorage.getItem('gokulPetrolRecords')) };
+            const data = { profile: JSON.parse(localStorage.getItem('gokulProfile')), vaultTx: JSON.parse(localStorage.getItem('gokulVaultTx')), attRecords: JSON.parse(localStorage.getItem('gokulAttRecords')), petrolRecords: JSON.parse(localStorage.getItem('gokulPetrolRecords')), emiRegistry: JSON.parse(localStorage.getItem('gokulEmiRegistry')) };
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
             const downloadAnchorNode = document.createElement('a'); downloadAnchorNode.setAttribute("href", dataStr); downloadAnchorNode.setAttribute("download", "GokulHub_Backup.json");
             document.body.appendChild(downloadAnchorNode); downloadAnchorNode.click(); downloadAnchorNode.remove();
@@ -2125,6 +2225,7 @@
                     if(data.vaultTx) localStorage.setItem('gokulVaultTx', JSON.stringify(data.vaultTx));
                     if(data.attRecords) localStorage.setItem('gokulAttRecords', JSON.stringify(data.attRecords));
                     if(data.petrolRecords) localStorage.setItem('gokulPetrolRecords', JSON.stringify(data.petrolRecords));
+                    if(data.emiRegistry) localStorage.setItem('gokulEmiRegistry', JSON.stringify(data.emiRegistry));
                     alert("Backup Restored! Refreshing..."); window.location.reload();
                 } catch(err) { alert("Invalid file!"); }
             }
