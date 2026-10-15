@@ -489,7 +489,8 @@
                                 </div>
                             </div>
                             
-                            <button class="btn btn-danger" onclick="logPetrolExpense()"><i class="fas fa-gas-pump"></i> Log Petrol & Deduct Vault</button>
+                            <button class="btn btn-danger" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 50%, #d35400 100%) !important;" onclick="logPetrolExpense()"><i class="fas fa-gas-pump"></i> Save Petrol Record</button>
+                            <p style="font-size: 11px; color: var(--text-muted); margin-top: 10px; text-align: center; font-weight: 700;">*Petrol expenses are tracked separately and do NOT affect your Vault balance.</p>
 
                             <div style="margin-top: 16px; border-top: 1px dashed var(--border-highlight); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                                 <div style="display: flex; flex-direction: column;">
@@ -1527,10 +1528,8 @@
             petrolRecords.push(newRecord);
             localStorage.setItem('gokulPetrolRecords', JSON.stringify(petrolRecords));
 
-            transactions.push({ date: new Date().toLocaleString('en-GB'), category: `Petrol ⛽ (${litres.toFixed(2)}L @ ${odo}km)`, type: 'expense', amount: amount });
-            localStorage.setItem('gokulVaultTx', JSON.stringify(transactions));
+            // REMOVED VAULT TRANSACTION PUSHING AND VAULT UPDATE
 
-            updateVaultStats();
             updatePetrolStats();
 
             document.getElementById('petrol-amount').value = '';
@@ -1539,9 +1538,9 @@
             document.getElementById('petrol-mileage-display').innerText = '-- km/l';
             
             if (mileageStr === "First Fill") {
-                alert(`Logged ${litres.toFixed(2)} Litres! Mileage will calculate on your next fill. ₹${amount} deducted from Vault.`);
+                alert(`Logged ${litres.toFixed(2)} Litres! Mileage will calculate on your next fill. (Saved to history, Vault unchanged).`);
             } else {
-                alert(`Logged! Your previous fill gave a mileage of ${mileageStr}. ₹${amount} deducted.`);
+                alert(`Logged! Your previous fill gave a mileage of ${mileageStr}. (Saved to history, Vault unchanged).`);
             }
         }
 
