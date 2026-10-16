@@ -221,7 +221,7 @@
                          2px 2px 0px rgba(var(--shadow-rgb), 0.4), 
                          3px 3px 4px rgba(var(--shadow-rgb), 0.5); 
         }
-        body.enable-3d-text img, body.enable-3d-text svg, body.enable-3d-text .font-glitch-loader { 
+        body.enable-3d-text img, body.enable-3d-text svg { 
             filter: drop-shadow(2px 2px 4px rgba(var(--shadow-rgb), 0.5)); 
             text-shadow: none; 
         }
@@ -242,26 +242,6 @@
         }
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-
-        /* --- SMOOTH & ELEGANT FONT GLOW LOADING ANIMATION --- */
-        @keyframes elegantFontShift {
-            0%   { font-family: 'Playfair Display', serif; opacity: 1; letter-spacing: 3px; }
-            25%  { font-family: 'Outfit', sans-serif; opacity: 0.8; letter-spacing: 5px; text-shadow: 0 0 15px var(--text-grad-2); }
-            50%  { font-family: 'Cinzel', serif; opacity: 1; letter-spacing: 4px; }
-            75%  { font-family: 'Montserrat', sans-serif; opacity: 0.8; letter-spacing: 5px; text-shadow: 0 0 15px var(--text-grad-2); }
-            100% { font-family: 'Playfair Display', serif; opacity: 1; letter-spacing: 3px; }
-        }
-        
-        .font-glitch-loader {
-            font-size: 38px;
-            margin-bottom: 12px;
-            background-image: linear-gradient(135deg, var(--text-grad-1) 0%, var(--text-grad-2) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: elegantFontShift 2s infinite ease-in-out;
-            text-transform: uppercase;
-            text-align: center;
-        }
 
         /* --- APP SHELL & LAYOUT --- */
         .app-shell { width: 100%; height: 100dvh; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(var(--bg-blur)); -webkit-backdrop-filter: blur(var(--bg-blur)); transform: translateZ(0); transition: backdrop-filter 0.3s ease; }
@@ -495,13 +475,6 @@
     </style>
 </head>
 <body>
-
-    <!-- APP LOADING SCREEN -->
-    <div id="app-loading-screen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: var(--bg-app); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); transition: opacity 0.4s ease; color: var(--text-main); transform: translateZ(0);">
-        <img id="loading-logo-img" style="display: none;">
-        <h2 class="font-glitch-loader">GOKUL HUB</h2>
-        <div style="font-size: 15px; color: var(--text-accent); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px;">Premium Experience</div>
-    </div>
 
     <!-- MOBILE TOP BAR -->
     <div class="mobile-header">
@@ -1633,15 +1606,6 @@
             try { checkAutoPdfDownload(); } catch(e) {}
 
             navTo('vault-dashboard'); // Ensure UI opens properly
-
-            // Premium Loading Screen Fade Out Delay (1.5 seconds)
-            setTimeout(() => {
-                const loader = document.getElementById('app-loading-screen');
-                if(loader) {
-                    loader.style.opacity = '0';
-                    setTimeout(() => loader.style.display = 'none', 400);
-                }
-            }, 1500);
         });
 
         window.updateBgBlur = function(val) {
@@ -2726,4 +2690,161 @@
             const outTimeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false});
             const timingStr = `${inTimeStr} - ${outTimeStr}`;
 
-            shifts.push({ date: activeShift.date, jobType: activeShift.jobType, timing: timingStr, net, otHours,
+            shifts.push({ date: activeShift.date, jobType: activeShift.jobType, timing: timingStr, net, otHours, totalEarned: grossEarned, grossEarned: grossEarned });
+            shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
+            localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
+            
+            activeShift = null;
+            localStorage.removeItem('gokulActiveShift');
+            
+            updateShiftStats();
+            checkActiveShift();
+            
+            if(isFullOT) alert(`FULL OT SHIFT COMPLETED! 100% calculated as OT.`);
+            else alert(`Shift Completed!`);
+        }
+
+        function cancelPunch() {
+            if(confirm("Cancel current active shift?")) {
+                activeShift = null;
+                localStorage.removeItem('gokulActiveShift');
+                checkActiveShift();
+            }
+        }
+
+        function recordShiftManual() {
+            const date = document.getElementById('att-date').value;
+            const inTime = document.getElementById('att-in').value;
+            const outTime = document.getElementById('att-out').value;
+            const baseSalary = parseFloat(document.getElementById('att-base-rate').value);
+            const otRate = parseFloat(document.getElementById('att-ot-rate').value);
+            const jobType = document.getElementById('att-job-select').value;
+            
+            const isFullOTCheckbox = document.getElementById('manual-full-ot');
+            const isFullOTCheck = isFullOTCheckbox ? isFullOTCheckbox.checked : false;
+            
+            const extraOTInput = document.getElementById('manual-extra-ot');
+            const extraOTManual = extraOTInput ? (parseFloat(extraOTInput.value) || 0) : 0;
+
+            if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) return alert("Fill all details.");
+
+            saveRates();
+
+            let start = new Date(`1970-01-01T${inTime}:00`); let end = new Date(`1970-01-01T${outTime}:00`);
+            if (end < start) end.setDate(end.getDate() + 1);
+
+            const gross = (end - start) / (1000 * 60 * 60);
+            const breakDeduct = gross > 4 ? 0.5 : 0;
+            let net = Math.max(0, gross - breakDeduct);
+            
+            const dateParts = date.split('-');
+            const shiftDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+            
+            const isFullOT = shiftDate.getDay() === 0 || isFullOTCheck;
+
+            let regHours = isFullOT ? 0 : Math.min(net, 8);
+            let otHours = isFullOT ? net : Math.max(0, net - 8);
+
+            otHours += extraOTManual;
+            net += extraOTManual;
+
+            const baseEarned = (regHours / 8) * baseSalary;
+            const otEarned = otHours * otRate;
+            const grossEarned = baseEarned + otEarned;
+            const timingStr = `${inTime} - ${outTime}`;
+
+            shifts.push({ date, jobType, timing: timingStr, net, otHours, totalEarned: grossEarned, grossEarned: grossEarned });
+            shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
+            localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
+            
+            updateShiftStats();
+
+            document.getElementById('att-date').valueAsDate = new Date();
+            document.getElementById('att-in').value = '09:30'; 
+            document.getElementById('att-out').value = '18:00';
+            if(extraOTInput) extraOTInput.value = '';
+
+            toggleManualShift();
+            
+            if(isFullOT) alert(`FULL OT SHIFT! Shift saved.`);
+            else alert(`Shift saved!`);
+        }
+
+        function updateShiftStats() {
+            const tbody = document.getElementById('att-table-body');
+            let totalGross = 0;
+            shifts.forEach(s => { totalGross += (Number(s.grossEarned) || Number(s.totalEarned) || 0); });
+
+            const epf = parseFloat(document.getElementById('monthly-epf').value) || 0;
+            const esic = parseFloat(document.getElementById('monthly-esic').value) || 0;
+            const totalDed = epf + esic;
+            const netPay = totalGross - totalDed;
+
+            if(tbody) {
+                let html = '';
+                [...shifts].reverse().forEach((s, revIdx) => {
+                    const actualIdx = shifts.length - 1 - revIdx;
+                    const jobName = s.jobType ? String(s.jobType) : 'Job';
+                    const shortJob = jobName.length > 8 ? jobName.substring(0,8) + '..' : jobName;
+                    const timingDisp = s.timing ? String(s.timing) : ((s.inTime || '00:00') + '-' + (s.outTime || '00:00'));
+                    
+                    html += `<tr>
+                        <td>${s.date || ''}</td>
+                        <td style="font-weight: 700; font-size: 11px;">${shortJob}</td>
+                        <td style="font-size: 11px;">${timingDisp}</td>
+                        <td>${(Number(s.net)||0).toFixed(1)}h</td>
+                        <td style="color: var(--text-accent); font-weight: 700;">${(Number(s.otHours)||0).toFixed(1)}h</td>
+                        <td style="font-weight: 700;">₹${(Number(s.grossEarned) || Number(s.totalEarned) || 0).toFixed(0)}</td>
+                        <td>
+                            <div style="display: flex; gap: 8px; justify-content: center;">
+                                <button class="btn btn-primary" style="padding: 4px 8px; font-size: 11px; margin: 0; width: auto;" onclick="openEditShiftModal(${actualIdx})"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px; margin: 0; width: auto;" onclick="deleteShift(${actualIdx})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>`;
+                });
+                tbody.innerHTML = html;
+            }
+
+            const statDays = document.getElementById('stat-days');
+            if(statDays) statDays.innerText = shifts.length;
+            
+            const statGross = document.getElementById('stat-gross');
+            if(statGross) statGross.innerText = `₹${totalGross.toFixed(0)}`;
+            
+            const statDed = document.getElementById('stat-ded');
+            if(statDed) statDed.innerText = `₹${totalDed.toFixed(0)}`;
+            
+            const statNet = document.getElementById('stat-net');
+            if(statNet) statNet.innerText = `₹${netPay.toFixed(0)}`;
+        }
+
+        function deleteShift(idx) {
+            if (confirm("Delete shift?")) {
+                shifts.splice(idx, 1);
+                localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
+                updateShiftStats();
+            }
+        }
+
+        function clearShifts() {
+            if (confirm("Clear all shift records?")) {
+                shifts = [];
+                localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
+                updateShiftStats();
+            }
+        }
+
+        // --- 7. AUTO-DOWNLOAD PDF SETTINGS ---
+        function toggleAutoPdf() {
+            localStorage.setItem('gokulAutoPdf', document.getElementById('auto-pdf-toggle').checked);
+        }
+
+        function checkAutoPdfDownload() {
+            if(localStorage.getItem('gokulAutoPdf') === 'true') {
+                const now = new Date();
+                const currentMonthKey = now.getFullYear() + '-' + now.getMonth();
+                const lastDownload = localStorage.getItem('gokulLastAutoPdf');
+
+                if (now.getDate() >= 1 && lastDownload !== currentMonthKey) {
+                    
