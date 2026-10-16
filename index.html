@@ -2354,7 +2354,7 @@
             const finalY = doc.lastAutoTable.finalY || 95;
             doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(darkText[0], darkText[1], darkText[2]);
             doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30); doc.setLineWidth(0.5); doc.line(14, finalY + 25, 70, finalY + 25);
-            doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(lightText[0], lightText[1], lightText[2]); doc.text("System Generated Report - Gokul Hub Premium PWA", 14, finalY + 45);
+            doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(lightText[0], lightText[1], lightText[2]); doc.text(`System Generated Report - ${brandName}`, 14, finalY + 45);
 
             doc.save(`Gokul_Master_EMI_Report_${Date.now()}.pdf`);
         }
