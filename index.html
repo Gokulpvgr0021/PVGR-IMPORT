@@ -17,7 +17,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- MEGA PREMIUM FONTS BUNDLE ADDED -->
+    <!-- MEGA PREMIUM FONTS BUNDLE -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Comfortaa:wght@400;700&family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;600;700&family=Josefin+Sans:wght@400;700&family=Lato:wght@400;700&family=Lora:ital,wght@0,500;0,700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700&family=Nunito:wght@400;700&family=Open+Sans:wght@400;600&family=Oswald:wght@500;700&family=Outfit:wght@400;600;800&family=Pacifico&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;600;800&family=Quicksand:wght@500;700&family=Righteous&family=Roboto:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -204,7 +204,7 @@
             --border-highlight: rgba(255, 154, 158, 0.5);
         }
 
-        /* --- ✨ NORMALIZATIONS, GLOBAL ALIGNMENTS --- */
+        /* --- ✨ NORMALIZATIONS & GLOBAL ALIGNMENTS --- */
         * { 
             box-sizing: border-box; 
             margin: 0; 
@@ -1008,7 +1008,7 @@
                     </div>
                 </div>
 
-                <!-- 🎨 3D TEXT & COLOR FADES (NEW) -->
+                <!-- 🎨 3D TEXT & COLOR FADES -->
                 <div class="form-card" style="margin-bottom: 28px;">
                     <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-palette"></i> 3D Text & Color Fades</h3>
                     
@@ -1623,14 +1623,14 @@
 
             navTo('vault-dashboard'); // Ensure UI opens properly
 
-            // Premium Loading Screen Fade Out Delay (1.5 seconds)
+            // Premium Loading Screen Fade Out Delay (1.2 seconds)
             setTimeout(() => {
                 const loader = document.getElementById('app-loading-screen');
                 if(loader) {
                     loader.style.opacity = '0';
                     setTimeout(() => loader.style.display = 'none', 400);
                 }
-            }, 1500);
+            }, 1200);
         });
 
         window.updateBgBlur = function(val) {
@@ -2018,8 +2018,6 @@
 
             petrolRecords.push(newRecord);
             localStorage.setItem('gokulPetrolRecords', JSON.stringify(petrolRecords));
-
-            // REMOVED VAULT TRANSACTION PUSHING AND VAULT UPDATE
 
             updatePetrolStats();
 
@@ -3005,4 +3003,65 @@
             doc.text(`Emp. No/Card No : ${profile.idStr}`, 16, 44); doc.text(`Name : ${profile.name.toUpperCase()}`, 80, 44); doc.text(`Des. : ${profile.role.substring(0, 20)}`, 140, 44);
 
             const days = shifts.length;
-            doc.text(`Days pre : ${days}`, 16, 58); doc.text(`PH : 0`, 50, 58); doc.text(`EL : 0`, 70, 58); doc.text(`ELB : 0`, 95, 58); doc.text(`O.ALL : 0`, 115, 58); doc.text(`P days : ${days}`, 145, 58); doc.text(`LOP : 0`,
+            doc.text(`Days pre : ${days}`, 16, 58); doc.text(`PH : 0`, 50, 58); doc.text(`EL : 0`, 70, 58); doc.text(`ELB : 0`, 95, 58); doc.text(`O.ALL : 0`, 115, 58); doc.text(`P days : ${days}`, 145, 58); doc.text(`LOP : 0`, 175, 58);
+
+            doc.setFont("helvetica", "bold"); doc.setTextColor(pColor[0], pColor[1], pColor[2]); doc.text("EARNINGS", 55, 68, { align: "center" }); doc.text("DEDUCTIONS", 145, 68, { align: "center" });
+            doc.line(14, 72, 196, 72); doc.line(105, 62, 105, 183);
+
+            doc.setTextColor(0, 0, 0); doc.setFont("helvetica", "normal");
+            let y = 80; const gap = 8; const leftX = 16, valLeftX = 98, rightX = 108, valRightX = 190;
+            doc.text("Basic", leftX, y); doc.text(basic.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("HRA", leftX, y); doc.text(hra.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("EDA/O.ALL", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("OT", leftX, y); doc.text(otPay.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("Misc. Ear 1", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("Misc. 2", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("OTHER", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" });
+
+            y = 80;
+            doc.text("EPF", rightX, y); doc.text(totalEpf.toFixed(2), valRightX, y, { align: "right" }); y += gap;
+            doc.text("ESI", rightX, y); doc.text(totalEsic.toFixed(2), valRightX, y, { align: "right" }); y += gap;
+            doc.text("PT", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("Loan", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("Adv.", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("TDS", rightX, y); doc.text("0.00", valRightX, y, { align: "right" });
+
+            doc.line(14, 160, 196, 160); doc.line(105, 170, 196, 170);
+            
+            doc.setFont("helvetica", "bold");
+            doc.text("Gross", leftX, 167); doc.text(totalGross.toFixed(2), valLeftX, 167, { align: "right" });
+            doc.text("Tot Ded", rightX, 167); doc.text(totalDed.toFixed(2), valRightX, 167, { align: "right" });
+            doc.text("Net Pay", rightX, 177); doc.text((totalGross - totalDed).toFixed(2), valRightX, 177, { align: "right" });
+
+            doc.save(`Payslip_${monthName.replace(' ', '_')}.pdf`);
+        }
+
+        function downloadTimesheet() {
+            if (shifts.length === 0) return alert("No shifts to export!");
+            
+            const brandName = localStorage.getItem('gokulPdfBrand') || 'GOKUL HUB INC.';
+            const primaryColor = hexToRgb(localStorage.getItem('gokulPdfPrimary') || '#1e293b');
+            const accentColor = hexToRgb(localStorage.getItem('gokulPdfAccent') || '#d4af37');
+            
+            const { jsPDF } = window.jspdf; 
+            
+            // Dynamic page height calculations to fit all shifts in a single continuous page
+            const pageHeight = Math.max(297, 140 + (shifts.length * 10));
+            const doc = new jsPDF('p', 'mm', [210, pageHeight]);
+            
+            const darkText = [40, 40, 40], lightText = [100, 100, 100];
+
+            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.rect(0, 0, 210, 40, 'F');
+            doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.setFont("helvetica", "bold");
+            try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 10, 20, 20); } catch(e) {}
+
+            const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14;
+            doc.text(brandName, textStartX, 20); doc.setFontSize(12); doc.setFont("helvetica", "normal"); doc.text("OFFICIAL TIMESHEET & SALARY REPORT", textStartX, 30);
+            
+            const now = new Date(); doc.setFontSize(10); doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
+            doc.setTextColor(darkText[0], darkText[1], darkText[2]); doc.setFontSize(12); doc.setFont("helvetica", "bold"); doc.text("EMPLOYEE DETAILS", 14, 50);
+            doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.text(`Name: ${profile.name}`, 14, 58); doc.text(`ID: ${profile.idStr}`, 14, 64); doc.text(`Role: ${profile.role}`, 14, 70);
+            
+            let totalPay = 0, totalHrs = 0, totalOT = 0;
+            shifts.forEach(s => { 
+                totalPay += (Number(s.grossEarned) || Number(s.totalEarned) || 0
