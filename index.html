@@ -17,8 +17,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- PREMIUM FONTS ADDED -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:ital,wght@0,500;0,700&family=Outfit:wght@400;600;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- MEGA PREMIUM FONTS BUNDLE ADDED -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Comfortaa:wght@400;700&family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;600;700&family=Josefin+Sans:wght@400;700&family=Lato:wght@400;700&family=Lora:ital,wght@0,500;0,700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700&family=Nunito:wght@400;700&family=Open+Sans:wght@400;600&family=Oswald:wght@500;700&family=Outfit:wght@400;600;800&family=Pacifico&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;600;800&family=Quicksand:wght@500;700&family=Righteous&family=Roboto:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -54,19 +54,23 @@
             --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
-        /* --- FONT PRESETS --- */
-        [data-font="modern"] {
-            --font-heading: 'Outfit', sans-serif;
-            --font-body: 'Outfit', sans-serif;
-        }
-        [data-font="classic"] {
-            --font-heading: 'Lora', serif;
-            --font-body: 'Inter', sans-serif;
-        }
-        [data-font="minimal"] {
-            --font-heading: 'Poppins', sans-serif;
-            --font-body: 'Poppins', sans-serif;
-        }
+        /* --- FONT PRESETS ENGINE --- */
+        [data-font="modern"] { --font-heading: 'Outfit', sans-serif; --font-body: 'Outfit', sans-serif; }
+        [data-font="classic"] { --font-heading: 'Lora', serif; --font-body: 'Inter', sans-serif; }
+        [data-font="minimal"] { --font-heading: 'Poppins', sans-serif; --font-body: 'Poppins', sans-serif; }
+        [data-font="corporate"] { --font-heading: 'Roboto', sans-serif; --font-body: 'Roboto', sans-serif; }
+        [data-font="geometric"] { --font-heading: 'Montserrat', sans-serif; --font-body: 'Montserrat', sans-serif; }
+        [data-font="rounded"] { --font-heading: 'Quicksand', sans-serif; --font-body: 'Quicksand', sans-serif; }
+        [data-font="editorial"] { --font-heading: 'Merriweather', serif; --font-body: 'Open Sans', sans-serif; }
+        [data-font="cinematic"] { --font-heading: 'Cinzel', serif; --font-body: 'Lato', sans-serif; }
+        [data-font="hacker"] { --font-heading: 'Space Mono', monospace; --font-body: 'Space Mono', monospace; }
+        [data-font="vintage"] { --font-heading: 'Cormorant Garamond', serif; --font-body: 'Montserrat', sans-serif; }
+        [data-font="casual"] { --font-heading: 'Comfortaa', sans-serif; --font-body: 'Comfortaa', sans-serif; }
+        [data-font="sharp"] { --font-heading: 'Josefin Sans', sans-serif; --font-body: 'Josefin Sans', sans-serif; }
+        [data-font="artdeco"] { --font-heading: 'Righteous', cursive; --font-body: 'Inter', sans-serif; }
+        [data-font="soft"] { --font-heading: 'Nunito', sans-serif; --font-body: 'Nunito', sans-serif; }
+        [data-font="vibe"] { --font-heading: 'Pacifico', cursive; --font-body: 'Quicksand', sans-serif; }
+        [data-font="impact"] { --font-heading: 'Oswald', sans-serif; --font-body: 'Roboto', sans-serif; }
 
         /* --- 👑 ULTRA PREMIUM MULTI-FADE THEMES --- */
         [data-theme="jarvis"] { 
@@ -298,7 +302,7 @@
         @keyframes genieMagic {
             0% { border-radius: 12px; transform: scale(1); filter: hue-rotate(0deg) brightness(1); }
             30% { border-radius: 30px 10px 30px 10px; transform: scale(0.92) translateY(4px); filter: hue-rotate(45deg) brightness(1.3) drop-shadow(0 10px 20px var(--text-accent)); }
-            70% { border-radius: 10px 30px 10px 30px; transform: scale(1.03) translateY(-2px); filter: hue-rotate(90deg) brightness(1.1) drop-shadow(0 -5px 15px var(--text-main)); }
+            70% { border-radius: 10px 30px 10px 30px; transform: scale(1.05) translateY(-2px); filter: hue-rotate(90deg) brightness(1.1) drop-shadow(0 -5px 15px var(--text-main)); }
             100% { border-radius: 12px; transform: scale(1); filter: hue-rotate(0deg) brightness(1); }
         }
 
@@ -826,6 +830,45 @@
                         </div>
                         <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('minimal')">
                             <div style="font-weight: 800; font-size: 14px; font-family: 'Poppins', sans-serif;">Clean Minimal</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('corporate')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Roboto', sans-serif;">Corporate Base</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('geometric')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Montserrat', sans-serif;">Geometric Bold</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('rounded')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Quicksand', sans-serif;">Friendly Round</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('editorial')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Merriweather', serif;">Newspaper Edit</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('cinematic')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Cinzel', serif;">Cinematic Epic</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('hacker')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Space Mono', monospace;">Retro Hacker</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('vintage')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Cormorant Garamond', serif;">Vintage Class</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('casual')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Comfortaa', sans-serif;">Casual Comfort</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('sharp')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Josefin Sans', sans-serif;">Edgy Sharp</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('artdeco')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Righteous', cursive;">Art Deco Pop</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('soft')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Nunito', sans-serif;">Soft Warmth</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('vibe')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Pacifico', cursive;">Handwritten Vibe</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('impact')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Oswald', sans-serif;">Bold Impact</div>
                         </div>
                     </div>
                 </div>
