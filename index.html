@@ -812,6 +812,27 @@
             <!-- 5. SETTINGS & THEMES -->
             <section id="settings-view" class="view-panel">
                 <div class="panel-heading"><span>Settings & Themes</span></div>
+                
+                <!-- NEW PDF CUSTOMIZATION MODULE -->
+                <div class="form-card" style="margin-bottom: 28px;">
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-file-pdf"></i> PDF Export Customization</h3>
+                    <div class="input-group">
+                        <label>Company/Brand Name on PDF</label>
+                        <input type="text" id="pdf-brand-name" class="form-control" placeholder="GOKUL HUB INC." onchange="savePdfSettings()">
+                    </div>
+                    <div style="display: flex; gap: 16px; margin-top: 14px; flex-wrap: wrap;">
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>PDF Primary Color</label>
+                            <input type="color" id="pdf-color-primary" class="form-control" style="padding: 5px; height: 50px; cursor: pointer;" onchange="savePdfSettings()">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>PDF Accent Color</label>
+                            <input type="color" id="pdf-color-accent" class="form-control" style="padding: 5px; height: 50px; cursor: pointer;" onchange="savePdfSettings()">
+                        </div>
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 12px; line-height: 1.5;">These colors and titles will be applied to all your generated reports (Payslips, Timesheets, EMI, Ledger).</p>
+                    <button class="btn btn-primary" style="margin-top: 14px; padding: 14px; font-size: 13px; background: rgba(0,0,0,0.3) !important;" onclick="resetPdfSettings()"><i class="fas fa-undo"></i> Reset to Default PDF Styles</button>
+                </div>
 
                 <!-- 🖼️ Master Image Customization Option -->
                 <div class="form-card" style="margin-bottom: 28px;">
@@ -1205,6 +1226,40 @@
             localStorage.setItem('gokulFontFamily', fontId);
         }
 
+        // --- 0.5 PDF SETTINGS ENGINE ---
+        function hexToRgb(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [30, 41, 59]; // Default to dark slate
+        }
+
+        function savePdfSettings() {
+            localStorage.setItem('gokulPdfBrand', document.getElementById('pdf-brand-name').value || 'GOKUL HUB INC.');
+            localStorage.setItem('gokulPdfPrimary', document.getElementById('pdf-color-primary').value || '#1e293b');
+            localStorage.setItem('gokulPdfAccent', document.getElementById('pdf-color-accent').value || '#d4af37');
+        }
+
+        function loadPdfSettings() {
+            const brand = localStorage.getItem('gokulPdfBrand') || 'GOKUL HUB INC.';
+            const primary = localStorage.getItem('gokulPdfPrimary') || '#1e293b';
+            const accent = localStorage.getItem('gokulPdfAccent') || '#d4af37';
+            
+            const bName = document.getElementById('pdf-brand-name');
+            const pColor = document.getElementById('pdf-color-primary');
+            const aColor = document.getElementById('pdf-color-accent');
+            
+            if(bName) bName.value = brand;
+            if(pColor) pColor.value = primary;
+            if(aColor) aColor.value = accent;
+        }
+
+        function resetPdfSettings() {
+            document.getElementById('pdf-brand-name').value = 'GOKUL HUB INC.';
+            document.getElementById('pdf-color-primary').value = '#1e293b';
+            document.getElementById('pdf-color-accent').value = '#d4af37';
+            savePdfSettings();
+            alert("PDF Customizations reset to Default Themes!");
+        }
+
         // --- 1. BOOT SEQUENCE & APP LOGO LOGIC ---
         let activeShift = JSON.parse(localStorage.getItem('gokulActiveShift')) || null;
         let cashbackBalance = parseFloat(localStorage.getItem('gokulCashbackBal')) || 0;
@@ -1309,6 +1364,8 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             renderAppLogo(); // Initial load for App Logos
+            
+            try { loadPdfSettings(); } catch(e) {}
 
             // Apply Font Preference
             const savedFont = localStorage.getItem('gokulFontFamily') || 'default';
@@ -2211,14 +2268,16 @@
         function downloadMasterEmiReport() {
             if(emiRegistry.length === 0) return alert("No active loans to generate report!");
             
+            const brandName = localStorage.getItem('gokulPdfBrand') || 'GOKUL HUB INC.';
+            const primaryColor = hexToRgb(localStorage.getItem('gokulPdfPrimary') || '#1e293b');
+            const accentColor = hexToRgb(localStorage.getItem('gokulPdfAccent') || '#d4af37');
+            
             const { jsPDF } = window.jspdf;
             
             // Dynamic page height calculations to fit all loans in a single continuous page
             const pageHeight = Math.max(297, 140 + (emiRegistry.length * 15));
             const doc = new jsPDF('p', 'mm', [210, pageHeight]);
             
-            const primaryColor = [20, 30, 55];
-            const accentColor = [212, 175, 55];
             const darkText = [40, 40, 40];
             const lightText = [100, 100, 100];
 
@@ -2230,7 +2289,7 @@
             try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 10, 20, 20); } catch(e) {}
 
             const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14;
-            doc.text("GOKUL HUB INC.", textStartX, 20);
+            doc.text(brandName, textStartX, 20);
             doc.setFontSize(12); doc.setFont("helvetica", "normal");
             doc.text("MASTER EMI TRACKING REPORT", textStartX, 30);
             
@@ -2647,6 +2706,10 @@
         // --- 8. PREMIUM VAULT LEDGER DOWNLOAD WITH HTML2PDF (EMOJI SUPPORT) ---
         function downloadVaultLedger() {
             if (transactions.length === 0) return alert("No transactions to export!");
+            
+            const brandName = localStorage.getItem('gokulPdfBrand') || 'GOKUL HUB INC.';
+            const primaryHex = localStorage.getItem('gokulPdfPrimary') || '#1e293b';
+            const accentHex = localStorage.getItem('gokulPdfAccent') || '#d4af37';
 
             // Create temporary container for HTML rendering
             const exportContainer = document.createElement('div');
@@ -2663,26 +2726,26 @@
             const bal = inc - exp;
 
             exportContainer.innerHTML = `
-                <div style="background:#0f172a; color:#fff; padding:20px; border-radius:12px; margin-bottom:20px; border-bottom: 4px solid #d4af37;">
-                    <h2 style="margin:0; font-size:24px; font-family: 'Playfair Display', serif; letter-spacing: 1px;">GOKUL HUB INC.</h2>
-                    <p style="margin:6px 0 0; font-size:12px; color:#d4af37; font-weight: bold; letter-spacing: 2px;">PREMIUM VAULT LEDGER REPORT</p>
+                <div style="background:${primaryHex}; color:#fff; padding:20px; border-radius:12px; margin-bottom:20px; border-bottom: 4px solid ${accentHex};">
+                    <h2 style="margin:0; font-size:24px; font-family: 'Playfair Display', serif; letter-spacing: 1px;">${brandName}</h2>
+                    <p style="margin:6px 0 0; font-size:12px; color:${accentHex}; font-weight: bold; letter-spacing: 2px;">PREMIUM VAULT LEDGER REPORT</p>
                 </div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:24px; font-size:13px; background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
                     <div>
                         <strong style="color: #475569;">ACCOUNT HOLDER:</strong><br>
-                        <span style="font-size: 16px; font-weight: 800; color: #0f172a;">${profile.name.toUpperCase()}</span><br>
+                        <span style="font-size: 16px; font-weight: 800; color: ${primaryHex};">${profile.name.toUpperCase()}</span><br>
                         <span style="color: #64748b;">ID: ${profile.idStr} | Role: ${profile.role}</span><br>
                         <span style="color: #64748b;">Date: ${new Date().toLocaleDateString()}</span>
                     </div>
                     <div style="text-align:right;">
                         <div style="color: #27ae60; margin-bottom: 4px;"><strong>Total Income:</strong> +₹${inc.toFixed(2)}</div>
                         <div style="color: #e74c3c; margin-bottom: 4px;"><strong>Total Expense:</strong> -₹${exp.toFixed(2)}</div>
-                        <div style="font-size: 16px; color: #b48500; margin-top: 8px;"><strong>Net Balance: ₹${bal.toFixed(2)}</strong></div>
+                        <div style="font-size: 16px; color: ${accentHex}; margin-top: 8px;"><strong>Net Balance: ₹${bal.toFixed(2)}</strong></div>
                     </div>
                 </div>
                 <table style="width:100%; border-collapse:collapse; font-size:12px; text-align:left;">
                     <thead>
-                        <tr style="background:#1e293b; color:#fff;">
+                        <tr style="background:${primaryHex}; color:#fff;">
                             <th style="padding:12px 8px; border-radius: 6px 0 0 0;">Date</th>
                             <th style="padding:12px 8px;">Description</th>
                             <th style="padding:12px 8px;">Flow</th>
@@ -2703,7 +2766,7 @@
                 <div style="margin-top: 40px; border-top: 2px solid #e2e8f0; padding-top: 20px;">
                     <p style="font-weight: bold; font-size: 11px; margin: 0; color: #0f172a;">AUTHORIZED SIGNATURE</p>
                     <div style="width: 150px; height: 1px; background: #94a3b8; margin: 30px 0 10px;"></div>
-                    <p style="font-size: 9px; color: #94a3b8; margin: 0;">System Generated Ledger - Gokul Hub Premium PWA</p>
+                    <p style="font-size: 9px; color: #94a3b8; margin: 0;">System Generated Ledger - ${brandName}</p>
                 </div>
             `;
 
@@ -2724,9 +2787,12 @@
 
         function downloadPayslip() {
             if (shifts.length === 0) return alert("No shifts to export!");
+            
+            const brandName = localStorage.getItem('gokulPdfBrand') || 'GOKUL HUB INC.';
+            const pColor = hexToRgb(localStorage.getItem('gokulPdfPrimary') || '#1e293b');
+            
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'mm', 'a4');
-            const green = [50, 130, 70];
             
             let totalGross = 0, totalOTHours = 0, totalNetHours = 0;
             shifts.forEach(s => { 
@@ -2744,10 +2810,10 @@
 
             try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 15, 20, 20); } catch(e) {}
 
-            doc.setTextColor(green[0], green[1], green[2]); doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.text("GOKUL HUB / MAGNUM CLOTHING PVT. LTD.", 105, 20, { align: "center" });
+            doc.setTextColor(pColor[0], pColor[1], pColor[2]); doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.text(brandName, 105, 20, { align: "center" });
             doc.setFontSize(10); doc.setFont("helvetica", "normal"); const monthName = new Date().toLocaleString('default', { month: 'long', year: 'numeric' }); doc.text(`Payslip For The Month of ${monthName}`, 105, 26, { align: "center" });
 
-            doc.setDrawColor(green[0], green[1], green[2]); doc.setLineWidth(0.4); doc.rect(14, 38, 182, 145);
+            doc.setDrawColor(pColor[0], pColor[1], pColor[2]); doc.setLineWidth(0.4); doc.rect(14, 38, 182, 145);
             doc.line(14, 52, 196, 52); doc.line(14, 62, 196, 62);
 
             doc.setTextColor(0, 0, 0); doc.setFontSize(9);
@@ -2756,7 +2822,7 @@
             const days = shifts.length;
             doc.text(`Days pre : ${days}`, 16, 58); doc.text(`PH : 0`, 50, 58); doc.text(`EL : 0`, 70, 58); doc.text(`ELB : 0`, 95, 58); doc.text(`O.ALL : 0`, 115, 58); doc.text(`P days : ${days}`, 145, 58); doc.text(`LOP : 0`, 175, 58);
 
-            doc.setFont("helvetica", "bold"); doc.setTextColor(green[0], green[1], green[2]); doc.text("EARNINGS", 55, 68, { align: "center" }); doc.text("DEDUCTIONS", 145, 68, { align: "center" });
+            doc.setFont("helvetica", "bold"); doc.setTextColor(pColor[0], pColor[1], pColor[2]); doc.text("EARNINGS", 55, 68, { align: "center" }); doc.text("DEDUCTIONS", 145, 68, { align: "center" });
             doc.line(14, 72, 196, 72); doc.line(105, 62, 105, 183);
 
             doc.setTextColor(0, 0, 0); doc.setFont("helvetica", "normal");
@@ -2789,20 +2855,25 @@
 
         function downloadTimesheet() {
             if (shifts.length === 0) return alert("No shifts to export!");
+            
+            const brandName = localStorage.getItem('gokulPdfBrand') || 'GOKUL HUB INC.';
+            const primaryColor = hexToRgb(localStorage.getItem('gokulPdfPrimary') || '#1e293b');
+            const accentColor = hexToRgb(localStorage.getItem('gokulPdfAccent') || '#d4af37');
+            
             const { jsPDF } = window.jspdf; 
             
             // Dynamic page height calculations to fit all shifts in a single continuous page
             const pageHeight = Math.max(297, 140 + (shifts.length * 10));
             const doc = new jsPDF('p', 'mm', [210, pageHeight]);
             
-            const primaryColor = [28, 69, 135], accentColor = [22, 163, 74], darkText = [40, 40, 40], lightText = [100, 100, 100];
+            const darkText = [40, 40, 40], lightText = [100, 100, 100];
 
             doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.rect(0, 0, 210, 40, 'F');
             doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.setFont("helvetica", "bold");
             try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 10, 20, 20); } catch(e) {}
 
             const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14;
-            doc.text("GOKUL HUB INC.", textStartX, 20); doc.setFontSize(12); doc.setFont("helvetica", "normal"); doc.text("OFFICIAL TIMESHEET & SALARY REPORT", textStartX, 30);
+            doc.text(brandName, textStartX, 20); doc.setFontSize(12); doc.setFont("helvetica", "normal"); doc.text("OFFICIAL TIMESHEET & SALARY REPORT", textStartX, 30);
             
             const now = new Date(); doc.setFontSize(10); doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
             doc.setTextColor(darkText[0], darkText[1], darkText[2]); doc.setFontSize(12); doc.setFont("helvetica", "bold"); doc.text("EMPLOYEE DETAILS", 14, 50);
@@ -2846,7 +2917,7 @@
 
             const finalY = doc.lastAutoTable.finalY || 95;
             doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30); doc.setLineWidth(0.5); doc.line(14, finalY + 25, 70, finalY + 25);
-            doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(lightText[0], lightText[1], lightText[2]); doc.text("System Generated Report - Gokul Hub Automated Offline PWA", 14, finalY + 45);
+            doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(lightText[0], lightText[1], lightText[2]); doc.text(`System Generated Report - ${brandName}`, 14, finalY + 45);
 
             doc.save(`Gokul_Timesheet_Report_${now.getTime()}.pdf`);
         }
