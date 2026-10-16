@@ -28,6 +28,7 @@
         :root {
             --glass-alpha: 0.75;
             --card-alpha: 0.75;
+            --bg-blur: 12px;
 
             /* Base Variables */
             --bg-app: rgba(4, 9, 20, var(--glass-alpha));
@@ -194,7 +195,7 @@
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         /* --- APP SHELL & LAYOUT --- */
-        .app-shell { width: 100%; height: 100dvh; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transform: translateZ(0); }
+        .app-shell { width: 100%; height: 100dvh; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(var(--bg-blur)); -webkit-backdrop-filter: blur(var(--bg-blur)); transform: translateZ(0); transition: backdrop-filter 0.3s ease; }
 
         .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(65px + var(--safe-top)); padding-top: var(--safe-top); background: linear-gradient(180deg, var(--bg-sidebar) 0%, rgba(0,0,0,0) 100%); border-bottom: 1px solid var(--border-highlight); z-index: 100; align-items: center; justify-content: space-between; padding-left: 20px; padding-right: 20px; backdrop-filter: blur(20px); transform: translateZ(0); }
         
@@ -806,6 +807,9 @@
                 <div class="form-card" style="margin-bottom: 28px;">
                     <h3 style="margin-bottom: 18px; font-size: 20px; font-family: 'Playfair Display', serif;"><i class="fas fa-sliders-h"></i> UI Transparency Control</h3>
                     
+                    <div style="font-weight: 800; font-size: 14px; color: var(--text-main); margin-bottom: 10px;">Background Blur (Image Clarity)</div>
+                    <input type="range" id="blur-slider" min="0" max="25" step="1" value="12" oninput="updateBgBlur(this.value)" style="width: 100%; margin-bottom: 24px;">
+
                     <div style="font-weight: 800; font-size: 14px; color: var(--text-main); margin-bottom: 10px;">Global App Glass Opacity</div>
                     <input type="range" id="opacity-slider" min="0.1" max="1" step="0.05" oninput="updateGlassOpacity(this.value)" style="width: 100%; margin-bottom: 24px;">
 
@@ -1218,7 +1222,7 @@
                 applyWallpaper(savedWallpaper);
             }
 
-            // Apply Glass Opacity & Card Opacity
+            // Apply Glass Opacity & Card Opacity & Blur
             const savedAlpha = localStorage.getItem('gokulGlassAlpha');
             if (savedAlpha) {
                 document.documentElement.style.setProperty('--glass-alpha', savedAlpha);
@@ -1231,6 +1235,13 @@
                 document.documentElement.style.setProperty('--card-alpha', savedCardAlpha);
                 const cSlider = document.getElementById('card-opacity-slider');
                 if (cSlider) cSlider.value = savedCardAlpha;
+            }
+            
+            const savedBlur = localStorage.getItem('gokulBgBlur');
+            if (savedBlur !== null) {
+                document.documentElement.style.setProperty('--bg-blur', savedBlur + 'px');
+                const bSlider = document.getElementById('blur-slider');
+                if (bSlider) bSlider.value = savedBlur;
             }
 
             try { startLiveClock(); } catch(e) {}
@@ -1264,6 +1275,11 @@
                 }
             }, 1200);
         });
+
+        window.updateBgBlur = function(val) {
+            document.documentElement.style.setProperty('--bg-blur', val + 'px');
+            localStorage.setItem('gokulBgBlur', val);
+        }
 
         window.updateGlassOpacity = function(val) {
             document.documentElement.style.setProperty('--glass-alpha', val);
@@ -1774,9 +1790,9 @@
                     <td style="font-weight: 700; color: var(--danger);">-₹${r.amount}</td>
                     <td style="font-weight: 800; color: ${milColor};">${r.mileage}</td>
                     <td>
-                        <div style="display: flex; gap: 5px; justify-content: center;">
-                            <button class="btn btn-primary" style="padding: 4px 8px; font-size: 11px; margin: 0; width: auto;" onclick="openEditPetrolModal(${r.id})"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px; margin: 0; width: auto;" onclick="deletePetrolRecord(${r.id})"><i class="fas fa-trash"></i></button>
+                        <div style="display: flex; gap: 8px; justify-content: center;">
+                            <button class="btn btn-primary" style="padding: 6px 10px; font-size: 12px; margin: 0; width: auto;" onclick="openEditPetrolModal(${r.id})"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-danger" style="padding: 6px 10px; font-size: 12px; margin: 0; width: auto;" onclick="deletePetrolRecord(${r.id})"><i class="fas fa-trash"></i></button>
                         </div>
                     </td>
                 </tr>`;
