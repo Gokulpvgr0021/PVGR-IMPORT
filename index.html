@@ -34,6 +34,11 @@
             /* Typography Variables */
             --font-heading: 'Playfair Display', serif;
             --font-body: 'Plus Jakarta Sans', sans-serif;
+            
+            /* Text Fade & Shadow Variables */
+            --text-grad-1: #ffffff;
+            --text-grad-2: #f0c75e;
+            --shadow-rgb: 0, 0, 0;
 
             /* Base Variables */
             --bg-app: rgba(4, 9, 20, var(--glass-alpha));
@@ -205,8 +210,15 @@
         input, select, textarea, button { max-width: 100%; font-family: inherit; font-size: 16px !important; }
 
         /* --- 3D TEXT TOGGLE CLASS --- */
-        body.enable-3d-text * { text-shadow: 1px 1px 0px rgba(0,0,0,0.6), 2px 2px 0px rgba(0,0,0,0.4), 3px 3px 4px rgba(0,0,0,0.5); }
-        body.enable-3d-text img, body.enable-3d-text svg, body.enable-3d-text .font-glitch-loader { filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5)); text-shadow: none; }
+        body.enable-3d-text * { 
+            text-shadow: 1px 1px 0px rgba(var(--shadow-rgb), 0.6), 
+                         2px 2px 0px rgba(var(--shadow-rgb), 0.4), 
+                         3px 3px 4px rgba(var(--shadow-rgb), 0.5); 
+        }
+        body.enable-3d-text img, body.enable-3d-text svg, body.enable-3d-text .font-glitch-loader { 
+            filter: drop-shadow(2px 2px 4px rgba(var(--shadow-rgb), 0.5)); 
+            text-shadow: none; 
+        }
         body.enable-3d-text input, body.enable-3d-text select, body.enable-3d-text textarea { text-shadow: none !important; }
 
         html, body {
@@ -225,16 +237,16 @@
         /* --- SMOOTH & ELEGANT FONT GLOW LOADING ANIMATION --- */
         @keyframes elegantFontShift {
             0%   { font-family: 'Playfair Display', serif; opacity: 1; letter-spacing: 3px; }
-            25%  { font-family: 'Outfit', sans-serif; opacity: 0.8; letter-spacing: 5px; text-shadow: 0 0 15px var(--text-accent); }
+            25%  { font-family: 'Outfit', sans-serif; opacity: 0.8; letter-spacing: 5px; text-shadow: 0 0 15px var(--text-grad-2); }
             50%  { font-family: 'Cinzel', serif; opacity: 1; letter-spacing: 4px; }
-            75%  { font-family: 'Montserrat', sans-serif; opacity: 0.8; letter-spacing: 5px; text-shadow: 0 0 15px var(--text-accent); }
+            75%  { font-family: 'Montserrat', sans-serif; opacity: 0.8; letter-spacing: 5px; text-shadow: 0 0 15px var(--text-grad-2); }
             100% { font-family: 'Playfair Display', serif; opacity: 1; letter-spacing: 3px; }
         }
         
         .font-glitch-loader {
             font-size: 38px;
             margin-bottom: 12px;
-            background-image: linear-gradient(135deg, #ffffff 0%, var(--text-accent) 100%);
+            background-image: linear-gradient(135deg, var(--text-grad-1) 0%, var(--text-grad-2) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: elegantFontShift 2s infinite ease-in-out;
@@ -392,17 +404,19 @@
         body.enable-3d-text .panel-heading span, body.enable-3d-text #prof-name, 
         body.enable-3d-text #total-balance, body.enable-3d-text #cashback-balance, 
         body.enable-3d-text .att-stat-card .val {
-            background-image: linear-gradient(135deg, #ffffff 0%, var(--text-accent) 100%);
+            background-image: linear-gradient(135deg, var(--text-grad-1) 0%, var(--text-grad-2) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-family: var(--font-heading);
-            filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.8)) drop-shadow(2px 2px 0px rgba(0,0,0,0.6)) drop-shadow(3px 3px 4px rgba(0,0,0,0.5));
+            filter: drop-shadow(1px 1px 0px rgba(var(--shadow-rgb), 0.8)) 
+                    drop-shadow(2px 2px 0px rgba(var(--shadow-rgb), 0.6)) 
+                    drop-shadow(3px 3px 4px rgba(var(--shadow-rgb), 0.5));
         }
         
         /* Non-3D Fallbacks for specific headers if 3D is toggled off */
         h1, h2, h3, .sidebar-brand-text, .brand span, .panel-heading span, 
         #prof-name, #total-balance, #cashback-balance, .att-stat-card .val {
-            background-image: linear-gradient(135deg, #ffffff 0%, var(--text-accent) 100%);
+            background-image: linear-gradient(135deg, var(--text-grad-1) 0%, var(--text-grad-2) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-family: var(--font-heading);
@@ -896,15 +910,6 @@
                     <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-font"></i> Typography & Fonts</h3>
                     <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5;">Choose a premium font style for the entire application.</p>
                     
-                    <!-- 3D Text Toggle -->
-                    <div style="margin-bottom: 24px; padding: 16px; background: rgba(0,0,0,0.4); border-radius: 12px; border: 1px dashed var(--border-highlight);">
-                        <label style="display:flex; align-items:center; gap:12px; font-weight:800; color:var(--text-accent);">
-                            <input type="checkbox" id="text-3d-toggle" style="width:24px;height:24px;" onchange="toggle3DText()">
-                            <i class="fas fa-cube"></i> Enable Premium 3D Text Effect
-                        </label>
-                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">Toggle the deep extrusion and 3D shadow effect for all text across the app.</p>
-                    </div>
-
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 12px;" id="font-gallery">
                         <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('default')">
                             <div style="font-weight: 800; font-size: 14px; font-family: 'Playfair Display', serif;">Royal Default</div>
@@ -958,6 +963,36 @@
                             <div style="font-weight: 800; font-size: 14px; font-family: 'Oswald', sans-serif;">Bold Impact</div>
                         </div>
                     </div>
+                </div>
+
+                <!-- 🎨 3D TEXT & COLOR FADES (NEW) -->
+                <div class="form-card" style="margin-bottom: 28px;">
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-palette"></i> 3D Text & Color Fades</h3>
+                    
+                    <!-- 3D Text Toggle -->
+                    <div style="margin-bottom: 20px; padding: 16px; background: rgba(0,0,0,0.4); border-radius: 12px; border: 1px dashed var(--border-highlight);">
+                        <label style="display:flex; align-items:center; gap:12px; font-weight:800; color:var(--text-accent);">
+                            <input type="checkbox" id="text-3d-toggle" style="width:24px;height:24px;" onchange="toggle3DText()">
+                            <i class="fas fa-cube"></i> Enable Premium 3D Text Effect
+                        </label>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">Toggle the deep extrusion and 3D shadow effect for all text across the app.</p>
+                    </div>
+
+                    <div style="display: flex; gap: 16px; margin-top: 14px; flex-wrap: wrap;">
+                        <div class="input-group" style="flex: 1; min-width: 30%;">
+                            <label>Text Fade Start</label>
+                            <input type="color" id="text-grad-1" class="form-control" style="padding: 5px; height: 50px; cursor: pointer;" value="#ffffff" onchange="saveTextStyles()">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 30%;">
+                            <label>Text Fade End</label>
+                            <input type="color" id="text-grad-2" class="form-control" style="padding: 5px; height: 50px; cursor: pointer;" value="#f0c75e" onchange="saveTextStyles()">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 30%;">
+                            <label>3D Shadow Color</label>
+                            <input type="color" id="shadow-color" class="form-control" style="padding: 5px; height: 50px; cursor: pointer;" value="#000000" onchange="saveTextStyles()">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 18px; padding: 14px; font-size: 13px; background: rgba(0,0,0,0.3) !important;" onclick="resetTextStyles()"><i class="fas fa-undo"></i> Reset Colors</button>
                 </div>
 
                 <!-- App Fullscreen / PWA toggle -->
@@ -1277,10 +1312,56 @@
             localStorage.setItem('gokulFontFamily', fontId);
         }
 
+        // --- 0.6 TEXT FADES & SHADOW COLORS ENGINE ---
+        function hexToRgbStr(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '0, 0, 0';
+        }
+
+        function saveTextStyles() {
+            const grad1 = document.getElementById('text-grad-1').value || '#ffffff';
+            const grad2 = document.getElementById('text-grad-2').value || '#f0c75e';
+            const shadow = document.getElementById('shadow-color').value || '#000000';
+            
+            localStorage.setItem('gokulTextGrad1', grad1);
+            localStorage.setItem('gokulTextGrad2', grad2);
+            localStorage.setItem('gokulShadowColor', shadow);
+            
+            applyTextStyles(grad1, grad2, shadow);
+        }
+
+        function applyTextStyles(g1, g2, sh) {
+            document.documentElement.style.setProperty('--text-grad-1', g1);
+            document.documentElement.style.setProperty('--text-grad-2', g2);
+            document.documentElement.style.setProperty('--shadow-rgb', hexToRgbStr(sh));
+        }
+
+        function loadTextStyles() {
+            const defaultG2 = getComputedStyle(document.documentElement).getPropertyValue('--text-accent').trim() || '#f0c75e';
+            const g1 = localStorage.getItem('gokulTextGrad1') || '#ffffff';
+            const g2 = localStorage.getItem('gokulTextGrad2') || defaultG2;
+            const sh = localStorage.getItem('gokulShadowColor') || '#000000';
+            
+            if (document.getElementById('text-grad-1')) document.getElementById('text-grad-1').value = g1;
+            if (document.getElementById('text-grad-2')) document.getElementById('text-grad-2').value = g2;
+            if (document.getElementById('shadow-color')) document.getElementById('shadow-color').value = sh;
+            
+            applyTextStyles(g1, g2, sh);
+        }
+
+        function resetTextStyles() {
+            const defaultG2 = getComputedStyle(document.documentElement).getPropertyValue('--text-accent').trim() || '#f0c75e';
+            document.getElementById('text-grad-1').value = '#ffffff';
+            document.getElementById('text-grad-2').value = defaultG2;
+            document.getElementById('shadow-color').value = '#000000';
+            saveTextStyles();
+            alert("3D Text Fades and Colors reset to Default!");
+        }
+
         // --- 0.5 PDF SETTINGS ENGINE ---
         function hexToRgb(hex) {
             var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [30, 41, 59]; // Default to dark slate
+            return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [30, 41, 59];
         }
 
         function savePdfSettings() {
@@ -1417,6 +1498,7 @@
             renderAppLogo(); // Initial load for App Logos
             
             try { loadPdfSettings(); } catch(e) {}
+            try { loadTextStyles(); } catch(e) {}
 
             // Apply Font Preference
             const savedFont = localStorage.getItem('gokulFontFamily') || 'default';
