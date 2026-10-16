@@ -199,10 +199,22 @@
             --border-highlight: rgba(255, 154, 158, 0.5);
         }
 
-        /* --- ✨ NORMALIZATIONS & GLOBAL ALIGNMENTS ✨ --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: var(--font-body); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        /* --- ✨ NORMALIZATIONS, GLOBAL ALIGNMENTS & 3D TEXT EFFECT ✨ --- */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-tap-highlight-color: transparent; 
+            font-family: var(--font-body); 
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale; 
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.6), 2px 2px 0px rgba(0,0,0,0.4), 3px 3px 4px rgba(0,0,0,0.5);
+        }
+        
+        img, svg, .font-glitch-loader { filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5)); text-shadow: none; }
         img { max-width: 100%; height: auto; transform: translateZ(0); }
         input, select, textarea, button { max-width: 100%; font-family: inherit; font-size: 16px !important; }
+        input, select, textarea { text-shadow: none !important; }
 
         html, body {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; overflow: hidden;
@@ -388,6 +400,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-family: var(--font-heading);
+            filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.8)) drop-shadow(2px 2px 0px rgba(0,0,0,0.6)) drop-shadow(3px 3px 4px rgba(0,0,0,0.5));
         }
 
         /* Prevent text-fill-color transparent from removing specific inline colors from span amounts */
@@ -1451,14 +1464,14 @@
 
             navTo('vault-dashboard'); // Ensure UI opens properly
 
-            // Premium Loading Screen Fade Out Delay
+            // Premium Loading Screen Fade Out Delay (1.5 seconds)
             setTimeout(() => {
                 const loader = document.getElementById('app-loading-screen');
                 if(loader) {
                     loader.style.opacity = '0';
                     setTimeout(() => loader.style.display = 'none', 400);
                 }
-            }, 5000);
+            }, 1500);
         });
 
         window.updateBgBlur = function(val) {
