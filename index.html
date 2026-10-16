@@ -217,28 +217,22 @@
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* --- RANDOM FONTS GLITCH LOADING ANIMATION --- */
-        @keyframes randomFontsBlink {
-            0%   { font-family: 'Playfair Display', serif; opacity: 1; letter-spacing: 4px; }
-            10%  { font-family: 'Space Mono', monospace; opacity: 0.4; letter-spacing: 2px; text-shadow: 0 0 15px var(--text-accent); }
-            20%  { font-family: 'Righteous', cursive; opacity: 1; letter-spacing: 5px; }
-            30%  { font-family: 'Cinzel', serif; opacity: 0.2; letter-spacing: 6px; }
-            40%  { font-family: 'Pacifico', cursive; opacity: 1; letter-spacing: 1px; }
-            50%  { font-family: 'Oswald', sans-serif; opacity: 0.5; letter-spacing: 3px; }
-            60%  { font-family: 'Montserrat', sans-serif; opacity: 1; letter-spacing: 4px; text-shadow: 0 0 10px #fff; }
-            70%  { font-family: 'Comfortaa', sans-serif; opacity: 0.3; letter-spacing: 5px; }
-            80%  { font-family: 'Josefin Sans', sans-serif; opacity: 1; letter-spacing: 2px; }
-            90%  { font-family: 'Quicksand', sans-serif; opacity: 0.6; letter-spacing: 4px; }
-            100% { font-family: 'Playfair Display', serif; opacity: 1; letter-spacing: 4px; }
+        /* --- SMOOTH & ELEGANT FONT GLOW LOADING ANIMATION --- */
+        @keyframes elegantFontShift {
+            0%   { font-family: 'Playfair Display', serif; opacity: 1; letter-spacing: 3px; }
+            25%  { font-family: 'Outfit', sans-serif; opacity: 0.8; letter-spacing: 5px; text-shadow: 0 0 15px var(--text-accent); }
+            50%  { font-family: 'Cinzel', serif; opacity: 1; letter-spacing: 4px; }
+            75%  { font-family: 'Montserrat', sans-serif; opacity: 0.8; letter-spacing: 5px; text-shadow: 0 0 15px var(--text-accent); }
+            100% { font-family: 'Playfair Display', serif; opacity: 1; letter-spacing: 3px; }
         }
         
         .font-glitch-loader {
-            font-size: 44px;
+            font-size: 38px;
             margin-bottom: 12px;
             background-image: linear-gradient(135deg, #ffffff 0%, var(--text-accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: randomFontsBlink 0.4s infinite;
+            animation: elegantFontShift 2s infinite ease-in-out;
             text-transform: uppercase;
             text-align: center;
         }
@@ -1287,7 +1281,7 @@
 
         function renderAppLogo() {
             const logoSrc = localStorage.getItem('gokulAppLogo') || '10276.png';
-            const logos = [document.getElementById('header-avatar-img'), document.getElementById('sidebar-avatar-img')]; // removed loading logo here since it's hidden
+            const logos = [document.getElementById('header-avatar-img'), document.getElementById('sidebar-avatar-img')]; 
             logos.forEach(img => {
                 if(img) img.src = logoSrc;
             });
@@ -2842,4 +2836,165 @@
             doc.text(`Days pre : ${days}`, 16, 58); doc.text(`PH : 0`, 50, 58); doc.text(`EL : 0`, 70, 58); doc.text(`ELB : 0`, 95, 58); doc.text(`O.ALL : 0`, 115, 58); doc.text(`P days : ${days}`, 145, 58); doc.text(`LOP : 0`, 175, 58);
 
             doc.setFont("helvetica", "bold"); doc.setTextColor(pColor[0], pColor[1], pColor[2]); doc.text("EARNINGS", 55, 68, { align: "center" }); doc.text("DEDUCTIONS", 145, 68, { align: "center" });
-            doc.line(14, 72, 19
+            doc.line(14, 72, 196, 72); doc.line(105, 62, 105, 183);
+
+            doc.setTextColor(0, 0, 0); doc.setFont("helvetica", "normal");
+            let y = 80; const gap = 8; const leftX = 16, valLeftX = 98, rightX = 108, valRightX = 190;
+            doc.text("Basic", leftX, y); doc.text(basic.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("HRA", leftX, y); doc.text(hra.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("EDA/O.ALL", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("OT", leftX, y); doc.text(otPay.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
+            doc.text("Misc. Ear 1", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("Misc. 2", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
+            doc.text("OTHER", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" });
+
+            y = 80;
+            doc.text("EPF", rightX, y); doc.text(totalEpf.toFixed(2), valRightX, y, { align: "right" }); y += gap;
+            doc.text("ESI", rightX, y); doc.text(totalEsic.toFixed(2), valRightX, y, { align: "right" }); y += gap;
+            doc.text("PT", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("Loan", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("Adv.", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
+            doc.text("TDS", rightX, y); doc.text("0.00", valRightX, y, { align: "right" });
+
+            doc.line(14, 160, 196, 160); doc.line(105, 170, 196, 170);
+            
+            doc.setFont("helvetica", "bold");
+            doc.text("Gross", leftX, 167); doc.text(totalGross.toFixed(2), valLeftX, 167, { align: "right" });
+            doc.text("Tot Ded", rightX, 167); doc.text(totalDed.toFixed(2), valRightX, 167, { align: "right" });
+            doc.text("Net Pay", rightX, 177); doc.text((totalGross - totalDed).toFixed(2), valRightX, 177, { align: "right" });
+
+            doc.save(`Payslip_${monthName.replace(' ', '_')}.pdf`);
+        }
+
+        function downloadTimesheet() {
+            if (shifts.length === 0) return alert("No shifts to export!");
+            
+            const brandName = localStorage.getItem('gokulPdfBrand') || 'GOKUL HUB INC.';
+            const primaryColor = hexToRgb(localStorage.getItem('gokulPdfPrimary') || '#1e293b');
+            const accentColor = hexToRgb(localStorage.getItem('gokulPdfAccent') || '#d4af37');
+            
+            const { jsPDF } = window.jspdf; 
+            
+            // Dynamic page height calculations to fit all shifts in a single continuous page
+            const pageHeight = Math.max(297, 140 + (shifts.length * 10));
+            const doc = new jsPDF('p', 'mm', [210, pageHeight]);
+            
+            const darkText = [40, 40, 40], lightText = [100, 100, 100];
+
+            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.rect(0, 0, 210, 40, 'F');
+            doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.setFont("helvetica", "bold");
+            try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 10, 20, 20); } catch(e) {}
+
+            const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14;
+            doc.text(brandName, textStartX, 20); doc.setFontSize(12); doc.setFont("helvetica", "normal"); doc.text("OFFICIAL TIMESHEET & SALARY REPORT", textStartX, 30);
+            
+            const now = new Date(); doc.setFontSize(10); doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
+            doc.setTextColor(darkText[0], darkText[1], darkText[2]); doc.setFontSize(12); doc.setFont("helvetica", "bold"); doc.text("EMPLOYEE DETAILS", 14, 50);
+            doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.text(`Name: ${profile.name}`, 14, 58); doc.text(`ID: ${profile.idStr}`, 14, 64); doc.text(`Role: ${profile.role}`, 14, 70);
+            
+            let totalPay = 0, totalHrs = 0, totalOT = 0;
+            shifts.forEach(s => { 
+                totalPay += (Number(s.grossEarned) || Number(s.totalEarned) || 0); 
+                totalHrs += (Number(s.net) || 0); 
+                totalOT += (Number(s.otHours) || 0); 
+            });
+
+            doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.setLineWidth(0.5); doc.roundedRect(120, 45, 75, 38, 3, 3, 'S');
+            doc.setFont("helvetica", "bold"); doc.text("SUMMARY", 125, 52); doc.setFont("helvetica", "normal");
+            doc.text(`Total Days: ${shifts.length}`, 125, 60); doc.text(`Reg Hours: ${totalHrs.toFixed(1)}h`, 125, 66); doc.text(`OT Hours: ${totalOT.toFixed(1)}h`, 125, 72);
+            doc.setFont("helvetica", "bold"); doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]); doc.text(`Gross Salary: INR ${totalPay.toFixed(2)}`, 125, 78);
+
+            doc.setTextColor(darkText[0], darkText[1], darkText[2]);
+            const tableColumn = ["Date", "Job Title", "Timing", "Reg (Hrs)", "OT (Hrs)", "Earned (INR)"];
+            const tableRows = shifts.map(s => [
+                s.date || '', 
+                s.jobType || 'Job', 
+                s.timing || `${s.inTime || ''} - ${s.outTime || ''}`, 
+                ((Number(s.net)||0) - (Number(s.otHours)||0)).toFixed(1), 
+                (Number(s.otHours)||0).toFixed(1), 
+                `Rs. ${(Number(s.grossEarned) || Number(s.totalEarned) || 0).toFixed(2)}`
+            ]);
+
+            doc.autoTable({ 
+                startY: 95, 
+                head: [tableColumn], 
+                body: tableRows, 
+                theme: 'striped', 
+                headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' }, 
+                bodyStyles: { textColor: darkText, halign: 'center' }, 
+                alternateRowStyles: { fillColor: [240, 244, 248] }, 
+                styles: { font: 'helvetica', fontSize: 10, cellPadding: 6 }, 
+                columnStyles: { 1: { halign: 'left' }, 5: { fontStyle: 'bold', textColor: [22, 163, 74] } }, 
+                margin: { top: 10, right: 14, bottom: 20, left: 14 } 
+            });
+
+            const finalY = doc.lastAutoTable.finalY || 95;
+            doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30); doc.setLineWidth(0.5); doc.line(14, finalY + 25, 70, finalY + 25);
+            doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(lightText[0], lightText[1], lightText[2]); doc.text(`System Generated Report - ${brandName}`, 14, finalY + 45);
+
+            doc.save(`Gokul_Timesheet_Report_${now.getTime()}.pdf`);
+        }
+
+        // --- 9. PREMIUM THEMES ---
+        const themeOpts = [
+            { id: 'jarvis', name: '🤖 J.A.R.V.I.S.' }, { id: 'rajput', name: '👑 Royal Rajput' }, { id: 'peacock', name: '🦚 Peacock Emerald' }, 
+            { id: 'saffron', name: '🕉️ Varanasi Saffron' }, { id: 'mughal', name: '🕌 Mughal Magenta' }, { id: 'maratha', name: '⚔️ Maratha Navy' }, 
+            { id: 'chola', name: '🏛️ Chola Bronze' }, { id: 'sapphire', name: '💎 Sapphire Ocean' }, { id: 'amethyst', name: '🔮 Amethyst Lotus' }, 
+            { id: 'jade', name: '🌿 Jade Forest' }, { id: 'ruby', name: '🌹 Crimson Ruby' }, { id: 'gold', name: '✨ Golden Temple' }, 
+            { id: 'slate', name: '⛰️ Himalayan Slate' }, { id: 'desert', name: '🐪 Thar Desert' }, { id: 'sunset', name: '🌅 Sunset Orange' }, 
+            { id: 'lavender', name: '🪻 Kashmiri Lavender' }, { id: 'platinum', name: '💍 Platinum Pearl' }, { id: 'obsidian', name: '🌑 Obsidian Gold' }, { id: 'light', name: '☀️ Classic Light' },
+            { id: 'aesthetic', name: '🌸 Soft Aesthetic' }
+        ];
+
+        function renderThemeGallery() {
+            const gallery = document.getElementById('theme-gallery');
+            if(gallery) {
+                gallery.innerHTML = themeOpts.map(th => `<div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyTheme('${th.id}'); document.getElementById('auto-theme-toggle').checked = false; toggleAutoTheme();"><div style="font-weight: 800; font-size: 13px;">${th.name}</div></div>`).join('');
+            }
+        }
+        
+        function applyTheme(id) { 
+            document.documentElement.setAttribute('data-theme', id); 
+            localStorage.setItem('gokulTheme', id); 
+            
+            const icon = document.getElementById('mode-icon');
+            if(icon) {
+                if(id === 'light' || id === 'platinum') {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                } else {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+            }
+        }
+
+        // --- 10. DATA EXPORT / IMPORT ---
+        function exportData() {
+            const data = { profile: JSON.parse(localStorage.getItem('gokulProfile')), vaultTx: JSON.parse(localStorage.getItem('gokulVaultTx')), attRecords: JSON.parse(localStorage.getItem('gokulAttRecords')), petrolRecords: JSON.parse(localStorage.getItem('gokulPetrolRecords')), emiRegistry: JSON.parse(localStorage.getItem('gokulEmiRegistry')) };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+            const downloadAnchorNode = document.createElement('a'); downloadAnchorNode.setAttribute("href", dataStr); downloadAnchorNode.setAttribute("download", "GokulHub_Backup.json");
+            document.body.appendChild(downloadAnchorNode); downloadAnchorNode.click(); downloadAnchorNode.remove();
+        }
+
+        function importData() {
+            const file = document.getElementById('import-file').files[0];
+            if (!file) return alert("Select .json file.");
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if(data.profile) localStorage.setItem('gokulProfile', JSON.stringify(data.profile));
+                    if(data.vaultTx) localStorage.setItem('gokulVaultTx', JSON.stringify(data.vaultTx));
+                    if(data.attRecords) localStorage.setItem('gokulAttRecords', JSON.stringify(data.attRecords));
+                    if(data.petrolRecords) localStorage.setItem('gokulPetrolRecords', JSON.stringify(data.petrolRecords));
+                    if(data.emiRegistry) localStorage.setItem('gokulEmiRegistry', JSON.stringify(data.emiRegistry));
+                    alert("Backup Restored! Refreshing..."); window.location.reload();
+                } catch(err) { alert("Invalid file!"); }
+            }
+            reader.readAsText(file);
+        }
+
+    </script>
+</body>
+</html>
