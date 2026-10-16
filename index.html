@@ -17,7 +17,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- PREMIUM FONTS ADDED -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:ital,wght@0,500;0,700&family=Outfit:wght@400;600;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -29,6 +30,10 @@
             --glass-alpha: 0.75;
             --card-alpha: 0.75;
             --bg-blur: 12px;
+            
+            /* Typography Variables */
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
 
             /* Base Variables */
             --bg-app: rgba(4, 9, 20, var(--glass-alpha));
@@ -47,6 +52,20 @@
 
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        /* --- FONT PRESETS --- */
+        [data-font="modern"] {
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Outfit', sans-serif;
+        }
+        [data-font="classic"] {
+            --font-heading: 'Lora', serif;
+            --font-body: 'Inter', sans-serif;
+        }
+        [data-font="minimal"] {
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Poppins', sans-serif;
         }
 
         /* --- 👑 ULTRA PREMIUM MULTI-FADE THEMES --- */
@@ -177,7 +196,7 @@
         }
 
         /* --- ✨ NORMALIZATIONS & GLOBAL ALIGNMENTS ✨ --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; font-family: var(--font-body); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         img { max-width: 100%; height: auto; transform: translateZ(0); }
         input, select, textarea, button { max-width: 100%; font-family: inherit; font-size: 16px !important; }
 
@@ -200,13 +219,13 @@
         .mobile-header { display: none; position: fixed; top: 0; left: 0; width: 100%; height: calc(65px + var(--safe-top)); padding-top: var(--safe-top); background: linear-gradient(180deg, var(--bg-sidebar) 0%, rgba(0,0,0,0) 100%); border-bottom: 1px solid var(--border-highlight); z-index: 100; align-items: center; justify-content: space-between; padding-left: 20px; padding-right: 20px; backdrop-filter: blur(20px); transform: translateZ(0); }
         
         /* 👑 Royal Typography Application */
-        .mobile-header .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 20px; color: var(--text-main); font-family: 'Playfair Display', serif; letter-spacing: 1px; }
+        .mobile-header .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 20px; color: var(--text-main); font-family: var(--font-heading); letter-spacing: 1px; }
         .mobile-header .brand img { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--text-accent); object-fit: cover; }
 
         .sidebar { width: 260px; background: linear-gradient(180deg, var(--bg-sidebar), rgba(0,0,0,0.5)); border-right: 1px solid var(--border-highlight); display: flex; flex-direction: column; justify-content: space-between; padding: 24px 20px; flex-shrink: 0; z-index: 10; backdrop-filter: blur(20px); transform: translateZ(0); }
         .sidebar-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
         .sidebar-brand img { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--text-accent); object-fit: cover; }
-        .sidebar-brand-text { font-weight: 800; font-size: 22px; color: var(--text-main); letter-spacing: 1.5px; font-family: 'Playfair Display', serif; }
+        .sidebar-brand-text { font-weight: 800; font-size: 22px; color: var(--text-main); letter-spacing: 1.5px; font-family: var(--font-heading); }
 
         .nav-list { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex: 1; will-change: scroll-position; padding-right: 5px; }
         
@@ -222,7 +241,7 @@
         .view-panel.active { display: flex; animation: panelFade 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
         @keyframes panelFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
-        .panel-heading { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 800; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 14px; margin-bottom: 24px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); letter-spacing: 1px; }
+        .panel-heading { font-family: var(--font-heading); font-size: 28px; font-weight: 800; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding-bottom: 14px; margin-bottom: 24px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); letter-spacing: 1px; }
 
         /* Vault Layout Alignments */
         #vault-dashboard-panel { flex-direction: row; padding: 0; width: 100%; height: 100%; gap: 0; }
@@ -252,7 +271,7 @@
         .att-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; margin-bottom: 28px; }
         .att-stat-card { border-radius: 18px; padding: 20px 10px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
         .att-stat-card i { font-size: 24px; margin-bottom: 4px; text-shadow: 0 2px 6px rgba(0,0,0,0.5); }
-        .att-stat-card .val { font-size: 24px; font-weight: 800; color: var(--text-main); font-family: 'Playfair Display', serif; }
+        .att-stat-card .val { font-size: 24px; font-weight: 800; color: var(--text-main); font-family: var(--font-heading); }
         .att-stat-card .lbl { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
 
         /* Elegant Tables */
@@ -344,7 +363,7 @@
             background-image: linear-gradient(135deg, #ffffff 0%, var(--text-accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-heading);
         }
 
         /* Prevent text-fill-color transparent from removing specific inline colors from span amounts */
@@ -377,7 +396,7 @@
     <!-- APP LOADING SCREEN -->
     <div id="app-loading-screen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: var(--bg-app); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); transition: opacity 0.4s ease; color: var(--text-main); transform: translateZ(0);">
         <img id="loading-logo-img" src="10276.png" style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--text-accent); margin-bottom: 24px; animation: loadingPulse 2s infinite ease-in-out; object-fit: cover; transform: translateZ(0);">
-        <h2 style="font-family: 'Playfair Display', serif; letter-spacing: 4px; font-size: 32px; margin-bottom: 12px; background-image: linear-gradient(135deg, #ffffff 0%, var(--text-accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">GOKUL HUB</h2>
+        <h2 style="font-family: var(--font-heading); letter-spacing: 4px; font-size: 32px; margin-bottom: 12px; background-image: linear-gradient(135deg, #ffffff 0%, var(--text-accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">GOKUL HUB</h2>
         <div style="font-size: 15px; color: var(--text-accent); font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">Premium Experience</div>
     </div>
 
@@ -441,7 +460,7 @@
 
                         <div class="total-box">
                             <div style="font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px;">Total Balance</div>
-                            <div style="font-size: 44px; font-weight: 900; margin: 12px 0 16px 0; font-family: 'Playfair Display', serif;" id="total-balance">₹0.00</div>
+                            <div style="font-size: 44px; font-weight: 900; margin: 12px 0 16px 0; font-family: var(--font-heading);" id="total-balance">₹0.00</div>
                             <div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: 800;">
                                 <span style="color: var(--success);" id="total-in">+₹0.00</span>
                                 <span style="color: var(--danger);" id="total-out">-₹0.00</span>
@@ -451,7 +470,7 @@
                         <!-- CASHBACK WALLET -->
                         <div class="total-box" style="margin-top: 0px; background: rgba(0,0,0,0.4); border: 1px solid var(--text-accent);">
                             <div style="font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 8px;">🎁 Cashback Wallet</div>
-                            <div style="font-size: 36px; font-weight: 900; margin: 12px 0 20px 0; color: var(--text-main); font-family: 'Playfair Display', serif;" id="cashback-balance">₹0.00</div>
+                            <div style="font-size: 36px; font-weight: 900; margin: 12px 0 20px 0; color: var(--text-main); font-family: var(--font-heading);" id="cashback-balance">₹0.00</div>
                             <button class="btn btn-primary" style="padding: 14px; font-size: 15px; border-radius: 12px; border: 1px solid var(--text-accent); color: var(--text-main); background: transparent; box-shadow: none !important;" onclick="redeemCashback()"><i class="fas fa-exchange-alt"></i> Redeem to Vault</button>
                         </div>
                     </div>
@@ -481,11 +500,11 @@
                             <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 14px; border: 1px solid var(--border-highlight);">
                                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 14px;">
                                     <span style="font-size: 13px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Litres Filled Today</span>
-                                    <span id="petrol-litre-display" style="font-size: 26px; font-weight: 900; color: var(--text-main); font-family: 'Playfair Display', serif;">0.00 L</span>
+                                    <span id="petrol-litre-display" style="font-size: 26px; font-weight: 900; color: var(--text-main); font-family: var(--font-heading);">0.00 L</span>
                                 </div>
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
                                     <span style="font-size: 13px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Last Fill Mileage Result</span>
-                                    <span id="petrol-mileage-display" style="font-size: 24px; font-weight: 900; color: var(--text-accent); font-family: 'Playfair Display', serif;">-- km/l</span>
+                                    <span id="petrol-mileage-display" style="font-size: 24px; font-weight: 900; color: var(--text-accent); font-family: var(--font-heading);">-- km/l</span>
                                 </div>
                             </div>
                             
@@ -585,7 +604,7 @@
                 
                 <div class="form-card" style="margin-bottom: 30px;">
                     <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;">
-                        <h3 style="color: var(--text-main); font-size: 22px; font-family: 'Playfair Display', serif;"><i class="fas fa-stopwatch"></i> Live Punching System</h3>
+                        <h3 style="color: var(--text-main); font-size: 22px; font-family: var(--font-heading);"><i class="fas fa-stopwatch"></i> Live Punching System</h3>
                     </div>
                     
                     <!-- PUNCH IN VIEW -->
@@ -620,7 +639,7 @@
                     <!-- PUNCH OUT VIEW -->
                     <div id="punch-out-view" style="display: none; text-align: center; padding: 14px 0;">
                         <div style="font-size: 15px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Currently On Duty</div>
-                        <div id="active-shift-job" style="font-size: 32px; color: var(--text-main); font-weight: 900; margin: 14px 0; font-family: 'Playfair Display', serif;">Job Name</div>
+                        <div id="active-shift-job" style="font-size: 32px; color: var(--text-main); font-weight: 900; margin: 14px 0; font-family: var(--font-heading);">Job Name</div>
                         
                         <div style="background: rgba(0,0,0,0.4); padding: 16px; border-radius: 14px; border: 1px solid var(--border-highlight); margin-bottom: 24px;">
                             <span style="color: var(--text-accent); font-weight: 800; font-size: 18px;"><i class="fas fa-clock"></i> Punched In: <span id="active-shift-time" style="color: #fff;">00:00</span></span>
@@ -634,7 +653,7 @@
                 <!-- MANUAL SHIFT LOG -->
                 <div id="manual-shift-view" class="form-card" style="display: none; margin-bottom: 30px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
-                        <h3 style="color: var(--text-main); font-size: 20px; font-family: 'Playfair Display', serif;"><i class="fas fa-history"></i> Manual Entry</h3>
+                        <h3 style="color: var(--text-main); font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-history"></i> Manual Entry</h3>
                         <button class="btn btn-danger" style="width: auto; padding: 8px 14px; font-size: 13px;" onclick="toggleManualShift()">Close</button>
                     </div>
 
@@ -665,7 +684,7 @@
                 </div>
 
                 <div class="form-card" style="margin-bottom: 28px;">
-                    <h3 style="color: var(--text-main); font-size: 20px; font-family: 'Playfair Display', serif;"><i class="fas fa-file-invoice"></i> Monthly Deductions (EPF & ESIC)</h3>
+                    <h3 style="color: var(--text-main); font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-file-invoice"></i> Monthly Deductions (EPF & ESIC)</h3>
                     <div style="display: flex; flex-direction: column; gap: 16px; width: 100%; margin-top: 10px;">
                         <div class="input-group">
                             <label>EPF (₹ / Month)</label>
@@ -696,7 +715,7 @@
 
                 <!-- Add New EMI Form -->
                 <div class="emi-card">
-                    <h3 style="color: var(--text-main); font-size: 18px; margin-bottom: 12px; font-family: 'Playfair Display', serif;"><i class="fas fa-plus-circle"></i> Register New EMI</h3>
+                    <h3 style="color: var(--text-main); font-size: 18px; margin-bottom: 12px; font-family: var(--font-heading);"><i class="fas fa-plus-circle"></i> Register New EMI</h3>
                     <div style="display: flex; gap: 20px; width: 100%; margin-bottom: 18px; flex-wrap: wrap;">
                         <div class="input-group" style="flex: 1; min-width: 100%;">
                             <label>Loan Name / Item (e.g. iPhone 15)</label>
@@ -731,15 +750,15 @@
                     <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 14px; border: 1px solid var(--border-highlight);">
                         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 14px;">
                             <span style="font-size: 13px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">EMI / Month</span>
-                            <span id="reg-live-emi" style="font-size: 26px; font-weight: 900; color: var(--text-accent); font-family: 'Playfair Display', serif;">₹0.00</span>
+                            <span id="reg-live-emi" style="font-size: 26px; font-weight: 900; color: var(--text-accent); font-family: var(--font-heading);">₹0.00</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 14px;">
                             <span style="font-size: 13px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Total Interest</span>
-                            <span id="reg-live-int" style="font-size: 26px; font-weight: 900; color: var(--danger); font-family: 'Playfair Display', serif;">₹0.00</span>
+                            <span id="reg-live-int" style="font-size: 26px; font-weight: 900; color: var(--danger); font-family: var(--font-heading);">₹0.00</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span style="font-size: 13px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Total Payable</span>
-                            <span id="reg-live-total" style="font-size: 28px; font-weight: 900; color: var(--text-main); font-family: 'Playfair Display', serif;">₹0.00</span>
+                            <span id="reg-live-total" style="font-size: 28px; font-weight: 900; color: var(--text-main); font-family: var(--font-heading);">₹0.00</span>
                         </div>
                     </div>
 
@@ -790,9 +809,30 @@
             <section id="settings-view" class="view-panel">
                 <div class="panel-heading"><span>Settings & Themes</span></div>
 
+                <!-- Typography & Fonts Option -->
+                <div class="form-card" style="margin-bottom: 28px;">
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-font"></i> Typography & Fonts</h3>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5;">Choose a premium font style for the entire application.</p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 12px;" id="font-gallery">
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('default')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Playfair Display', serif;">Royal Default</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('modern')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Outfit', sans-serif;">Modern Tech</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('classic')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Lora', serif;">Classic Elegant</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('minimal')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Poppins', sans-serif;">Clean Minimal</div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- App Fullscreen / PWA toggle -->
                 <div class="form-card" style="margin-bottom: 28px;">
-                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: 'Playfair Display', serif;"><i class="fas fa-expand"></i> Full-Screen Experience</h3>
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-expand"></i> Full-Screen Experience</h3>
                     <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5;">For the best experience, add this site to your Home Screen. It will automatically run in full screen.</p>
                     <div class="input-group">
                         <label style="display:flex; align-items:center; gap:12px; font-weight:800; color:var(--text-accent);">
@@ -805,7 +845,7 @@
 
                 <!-- Glass UI Transparency Options -->
                 <div class="form-card" style="margin-bottom: 28px;">
-                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: 'Playfair Display', serif;"><i class="fas fa-sliders-h"></i> UI Transparency Control</h3>
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-sliders-h"></i> UI Transparency Control</h3>
                     
                     <div style="font-weight: 800; font-size: 14px; color: var(--text-main); margin-bottom: 10px;">Background Blur (Image Clarity)</div>
                     <input type="range" id="blur-slider" min="0" max="25" step="1" value="12" oninput="updateBgBlur(this.value)" style="width: 100%; margin-bottom: 24px;">
@@ -819,7 +859,7 @@
                 </div>
 
                 <div class="form-card" style="margin-bottom: 28px;">
-                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: 'Playfair Display', serif;"><i class="fas fa-calendar-check"></i> Scheduled Auto-Download</h3>
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-calendar-check"></i> Scheduled Auto-Download</h3>
                     <div class="input-group">
                         <label style="display:flex; align-items:center; gap:12px; font-weight:800; color:var(--text-accent);">
                             <input type="checkbox" id="auto-pdf-toggle" style="width:24px;height:24px;" onchange="toggleAutoPdf()">
@@ -831,7 +871,7 @@
                 </div>
 
                 <div class="form-card" style="margin-bottom: 28px;">
-                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: 'Playfair Display', serif;"><i class="fas fa-gem"></i> App & Loading Logo</h3>
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-gem"></i> App & Loading Logo</h3>
                     <div class="input-group">
                         <label style="font-size: 14px; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 10px;">Upload Custom App Logo (Auto-Compress Supported)</label>
                         <input type="file" accept="image/*" style="font-size: 15px; color: var(--text-muted); width: 100%; margin-bottom: 14px; padding: 10px; background: rgba(0,0,0,0.4); border-radius: 10px; border: 1px dashed var(--border-highlight);" onchange="setAppLogo(this)">
@@ -840,13 +880,13 @@
                 </div>
 
                 <div class="form-card" style="margin-bottom: 28px;">
-                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: 'Playfair Display', serif;"><i class="fas fa-trash-restore"></i> Reset Data</h3>
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-trash-restore"></i> Reset Data</h3>
                     <button class="btn btn-danger" style="width: 100%; padding: 18px; font-size: 15px;" onclick="resetVaultOnly()"><i class="fas fa-coins"></i> Reset Vault Dashboard Only</button>
                     <p style="font-size: 13px; color: var(--text-muted); margin-top: 14px; line-height: 1.5;">This will delete only your vault balance and transactions. Work shifts will remain safe.</p>
                 </div>
                 
                 <div class="form-card" style="margin-bottom: 28px;">
-                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: 'Playfair Display', serif;"><i class="fas fa-magic"></i> Automatic Smart Theme</h3>
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-magic"></i> Automatic Smart Theme</h3>
                     <div class="input-group">
                         <label style="display:flex; align-items:center; gap:12px; font-weight:800; color:var(--text-accent);">
                             <input type="checkbox" id="auto-theme-toggle" style="width:24px;height:24px;" onchange="toggleAutoTheme()">
@@ -856,13 +896,13 @@
                     </div>
                 </div>
 
-                <h3 style="color: var(--text-main); margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 14px; font-size: 24px; font-family: 'Playfair Display', serif;">Manual Premium Themes</h3>
+                <h3 style="color: var(--text-main); margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 14px; font-size: 24px; font-family: var(--font-heading);">Manual Premium Themes</h3>
                 
                 <!-- THEME GALLERY -->
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 16px; margin-bottom: 35px;" id="theme-gallery"></div>
 
                 <div class="form-card" style="margin-bottom: 28px;">
-                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: 'Playfair Display', serif;"><i class="fas fa-image"></i> Custom Background Wallpaper</h3>
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-image"></i> Custom Background Wallpaper</h3>
                     <div class="input-group">
                         <label style="font-size: 14px; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 10px;">Upload Photo (Auto-Compress Supported)</label>
                         <input type="file" accept="image/*" style="font-size: 15px; color: var(--text-muted); width: 100%; margin-bottom: 14px; padding: 10px; background: rgba(0,0,0,0.4); border-radius: 10px; border: 1px dashed var(--border-highlight);" onchange="setCustomWallpaper(this)">
@@ -878,7 +918,7 @@
                 </div>
 
                 <div class="form-card" style="margin-bottom: 28px;">
-                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: 'Playfair Display', serif;"><i class="fas fa-database"></i> Backup & Restore</h3>
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-database"></i> Backup & Restore</h3>
                     <div class="btn-flex-row">
                         <button class="btn btn-primary" style="padding: 18px; font-size: 15px;" onclick="exportData()"><i class="fas fa-file-export"></i> Backup Vault Data (.json)</button>
                     </div>
@@ -896,7 +936,7 @@
     <!-- MODAL: PROFILE -->
     <div class="modal-mask" id="profileModal">
         <div class="modal-sheet">
-            <h3 style="color: var(--text-main); text-align: center; font-size: 24px; margin-bottom: 14px; font-family: 'Playfair Display', serif;">Edit Profile</h3>
+            <h3 style="color: var(--text-main); text-align: center; font-size: 24px; margin-bottom: 14px; font-family: var(--font-heading);">Edit Profile</h3>
             <div class="input-group"><label>Name</label><input type="text" id="m-prof-name" class="form-control"></div>
             <div class="input-group"><label>Job Title</label><input type="text" id="m-prof-role" class="form-control"></div>
             <div style="display: flex; gap: 16px;">
@@ -918,7 +958,7 @@
     <!-- MODAL: JOBS -->
     <div class="modal-mask" id="jobModal">
         <div class="modal-sheet">
-            <h3 style="color: var(--text-main); text-align: center; font-size: 24px; font-family: 'Playfair Display', serif;">Job Profiles</h3>
+            <h3 style="color: var(--text-main); text-align: center; font-size: 24px; font-family: var(--font-heading);">Job Profiles</h3>
             <div style="display: flex; gap: 14px; width: 100%;">
                 <input type="text" id="new-job-input" class="form-control" style="flex:1;" placeholder="New Job Name">
                 <button class="btn btn-success" style="width: auto; padding: 0 24px;" onclick="createJobProfile()"><i class="fas fa-plus"></i></button>
@@ -931,7 +971,7 @@
     <!-- MODAL: MENU -->
     <div class="modal-mask" id="menuSheetModal">
         <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom)); border-radius: 24px 24px 0 0;">
-            <div style="font-weight: 900; font-size: 20px; text-align: center; border-bottom: 1px solid var(--border-highlight); padding-bottom: 18px; margin-bottom: 16px; font-family: 'Playfair Display', serif;">App Menu</div>
+            <div style="font-weight: 900; font-size: 20px; text-align: center; border-bottom: 1px solid var(--border-highlight); padding-bottom: 18px; margin-bottom: 16px; font-family: var(--font-heading);">App Menu</div>
             <button class="btn btn-primary" onclick="openProfileModal(); closeModal('menuSheetModal')"><i class="fas fa-user-edit"></i> Edit Profile</button>
             <button class="btn btn-danger" style="margin-top: 12px;" onclick="resetVaultOnly(); closeModal('menuSheetModal')"><i class="fas fa-trash-restore"></i> Reset Vault Only</button>
             <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important; margin-top: 12px;" onclick="closeModal('menuSheetModal')">Close</button>
@@ -941,7 +981,7 @@
     <!-- MODAL: EDIT VAULT TX -->
     <div class="modal-mask" id="editTxModal">
         <div class="modal-sheet">
-            <h3 style="color: var(--text-main); text-align: center; font-size: 22px; margin-bottom: 12px; font-family: 'Playfair Display', serif;">Edit Transaction</h3>
+            <h3 style="color: var(--text-main); text-align: center; font-size: 22px; margin-bottom: 12px; font-family: var(--font-heading);">Edit Transaction</h3>
             <div class="input-group"><label>Date</label><input type="text" id="edit-tx-date" class="form-control"></div>
             <div class="input-group"><label>Note / Category</label><input type="text" id="edit-tx-note" class="form-control"></div>
             <div style="display: flex; gap: 16px;">
@@ -964,7 +1004,7 @@
     <!-- MODAL: EDIT SHIFT -->
     <div class="modal-mask" id="editShiftModal">
         <div class="modal-sheet">
-            <h3 style="color: var(--text-main); text-align: center; font-size: 22px; margin-bottom: 12px; font-family: 'Playfair Display', serif;">Edit Shift</h3>
+            <h3 style="color: var(--text-main); text-align: center; font-size: 22px; margin-bottom: 12px; font-family: var(--font-heading);">Edit Shift</h3>
             <div class="input-group"><label>Date</label><input type="text" id="edit-shift-date" class="form-control"></div>
             <div class="input-group"><label>Job / Title</label><input type="text" id="edit-shift-job" class="form-control"></div>
             <div style="display: flex; gap: 16px;">
@@ -982,7 +1022,7 @@
     <!-- MODAL: EDIT PETROL -->
     <div class="modal-mask" id="editPetrolModal">
         <div class="modal-sheet">
-            <h3 style="color: var(--text-main); text-align: center; font-size: 22px; margin-bottom: 12px; font-family: 'Playfair Display', serif;">Edit Petrol Record</h3>
+            <h3 style="color: var(--text-main); text-align: center; font-size: 22px; margin-bottom: 12px; font-family: var(--font-heading);">Edit Petrol Record</h3>
             <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 18px; line-height: 1.4;">Updating will auto-recalculate mileage for related records.</p>
             <div class="input-group"><label>Date</label><input type="text" id="edit-petrol-date" class="form-control"></div>
             <div style="display: flex; gap: 16px;">
@@ -1001,7 +1041,7 @@
     <!-- MODAL: EDIT EMI -->
     <div class="modal-mask" id="editEmiModal">
         <div class="modal-sheet">
-            <h3 style="color: var(--text-main); text-align: center; font-size: 22px; margin-bottom: 12px; font-family: 'Playfair Display', serif;">Edit Loan Details</h3>
+            <h3 style="color: var(--text-main); text-align: center; font-size: 22px; margin-bottom: 12px; font-family: var(--font-heading);">Edit Loan Details</h3>
             <div class="input-group"><label>Loan Name</label><input type="text" id="edit-emi-name" class="form-control"></div>
             <div style="display: flex; gap: 16px;">
                 <div class="input-group"><label>Principal (₹)</label><input type="number" id="edit-emi-p" class="form-control"></div>
@@ -1115,6 +1155,12 @@
             }
         }
 
+        // --- FONT TOGGLE ENGINE ---
+        function applyFont(fontId) {
+            document.documentElement.setAttribute('data-font', fontId);
+            localStorage.setItem('gokulFontFamily', fontId);
+        }
+
         // --- 1. BOOT SEQUENCE & APP LOGO LOGIC ---
         let activeShift = JSON.parse(localStorage.getItem('gokulActiveShift')) || null;
         let cashbackBalance = parseFloat(localStorage.getItem('gokulCashbackBal')) || 0;
@@ -1198,6 +1244,10 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             renderAppLogo(); // Initial load for App Logos
+
+            // Apply Font Preference
+            const savedFont = localStorage.getItem('gokulFontFamily') || 'default';
+            applyFont(savedFont);
 
             // Full Screen init toggle state
             if(document.getElementById('fullscreen-toggle')) {
@@ -2054,7 +2104,7 @@
                 html += `
                 <div class="emi-card" style="padding: 24px; position: relative;">
                     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-highlight); padding-bottom: 12px; margin-bottom: 18px;">
-                        <div style="font-size: 20px; font-weight: 800; color: var(--text-main); font-family: 'Playfair Display', serif;">${loan.name}</div>
+                        <div style="font-size: 20px; font-weight: 800; color: var(--text-main); font-family: var(--font-heading);">${loan.name}</div>
                         <div style="display: flex; gap: 12px;">
                             <button style="background:transparent; border:none; color: var(--text-accent); font-size: 18px; cursor: pointer;" onclick="openEditEmiModal(${loan.id})"><i class="fas fa-edit"></i></button>
                             <button style="background:transparent; border:none; color: var(--danger); font-size: 18px; cursor: pointer;" onclick="deleteEmi(${loan.id})"><i class="fas fa-trash"></i></button>
