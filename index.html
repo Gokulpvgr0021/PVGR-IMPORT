@@ -17,7 +17,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- MEGA PREMIUM FONTS BUNDLE -->
+    <!-- MEGA PREMIUM FONTS BUNDLE ADDED -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Comfortaa:wght@400;700&family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;600;700&family=Josefin+Sans:wght@400;700&family=Lato:wght@400;700&family=Lora:ital,wght@0,500;0,700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700&family=Nunito:wght@400;700&family=Open+Sans:wght@400;600&family=Oswald:wght@500;700&family=Outfit:wght@400;600;800&family=Pacifico&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;600;800&family=Quicksand:wght@500;700&family=Righteous&family=Roboto:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -204,7 +204,7 @@
             --border-highlight: rgba(255, 154, 158, 0.5);
         }
 
-        /* --- ✨ NORMALIZATIONS & GLOBAL ALIGNMENTS --- */
+        /* --- ✨ NORMALIZATIONS, GLOBAL ALIGNMENTS --- */
         * { 
             box-sizing: border-box; 
             margin: 0; 
@@ -246,26 +246,6 @@
         }
 
         @keyframes ambientGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-
-        /* --- SMOOTH & ELEGANT FONT GLOW LOADING ANIMATION --- */
-        @keyframes elegantFontShift {
-            0%   { font-family: 'Playfair Display', serif; opacity: 1; letter-spacing: 3px; }
-            25%  { font-family: 'Outfit', sans-serif; opacity: 0.8; letter-spacing: 5px; text-shadow: 0 0 15px var(--text-grad-2); }
-            50%  { font-family: 'Cinzel', serif; opacity: 1; letter-spacing: 4px; }
-            75%  { font-family: 'Montserrat', sans-serif; opacity: 0.8; letter-spacing: 5px; text-shadow: 0 0 15px var(--text-grad-2); }
-            100% { font-family: 'Playfair Display', serif; opacity: 1; letter-spacing: 3px; }
-        }
-        
-        .font-glitch-loader {
-            font-size: 38px;
-            margin-bottom: 12px;
-            background-image: linear-gradient(135deg, var(--text-grad-1) 0%, var(--text-grad-2) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: elegantFontShift 2s infinite ease-in-out;
-            text-transform: uppercase;
-            text-align: center;
-        }
 
         /* --- APP SHELL & LAYOUT --- */
         .app-shell { width: 100%; height: 100dvh; max-width: 100vw; background-color: var(--bg-app); display: flex; position: relative; overflow: hidden; backdrop-filter: blur(var(--bg-blur)); -webkit-backdrop-filter: blur(var(--bg-blur)); transform: translateZ(0); transition: backdrop-filter 0.3s ease; }
@@ -484,13 +464,6 @@
     </style>
 </head>
 <body>
-
-    <!-- APP LOADING SCREEN -->
-    <div id="app-loading-screen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: var(--bg-app); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); transition: opacity 0.4s ease; color: var(--text-main); transform: translateZ(0);">
-        <img id="loading-logo-img" style="display: none;"> <!-- Kept hidden for JS renderAppLogo() compatibility -->
-        <h2 class="font-glitch-loader">GOKUL HUB</h2>
-        <div style="font-size: 15px; color: var(--text-accent); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px;">Premium Experience</div>
-    </div>
 
     <!-- MOBILE TOP BAR -->
     <div class="mobile-header">
@@ -1622,15 +1595,6 @@
             try { checkAutoPdfDownload(); } catch(e) {}
 
             navTo('vault-dashboard'); // Ensure UI opens properly
-
-            // Premium Loading Screen Fade Out Delay (1.2 seconds)
-            setTimeout(() => {
-                const loader = document.getElementById('app-loading-screen');
-                if(loader) {
-                    loader.style.opacity = '0';
-                    setTimeout(() => loader.style.display = 'none', 400);
-                }
-            }, 1200);
         });
 
         window.updateBgBlur = function(val) {
@@ -2018,6 +1982,8 @@
 
             petrolRecords.push(newRecord);
             localStorage.setItem('gokulPetrolRecords', JSON.stringify(petrolRecords));
+
+            // REMOVED VAULT TRANSACTION PUSHING AND VAULT UPDATE
 
             updatePetrolStats();
 
@@ -3064,4 +3030,107 @@
             
             let totalPay = 0, totalHrs = 0, totalOT = 0;
             shifts.forEach(s => { 
-                totalPay += (Number(s.grossEarned) || Number(s.totalEarned) || 0
+                totalPay += (Number(s.grossEarned) || Number(s.totalEarned) || 0); 
+                totalHrs += (Number(s.net) || 0); 
+                totalOT += (Number(s.otHours) || 0); 
+            });
+
+            doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.setLineWidth(0.5); doc.roundedRect(120, 45, 75, 38, 3, 3, 'S');
+            doc.setFont("helvetica", "bold"); doc.text("SUMMARY", 125, 52); doc.setFont("helvetica", "normal");
+            doc.text(`Total Days: ${shifts.length}`, 125, 60); doc.text(`Reg Hours: ${totalHrs.toFixed(1)}h`, 125, 66); doc.text(`OT Hours: ${totalOT.toFixed(1)}h`, 125, 72);
+            doc.setFont("helvetica", "bold"); doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]); doc.text(`Gross Salary: INR ${totalPay.toFixed(2)}`, 125, 78);
+
+            doc.setTextColor(darkText[0], darkText[1], darkText[2]);
+            const tableColumn = ["Date", "Job Title", "Timing", "Reg (Hrs)", "OT (Hrs)", "Earned (INR)"];
+            const tableRows = shifts.map(s => [
+                s.date || '', 
+                s.jobType || 'Job', 
+                s.timing || `${s.inTime || ''} - ${s.outTime || ''}`, 
+                ((Number(s.net)||0) - (Number(s.otHours)||0)).toFixed(1), 
+                (Number(s.otHours)||0).toFixed(1), 
+                `Rs. ${(Number(s.grossEarned) || Number(s.totalEarned) || 0).toFixed(2)}`
+            ]);
+
+            doc.autoTable({ 
+                startY: 95, 
+                head: [tableColumn], 
+                body: tableRows, 
+                theme: 'striped', 
+                headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' }, 
+                bodyStyles: { textColor: darkText, halign: 'center' }, 
+                alternateRowStyles: { fillColor: [240, 244, 248] }, 
+                styles: { font: 'helvetica', fontSize: 10, cellPadding: 6 }, 
+                columnStyles: { 1: { halign: 'left' }, 5: { fontStyle: 'bold', textColor: [22, 163, 74] } }, 
+                margin: { top: 10, right: 14, bottom: 20, left: 14 } 
+            });
+
+            const finalY = doc.lastAutoTable.finalY || 95;
+            doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30); doc.setLineWidth(0.5); doc.line(14, finalY + 25, 70, finalY + 25);
+            doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(lightText[0], lightText[1], lightText[2]); doc.text(`System Generated Report - ${brandName}`, 14, finalY + 45);
+
+            doc.save(`Gokul_Timesheet_Report_${now.getTime()}.pdf`);
+        }
+
+        // --- 9. PREMIUM THEMES ---
+        const themeOpts = [
+            { id: 'jarvis', name: '🤖 J.A.R.V.I.S.' }, { id: 'rajput', name: '👑 Royal Rajput' }, { id: 'peacock', name: '🦚 Peacock Emerald' }, 
+            { id: 'saffron', name: '🕉️ Varanasi Saffron' }, { id: 'mughal', name: '🕌 Mughal Magenta' }, { id: 'maratha', name: '⚔️ Maratha Navy' }, 
+            { id: 'chola', name: '🏛️ Chola Bronze' }, { id: 'sapphire', name: '💎 Sapphire Ocean' }, { id: 'amethyst', name: '🔮 Amethyst Lotus' }, 
+            { id: 'jade', name: '🌿 Jade Forest' }, { id: 'ruby', name: '🌹 Crimson Ruby' }, { id: 'gold', name: '✨ Golden Temple' }, 
+            { id: 'slate', name: '⛰️ Himalayan Slate' }, { id: 'desert', name: '🐪 Thar Desert' }, { id: 'sunset', name: '🌅 Sunset Orange' }, 
+            { id: 'lavender', name: '🪻 Kashmiri Lavender' }, { id: 'platinum', name: '💍 Platinum Pearl' }, { id: 'obsidian', name: '🌑 Obsidian Gold' }, { id: 'light', name: '☀️ Classic Light' },
+            { id: 'aesthetic', name: '🌸 Soft Aesthetic' }
+        ];
+
+        function renderThemeGallery() {
+            const gallery = document.getElementById('theme-gallery');
+            if(gallery) {
+                gallery.innerHTML = themeOpts.map(th => `<div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyTheme('${th.id}'); document.getElementById('auto-theme-toggle').checked = false; toggleAutoTheme();"><div style="font-weight: 800; font-size: 13px;">${th.name}</div></div>`).join('');
+            }
+        }
+        
+        function applyTheme(id) { 
+            document.documentElement.setAttribute('data-theme', id); 
+            localStorage.setItem('gokulTheme', id); 
+            
+            const icon = document.getElementById('mode-icon');
+            if(icon) {
+                if(id === 'light' || id === 'platinum') {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                } else {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+            }
+        }
+
+        // --- 10. DATA EXPORT / IMPORT ---
+        function exportData() {
+            const data = { profile: JSON.parse(localStorage.getItem('gokulProfile')), vaultTx: JSON.parse(localStorage.getItem('gokulVaultTx')), attRecords: JSON.parse(localStorage.getItem('gokulAttRecords')), petrolRecords: JSON.parse(localStorage.getItem('gokulPetrolRecords')), emiRegistry: JSON.parse(localStorage.getItem('gokulEmiRegistry')) };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+            const downloadAnchorNode = document.createElement('a'); downloadAnchorNode.setAttribute("href", dataStr); downloadAnchorNode.setAttribute("download", "GokulHub_Backup.json");
+            document.body.appendChild(downloadAnchorNode); downloadAnchorNode.click(); downloadAnchorNode.remove();
+        }
+
+        function importData() {
+            const file = document.getElementById('import-file').files[0];
+            if (!file) return alert("Select .json file.");
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if(data.profile) localStorage.setItem('gokulProfile', JSON.stringify(data.profile));
+                    if(data.vaultTx) localStorage.setItem('gokulVaultTx', JSON.stringify(data.vaultTx));
+                    if(data.attRecords) localStorage.setItem('gokulAttRecords', JSON.stringify(data.attRecords));
+                    if(data.petrolRecords) localStorage.setItem('gokulPetrolRecords', JSON.stringify(data.petrolRecords));
+                    if(data.emiRegistry) localStorage.setItem('gokulEmiRegistry', JSON.stringify(data.emiRegistry));
+                    alert("Backup Restored! Refreshing..."); window.location.reload();
+                } catch(err) { alert("Invalid file!"); }
+            }
+            reader.readAsText(file);
+        }
+
+    </script>
+</body>
+</html>
