@@ -163,19 +163,30 @@
         .profile-camera-btn { position: absolute; bottom: 0; right: -5px; background: #1a1a2e; border: 2px solid var(--text-accent); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff; cursor: pointer; transition: transform 0.2s; z-index: 15; }
         .profile-camera-btn:active { transform: scale(0.9); }
         
-        /* SIGNATURE STYLING */
-        .profile-signature {
+        /* 🔥 DYNAMIC COLOR SIGNATURE STYLING 🔥 */
+        .profile-signature-wrap {
             position: absolute;
             bottom: -20px;
             left: 65px;
             width: 110px;
-            /* Magical CSS trick to remove white bg and make it white glowing signature */
-            filter: invert(1) grayscale(1) contrast(2) brightness(1.5);
-            mix-blend-mode: screen;
+            height: 60px;
+            background-color: var(--text-accent); /* Adapts to any selected theme */
+            mix-blend-mode: screen; /* Makes the black background invisible */
             transform: rotate(-8deg);
-            opacity: 0.9;
-            pointer-events: none; /* Allows clicking through it */
+            opacity: 0.95;
+            pointer-events: none; /* Allows clicking elements behind it */
             z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .profile-signature-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* Converts white paper to black, blue ink to white, and multiplies with the wrapper's color */
+            filter: invert(1) grayscale(1) contrast(4) brightness(1.2);
+            mix-blend-mode: multiply;
         }
 
         .profile-info-wrap { display: flex; flex-direction: column; justify-content: center; }
@@ -401,8 +412,10 @@
                                 <input type="file" id="quick-camera-input" accept="image/*" style="display: none;" onchange="quickUpdateProfileImage(this)">
                             </div>
                             
-                            <!-- SIGNATURE ADDED HERE -->
-                            <img src="38840.jpg" class="profile-signature" alt="Signature">
+                            <!-- SIGNATURE WRAPPER FOR DYNAMIC THEME COLOR -->
+                            <div class="profile-signature-wrap">
+                                <img src="38840.jpg" alt="Signature">
+                            </div>
 
                             <div class="profile-info-wrap">
                                 <div class="profile-name-ui"><i class="fas fa-crown" style="font-size: 16px; color: var(--text-accent);"></i> <span id="prof-name">GOKUL PVGR</span></div>
