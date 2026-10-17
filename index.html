@@ -39,7 +39,7 @@
             --text-grad-2: #f0c75e;
             --shadow-rgb: 0, 0, 0;
 
-            /* Base Variables - Using --card-alpha dynamically */
+            /* Base Variables */
             --bg-app: rgba(4, 9, 20, var(--glass-alpha));
             --bg-sidebar: rgba(6, 14, 28, calc(var(--glass-alpha) + 0.15));
             --bg-card: rgba(20, 25, 40, var(--card-alpha));
@@ -138,16 +138,16 @@
         .master-balance-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(240, 199, 94, 0.1) 0%, transparent 60%); pointer-events: none; }
         
         .bal-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
+        /* Changed Wallet icon to Piggy Bank for Savings */
         .bal-icon-large { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); display: flex; align-items: center; justify-content: center; font-size: 24px; color: #000; box-shadow: 0 5px 15px rgba(240, 199, 94, 0.4); }
         .bal-details-btn { background: transparent; border: 1px solid #fff; color: #fff; border-radius: 20px; padding: 6px 14px; font-size: 12px; cursor: pointer; transition: all 0.2s; }
         
-        /* UPDATED: COMPACT CSS TO FIX OVERFLOWING TEXT ON MOBILE */
-        .bal-bottom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: left; }
+        /* 2-Column Grid for pure savings view */
+        .bal-bottom-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; text-align: left; }
         .mini-stat-col { display: flex; align-items: center; gap: 6px; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 6px; overflow: hidden; }
         .mini-stat-col:last-child { border-right: none; padding-right: 0; }
         .mini-icon { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
         .mini-icon.green { border: 1px solid var(--success); color: var(--success); }
-        .mini-icon.red { border: 1px solid var(--danger); color: var(--danger); }
         .mini-icon.blue { border: 1px solid #38bdf8; color: #38bdf8; }
         .mini-text { display: flex; flex-direction: column; width: 100%; overflow: hidden; }
         .mini-lbl { font-size: 9px; color: var(--text-muted); margin-bottom: 2px; white-space: normal; line-height: 1.2; word-wrap: break-word;}
@@ -306,7 +306,7 @@
 
     <!-- MOBILE BOTTOM TABS -->
     <div class="mobile-tab-bar">
-        <button class="tab-item active" id="tab-vault" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i><span>Savings</span></button>
+        <button class="tab-item active" id="tab-vault" onclick="navTo('vault-dashboard')"><i class="fas fa-piggy-bank"></i><span>Savings</span></button>
         <button class="tab-item" id="tab-att" onclick="navTo('attendance')"><i class="fas fa-business-time"></i><span>Work</span></button>
         <button class="tab-item" id="tab-emi" onclick="navTo('emi-dashboard')"><i class="fas fa-calculator"></i><span>EMI</span></button>
         <button class="tab-item" id="tab-history" onclick="navTo('history')"><i class="fas fa-list"></i><span>History</span></button>
@@ -321,7 +321,7 @@
                     <div class="sidebar-brand-text">GOKUL HUB</div>
                 </div>
                 <div class="nav-list">
-                    <button class="btn btn-primary active" id="dnav-vault-dashboard" onclick="navTo('vault-dashboard')"><i class="fas fa-coins"></i> <span>Home Savings</span></button>
+                    <button class="btn btn-primary active" id="dnav-vault-dashboard" onclick="navTo('vault-dashboard')"><i class="fas fa-piggy-bank"></i> <span>Home Savings</span></button>
                     <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" id="dnav-attendance" onclick="navTo('attendance')"><i class="fas fa-business-time"></i> <span>Work & Salary</span></button>
                     <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" id="dnav-emi-dashboard" onclick="navTo('emi-dashboard')"><i class="fas fa-calculator"></i> <span>EMI Tracker</span></button>
                     <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" id="dnav-history" onclick="navTo('history')"><i class="fas fa-list"></i> <span>Time List</span></button>
@@ -357,35 +357,29 @@
                         <div class="top-settings-btn" onclick="navTo('settings')"><i class="fas fa-cog"></i></div>
                     </div>
 
-                    <!-- Master Balance Card -->
+                    <!-- Master Balance Card (Savings Oriented) -->
                     <div class="master-balance-card">
                         <div class="bal-top-row">
                             <div style="display: flex; gap: 14px; align-items: center;">
-                                <div class="bal-icon-large"><i class="fas fa-wallet"></i></div>
+                                <div class="bal-icon-large"><i class="fas fa-piggy-bank"></i></div>
                                 <div>
-                                    <div style="font-size: 13px; color: var(--text-muted); font-weight: 700; margin-bottom: 2px;">Savings Balance</div>
+                                    <div style="font-size: 13px; color: var(--text-muted); font-weight: 700; margin-bottom: 2px;">Total Savings</div>
                                     <div style="font-size: 32px; font-weight: 900; font-family: var(--font-heading);" id="total-balance">₹ 0.00</div>
                                 </div>
                             </div>
                             <button class="bal-details-btn" onclick="document.getElementById('vault-detailed-section').scrollIntoView({behavior: 'smooth'})">View Details <i class="fas fa-chevron-right"></i></button>
                         </div>
                         
-                        <div class="bal-bottom-grid">
+                        <div class="bal-bottom-grid" style="grid-template-columns: repeat(2, 1fr);">
                             <div class="mini-stat-col">
                                 <div class="mini-icon green"><i class="fas fa-arrow-up"></i></div>
                                 <div class="mini-text">
-                                    <span class="mini-lbl">Total Income</span>
+                                    <span class="mini-lbl">Total Deposited</span>
                                     <span class="mini-val" style="color: var(--success);" id="total-in">₹ 0.00</span>
                                 </div>
                             </div>
-                            <div class="mini-stat-col">
-                                <div class="mini-icon red"><i class="fas fa-arrow-down"></i></div>
-                                <div class="mini-text">
-                                    <span class="mini-lbl">Total Expense</span>
-                                    <span class="mini-val" style="color: var(--danger);" id="total-out">₹ 0.00</span>
-                                </div>
-                            </div>
-                            <div class="mini-stat-col">
+                            <!-- Expense Removed, keeping Monthly Salary in purely 2 columns -->
+                            <div class="mini-stat-col" style="border-right: none;">
                                 <div class="mini-icon blue"><i class="fas fa-calendar-alt"></i></div>
                                 <div class="mini-text">
                                     <span class="mini-lbl">Monthly Salary</span>
@@ -398,9 +392,9 @@
                     <!-- 6 Grid Dashboard -->
                     <div class="dashboard-grid-ui">
                         <div class="dash-card card-vault" onclick="document.getElementById('vault-detailed-section').scrollIntoView({behavior: 'smooth'})">
-                            <div class="dash-icon"><i class="fas fa-wallet"></i></div>
+                            <div class="dash-icon"><i class="fas fa-piggy-bank"></i></div>
                             <div class="dash-title">Savings</div>
-                            <div class="dash-sub">Money, Expenses & Balance</div>
+                            <div class="dash-sub">Deposits & Cashbacks</div>
                             <div class="dash-arrow"><i class="fas fa-chevron-right"></i></div>
                         </div>
                         <div class="dash-card card-work" onclick="navTo('attendance')">
@@ -455,7 +449,6 @@
                         
                         <div style="text-align: right; font-size: 11px; color: var(--text-accent); margin-top: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;" id="goal-percent-display">0% Completed</div>
                     </div>
-
 
                     <!-- DETAILED SAVINGS SECTION -->
                     <div id="vault-detailed-section" style="padding-top: 20px;">
@@ -533,6 +526,7 @@
                             </table>
                         </div>
 
+                        <!-- QUICK LOG SAVINGS (Expenses Removed) -->
                         <div class="panel-heading" style="border: none; margin-bottom: 18px;">
                             <span style="font-size: 22px;">⚡ Quick Log Savings</span>
                         </div>
@@ -545,27 +539,27 @@
                             
                             <div class="input-group">
                                 <label>Notes</label>
-                                <input type="text" id="quick-tx-note" class="form-control" placeholder="e.g. UPI Payment, Lunch, Cashback...">
+                                <input type="text" id="quick-tx-note" class="form-control" placeholder="e.g. UPI Payment, Salary, Cashback...">
                                 <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px;">
                                     <span style="font-size: 13px; color: var(--text-muted); width: 100%; font-weight: 800; margin-bottom: 4px;">Quick Add Tags:</span>
                                     <button class="btn btn-primary" style="padding: 10px 16px; width: auto; font-size: 13px;" onclick="addEmoji('UPI 💸')">💸 UPI</button>
+                                    <button class="btn btn-primary" style="padding: 10px 16px; width: auto; font-size: 13px;" onclick="addEmoji('Bank Deposit 🏦')">🏦 Bank Deposit</button>
                                     <button class="btn btn-primary" style="padding: 10px 16px; width: auto; font-size: 13px;" onclick="addEmoji('Cashback 🎁')">🎁 Cashback</button>
-                                    <button class="btn btn-primary" style="padding: 10px 16px; width: auto; font-size: 13px;" onclick="addEmoji('Wallet 👛')">👛 Wallet</button>
-                                    <button class="btn btn-primary" style="padding: 10px 16px; width: auto; font-size: 13px;" onclick="addEmoji('Food 🍔')">🍔 Food</button>
+                                    <button class="btn btn-primary" style="padding: 10px 16px; width: auto; font-size: 13px;" onclick="addEmoji('Goal Saving 🎯')">🎯 Goal Saving</button>
                                     <button class="btn btn-primary" style="padding: 10px 16px; width: auto; font-size: 13px;" onclick="addEmoji('Salary 💰')">💰 Salary</button>
                                 </div>
                             </div>
                             
                             <div style="display: flex; gap: 16px; margin-top: 18px;">
-                                <button class="btn btn-danger" style="padding: 18px; font-size: 15px;" onclick="saveQuickTx('expense')"><i class="fas fa-minus-circle"></i> Spend Out</button>
-                                <button class="btn btn-success" style="padding: 18px; font-size: 15px;" onclick="saveQuickTx('income')"><i class="fas fa-plus-circle"></i> Income In</button>
+                                <!-- Spend out button removed -->
+                                <button class="btn btn-success" style="padding: 18px; font-size: 15px; width: 100%;" onclick="saveQuickTx('income')"><i class="fas fa-plus-circle"></i> Add to Savings</button>
                             </div>
                             <button class="btn btn-primary" style="margin-top: 8px; width: 100%; background-image: linear-gradient(135deg, #4a00e0, #8e2de2) !important; border-color: #8e2de2 !important; color: #fff !important; box-shadow: 0 8px 25px rgba(142, 45, 226, 0.4) !important; padding: 18px; font-size: 15px;" onclick="saveQuickTx('cashback')"><i class="fas fa-gift"></i> Save as Cashback</button>
                         </div>
 
                         <!-- Mini Ledger View inside Savings -->
                         <div class="panel-heading" style="border: none; margin-top: 24px;">
-                            <span style="font-size: 22px;">🧾 Recent Ledger</span>
+                            <span style="font-size: 22px;">🧾 Savings Ledger</span>
                         </div>
                         <div class="table-wrap">
                             <table id="ledger-table">
@@ -1079,8 +1073,7 @@
                 <div class="input-group">
                     <label>Type</label>
                     <select id="edit-tx-flow" class="form-control">
-                        <option value="income">Income (+)</option>
-                        <option value="expense">Expense (-)</option>
+                        <option value="income">Deposit (+)</option>
                     </select>
                 </div>
             </div>
