@@ -1678,7 +1678,17 @@
             note = note || (type === 'expense' ? 'Spending' : 'Income');
             transactions.push({ date: new Date().toLocaleString('en-GB'), category: note, type: type, amount: amount });
             localStorage.setItem('gokulVaultTx', JSON.stringify(transactions)); updateVaultStats();
+            
+            // --- NEW: AUTO LINK TO DREAM GOAL ---
+            if (type === 'income') {
+                dreamGoal.saved += amount;
+                localStorage.setItem('gokulDreamGoal', JSON.stringify(dreamGoal));
+                renderDreamGoal();
+            }
+
             document.getElementById('quick-tx-amount').value = ''; document.getElementById('quick-tx-note').value = '';
+            
+            if (type === 'income') { alert(`₹${amount.toFixed(2)} added to Savings & Dream Goal!`); }
         }
 
         let currentEditTxIdx = -1;
@@ -1691,24 +1701,71 @@
         function saveEditedTx() {
             if (currentEditTxIdx === -1) return;
             let tx = transactions[currentEditTxIdx];
-            tx.date = document.getElementById('edit-tx-date').value || tx.date; tx.category = document.getElementById('edit-tx-note').value || tx.category;
-            tx.amount = parseFloat(document.getElementById('edit-tx-amount').value) || tx.amount; tx.type = document.getElementById('edit-tx-flow').value || tx.type;
-            localStorage.setItem('gokulVaultTx', JSON.stringify(transactions)); updateVaultStats(); closeModal('editTxModal'); alert("Transaction Updated!");
+            
+            let newDate = document.getElementById('edit-tx-date').value || tx.date; 
+            let newCategory = document.getElementById('edit-tx-note').value || tx.category;
+            let newAmount = parseFloat(document.getElementById('edit-tx-amount').value) || tx.amount; 
+            let newType = document.getElementById('edit-tx-flow').value || tx.type;
+            
+            // --- NEW: SYNC EDITS TO DREAM GOAL ---
+            if(tx.type === 'income' && newType === 'income') {
+                dreamGoal.saved = dreamGoal.saved - tx.amount + newAmount;
+                if(dreamGoal.saved < 0) dreamGoal.saved = 0;
+            } else if (tx.type === 'income' && newType !== 'income') {
+                dreamGoal.saved -= tx.amount;
+                if(dreamGoal.saved < 0) dreamGoal.saved = 0;
+            } else if (tx.type !== 'income' && newType === 'income') {
+                dreamGoal.saved += newAmount;
+            }
+
+            tx.date = newDate; 
+            tx.category = newCategory;
+            tx.amount = newAmount; 
+            tx.type = newType;
+            
+            localStorage.setItem('gokulVaultTx', JSON.stringify(transactions)); 
+            localStorage.setItem('gokulDreamGoal', JSON.stringify(dreamGoal));
+            
+            updateVaultStats(); 
+            renderDreamGoal();
+            closeModal('editTxModal'); 
+            alert("Transaction Updated & Dream Goal Synced!");
         }
 
         function redeemCashback() {
             if (cashbackBalance <= 0) return alert("No cashback available to redeem.");
             if (confirm(`Redeem ₹${cashbackBalance.toFixed(2)} to your main Savings?`)) {
                 transactions.push({ date: new Date().toLocaleString('en-GB'), category: "Cashback Redeemed 🎁", type: 'income', amount: cashbackBalance });
-                localStorage.setItem('gokulVaultTx', JSON.stringify(transactions)); cashbackBalance = 0; localStorage.setItem('gokulCashbackBal', 0);
-                updateVaultStats(); updateCashbackStats(); alert("Cashback successfully added to Savings!");
+                localStorage.setItem('gokulVaultTx', JSON.stringify(transactions)); 
+                
+                // --- NEW: AUTO LINK TO DREAM GOAL ---
+                dreamGoal.saved += cashbackBalance;
+                localStorage.setItem('gokulDreamGoal', JSON.stringify(dreamGoal));
+                renderDreamGoal();
+
+                cashbackBalance = 0; localStorage.setItem('gokulCashbackBal', 0);
+                updateVaultStats(); updateCashbackStats(); alert("Cashback successfully added to Savings & Dream Goal!");
             }
         }
 
         function updateCashbackStats() { const cbEl = document.getElementById('cashback-balance'); if (cbEl) cbEl.innerText = `₹${cashbackBalance.toFixed(2)}`; }
 
         function deleteLedgerTx(idx) {
-            if (confirm("Delete this transaction? Your Savings balance will update.")) { transactions.splice(idx, 1); localStorage.setItem('gokulVaultTx', JSON.stringify(transactions)); updateVaultStats(); }
+            if (confirm("Delete this transaction? Your Savings balance will update.")) { 
+                let deletedTx = transactions[idx];
+                transactions.splice(idx, 1); 
+                localStorage.setItem('gokulVaultTx', JSON.stringify(transactions)); 
+                
+                // --- NEW: SYNC DELETE TO DREAM GOAL ---
+                if (deletedTx.type === 'income') {
+                    dreamGoal.saved -= deletedTx.amount;
+                    if(dreamGoal.saved < 0) dreamGoal.saved = 0;
+                    localStorage.setItem('gokulDreamGoal', JSON.stringify(dreamGoal));
+                    renderDreamGoal();
+                }
+
+                updateVaultStats(); 
+            }
         }
 
         function updateVaultStats() {
@@ -2006,8 +2063,15 @@
         // --- SAVINGS RESET ONLY ---
         function resetVaultOnly() {
             if (confirm("Are you sure you want to completely reset your Savings Dashboard? All transaction history, petrol records, EMI registry, and balance will be deleted. Attendance and Work data will remain safe.")) {
-                transactions = []; localStorage.setItem('gokulVaultTx', JSON.stringify(transactions)); cashbackBalance = 0; localStorage.setItem('gokulCashbackBal', 0); petrolRecords = []; localStorage.setItem('gokulPetrolRecords', JSON.stringify(petrolRecords)); emiRegistry = []; localStorage.setItem('gokulEmiRegistry', JSON.stringify(emiRegistry));
-                updateVaultStats(); updateCashbackStats(); updatePetrolStats(); renderEmiRegistry(); alert("Savings Dashboard has been successfully reset."); navTo('vault-dashboard');
+                transactions = []; localStorage.setItem('gokulVaultTx', JSON.stringify(transactions)); 
+                cashbackBalance = 0; localStorage.setItem('gokulCashbackBal', 0); 
+                petrolRecords = []; localStorage.setItem('gokulPetrolRecords', JSON.stringify(petrolRecords)); 
+                emiRegistry = []; localStorage.setItem('gokulEmiRegistry', JSON.stringify(emiRegistry));
+                
+                dreamGoal.saved = 0; localStorage.setItem('gokulDreamGoal', JSON.stringify(dreamGoal));
+
+                updateVaultStats(); updateCashbackStats(); updatePetrolStats(); renderEmiRegistry(); renderDreamGoal();
+                alert("Savings Dashboard has been successfully reset."); navTo('vault-dashboard');
             }
         }
 
