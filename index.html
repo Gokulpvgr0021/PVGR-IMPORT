@@ -20,6 +20,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Comfortaa:wght@400;700&family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;600;700&family=Josefin+Sans:wght@400;700&family=Lato:wght@400;700&family=Lora:ital,wght@0,500;0,700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700&family=Nunito:wght@400;700&family=Open+Sans:wght@400;600&family=Oswald:wght@500;700&family=Outfit:wght@400;600;800&family=Pacifico&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;600;800&family=Quicksand:wght@500;700&family=Righteous&family=Roboto:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    
     <style>
         :root {
             --glass-alpha: 0.75;
@@ -75,7 +79,7 @@
         [data-font="vibe"] { --font-heading: 'Pacifico', cursive; --font-body: 'Quicksand', sans-serif; }
         [data-font="impact"] { --font-heading: 'Oswald', sans-serif; --font-body: 'Roboto', sans-serif; }
 
-        /* --- 🎨 THEME PRESETS ENGINE (FIXED) --- */
+        /* --- 🎨 THEME PRESETS ENGINE --- */
         [data-theme="jarvis"] { --grad-1: #1a0f14; --grad-2: #0a0a0f; --grad-3: #1a1a2e; --grad-4: #0a0a0f; --text-accent: #f0c75e; --text-grad-2: #f0c75e; --border-highlight: rgba(240, 199, 94, 0.3); }
         [data-theme="rajput"] { --grad-1: #2c0000; --grad-2: #140000; --grad-3: #2d0000; --grad-4: #000000; --text-accent: #ff4757; --text-grad-2: #ff4757; --border-highlight: rgba(255, 71, 87, 0.3); }
         [data-theme="peacock"] { --grad-1: #001f24; --grad-2: #000c14; --grad-3: #00262b; --grad-4: #000a12; --text-accent: #00d2d3; --text-grad-2: #00d2d3; --border-highlight: rgba(0, 210, 211, 0.3); }
@@ -206,7 +210,7 @@
             font-size: 18px; color: var(--text-accent); background: rgba(0,0,0,0.5); 
         }
         .dash-title { 
-            font-size: 17px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; 
+            font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 6px; 
             z-index: 2; font-family: var(--font-heading); 
             margin-top: 50px; 
         }
@@ -223,6 +227,7 @@
         .card-work::after { content: '\f017'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 100px; color: #fff; display: flex; align-items: center; justify-content: flex-end; opacity: 0.05; padding-right: -20px; }
         .card-emi::after { content: '\f19c'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 90px; color: #fff; display: flex; align-items: center; justify-content: flex-end; opacity: 0.05; padding-right: -10px; }
 
+        /* UPGRADED PROMO BANNER CSS */
         .promo-banner { 
             background: linear-gradient(90deg, var(--bg-card), var(--bg-card-alt)); 
             border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px 20px; 
@@ -234,6 +239,7 @@
         .promo-text { font-family: 'Pacifico', cursive; color: var(--text-accent); font-size: 18px; transform: rotate(-5deg); text-shadow: 0 2px 4px rgba(0,0,0,0.5); transition: opacity 0.3s; }
         .promo-sub { font-size: 11px; font-weight: 700; color: var(--text-main); display: flex; flex-direction: column; align-items: flex-end; gap: 2px; transition: opacity 0.3s; }
 
+        /* --- NEW DREAM GOAL TRACKER CSS --- */
         .dream-goal-banner { 
             background: linear-gradient(135deg, var(--bg-card-alt), var(--bg-card)); 
             border: 1px solid var(--border-highlight); border-radius: 20px; padding: 22px 20px; 
@@ -410,7 +416,6 @@
                                     <span class="mini-val" style="color: var(--success);" id="total-in">₹ 0.00</span>
                                 </div>
                             </div>
-                            <!-- Expense Removed, keeping Monthly Salary in purely 2 columns -->
                             <div class="mini-stat-col" style="border-right: none;">
                                 <div class="mini-icon blue"><i class="fas fa-calendar-alt"></i></div>
                                 <div class="mini-text">
@@ -491,7 +496,10 @@
                             <div id="goal-progress-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #f6d365, #fda085); transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 5px;"></div>
                         </div>
                         
-                        <div style="text-align: right; font-size: 11px; color: var(--text-accent); margin-top: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;" id="goal-percent-display">0% Completed</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                            <span id="goal-balance-display" style="font-size: 11px; color: var(--danger); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Pending: ₹0</span>
+                            <span id="goal-percent-display" style="font-size: 11px; color: var(--text-accent); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">0% Completed</span>
+                        </div>
                     </div>
 
                     <!-- DETAILED SAVINGS SECTION -->
@@ -570,7 +578,7 @@
                             </table>
                         </div>
 
-                        <!-- QUICK LOG SAVINGS (Expenses Removed) -->
+                        <!-- QUICK LOG SAVINGS -->
                         <div class="panel-heading" style="border: none; margin-bottom: 18px;">
                             <span style="font-size: 22px;">⚡ Quick Log Savings</span>
                         </div>
@@ -1238,6 +1246,9 @@
             document.getElementById('goal-target-display').innerText = `Target: ₹${parseFloat(dreamGoal.target).toLocaleString('en-IN')}`;
             
             let percent = 0;
+            let pending = dreamGoal.target - dreamGoal.saved;
+            if(pending < 0) pending = 0;
+
             if(dreamGoal.target > 0) {
                 percent = (dreamGoal.saved / dreamGoal.target) * 100;
                 if(percent > 100) percent = 100;
@@ -1245,6 +1256,17 @@
             
             document.getElementById('goal-progress-bar').style.width = `${percent}%`;
             document.getElementById('goal-percent-display').innerText = `${percent.toFixed(1)}% Completed`;
+
+            const balDisplay = document.getElementById('goal-balance-display');
+            if(balDisplay) {
+                if(percent >= 100) {
+                    balDisplay.innerText = "Goal Reached! 🎉";
+                    balDisplay.style.color = "var(--success)";
+                } else {
+                    balDisplay.innerText = `Pending: ₹${pending.toLocaleString('en-IN')}`;
+                    balDisplay.style.color = "var(--danger)";
+                }
+            }
         }
 
         function openDreamGoalModal() {
@@ -1511,7 +1533,7 @@
             try { startLiveClock(); } catch(e) {} try { renderProfile(); } catch(e) {} try { updateVaultStats(); } catch(e) {}
             try { renderJobDropdown(); } catch(e) {} try { checkActiveShift(); } catch(e) {} try { updateShiftStats(); } catch(e) {}
             try { renderThemeGallery(); } catch(e) {} try { updateCashbackStats(); } catch(e) {}
-            try { renderDreamGoal(); } catch(e) {} // Initial render for Dream Goal
+            try { renderDreamGoal(); } catch(e) {} 
             
             document.getElementById('petrol-price').value = localStorage.getItem('gokulPetrolPrice') || '';
             try { updatePetrolStats(); } catch(e) {} try { renderEmiRegistry(); } catch(e) {}
