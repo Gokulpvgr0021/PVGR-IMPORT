@@ -20,10 +20,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Comfortaa:wght@400;700&family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;600;700&family=Josefin+Sans:wght@400;700&family=Lato:wght@400;700&family=Lora:ital,wght@0,500;0,700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700&family=Nunito:wght@400;700&family=Open+Sans:wght@400;600&family=Oswald:wght@500;700&family=Outfit:wght@400;600;800&family=Pacifico&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;600;800&family=Quicksand:wght@500;700&family=Righteous&family=Roboto:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    
     <style>
         :root {
             --glass-alpha: 0.75;
@@ -34,12 +30,10 @@
             --font-heading: 'Playfair Display', serif;
             --font-body: 'Plus Jakarta Sans', sans-serif;
             
-            /* Text Fade & Shadow Variables */
-            --text-grad-1: #ffffff;
-            --text-grad-2: #f0c75e;
-            --shadow-rgb: 0, 0, 0;
+            /* Background Gradient Variables */
+            --grad-1: #1a0f14; --grad-2: #0a0a0f; --grad-3: #1a1a2e; --grad-4: #0a0a0f;
 
-            /* Base Variables */
+            /* Base Variables - Using --card-alpha dynamically */
             --bg-app: rgba(4, 9, 20, var(--glass-alpha));
             --bg-sidebar: rgba(6, 14, 28, calc(var(--glass-alpha) + 0.15));
             --bg-card: rgba(20, 25, 40, var(--card-alpha));
@@ -53,6 +47,11 @@
             --border-highlight: rgba(255, 215, 0, 0.3);
             --danger: #ff4757;
             --success: #2ed573;
+
+            /* Text Fade & Shadow Variables */
+            --text-grad-1: #ffffff;
+            --text-grad-2: var(--text-accent);
+            --shadow-rgb: 0, 0, 0;
 
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -75,6 +74,43 @@
         [data-font="soft"] { --font-heading: 'Nunito', sans-serif; --font-body: 'Nunito', sans-serif; }
         [data-font="vibe"] { --font-heading: 'Pacifico', cursive; --font-body: 'Quicksand', sans-serif; }
         [data-font="impact"] { --font-heading: 'Oswald', sans-serif; --font-body: 'Roboto', sans-serif; }
+
+        /* --- 🎨 THEME PRESETS ENGINE (FIXED) --- */
+        [data-theme="jarvis"] { --grad-1: #1a0f14; --grad-2: #0a0a0f; --grad-3: #1a1a2e; --grad-4: #0a0a0f; --text-accent: #f0c75e; --text-grad-2: #f0c75e; --border-highlight: rgba(240, 199, 94, 0.3); }
+        [data-theme="rajput"] { --grad-1: #2c0000; --grad-2: #140000; --grad-3: #2d0000; --grad-4: #000000; --text-accent: #ff4757; --text-grad-2: #ff4757; --border-highlight: rgba(255, 71, 87, 0.3); }
+        [data-theme="peacock"] { --grad-1: #001f24; --grad-2: #000c14; --grad-3: #00262b; --grad-4: #000a12; --text-accent: #00d2d3; --text-grad-2: #00d2d3; --border-highlight: rgba(0, 210, 211, 0.3); }
+        [data-theme="saffron"] { --grad-1: #2a1000; --grad-2: #120500; --grad-3: #2b1100; --grad-4: #0a0200; --text-accent: #ff9f43; --text-grad-2: #ff9f43; --border-highlight: rgba(255, 159, 67, 0.3); }
+        [data-theme="mughal"] { --grad-1: #20001a; --grad-2: #0f000b; --grad-3: #24001d; --grad-4: #080005; --text-accent: #f368e0; --text-grad-2: #f368e0; --border-highlight: rgba(243, 104, 224, 0.3); }
+        [data-theme="maratha"] { --grad-1: #00102a; --grad-2: #000612; --grad-3: #00122d; --grad-4: #00040a; --text-accent: #ff9f43; --text-grad-2: #ff9f43; --border-highlight: rgba(255, 159, 67, 0.3); }
+        [data-theme="chola"] { --grad-1: #1a1200; --grad-2: #0a0700; --grad-3: #1f1400; --grad-4: #080500; --text-accent: #cd7f32; --text-grad-2: #cd7f32; --border-highlight: rgba(205, 127, 50, 0.3); }
+        [data-theme="sapphire"] { --grad-1: #001524; --grad-2: #000812; --grad-3: #001a2b; --grad-4: #00050a; --text-accent: #48dbfb; --text-grad-2: #48dbfb; --border-highlight: rgba(72, 219, 251, 0.3); }
+        [data-theme="amethyst"] { --grad-1: #1a0024; --grad-2: #0b0012; --grad-3: #1d002a; --grad-4: #08000d; --text-accent: #9b59b6; --text-grad-2: #9b59b6; --border-highlight: rgba(155, 89, 182, 0.3); }
+        [data-theme="jade"] { --grad-1: #001a11; --grad-2: #000a06; --grad-3: #001f14; --grad-4: #000805; --text-accent: #10ac84; --text-grad-2: #10ac84; --border-highlight: rgba(16, 172, 132, 0.3); }
+        [data-theme="ruby"] { --grad-1: #240003; --grad-2: #120001; --grad-3: #2a0004; --grad-4: #0a0001; --text-accent: #ee5253; --text-grad-2: #ee5253; --border-highlight: rgba(238, 82, 83, 0.3); }
+        [data-theme="gold"] { --grad-1: #1c1400; --grad-2: #0d0a00; --grad-3: #211700; --grad-4: #0a0800; --text-accent: #feca57; --text-grad-2: #feca57; --border-highlight: rgba(254, 202, 87, 0.3); }
+        [data-theme="slate"] { --grad-1: #12151a; --grad-2: #080a0c; --grad-3: #15191f; --grad-4: #060709; --text-accent: #8395a7; --text-grad-2: #8395a7; --border-highlight: rgba(131, 149, 167, 0.3); }
+        [data-theme="desert"] { --grad-1: #261a0d; --grad-2: #120c06; --grad-3: #2d1e0f; --grad-4: #0a0703; --text-accent: #e1b12c; --text-grad-2: #e1b12c; --border-highlight: rgba(225, 177, 44, 0.3); }
+        [data-theme="sunset"] { --grad-1: #260a12; --grad-2: #120308; --grad-3: #2d0b16; --grad-4: #0a0205; --text-accent: #ff7f50; --text-grad-2: #ff7f50; --border-highlight: rgba(255, 127, 80, 0.3); }
+        [data-theme="lavender"] { --grad-1: #161224; --grad-2: #080612; --grad-3: #19142b; --grad-4: #05040a; --text-accent: #b2bec3; --text-grad-2: #b2bec3; --border-highlight: rgba(178, 190, 195, 0.3); }
+        [data-theme="obsidian"] { --grad-1: #0a0a0a; --grad-2: #000000; --grad-3: #0f0f0f; --grad-4: #050505; --text-accent: #c8d6e5; --text-grad-2: #c8d6e5; --border-highlight: rgba(200, 214, 229, 0.3); }
+        [data-theme="aesthetic"] { --grad-1: #241022; --grad-2: #120511; --grad-3: #2a1228; --grad-4: #0a0208; --text-accent: #ff9ff3; --text-grad-2: #ff9ff3; --border-highlight: rgba(255, 159, 243, 0.3); }
+        
+        [data-theme="platinum"] { 
+            --grad-1: #f0f2f5; --grad-2: #e4e7eb; --grad-3: #f5f7fa; --grad-4: #dcdfe3;
+            --bg-app: rgba(240, 242, 245, var(--glass-alpha)); --bg-sidebar: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.15));
+            --bg-card: rgba(255, 255, 255, var(--card-alpha)); --bg-card-alt: rgba(248, 249, 250, calc(var(--card-alpha) - 0.15));
+            --text-main: #2d3436; --text-muted: #636e72; --text-accent: #0984e3;
+            --border-color: rgba(0, 0, 0, 0.08); --border-highlight: rgba(9, 132, 227, 0.3);
+            --text-grad-1: #2d3436; --text-grad-2: #0984e3; --shadow-rgb: 255, 255, 255;
+        }
+        [data-theme="light"] { 
+            --grad-1: #ffffff; --grad-2: #f5f6fa; --grad-3: #ffffff; --grad-4: #eef2f5;
+            --bg-app: rgba(255, 255, 255, var(--glass-alpha)); --bg-sidebar: rgba(245, 246, 250, calc(var(--glass-alpha) + 0.15));
+            --bg-card: rgba(245, 246, 250, var(--card-alpha)); --bg-card-alt: rgba(255, 255, 255, calc(var(--card-alpha) - 0.15));
+            --text-main: #1e272e; --text-muted: #808e9b; --text-accent: #ffa801;
+            --border-color: rgba(0, 0, 0, 0.1); --border-highlight: rgba(255, 168, 1, 0.3);
+            --text-grad-1: #1e272e; --text-grad-2: #ffa801; --shadow-rgb: 255, 255, 255;
+        }
 
         /* --- ✨ NORMALIZATIONS --- */
         * { 
@@ -100,7 +136,7 @@
 
         html, body {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; overflow: hidden;
-            background: linear-gradient(120deg, #1a0f14, #0a0a0f, #1a1a2e, #0a0a0f); background-size: 400% 400%; 
+            background: linear-gradient(120deg, var(--grad-1), var(--grad-2), var(--grad-3), var(--grad-4)); background-size: 400% 400%; 
             animation: ambientGradient 30s ease infinite; color: var(--text-main); user-select: none; -webkit-user-select: none;
             overscroll-behavior: none; transition: background-image 0.8s ease, background-color 0.8s ease; will-change: background-position;
         }
@@ -138,11 +174,9 @@
         .master-balance-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(240, 199, 94, 0.1) 0%, transparent 60%); pointer-events: none; }
         
         .bal-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
-        /* Changed Wallet icon to Piggy Bank for Savings */
         .bal-icon-large { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); display: flex; align-items: center; justify-content: center; font-size: 24px; color: #000; box-shadow: 0 5px 15px rgba(240, 199, 94, 0.4); }
         .bal-details-btn { background: transparent; border: 1px solid #fff; color: #fff; border-radius: 20px; padding: 6px 14px; font-size: 12px; cursor: pointer; transition: all 0.2s; }
         
-        /* 2-Column Grid for pure savings view */
         .bal-bottom-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; text-align: left; }
         .mini-stat-col { display: flex; align-items: center; gap: 6px; border-right: 1px solid rgba(255,255,255,0.1); padding-right: 6px; overflow: hidden; }
         .mini-stat-col:last-child { border-right: none; padding-right: 0; }
@@ -172,7 +206,7 @@
             font-size: 18px; color: var(--text-accent); background: rgba(0,0,0,0.5); 
         }
         .dash-title { 
-            font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 6px; 
+            font-size: 17px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; 
             z-index: 2; font-family: var(--font-heading); 
             margin-top: 50px; 
         }
@@ -189,9 +223,8 @@
         .card-work::after { content: '\f017'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 100px; color: #fff; display: flex; align-items: center; justify-content: flex-end; opacity: 0.05; padding-right: -20px; }
         .card-emi::after { content: '\f19c'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 90px; color: #fff; display: flex; align-items: center; justify-content: flex-end; opacity: 0.05; padding-right: -10px; }
 
-        /* UPGRADED PROMO BANNER CSS */
         .promo-banner { 
-            background: linear-gradient(90deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9)); 
+            background: linear-gradient(90deg, var(--bg-card), var(--bg-card-alt)); 
             border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px 20px; 
             display: flex; justify-content: space-between; align-items: center; 
             margin-bottom: 40px; position: relative; overflow: hidden;
@@ -199,12 +232,11 @@
         }
         .promo-banner:active { transform: scale(0.96); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         .promo-text { font-family: 'Pacifico', cursive; color: var(--text-accent); font-size: 18px; transform: rotate(-5deg); text-shadow: 0 2px 4px rgba(0,0,0,0.5); transition: opacity 0.3s; }
-        .promo-sub { font-size: 11px; font-weight: 700; color: #fff; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; transition: opacity 0.3s; }
+        .promo-sub { font-size: 11px; font-weight: 700; color: var(--text-main); display: flex; flex-direction: column; align-items: flex-end; gap: 2px; transition: opacity 0.3s; }
 
-        /* --- NEW DREAM GOAL TRACKER CSS --- */
         .dream-goal-banner { 
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.95)); 
-            border: 1px solid rgba(240, 199, 94, 0.3); border-radius: 20px; padding: 22px 20px; 
+            background: linear-gradient(135deg, var(--bg-card-alt), var(--bg-card)); 
+            border: 1px solid var(--border-highlight); border-radius: 20px; padding: 22px 20px; 
             margin-bottom: 40px; position: relative; overflow: hidden;
             cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
@@ -429,6 +461,18 @@
                         </div>
                     </div>
 
+                    <!-- SMART PROMO BANNER -->
+                    <div class="promo-banner" onclick="cyclePromoQuote()">
+                        <div class="promo-text" id="promo-main-text">Small Steps<br>Big Dreams ♡</div>
+                        <div class="promo-sub" id="promo-sub-text">
+                            <span><i class="fas fa-crown" style="color: var(--text-accent);"></i> Your Journey</span>
+                            <span>Your Rules</span>
+                        </div>
+                        <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(240, 199, 94, 0.1); border: 1px solid var(--text-accent); color: var(--text-accent); display: flex; align-items: center; justify-content: center; font-size: 12px; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);" id="promo-refresh-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                    </div>
+
                     <!-- NEW DREAM GOAL TRACKER -->
                     <div class="dream-goal-banner" onclick="openDreamGoalModal()">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
@@ -551,7 +595,6 @@
                             </div>
                             
                             <div style="display: flex; gap: 16px; margin-top: 18px;">
-                                <!-- Spend out button removed -->
                                 <button class="btn btn-success" style="padding: 18px; font-size: 15px; width: 100%;" onclick="saveQuickTx('income')"><i class="fas fa-plus-circle"></i> Add to Savings</button>
                             </div>
                             <button class="btn btn-primary" style="margin-top: 8px; width: 100%; background-image: linear-gradient(135deg, #4a00e0, #8e2de2) !important; border-color: #8e2de2 !important; color: #fff !important; box-shadow: 0 8px 25px rgba(142, 45, 226, 0.4) !important; padding: 18px; font-size: 15px;" onclick="saveQuickTx('cashback')"><i class="fas fa-gift"></i> Save as Cashback</button>
