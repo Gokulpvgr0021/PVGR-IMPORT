@@ -247,7 +247,9 @@
         .card-vault::after { background-image: radial-gradient(circle, #fff 10%, transparent 10%), radial-gradient(circle, #fff 10%, transparent 10%); background-size: 10px 10px; }
         .card-work::after { content: '\f017'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 100px; color: #fff; display: flex; align-items: center; justify-content: flex-end; opacity: 0.05; padding-right: -20px; }
         .card-emi::after { content: '\f19c'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 90px; color: #fff; display: flex; align-items: center; justify-content: flex-end; opacity: 0.05; padding-right: -10px; }
+        .card-magnum::after { content: '\f275'; font-family: 'Font Awesome 5 Free'; font-weight: 900; font-size: 90px; color: #fff; display: flex; align-items: center; justify-content: flex-end; opacity: 0.05; padding-right: -10px; }
 
+        /* UPGRADED PROMO BANNER CSS */
         .promo-banner { 
             background: linear-gradient(90deg, var(--bg-card), var(--bg-card-alt)); 
             border-top: 1px solid rgba(255,255,255,0.15);
@@ -268,6 +270,7 @@
         .promo-text { font-family: 'Pacifico', cursive; color: var(--text-accent); font-size: 18px; transform: rotate(-5deg); text-shadow: 0 2px 4px rgba(0,0,0,0.5); transition: opacity 0.3s; }
         .promo-sub { font-size: 11px; font-weight: 700; color: var(--text-main); display: flex; flex-direction: column; align-items: flex-end; gap: 2px; transition: opacity 0.3s; }
 
+        /* --- NEW DREAM GOAL TRACKER CSS --- */
         .dream-goal-banner { 
             background: linear-gradient(135deg, var(--bg-card-alt), var(--bg-card)); 
             border-top: 1px solid rgba(255,255,255,0.15);
@@ -294,12 +297,12 @@
             border-radius: 40px; z-index: 100; justify-content: space-between; align-items: center; 
             box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 -5px 15px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.08); backdrop-filter: blur(25px); 
         }
-        .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; border: none; color: #64748b; font-size: 10px; font-weight: 700; gap: 4px; height: 100%; border-radius: 30px; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); padding: 0 5px; }
-        .tab-item i { font-size: 18px; transition: all 0.3s ease; }
+        .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; border: none; color: #64748b; font-size: 9px; font-weight: 700; gap: 4px; height: 100%; border-radius: 30px; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); padding: 0 3px; }
+        .tab-item i { font-size: 16px; transition: all 0.3s ease; }
         .tab-item.active { color: var(--text-accent); position: relative;}
-        .tab-item.active i { transform: translateY(-2px); text-shadow: 0 0 15px rgba(240, 199, 94, 0.8); }
+        .tab-item.active i { transform: translateY(-2px); text-shadow: 0 0 15px rgba(240, 199, 94, 0.8); font-size: 18px; }
         .tab-item.active span { font-weight: 800; color: #fff; }
-        .tab-item.active::before { content:''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40px; height: 4px; background: var(--text-accent); border-radius: 0 0 4px 4px; box-shadow: 0 0 10px var(--text-accent);}
+        .tab-item.active::before { content:''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 30px; height: 4px; background: var(--text-accent); border-radius: 0 0 4px 4px; box-shadow: 0 0 10px var(--text-accent);}
 
         .main-stage { flex: 1; display: flex; position: relative; overflow: hidden; width: 100%; max-width: 100vw; height: 100%; }
         .view-panel { display: none; width: 100%; height: 100%; overflow-y: auto; padding: 24px; flex-direction: column; -webkit-overflow-scrolling: touch; will-change: transform, opacity; gap: 16px; }
@@ -416,7 +419,7 @@
                     <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" id="dnav-emi-dashboard" onclick="navTo('emi-dashboard')"><i class="fas fa-calculator"></i> <span>EMI Tracker</span></button>
                     <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" id="dnav-history" onclick="navTo('history')"><i class="fas fa-list"></i> <span>Time List</span></button>
                     <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" id="dnav-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i> <span>Settings</span></button>
-                    <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" onclick="openMagnumPortal()"><i class="fas fa-users-cog"></i> <span>Magnum Staff Portal</span></button>
+                    <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" onclick="openMagnumPortal()"><i class="fas fa-industry"></i> <span>Magnum Staff Portal</span></button>
                 </div>
             </div>
             <div class="sidebar-footer">
@@ -438,7 +441,7 @@
                                 <div class="profile-camera-btn" onclick="document.getElementById('quick-camera-input').click()"><i class="fas fa-camera"></i></div>
                                 <input type="file" id="quick-camera-input" accept="image/*" style="display: none;" onchange="quickUpdateProfileImage(this)">
                             </div>
-
+                            
                             <div class="profile-info-wrap">
                                 <div class="profile-name-ui"><i class="fas fa-crown" style="font-size: 16px; color: var(--text-accent);"></i> <span id="prof-name">GOKUL PVGR</span></div>
                                 <div class="profile-tagline">Dream • Work • Achieve</div>
@@ -470,6 +473,7 @@
                                     <span class="mini-val" style="color: var(--success);" id="total-in">₹ 0.00</span>
                                 </div>
                             </div>
+                            <!-- Expense Removed, keeping Monthly Salary in purely 2 columns -->
                             <div class="mini-stat-col" style="border-right: none;">
                                 <div class="mini-icon blue"><i class="fas fa-calendar-alt"></i></div>
                                 <div class="mini-text">
@@ -494,12 +498,6 @@
                             <div class="dash-sub">Punch In/Out, Overtime & Shift Entry</div>
                             <div class="dash-arrow"><i class="fas fa-chevron-right"></i></div>
                         </div>
-                        <div class="dash-card" onclick="openMagnumPortal()">
-                            <div class="dash-icon"><i class="fas fa-users-cog"></i></div>
-                            <div class="dash-title">Magnum Staff Portal</div>
-                            <div class="dash-sub">Staff punch in/out, attendance records & admin reports</div>
-                            <div class="dash-arrow"><i class="fas fa-chevron-right"></i></div>
-                        </div>
                         <div class="dash-card card-emi" onclick="navTo('emi-dashboard')">
                             <div class="dash-icon"><i class="fas fa-calculator"></i></div>
                             <div class="dash-title">EMI</div>
@@ -512,16 +510,16 @@
                             <div class="dash-sub">Shift History, Ledger, Salary Slip & PDF</div>
                             <div class="dash-arrow"><i class="fas fa-chevron-right"></i></div>
                         </div>
+                        <div class="dash-card card-magnum" onclick="openMagnumPortal()">
+                            <div class="dash-icon"><i class="fas fa-industry"></i></div>
+                            <div class="dash-title">Magnum</div>
+                            <div class="dash-sub">SKL Fabric Team Portal</div>
+                            <div class="dash-arrow"><i class="fas fa-chevron-right"></i></div>
+                        </div>
                         <div class="dash-card" onclick="navTo('settings')">
                             <div class="dash-icon"><i class="fas fa-cog"></i></div>
                             <div class="dash-title">Settings</div>
                             <div class="dash-sub">Profile, Wallpaper & Themes</div>
-                            <div class="dash-arrow"><i class="fas fa-chevron-right"></i></div>
-                        </div>
-                        <div class="dash-card" onclick="alert('Premium Features Unlocking Soon!')">
-                            <div class="dash-icon"><i class="fas fa-star"></i></div>
-                            <div class="dash-title" style="color: var(--text-accent);">Premium</div>
-                            <div class="dash-sub">Get more features (Coming Soon)</div>
                             <div class="dash-arrow"><i class="fas fa-chevron-right"></i></div>
                         </div>
                     </div>
@@ -1060,7 +1058,7 @@
                     <input type="range" id="opacity-slider" min="0.1" max="1" step="0.05" oninput="updateGlassOpacity(this.value)" style="width: 100%; margin-bottom: 24px;">
 
                     <div style="font-weight: 800; font-size: 14px; color: var(--text-main); margin-bottom: 10px;">Cards Transparency (See-through)</div>
-                    <input type="range" id="card-opacity-slider" min="0.0" max="1.0" step="0.05" value="0.6" oninput="updateCardOpacity(this.value)" style="width: 100%;">
+                    <input type="range" id="card-opacity-slider" min="0.0" max="1.0" step="0.05" value="0.6" oninput="updateCardOpacity(this.value)" stylewidth: 100%;">
                     <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">Lower the value to make cards more see-through against wallpapers.</p>
                 </div>
 
@@ -1167,7 +1165,6 @@
     <div class="modal-mask" id="menuSheetModal">
         <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom)); border-radius: 24px 24px 0 0;">
             <div style="font-weight: 900; font-size: 20px; text-align: center; border-bottom: 1px solid var(--border-highlight); padding-bottom: 18px; margin-bottom: 16px; font-family: var(--font-heading);">App Menu</div>
-            <button class="btn btn-primary" onclick="openMagnumPortal(); closeModal('menuSheetModal')"><i class="fas fa-users-cog"></i> Magnum Staff Portal</button>
             <button class="btn btn-primary" onclick="openProfileModal(); closeModal('menuSheetModal')"><i class="fas fa-user-edit"></i> Edit Profile</button>
             <button class="btn btn-danger" style="margin-top: 12px;" onclick="resetVaultOnly(); closeModal('menuSheetModal')"><i class="fas fa-trash-restore"></i> Reset Savings Only</button>
             <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important; margin-top: 12px;" onclick="closeModal('menuSheetModal')">Close</button>
@@ -1258,1220 +1255,44 @@
         </div>
     </div>
 
+    <!-- MAGNUM OVERLAY & SCRIPT ADDED HERE PUKKAAVAAGA -->
+    <style>
+    #magnum-portal-overlay { position:fixed; inset:0; z-index:99999; background:#050505; display:none; flex-direction:column; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px) }
+    #magnum-portal-overlay.active { display:flex }
+    #magnum-portal-toolbar { height:52px; flex:0 0 52px; display:flex; align-items:center; justify-content:space-between; padding:0 14px; background:#111827; color:#f0c75e; border-bottom:1px solid rgba(240,199,94,.35); font:600 14px Arial,sans-serif }
+    #magnum-portal-toolbar button { border:1px solid #f0c75e; border-radius:9px; background:#1f2937; color:#fff; padding:8px 13px; cursor:pointer }
+    #magnum-portal-frame { border:0; width:100%; height:calc(100% - 52px); flex:1; background:#000 }
+    @media(prefers-reduced-motion:reduce){ #magnum-portal-overlay{scroll-behavior:auto} }
+    </style>
+    
+    <div id="magnum-portal-overlay" aria-hidden="true">
+      <div id="magnum-portal-toolbar"><span>MAGNUM SKL · STAFF ATTENDANCE</span><button type="button" onclick="closeMagnumPortal()" aria-label="Close staff portal">✕ Close</button></div>
+      <iframe id="magnum-portal-frame" title="Magnum SKL staff attendance portal" allow="clipboard-read; clipboard-write" referrerpolicy="no-referrer"></iframe>
+    </div>
+    
     <script>
-        // --- 0. AUTO IMAGE COMPRESSION ENGINE ---
-        function compressImage(file, maxWidth, maxHeight, quality, callback) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const img = new Image();
-                img.onload = function() {
-                    let width = img.width; let height = img.height;
-                    if (width > height) {
-                        if (width > maxWidth) { height = Math.round(height * maxWidth / width); width = maxWidth; }
-                    } else {
-                        if (height > maxHeight) { width = Math.round(width * maxHeight / height); height = maxHeight; }
-                    }
-                    const canvas = document.createElement('canvas');
-                    canvas.width = width; canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    const dataUrl = canvas.toDataURL('image/jpeg', quality);
-                    callback(dataUrl);
-                };
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // --- DIRECT CAMERA/GALLERY UPLOAD FUNCTION ---
-        function quickUpdateProfileImage(element) {
-            const file = element.files[0];
-            if (file) {
-                compressImage(file, 800, 800, 0.8, function(compressedData) {
-                    profile.avatar = compressedData;
-                    localStorage.setItem('gokulProfile', JSON.stringify(profile));
-                    renderProfile();
-                    localStorage.setItem('gokulAppLogo', compressedData);
-                    renderAppLogo();
-                    element.value = ''; 
-                });
-            }
-        }
-
-        // --- NEW FEATURE: DREAM GOAL TRACKER ---
-        let dreamGoal = JSON.parse(localStorage.getItem('gokulDreamGoal')) || { name: "My Dream", target: 100000, saved: 0 };
-
-        function renderDreamGoal() {
-            document.getElementById('goal-title-display').innerHTML = `<i class="fas fa-star" style="color: var(--text-accent); margin-right: 6px;"></i> ${dreamGoal.name}`;
-            document.getElementById('goal-saved-display').innerText = `₹${parseFloat(dreamGoal.saved).toLocaleString('en-IN')}`;
-            document.getElementById('goal-target-display').innerText = `Target: ₹${parseFloat(dreamGoal.target).toLocaleString('en-IN')}`;
-            
-            let percent = 0;
-            let pending = dreamGoal.target - dreamGoal.saved;
-            if(pending < 0) pending = 0;
-
-            if(dreamGoal.target > 0) {
-                percent = (dreamGoal.saved / dreamGoal.target) * 100;
-                if(percent > 100) percent = 100;
-            }
-            
-            document.getElementById('goal-progress-bar').style.width = `${percent}%`;
-            document.getElementById('goal-percent-display').innerText = `${percent.toFixed(1)}% Completed`;
-
-            const balDisplay = document.getElementById('goal-balance-display');
-            if(balDisplay) {
-                if(percent >= 100) {
-                    balDisplay.innerText = "Goal Reached! 🎉";
-                    balDisplay.style.color = "var(--success)";
-                } else {
-                    balDisplay.innerText = `Pending: ₹${pending.toLocaleString('en-IN')}`;
-                    balDisplay.style.color = "var(--danger)";
-                }
-            }
-        }
-
-        function openDreamGoalModal() {
-            document.getElementById('edit-goal-name').value = dreamGoal.name;
-            document.getElementById('edit-goal-target').value = dreamGoal.target;
-            document.getElementById('edit-goal-saved').value = dreamGoal.saved;
-            openModal('dreamGoalModal');
-        }
-
-        function saveDreamGoal() {
-            let n = document.getElementById('edit-goal-name').value.trim();
-            let t = parseFloat(document.getElementById('edit-goal-target').value);
-            let s = parseFloat(document.getElementById('edit-goal-saved').value);
-            
-            if(!n || isNaN(t) || t <= 0 || isNaN(s)) return alert("Please enter valid details.");
-            
-            dreamGoal = { name: n, target: t, saved: s };
-            localStorage.setItem('gokulDreamGoal', JSON.stringify(dreamGoal));
-            renderDreamGoal();
-            closeModal('dreamGoalModal');
-        }
-
-        // --- 11. IMMERSIVE FULLSCREEN ENGINE ---
-        function requestAppFullScreen() {
-            const doc = window.document; const docEl = doc.documentElement;
-            const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullscreen || docEl.msRequestFullscreen;
-            if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-                if(requestFullScreen) {
-                    requestFullScreen.call(docEl).catch(err => { console.log("Fullscreen ignored by browser until user interacts further."); });
-                }
-            }
-        }
-
-        const initFS = () => {
-            if(localStorage.getItem('gokulAutoFS') !== 'false') { requestAppFullScreen(); }
-            document.removeEventListener('click', initFS); document.removeEventListener('touchstart', initFS);
-        };
-        document.addEventListener('click', initFS); document.addEventListener('touchstart', initFS);
-
-        function toggleFullScreenManual() {
-            const toggle = document.getElementById('fullscreen-toggle');
-            if(toggle && toggle.checked) {
-                localStorage.setItem('gokulAutoFS', 'true'); requestAppFullScreen();
-            } else {
-                localStorage.setItem('gokulAutoFS', 'false');
-                const exitFS = document.exitFullscreen || document.mozCancelFullScreen || document.webkitExitFullscreen || document.msExitFullscreen;
-                if(exitFS) { exitFS.call(document).catch(err => console.log(err)); }
-            }
-        }
-
-        // --- DUAL MODE TOGGLE (LIGHT / DARK) ---
-        function toggleDayNight() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const icon = document.getElementById('mode-icon');
-            if (currentTheme === 'light') {
-                const lastDark = localStorage.getItem('gokulLastDarkTheme') || 'jarvis';
-                applyTheme(lastDark);
-                if(icon) { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
-            } else {
-                localStorage.setItem('gokulLastDarkTheme', currentTheme);
-                applyTheme('light');
-                if(icon) { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); }
-            }
-        }
-
-        // --- 3D TEXT TOGGLE ENGINE ---
-        function toggle3DText() {
-            const isEnabled = document.getElementById('text-3d-toggle').checked;
-            localStorage.setItem('gokul3DText', isEnabled);
-            if(isEnabled) { document.body.classList.add('enable-3d-text'); } 
-            else { document.body.classList.remove('enable-3d-text'); }
-        }
-
-        // --- FONT TOGGLE ENGINE ---
-        function applyFont(fontId) {
-            document.documentElement.setAttribute('data-font', fontId);
-            localStorage.setItem('gokulFontFamily', fontId);
-        }
-
-        // --- 0.6 TEXT FADES & SHADOW COLORS ENGINE ---
-        function hexToRgbStr(hex) {
-            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '0, 0, 0';
-        }
-
-        function saveTextStyles() {
-            const grad1 = document.getElementById('text-grad-1').value || '#ffffff';
-            const grad2 = document.getElementById('text-grad-2').value || '#f0c75e';
-            const shadow = document.getElementById('shadow-color').value || '#000000';
-            localStorage.setItem('gokulTextGrad1', grad1); localStorage.setItem('gokulTextGrad2', grad2); localStorage.setItem('gokulShadowColor', shadow);
-            applyTextStyles(grad1, grad2, shadow);
-        }
-
-        function applyTextStyles(g1, g2, sh) {
-            document.documentElement.style.setProperty('--text-grad-1', g1);
-            document.documentElement.style.setProperty('--text-grad-2', g2);
-            document.documentElement.style.setProperty('--shadow-rgb', hexToRgbStr(sh));
-        }
-
-        function loadTextStyles() {
-            const defaultG2 = getComputedStyle(document.documentElement).getPropertyValue('--text-accent').trim() || '#f0c75e';
-            const g1 = localStorage.getItem('gokulTextGrad1') || '#ffffff';
-            const g2 = localStorage.getItem('gokulTextGrad2') || defaultG2;
-            const sh = localStorage.getItem('gokulShadowColor') || '#000000';
-            
-            if (document.getElementById('text-grad-1')) document.getElementById('text-grad-1').value = g1;
-            if (document.getElementById('text-grad-2')) document.getElementById('text-grad-2').value = g2;
-            if (document.getElementById('shadow-color')) document.getElementById('shadow-color').value = sh;
-            
-            applyTextStyles(g1, g2, sh);
-        }
-
-        function resetTextStyles() {
-            const defaultG2 = getComputedStyle(document.documentElement).getPropertyValue('--text-accent').trim() || '#f0c75e';
-            document.getElementById('text-grad-1').value = '#ffffff';
-            document.getElementById('text-grad-2').value = defaultG2;
-            document.getElementById('shadow-color').value = '#000000';
-            saveTextStyles();
-            alert("3D Text Fades and Colors reset to Default!");
-        }
-
-        // --- 0.5 PDF SETTINGS ENGINE ---
-        function hexToRgb(hex) {
-            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [30, 41, 59];
-        }
-
-        function savePdfSettings() {
-            localStorage.setItem('gokulPdfBrand', document.getElementById('pdf-brand-name').value || 'GOKUL HUB INC.');
-            localStorage.setItem('gokulPdfPrimary', document.getElementById('pdf-color-primary').value || '#1e293b');
-            localStorage.setItem('gokulPdfAccent', document.getElementById('pdf-color-accent').value || '#d4af37');
-        }
-
-        function loadPdfSettings() {
-            const brand = localStorage.getItem('gokulPdfBrand') || 'GOKUL HUB INC.';
-            const primary = localStorage.getItem('gokulPdfPrimary') || '#1e293b';
-            const accent = localStorage.getItem('gokulPdfAccent') || '#d4af37';
-            
-            const bName = document.getElementById('pdf-brand-name');
-            const pColor = document.getElementById('pdf-color-primary');
-            const aColor = document.getElementById('pdf-color-accent');
-            
-            if(bName) bName.value = brand; if(pColor) pColor.value = primary; if(aColor) aColor.value = accent;
-        }
-
-        function resetPdfSettings() {
-            document.getElementById('pdf-brand-name').value = 'GOKUL HUB INC.';
-            document.getElementById('pdf-color-primary').value = '#1e293b';
-            document.getElementById('pdf-color-accent').value = '#d4af37';
-            savePdfSettings();
-            alert("PDF Customizations reset to Default Themes!");
-        }
-
-        // --- 1. BOOT SEQUENCE & APP LOGO LOGIC ---
-        let activeShift = JSON.parse(localStorage.getItem('gokulActiveShift')) || null;
-        let cashbackBalance = parseFloat(localStorage.getItem('gokulCashbackBal')) || 0;
-        let petrolRecords = JSON.parse(localStorage.getItem('gokulPetrolRecords')) || [];
-        let emiRegistry = JSON.parse(localStorage.getItem('gokulEmiRegistry')) || [];
-
-        function renderAppLogo() {
-            const logoSrc = localStorage.getItem('gokulAppLogo') || '10276.png';
-            const logos = [document.getElementById('header-avatar-img'), document.getElementById('sidebar-avatar-img')]; 
-            logos.forEach(img => { if(img) img.src = logoSrc; });
-        }
-
-        function applyMasterImage(type) {
-            const fileInput = document.getElementById('master-image-file');
-            const file = fileInput.files[0];
-            if (!file) { return alert("Please select an image file first!"); }
-
-            compressImage(file, 1920, 1920, 0.7, function(compressedData) {
-                try {
-                    if (type === 'wallpaper' || type === 'both') {
-                        localStorage.setItem('gokulWallpaper', compressedData); applyWallpaper(compressedData);
-                    }
-                    if (type === 'profile' || type === 'both') {
-                        profile.avatar = compressedData; localStorage.setItem('gokulProfile', JSON.stringify(profile));
-                        renderProfile(); localStorage.setItem('gokulAppLogo', compressedData); renderAppLogo();
-                    }
-                    if(type === 'both') alert('Image successfully set as Both Profile and Wallpaper!');
-                    else if(type === 'profile') alert('Image successfully set as Profile Picture!');
-                    else alert('Image successfully set as Background Wallpaper!');
-                } catch(e) { alert('Error: Photo is still too large even after compression.'); }
-            });
-        }
-
-        function resetProfileImage() {
-            localStorage.removeItem('gokulAppLogo'); profile.avatar = '10276.png';
-            localStorage.setItem('gokulProfile', JSON.stringify(profile));
-            renderAppLogo(); renderProfile(); alert('Profile & App Logo Reset to Default!');
-        }
-
-        function checkActiveShift() {
-            const inView = document.getElementById('punch-in-view');
-            const outView = document.getElementById('punch-out-view');
-            const manualView = document.getElementById('manual-shift-view');
-            
-            if (activeShift) {
-                if(inView) inView.style.display = 'none'; if(outView) outView.style.display = 'block'; if(manualView) manualView.style.display = 'none';
-                const jobEl = document.getElementById('active-shift-job'); if(jobEl) jobEl.innerText = activeShift.jobType;
-                
-                if (!window.shiftTimerInterval) {
-                    window.shiftTimerInterval = setInterval(() => {
-                        if (!activeShift) return clearInterval(window.shiftTimerInterval);
-                        const started = new Date(activeShift.inTimeObj); const elapsed = Math.max(0, Date.now() - started.getTime());
-                        const totalSec = Math.floor(elapsed / 1000);
-                        const h = String(Math.floor(totalSec / 3600)).padStart(2,'0'); const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2,'0'); const s = String(totalSec % 60).padStart(2,'0');
-                        const timeEl = document.getElementById('active-shift-time'); if (timeEl) timeEl.innerText = `${h}:${m}:${s}`;
-                    }, 1000);
-                }
-            } else {
-                if(inView) inView.style.display = 'block'; if(outView) outView.style.display = 'none';
-                if (window.shiftTimerInterval) clearInterval(window.shiftTimerInterval);
-            }
-        }
-
-        function toggleManualShift() {
-            const inView = document.getElementById('punch-in-view'); const manualView = document.getElementById('manual-shift-view');
-            if (manualView && manualView.style.display === 'none') {
-                if(inView) inView.style.display = 'none'; manualView.style.display = 'flex';
-            } else {
-                if(manualView) manualView.style.display = 'none'; if(inView) inView.style.display = 'block';
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            renderAppLogo(); 
-            try { loadPdfSettings(); } catch(e) {}
-            try { loadTextStyles(); } catch(e) {}
-
-            const savedFont = localStorage.getItem('gokulFontFamily') || 'default'; applyFont(savedFont);
-
-            const is3DEnabled = localStorage.getItem('gokul3DText') !== 'false'; 
-            if (document.getElementById('text-3d-toggle')) { document.getElementById('text-3d-toggle').checked = is3DEnabled; }
-            if (is3DEnabled) { document.body.classList.add('enable-3d-text'); }
-
-            if(document.getElementById('fullscreen-toggle')) { document.getElementById('fullscreen-toggle').checked = localStorage.getItem('gokulAutoFS') !== 'false'; }
-
-            const isAuto = localStorage.getItem('gokulAutoTheme') === 'true';
-            if (document.getElementById('auto-theme-toggle')) { document.getElementById('auto-theme-toggle').checked = isAuto; }
-            if(isAuto) { autoThemeSwitcher(); } else { try { applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); } catch(e) {} }
-
-            const savedWallpaper = localStorage.getItem('gokulWallpaper');
-            if(savedWallpaper) { applyWallpaper(savedWallpaper); }
-
-            const savedAlpha = localStorage.getItem('gokulGlassAlpha');
-            if (savedAlpha) {
-                document.documentElement.style.setProperty('--glass-alpha', savedAlpha);
-                const opSlider = document.getElementById('opacity-slider'); if (opSlider) opSlider.value = savedAlpha;
-            }
-
-            const savedCardAlpha = localStorage.getItem('gokulCardAlpha');
-            if (savedCardAlpha) {
-                document.documentElement.style.setProperty('--card-alpha', savedCardAlpha);
-                const cSlider = document.getElementById('card-opacity-slider'); if (cSlider) cSlider.value = savedCardAlpha;
-            }
-            
-            const savedBlur = localStorage.getItem('gokulBgBlur');
-            if (savedBlur !== null) {
-                document.documentElement.style.setProperty('--bg-blur', savedBlur + 'px');
-                const bSlider = document.getElementById('blur-slider'); if (bSlider) bSlider.value = savedBlur;
-            }
-
-            try { startLiveClock(); } catch(e) {} try { renderProfile(); } catch(e) {} try { updateVaultStats(); } catch(e) {}
-            try { renderJobDropdown(); } catch(e) {} try { checkActiveShift(); } catch(e) {} try { updateShiftStats(); } catch(e) {}
-            try { renderThemeGallery(); } catch(e) {} try { updateCashbackStats(); } catch(e) {}
-            try { renderDreamGoal(); } catch(e) {} // Initial render for Dream Goal
-            
-            document.getElementById('petrol-price').value = localStorage.getItem('gokulPetrolPrice') || '';
-            try { updatePetrolStats(); } catch(e) {} try { renderEmiRegistry(); } catch(e) {}
-            
-            if (document.getElementById('auto-pdf-toggle')) { document.getElementById('auto-pdf-toggle').checked = localStorage.getItem('gokulAutoPdf') === 'true'; }
-            try { checkAutoPdfDownload(); } catch(e) {}
-
-            navTo('vault-dashboard'); 
-        });
-
-        window.updateBgBlur = function(val) {
-            document.documentElement.style.setProperty('--bg-blur', val + 'px'); localStorage.setItem('gokulBgBlur', val);
-        }
-        window.updateGlassOpacity = function(val) {
-            document.documentElement.style.setProperty('--glass-alpha', val); localStorage.setItem('gokulGlassAlpha', val);
-        }
-        window.updateCardOpacity = function(val) {
-            document.documentElement.style.setProperty('--card-alpha', val); localStorage.setItem('gokulCardAlpha', val);
-        }
-
-        function applyWallpaper(bgData) {
-            if(bgData) {
-                let dim = localStorage.getItem('gokulWallpaperDim') || '0.5';
-                document.body.style.backgroundImage = `linear-gradient(rgba(0,0,0,${dim}), rgba(0,0,0,${dim})), url('${bgData}')`;
-                document.body.style.backgroundPosition = 'center center'; document.body.style.backgroundRepeat = 'no-repeat';
-                document.body.style.backgroundSize = 'cover'; document.body.style.backgroundAttachment = 'fixed'; document.body.style.animation = 'none';
-                const slider = document.getElementById('wallpaper-dimmer-slider'); if(slider) slider.value = dim;
-            }
-        }
-
-        window.updateWallpaperDimmer = function(val) {
-            localStorage.setItem('gokulWallpaperDim', val);
-            const bgData = localStorage.getItem('gokulWallpaper');
-            if(bgData) { document.body.style.backgroundImage = `linear-gradient(rgba(0,0,0,${val}), rgba(0,0,0,${val})), url('${bgData}')`; }
-        }
-
-        function removeWallpaper() {
-            localStorage.removeItem('gokulWallpaper');
-            document.body.style.backgroundImage = ''; document.body.style.backgroundPosition = ''; document.body.style.backgroundRepeat = '';
-            document.body.style.backgroundSize = ''; document.body.style.backgroundAttachment = ''; document.body.style.animation = '';
-            
-            const isAuto = localStorage.getItem('gokulAutoTheme') === 'true';
-            if (isAuto) { autoThemeSwitcher(); } else { applyTheme(localStorage.getItem('gokulTheme') || 'jarvis'); }
-            alert('Wallpaper removed! Themes activated.');
-        }
-
-        // --- 2. LIVE CLOCK & AUTO THEME ENGINE ---
-        function startLiveClock() {
-            setInterval(() => {
-                const now = new Date();
-                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-                const dayName = days[now.getDay()]; const day = String(now.getDate()).padStart(2, '0');
-                const month = months[now.getMonth()]; const year = now.getFullYear();
-                const hours = String(now.getHours()).padStart(2, '0'); const minutes = String(now.getMinutes()).padStart(2, '0'); const seconds = String(now.getSeconds()).padStart(2, '0');
-                const timeStr = `${dayName}, ${day} ${month} ${year}, ${hours}:${minutes}:${seconds}`;
-                const clock1 = document.getElementById('live-clock'); if (clock1) clock1.innerText = timeStr;
-            }, 1000);
-        }
-
-        function toggleAutoTheme() {
-            const isAuto = document.getElementById('auto-theme-toggle').checked;
-            localStorage.setItem('gokulAutoTheme', isAuto);
-            if(isAuto) { autoThemeSwitcher(); alert("Auto-Theme Activated! It will change themes based on the time."); }
-        }
-
-        function autoThemeSwitcher() {
-            if(localStorage.getItem('gokulAutoTheme') === 'true') {
-                const hour = new Date().getHours(); let newTheme = 'jarvis';
-                if (hour >= 6 && hour < 12) newTheme = 'sapphire'; else if (hour >= 12 && hour < 18) newTheme = 'platinum'; else newTheme = 'obsidian'; 
-                if (document.documentElement.getAttribute('data-theme') !== newTheme) { document.documentElement.setAttribute('data-theme', newTheme); }
-            }
-        }
-        setInterval(autoThemeSwitcher, 60000);
-
-        // --- 3. NAVIGATION CONTROLLER ---
-        function navTo(panelId) {
-            document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.sidebar .btn').forEach(b => b.classList.remove('active'));
-            const targetPanel = document.getElementById(`${panelId}-view`); if (targetPanel) targetPanel.classList.add('active');
-            const desktopBtn = document.getElementById(`dnav-${panelId}`); if (desktopBtn) desktopBtn.classList.add('active');
-            const tabMap = { 'vault-dashboard': 'tab-vault', 'attendance': 'tab-att', 'emi-dashboard': 'tab-emi', 'history': 'tab-history', 'settings': 'tab-settings' };
-            if (tabMap[panelId]) { const mobileTab = document.getElementById(tabMap[panelId]); if (mobileTab) mobileTab.classList.add('active'); }
-        }
-
-        function openModal(id) { document.getElementById(id).classList.add('active'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-        function openMenuSheet() { openModal('menuSheetModal'); }
-
-        // --- 4. PROFILE CONTROLLER ---
-        let profile = JSON.parse(localStorage.getItem('gokulProfile')) || { name: "GOKUL", role: "Influencer & Petrol Bunk Worker", idStr: "TVGR", height: "5'4\"", avatar: "10276.png" };
-        if (!profile.avatar) profile.avatar = "10276.png";
-
-        function renderProfile() {
-            const nameEl = document.getElementById('prof-name'); if(nameEl) nameEl.innerText = profile.name.toUpperCase();
-            const roleEl = document.getElementById('prof-role'); if(roleEl) roleEl.innerText = profile.role;
-            const idEl = document.getElementById('prof-id'); if(idEl) idEl.innerText = profile.idStr;
-            const htEl = document.getElementById('prof-ht'); if(htEl) htEl.innerText = profile.height;
-            const avatars = [document.getElementById('vault-avatar-img')]; avatars.forEach(av => { if (av) av.src = profile.avatar; });
-        }
-
-        function openProfileModal() {
-            document.getElementById('m-prof-name').value = profile.name; document.getElementById('m-prof-role').value = profile.role;
-            document.getElementById('m-prof-id').value = profile.idStr; document.getElementById('m-prof-ht').value = profile.height;
-            document.getElementById('m-prof-avatar').value = profile.avatar.startsWith('data:') ? '' : profile.avatar;
-            openModal('profileModal');
-        }
-
-        function encodeImageFileAsURL(element) {
-            const file = element.files[0];
-            if (file) { compressImage(file, 512, 512, 0.8, function(compressedData) { document.getElementById('m-prof-avatar').value = compressedData; }); }
-        }
-
-        function saveProfileData() {
-            profile.name = document.getElementById('m-prof-name').value.trim() || 'Gokul';
-            profile.role = document.getElementById('m-prof-role').value.trim(); profile.idStr = document.getElementById('m-prof-id').value.trim();
-            profile.height = document.getElementById('m-prof-ht').value.trim();
-            const av = document.getElementById('m-prof-avatar').value.trim(); if (av) profile.avatar = av;
-            localStorage.setItem('gokulProfile', JSON.stringify(profile)); renderProfile(); closeModal('profileModal');
-        }
-
-        // --- 5. VAULT & TRANSACTIONS ---
-        let transactions = JSON.parse(localStorage.getItem('gokulVaultTx')) || [];
-
-        function addEmoji(emojiText) {
-            const noteInput = document.getElementById('quick-tx-note');
-            if(noteInput.value) noteInput.value = noteInput.value + ' ' + emojiText; else noteInput.value = emojiText; noteInput.focus();
-        }
-
-        function saveQuickTx(type) {
-            const amount = parseFloat(document.getElementById('quick-tx-amount').value);
-            let note = document.getElementById('quick-tx-note').value.trim();
-            if (isNaN(amount) || amount <= 0) return alert("Enter amount.");
-
-            if (type === 'cashback') {
-                note = note || 'Cashback Reward 🎁'; cashbackBalance += amount; localStorage.setItem('gokulCashbackBal', cashbackBalance);
-                updateCashbackStats(); document.getElementById('quick-tx-amount').value = ''; document.getElementById('quick-tx-note').value = '';
-                alert(`₹${amount.toFixed(2)} added to Cashback Wallet!`); return;
-            }
-
-            note = note || (type === 'expense' ? 'Spending' : 'Income');
-            transactions.push({ date: new Date().toLocaleString('en-GB'), category: note, type: type, amount: amount });
-            localStorage.setItem('gokulVaultTx', JSON.stringify(transactions)); updateVaultStats();
-            
-            // --- NEW: AUTO LINK TO DREAM GOAL ---
-            if (type === 'income') {
-                dreamGoal.saved += amount;
-                localStorage.setItem('gokulDreamGoal', JSON.stringify(dreamGoal));
-                renderDreamGoal();
-            }
-
-            document.getElementById('quick-tx-amount').value = ''; document.getElementById('quick-tx-note').value = '';
-            
-            if (type === 'income') { alert(`₹${amount.toFixed(2)} added to Savings & Dream Goal!`); }
-        }
-
-        let currentEditTxIdx = -1;
-        function openEditTxModal(idx) {
-            currentEditTxIdx = idx; let tx = transactions[idx];
-            document.getElementById('edit-tx-date').value = tx.date; document.getElementById('edit-tx-note').value = tx.category;
-            document.getElementById('edit-tx-amount').value = tx.amount; document.getElementById('edit-tx-flow').value = tx.type; openModal('editTxModal');
-        }
-
-        function saveEditedTx() {
-            if (currentEditTxIdx === -1) return;
-            let tx = transactions[currentEditTxIdx];
-            
-            let newDate = document.getElementById('edit-tx-date').value || tx.date; 
-            let newCategory = document.getElementById('edit-tx-note').value || tx.category;
-            let newAmount = parseFloat(document.getElementById('edit-tx-amount').value) || tx.amount; 
-            let newType = document.getElementById('edit-tx-flow').value || tx.type;
-            
-            // --- NEW: SYNC EDITS TO DREAM GOAL ---
-            if(tx.type === 'income' && newType === 'income') {
-                dreamGoal.saved = dreamGoal.saved - tx.amount + newAmount;
-                if(dreamGoal.saved < 0) dreamGoal.saved = 0;
-            } else if (tx.type === 'income' && newType !== 'income') {
-                dreamGoal.saved -= tx.amount;
-                if(dreamGoal.saved < 0) dreamGoal.saved = 0;
-            } else if (tx.type !== 'income' && newType === 'income') {
-                dreamGoal.saved += newAmount;
-            }
-
-            tx.date = newDate; 
-            tx.category = newCategory;
-            tx.amount = newAmount; 
-            tx.type = newType;
-            
-            localStorage.setItem('gokulVaultTx', JSON.stringify(transactions)); 
-            localStorage.setItem('gokulDreamGoal', JSON.stringify(dreamGoal));
-            
-            updateVaultStats(); 
-            renderDreamGoal();
-            closeModal('editTxModal'); 
-            alert("Transaction Updated & Dream Goal Synced!");
-        }
-
-        function redeemCashback() {
-            if (cashbackBalance <= 0) return alert("No cashback available to redeem.");
-            if (confirm(`Redeem ₹${cashbackBalance.toFixed(2)} to your main Savings?`)) {
-                transactions.push({ date: new Date().toLocaleString('en-GB'), category: "Cashback Redeemed 🎁", type: 'income', amount: cashbackBalance });
-                localStorage.setItem('gokulVaultTx', JSON.stringify(transactions)); 
-                
-                // --- NEW: AUTO LINK TO DREAM GOAL ---
-                dreamGoal.saved += cashbackBalance;
-                localStorage.setItem('gokulDreamGoal', JSON.stringify(dreamGoal));
-                renderDreamGoal();
-
-                cashbackBalance = 0; localStorage.setItem('gokulCashbackBal', 0);
-                updateVaultStats(); updateCashbackStats(); alert("Cashback successfully added to Savings & Dream Goal!");
-            }
-        }
-
-        function updateCashbackStats() { const cbEl = document.getElementById('cashback-balance'); if (cbEl) cbEl.innerText = `₹${cashbackBalance.toFixed(2)}`; }
-
-        function deleteLedgerTx(idx) {
-            if (confirm("Delete this transaction? Your Savings balance will update.")) { 
-                let deletedTx = transactions[idx];
-                transactions.splice(idx, 1); 
-                localStorage.setItem('gokulVaultTx', JSON.stringify(transactions)); 
-                
-                // --- NEW: SYNC DELETE TO DREAM GOAL ---
-                if (deletedTx.type === 'income') {
-                    dreamGoal.saved -= deletedTx.amount;
-                    if(dreamGoal.saved < 0) dreamGoal.saved = 0;
-                    localStorage.setItem('gokulDreamGoal', JSON.stringify(dreamGoal));
-                    renderDreamGoal();
-                }
-
-                updateVaultStats(); 
-            }
-        }
-
-        function updateVaultStats() {
-            let inc = 0; let exp = 0;
-            transactions.forEach(t => { if (t.type === 'income') inc += (Number(t.amount) || 0); if (t.type === 'expense') exp += (Number(t.amount) || 0); });
-            const bal = inc - exp;
-
-            const balEl = document.getElementById('total-balance'); if(balEl) balEl.innerText = `₹${bal.toFixed(2)}`;
-            const inEl = document.getElementById('total-in'); if(inEl) inEl.innerText = `+₹${inc.toFixed(2)}`;
-            const outEl = document.getElementById('total-out'); if(outEl) outEl.innerText = `-₹${exp.toFixed(2)}`;
-            
-            const tbody = document.getElementById('ledger-table-body');
-            if(tbody) {
-                let rowsHtml = '';
-                [...transactions].reverse().forEach((t, revIdx) => {
-                    const actualIdx = transactions.length - 1 - revIdx; const isInc = t.type === 'income';
-                    const dateText = t.date ? String(t.date).split(',')[0] : ''; const catText = t.category ? String(t.category) : ''; const amtText = Number(t.amount) || 0;
-                    rowsHtml += `<tr>
-                        <td style="font-size: 11px;">${dateText}</td><td style="font-weight: 700; text-align: left;">${catText}</td>
-                        <td style="text-transform: capitalize; color: ${isInc ? 'var(--text-accent)' : 'var(--danger)'}">${t.type}</td>
-                        <td style="font-weight: 700; color: ${isInc ? 'var(--text-accent)' : 'var(--danger)'}">${isInc ? '+' : '-'}₹${amtText.toFixed(2)}</td>
-                        <td>
-                            <div style="display: flex; gap: 8px; justify-content: center;">
-                                <button class="btn btn-primary" style="padding: 6px 10px; font-size: 12px; margin: 0; width: auto;" onclick="openEditTxModal(${actualIdx})"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger" style="padding: 6px 10px; font-size: 12px; margin: 0; width: auto;" onclick="deleteLedgerTx(${actualIdx})"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </td>
-                    </tr>`;
-                });
-                tbody.innerHTML = rowsHtml;
-            }
-        }
-
-        // --- 5.1 PETROL TRACKER ---
-        function calculatePetrolLitre() {
-            let price = parseFloat(document.getElementById('petrol-price').value); let amount = parseFloat(document.getElementById('petrol-amount').value);
-            let currentOdo = parseFloat(document.getElementById('petrol-odometer').value);
-            let litres = 0;
-            if (price > 0 && amount > 0) { litres = amount / price; document.getElementById('petrol-litre-display').innerText = litres.toFixed(2) + ' L'; } 
-            else { document.getElementById('petrol-litre-display').innerText = '0.00 L'; }
-
-            if (currentOdo > 0 && petrolRecords.length > 0) {
-                let lastRecord = petrolRecords[petrolRecords.length - 1]; let lastOdo = lastRecord.odometer || 0; let lastLitres = lastRecord.litres || 0;
-                if (lastOdo > 0 && currentOdo > lastOdo && lastLitres > 0) {
-                    let mileage = (currentOdo - lastOdo) / lastLitres; document.getElementById('petrol-mileage-display').innerText = mileage.toFixed(2) + ' km/l';
-                } else { document.getElementById('petrol-mileage-display').innerText = 'Calculating...'; }
-            } else { document.getElementById('petrol-mileage-display').innerText = 'First Fill / No Prev Data'; }
-        }
-
-        function logPetrolExpense() {
-            let price = parseFloat(document.getElementById('petrol-price').value); let amount = parseFloat(document.getElementById('petrol-amount').value); let odo = parseFloat(document.getElementById('petrol-odometer').value) || 0;
-            if (isNaN(price) || isNaN(amount) || price <= 0 || amount <= 0 || odo <= 0) { return alert("Enter valid price, amount, and odometer reading!"); }
-
-            let litres = amount / price;
-            let newRecord = { id: Date.now(), date: new Date().toLocaleString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'}), amount: amount, price: price, litres: litres, odometer: odo, mileage: 'TBD' };
-            let mileageStr = "First Fill";
-
-            if (petrolRecords.length > 0) {
-                let lastIndex = petrolRecords.length - 1; let lastRecord = petrolRecords[lastIndex];
-                if (odo > lastRecord.odometer) {
-                    let calculatedMileage = (odo - lastRecord.odometer) / lastRecord.litres;
-                    petrolRecords[lastIndex].mileage = calculatedMileage.toFixed(2) + ' km/l'; mileageStr = petrolRecords[lastIndex].mileage;
-                } else { return alert(`Current odometer (${odo}) must be greater than previous reading (${lastRecord.odometer})!`); }
-            }
-
-            localStorage.setItem('gokulPetrolPrice', price); petrolRecords.push(newRecord); localStorage.setItem('gokulPetrolRecords', JSON.stringify(petrolRecords));
-            updatePetrolStats();
-            document.getElementById('petrol-amount').value = ''; document.getElementById('petrol-odometer').value = '';
-            document.getElementById('petrol-litre-display').innerText = '0.00 L'; document.getElementById('petrol-mileage-display').innerText = '-- km/l';
-            
-            if (mileageStr === "First Fill") { alert(`Logged ${litres.toFixed(2)} Litres! Mileage will calculate on your next fill. (Saved to history, Savings unchanged).`); } 
-            else { alert(`Logged! Your previous fill gave a mileage of ${mileageStr}. (Saved to history, Savings unchanged).`); }
-        }
-
-        let currentEditPetrolId = -1;
-        function openEditPetrolModal(id) {
-            currentEditPetrolId = id; let p = petrolRecords.find(r => r.id === id);
-            document.getElementById('edit-petrol-date').value = p.date; document.getElementById('edit-petrol-price').value = p.price;
-            document.getElementById('edit-petrol-amount').value = p.amount; document.getElementById('edit-petrol-odo').value = p.odometer; document.getElementById('edit-petrol-id').value = id;
-            openModal('editPetrolModal');
-        }
-
-        function saveEditedPetrol() {
-            let idToEdit = parseInt(document.getElementById('edit-petrol-id').value);
-            let newDate = document.getElementById('edit-petrol-date').value; let newPrice = parseFloat(document.getElementById('edit-petrol-price').value);
-            let newAmount = parseFloat(document.getElementById('edit-petrol-amount').value); let newOdo = parseFloat(document.getElementById('edit-petrol-odo').value);
-            if(isNaN(newPrice) || newPrice <= 0 || isNaN(newAmount) || newAmount <= 0 || isNaN(newOdo) || newOdo <= 0) return alert("Enter valid numbers.");
-
-            let rIndex = petrolRecords.findIndex(r => r.id === idToEdit); if(rIndex === -1) return closeModal('editPetrolModal');
-            petrolRecords[rIndex].date = newDate || petrolRecords[rIndex].date; petrolRecords[rIndex].price = newPrice; petrolRecords[rIndex].amount = newAmount; petrolRecords[rIndex].litres = newAmount / newPrice; petrolRecords[rIndex].odometer = newOdo;
-
-            recalculateAllPetrolMileages();
-            localStorage.setItem('gokulPetrolRecords', JSON.stringify(petrolRecords)); updatePetrolStats(); closeModal('editPetrolModal'); alert("Petrol record updated and mileages recalculated successfully!");
-        }
-
-        function recalculateAllPetrolMileages() {
-            petrolRecords.sort((a, b) => a.id - b.id);
-            for(let i=0; i<petrolRecords.length; i++) {
-                if(i === 0) { petrolRecords[i].mileage = "First Fill"; } 
-                else {
-                    let prev = petrolRecords[i-1]; let curr = petrolRecords[i];
-                    if(curr.odometer > prev.odometer && prev.litres > 0) { let m = (curr.odometer - prev.odometer) / prev.litres; petrolRecords[i-1].mileage = m.toFixed(2) + " km/l"; } 
-                    else { petrolRecords[i-1].mileage = "Error"; }
-                }
-                if (i === petrolRecords.length - 1) { petrolRecords[i].mileage = "TBD"; }
-            }
-        }
-
-        function deletePetrolRecord(id) {
-            if(confirm("Delete this petrol record? (This will not refund the savings transaction, only delete the mileage history)")) {
-                let rIndex = petrolRecords.findIndex(r => r.id === id);
-                if(rIndex > -1) { petrolRecords.splice(rIndex, 1); recalculateAllPetrolMileages(); localStorage.setItem('gokulPetrolRecords', JSON.stringify(petrolRecords)); updatePetrolStats(); }
-            }
-        }
-
-        function updatePetrolStats() {
-            let totalL = 0; let validMileages = []; let tbody = document.getElementById('petrol-table-body'); let html = '';
-
-            [...petrolRecords].reverse().forEach(r => {
-                totalL += (Number(r.litres) || 0);
-                if (r.mileage && !r.mileage.includes('TBD') && !r.mileage.includes('First Fill') && !r.mileage.includes('--') && !r.mileage.includes('Error')) { validMileages.push(parseFloat(r.mileage)); }
-                let milColor = (r.mileage === 'TBD' || r.mileage === 'First Fill' || r.mileage.includes('Error')) ? 'var(--text-muted)' : 'var(--text-accent)';
-                html += `<tr>
-                    <td style="font-size: 11px;">${r.date}</td><td style="font-weight: 700;">${r.odometer}</td><td style="font-weight: 700;">${r.litres.toFixed(2)}L</td>
-                    <td style="font-weight: 700; color: var(--danger);">-₹${r.amount}</td><td style="font-weight: 800; color: ${milColor};">${r.mileage}</td>
-                    <td>
-                        <div style="display: flex; gap: 8px; justify-content: center;">
-                            <button class="btn btn-primary" style="padding: 6px 10px; font-size: 12px; margin: 0; width: auto;" onclick="openEditPetrolModal(${r.id})"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-danger" style="padding: 6px 10px; font-size: 12px; margin: 0; width: auto;" onclick="deletePetrolRecord(${r.id})"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </td>
-                </tr>`;
-            });
-
-            if(tbody) tbody.innerHTML = html;
-            let el = document.getElementById('total-petrol-litres'); if (el) el.innerText = totalL.toFixed(2) + ' L';
-            let avgMil = 0; if (validMileages.length > 0) { avgMil = validMileages.reduce((a, b) => a + b, 0) / validMileages.length; }
-            let milEl = document.getElementById('avg-petrol-mileage'); if (milEl) milEl.innerText = avgMil > 0 ? avgMil.toFixed(2) + ' km/l' : '-- km/l';
-        }
-
-        // --- 5.2 EMI REGISTRY & TRACKING ---
-        function autoCalcEmiEndDate() {
-            let startVal = document.getElementById('emi-reg-start').value; let monthsVal = parseInt(document.getElementById('emi-reg-months').value);
-            if(startVal && !isNaN(monthsVal) && monthsVal > 0) {
-                let d = new Date(startVal); d.setMonth(d.getMonth() + monthsVal); document.getElementById('emi-reg-end').value = d.toISOString().split('T')[0];
-            }
-        }
-
-        function liveCalcEmiReg() {
-            let p = parseFloat(document.getElementById('emi-reg-principal').value); let r = parseFloat(document.getElementById('emi-reg-rate').value); let n = parseInt(document.getElementById('emi-reg-months').value);
-            autoCalcEmiEndDate();
-            if (p > 0 && r >= 0 && n > 0) {
-                let monthlyRate = r / 12 / 100; let emi = 0;
-                if (monthlyRate === 0) { emi = p / n; } else { emi = p * monthlyRate * (Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1); }
-                let totalAmount = emi * n; let totalInterest = totalAmount - p;
-                document.getElementById('reg-live-emi').innerText = '₹' + emi.toFixed(2); document.getElementById('reg-live-int').innerText = '₹' + totalInterest.toFixed(2); document.getElementById('reg-live-total').innerText = '₹' + totalAmount.toFixed(2);
-            } else {
-                document.getElementById('reg-live-emi').innerText = '₹0.00'; document.getElementById('reg-live-int').innerText = '₹0.00'; document.getElementById('reg-live-total').innerText = '₹0.00';
-            }
-        }
-
-        function registerNewEmi() {
-            let name = document.getElementById('emi-reg-name').value.trim(); let p = parseFloat(document.getElementById('emi-reg-principal').value); let r = parseFloat(document.getElementById('emi-reg-rate').value); let n = parseInt(document.getElementById('emi-reg-months').value); let startInput = document.getElementById('emi-reg-start').value; let endInput = document.getElementById('emi-reg-end').value; let payDateInput = parseInt(document.getElementById('emi-reg-paydate').value);
-
-            if (!name || isNaN(p) || p <= 0 || isNaN(r) || r < 0 || isNaN(n) || n <= 0) { return alert("Please fill all valid details to register an EMI."); }
-
-            let monthlyRate = r / 12 / 100; let emi = 0;
-            if (monthlyRate === 0) { emi = p / n; } else { emi = p * monthlyRate * (Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1); }
-            let totalAmount = emi * n; let totalInterest = totalAmount - p;
-            let startDateStr = startInput ? new Date(startInput).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'}) : new Date().toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'});
-            let endDateStr = endInput ? new Date(endInput).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'}) : "N/A";
-            let payDateStr = (!isNaN(payDateInput) && payDateInput > 0 && payDateInput <= 31) ? payDateInput : "N/A";
-
-            let newLoan = { id: Date.now(), name: name, principal: p, rate: r, totalMonths: n, paidMonths: 0, monthlyEmi: emi, totalInterest: totalInterest, totalPayable: totalAmount, startDate: startDateStr, endDate: endDateStr, autoPayDate: payDateStr };
-            emiRegistry.push(newLoan); localStorage.setItem('gokulEmiRegistry', JSON.stringify(emiRegistry));
-            
-            document.getElementById('emi-reg-name').value = ''; document.getElementById('emi-reg-principal').value = ''; document.getElementById('emi-reg-rate').value = ''; document.getElementById('emi-reg-months').value = ''; document.getElementById('emi-reg-start').value = ''; document.getElementById('emi-reg-end').value = ''; document.getElementById('emi-reg-paydate').value = '';
-            document.getElementById('reg-live-emi').innerText = '₹0.00'; document.getElementById('reg-live-int').innerText = '₹0.00'; document.getElementById('reg-live-total').innerText = '₹0.00';
-            renderEmiRegistry(); alert(`Loan '${name}' Registered successfully!`);
-        }
-
-        let currentEditEmiId = -1;
-        function openEditEmiModal(id) {
-            currentEditEmiId = id; let loan = emiRegistry.find(l => l.id === id);
-            document.getElementById('edit-emi-name').value = loan.name; document.getElementById('edit-emi-p').value = loan.principal; document.getElementById('edit-emi-r').value = loan.rate;
-            document.getElementById('edit-emi-m').value = loan.totalMonths; document.getElementById('edit-emi-paid').value = loan.paidMonths; document.getElementById('edit-emi-start').value = loan.startDate;
-            document.getElementById('edit-emi-paydate').value = loan.autoPayDate === "N/A" ? "" : loan.autoPayDate; document.getElementById('edit-emi-id').value = id; openModal('editEmiModal');
-        }
-
-        function saveEditedEmi() {
-            let idToEdit = parseInt(document.getElementById('edit-emi-id').value); let lIndex = emiRegistry.findIndex(l => l.id === idToEdit); if(lIndex === -1) return closeModal('editEmiModal');
-            let name = document.getElementById('edit-emi-name').value.trim(); let p = parseFloat(document.getElementById('edit-emi-p').value); let r = parseFloat(document.getElementById('edit-emi-r').value);
-            let n = parseInt(document.getElementById('edit-emi-m').value); let paid = parseInt(document.getElementById('edit-emi-paid').value); let start = document.getElementById('edit-emi-start').value; let payDate = document.getElementById('edit-emi-paydate').value;
-
-            if (!name || isNaN(p) || p <= 0 || isNaN(r) || r < 0 || isNaN(n) || n <= 0 || isNaN(paid) || paid < 0) { return alert("Please fill all valid numeric details to save."); }
-            if(paid > n) paid = n;
-
-            let monthlyRate = r / 12 / 100; let emi = 0;
-            if (monthlyRate === 0) { emi = p / n; } else { emi = p * monthlyRate * (Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1); }
-            let totalAmount = emi * n; let totalInterest = totalAmount - p;
-
-            let loan = emiRegistry[lIndex]; loan.name = name; loan.principal = p; loan.rate = r; loan.totalMonths = n; loan.paidMonths = paid; loan.monthlyEmi = emi; loan.totalInterest = totalInterest; loan.totalPayable = totalAmount; loan.startDate = start; loan.autoPayDate = payDate ? payDate : "N/A";
-
-            let endDateStr = "N/A";
-            try {
-                let parts = start.includes('/') ? start.split('/') : start.split('-'); let d = null;
-                if(start.includes('/')) d = new Date(parts[2], parts[1]-1, parts[0]); else d = new Date(start);
-                if(!isNaN(d.getTime())) { d.setMonth(d.getMonth() + n); endDateStr = d.toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'}); }
-            } catch(e){}
-            loan.endDate = endDateStr; emiRegistry[lIndex] = loan; localStorage.setItem('gokulEmiRegistry', JSON.stringify(emiRegistry)); renderEmiRegistry(); closeModal('editEmiModal'); alert("EMI details updated successfully!");
-        }
-
-        function markEmiPaid(loanId) {
-            let loanIndex = emiRegistry.findIndex(l => l.id === loanId);
-            if(loanIndex > -1) {
-                let loan = emiRegistry[loanIndex]; let pending = loan.totalMonths - loan.paidMonths; let monthInput = document.getElementById(`pay-months-${loan.id}`); let monthsToPay = monthInput ? parseInt(monthInput.value) : 1;
-                if (isNaN(monthsToPay) || monthsToPay <= 0) { return alert("Please enter a valid number of months."); } if (monthsToPay > pending) { return alert(`You only have ${pending} months pending!`); }
-                let totalPayment = loan.monthlyEmi * monthsToPay;
-                if (loan.paidMonths < loan.totalMonths) {
-                    if(confirm(`Mark ${monthsToPay} month(s) EMI (₹${totalPayment.toFixed(2)}) as Paid for ${loan.name}?\n\n(Note: This is tracked separately and will NOT deduct from your Savings balance)`)) {
-                        loan.paidMonths += monthsToPay; emiRegistry[loanIndex] = loan; localStorage.setItem('gokulEmiRegistry', JSON.stringify(emiRegistry)); renderEmiRegistry(); alert(`EMI marked as Paid! Pending months: ${loan.totalMonths - loan.paidMonths}`);
-                    }
-                } else { alert("This loan is already fully paid!"); }
-            }
-        }
-
-        function deleteEmi(loanId) {
-            if(confirm("Are you sure you want to delete this loan record permanently?")) {
-                emiRegistry = emiRegistry.filter(l => l.id !== loanId); localStorage.setItem('gokulEmiRegistry', JSON.stringify(emiRegistry)); renderEmiRegistry();
-            }
-        }
-
-        function renderEmiRegistry() {
-            const listEl = document.getElementById('emi-registry-list'); if(!listEl) return;
-            if(emiRegistry.length === 0) { listEl.innerHTML = `<div style="text-align:center; color: var(--text-muted); font-size: 14px; padding: 20px;">No Active Loans. Register one above.</div>`; return; }
-
-            let html = '';
-            emiRegistry.forEach(loan => {
-                let pending = loan.totalMonths - loan.paidMonths; let progressPercent = (loan.paidMonths / loan.totalMonths) * 100; let isCompleted = pending === 0; let pendingAmount = loan.totalPayable - (loan.monthlyEmi * loan.paidMonths); if(pendingAmount < 0) pendingAmount = 0;
-                html += `
-                <div class="emi-card" style="padding: 24px; position: relative;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-highlight); padding-bottom: 12px; margin-bottom: 18px;">
-                        <div style="font-size: 20px; font-weight: 800; color: var(--text-main); font-family: var(--font-heading);">${loan.name}</div>
-                        <div style="display: flex; gap: 12px;">
-                            <button style="background:transparent; border:none; color: var(--text-accent); font-size: 18px; cursor: pointer;" onclick="openEditEmiModal(${loan.id})"><i class="fas fa-edit"></i></button>
-                            <button style="background:transparent; border:none; color: var(--danger); font-size: 18px; cursor: pointer;" onclick="deleteEmi(${loan.id})"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px;"><span style="color: var(--text-muted);">EMI / Month:</span><span style="font-weight: 800; color: var(--text-accent);">₹${loan.monthlyEmi.toFixed(2)}</span></div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px;"><span style="color: var(--text-muted);">Total Borrowed:</span><span style="font-weight: 800; color: var(--text-main);">₹${loan.principal.toFixed(2)}</span></div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px;"><span style="color: var(--text-muted);">Start Date:</span><span style="font-weight: 800; color: var(--text-main);">${loan.startDate}</span></div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px;"><span style="color: var(--text-muted);">End Date (Payoff):</span><span style="font-weight: 800; color: ${isCompleted ? 'var(--success)' : 'var(--text-main)'};">${loan.endDate}</span></div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px;"><span style="color: var(--text-muted);">Auto Pay Date:</span><span style="font-weight: 800; color: var(--text-accent);">${loan.autoPayDate !== "N/A" ? 'Day ' + loan.autoPayDate + ' of every month' : 'Not Set'}</span></div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 18px; font-size: 14px;"><span style="color: var(--text-muted);">Pending Amount:</span><span style="font-weight: 800; color: var(--danger); font-size: 18px;">₹${pendingAmount.toFixed(2)}</span></div>
-                    <div style="background: rgba(0,0,0,0.5); height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 10px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);"><div style="height: 100%; width: ${progressPercent}%; background: var(--success); transition: width 0.4s ease;"></div></div>
-                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; margin-bottom: 20px;"><span>Paid: ${loan.paidMonths}M</span><span>Pending: ${pending}M</span></div>
-                    ${isCompleted ? 
-                        `<div style="text-align: center; color: var(--success); font-weight: 900; padding: 14px; border: 2px dashed var(--success); border-radius: 12px; background: rgba(46, 213, 115, 0.1);"><i class="fas fa-check-circle"></i> LOAN CLEARED</div>` : 
-                        `<div style="display: flex; gap: 14px; align-items: stretch;">
-                            <input type="number" id="pay-months-${loan.id}" class="form-control" style="width: 90px; padding: 12px; text-align: center; font-weight: 900; font-size: 18px !important;" value="1" min="1" max="${pending}">
-                            <button class="btn btn-success" style="padding: 14px; font-size: 14px; flex: 1; margin: 0;" onclick="markEmiPaid(${loan.id})"><i class="fas fa-hand-holding-usd"></i> Pay EMI</button>
-                        </div>`
-                    }
-                </div>`;
-            });
-            listEl.innerHTML = html;
-        }
-
-        function downloadMasterEmiReport() {
-            if(emiRegistry.length === 0) return alert("No active loans to generate report!");
-            const brandName = localStorage.getItem('gokulPdfBrand') || 'GOKUL HUB INC.'; const primaryColor = hexToRgb(localStorage.getItem('gokulPdfPrimary') || '#1e293b'); const accentColor = hexToRgb(localStorage.getItem('gokulPdfAccent') || '#d4af37');
-            const { jsPDF } = window.jspdf; const pageHeight = Math.max(297, 140 + (emiRegistry.length * 15)); const doc = new jsPDF('p', 'mm', [210, pageHeight]);
-            const darkText = [40, 40, 40]; const lightText = [100, 100, 100];
-
-            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.rect(0, 0, 210, 40, 'F'); doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.setFont("helvetica", "bold");
-            try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 10, 20, 20); } catch(e) {}
-            const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14; doc.text(brandName, textStartX, 20); doc.setFontSize(12); doc.setFont("helvetica", "normal"); doc.text("MASTER EMI TRACKING REPORT", textStartX, 30);
-            
-            const now = new Date(); doc.setFontSize(10); doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
-            doc.setTextColor(darkText[0], darkText[1], darkText[2]); doc.setFontSize(12); doc.setFont("helvetica", "bold"); doc.text("ACCOUNT HOLDER DETAILS", 14, 50); doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.text(`Name: ${profile.name}`, 14, 58); doc.text(`ID: ${profile.idStr}`, 14, 64);
-            
-            let overallBorrowed = 0; let overallPayable = 0; let overallMonthlyEmi = 0; let activeLoans = 0;
-            emiRegistry.forEach(l => { overallBorrowed += l.principal; overallPayable += l.totalPayable; if(l.paidMonths < l.totalMonths) { overallMonthlyEmi += l.monthlyEmi; activeLoans++; } });
-
-            doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.setLineWidth(0.5); doc.roundedRect(120, 45, 75, 38, 3, 3, 'S'); doc.setFont("helvetica", "bold"); doc.text("OVERALL SUMMARY", 125, 52); doc.setFont("helvetica", "normal"); doc.text(`Active Loans: ${activeLoans}`, 125, 60); doc.text(`Total Borrowed: INR ${overallBorrowed.toFixed(2)}`, 125, 66); doc.text(`Comb. Monthly EMI: INR ${overallMonthlyEmi.toFixed(2)}`, 125, 72); doc.setFont("helvetica", "bold"); doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]); doc.text(`Total Payable: INR ${overallPayable.toFixed(2)}`, 125, 78);
-            
-            let tableRows = []; emiRegistry.forEach(loan => { tableRows.push([ loan.name, `Rs. ${loan.principal.toFixed(2)}`, `Rs. ${loan.monthlyEmi.toFixed(2)}`, loan.autoPayDate !== "N/A" ? `Day ${loan.autoPayDate}` : "-", `${loan.paidMonths} / ${loan.totalMonths}`, loan.endDate ]); });
-            
-            doc.autoTable({ startY: 95, head: [["Loan Name", "Borrowed", "EMI/Month", "Pay Date", "Paid/Total", "End Date"]], body: tableRows, theme: 'striped', headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' }, bodyStyles: { textColor: darkText, halign: 'center' }, alternateRowStyles: { fillColor: [240, 244, 248] }, styles: { font: 'helvetica', fontSize: 9, cellPadding: 5 }, columnStyles: { 0: { halign: 'left', fontStyle: 'bold' } }, margin: { left: 14, right: 14 } });
-            
-            const finalY = doc.lastAutoTable.finalY || 95; doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(darkText[0], darkText[1], darkText[2]); doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30); doc.setLineWidth(0.5); doc.line(14, finalY + 25, 70, finalY + 25); doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(lightText[0], lightText[1], lightText[2]); doc.text(`System Generated Report - ${brandName}`, 14, finalY + 45);
-            doc.save(`Gokul_Master_EMI_Report_${Date.now()}.pdf`);
-        }
-
-        // --- SAVINGS RESET ONLY ---
-        function resetVaultOnly() {
-            if (confirm("Are you sure you want to completely reset your Savings Dashboard? All transaction history, petrol records, EMI registry, and balance will be deleted. Attendance and Work data will remain safe.")) {
-                transactions = []; localStorage.setItem('gokulVaultTx', JSON.stringify(transactions)); 
-                cashbackBalance = 0; localStorage.setItem('gokulCashbackBal', 0); 
-                petrolRecords = []; localStorage.setItem('gokulPetrolRecords', JSON.stringify(petrolRecords)); 
-                emiRegistry = []; localStorage.setItem('gokulEmiRegistry', JSON.stringify(emiRegistry));
-                
-                dreamGoal.saved = 0; localStorage.setItem('gokulDreamGoal', JSON.stringify(dreamGoal));
-
-                updateVaultStats(); updateCashbackStats(); updatePetrolStats(); renderEmiRegistry(); renderDreamGoal();
-                alert("Savings Dashboard has been successfully reset."); navTo('vault-dashboard');
-            }
-        }
-
-        // --- 6. WORK ENGINE (LIVE PUNCH & DEDUCTIONS) ---
-        let shifts = JSON.parse(localStorage.getItem('gokulAttRecords')) || [];
-        let jobProfiles = JSON.parse(localStorage.getItem('gokulJobProfiles')) || ["Petrol Bunk Worker", "Content Creator"];
-
-        let currentEditShiftIdx = -1;
-        function openEditShiftModal(idx) {
-            currentEditShiftIdx = idx; let s = shifts[idx];
-            document.getElementById('edit-shift-date').value = s.date; document.getElementById('edit-shift-job').value = s.jobType;
-            document.getElementById('edit-shift-hrs').value = s.net; document.getElementById('edit-shift-ot').value = s.otHours; document.getElementById('edit-shift-gross').value = s.grossEarned || s.totalEarned;
-            openModal('editShiftModal');
-        }
-
-        function saveEditedShift() {
-            if (currentEditShiftIdx === -1) return; let s = shifts[currentEditShiftIdx];
-            s.date = document.getElementById('edit-shift-date').value || s.date; s.jobType = document.getElementById('edit-shift-job').value || s.jobType; s.net = parseFloat(document.getElementById('edit-shift-hrs').value) || s.net; s.otHours = parseFloat(document.getElementById('edit-shift-ot').value) || s.otHours;
-            let g = parseFloat(document.getElementById('edit-shift-gross').value); if(!isNaN(g)) { s.grossEarned = g; s.totalEarned = g; }
-            localStorage.setItem('gokulAttRecords', JSON.stringify(shifts)); updateShiftStats(); closeModal('editShiftModal'); alert("Shift Updated!");
-        }
-
-        function renderJobDropdown() { const select = document.getElementById('att-job-select'); if(select) select.innerHTML = jobProfiles.map(j => `<option value="${j}">${j}</option>`).join(''); }
-
-        function openJobModal() {
-            const list = document.getElementById('job-profile-list');
-            if(list) { list.innerHTML = jobProfiles.map((j, i) => `<div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); padding: 10px; border-radius: 8px;"><span style="font-weight: 700;">${j}</span><button class="btn btn-danger" style="padding: 4px 8px;" onclick="removeJobProfile(${i})"><i class="fas fa-trash"></i></button></div>`).join(''); }
-            openModal('jobModal');
-        }
-
-        function createJobProfile() { const val = document.getElementById('new-job-input').value.trim(); if (val) { jobProfiles.push(val); localStorage.setItem('gokulJobProfiles', JSON.stringify(jobProfiles)); document.getElementById('new-job-input').value = ''; openJobModal(); renderJobDropdown(); } }
-        function removeJobProfile(i) { jobProfiles.splice(i, 1); localStorage.setItem('gokulJobProfiles', JSON.stringify(jobProfiles)); openJobModal(); renderJobDropdown(); }
-
-        document.getElementById('att-base-rate').value = localStorage.getItem('gokulSavedBase') || ''; document.getElementById('att-ot-rate').value = localStorage.getItem('gokulSavedOT') || ''; document.getElementById('monthly-epf').value = localStorage.getItem('gokulMonthlyEPF') || '0'; document.getElementById('monthly-esic').value = localStorage.getItem('gokulMonthlyESIC') || '0'; document.getElementById('att-date').valueAsDate = new Date();
-
-        function saveRates() { localStorage.setItem('gokulSavedBase', document.getElementById('att-base-rate').value); localStorage.setItem('gokulSavedOT', document.getElementById('att-ot-rate').value); }
-        function saveMonthlyDeductions() { localStorage.setItem('gokulMonthlyEPF', document.getElementById('monthly-epf').value || '0'); localStorage.setItem('gokulMonthlyESIC', document.getElementById('monthly-esic').value || '0'); updateShiftStats(); }
-
-        function punchIn() {
-            const baseSalary = parseFloat(document.getElementById('att-base-rate').value); const otRate = parseFloat(document.getElementById('att-ot-rate').value); const jobType = document.getElementById('att-job-select').value;
-            const isFullOTCheckbox = document.getElementById('live-full-ot'); const isFullOT = isFullOTCheckbox ? isFullOTCheckbox.checked : false;
-            
-            if (isNaN(baseSalary) || isNaN(otRate)) return alert("Set Base and OT rates first.");
-            const now = new Date(); const dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
-            if (shifts.some(s => s.date === dateStr)) { return alert(`A shift is already completed for today (${dateStr}).`); }
-
-            activeShift = { date: dateStr, jobType: jobType, baseSalary: baseSalary, otRate: otRate, isFullOT: isFullOT, inTimeObj: now.getTime() };
-            localStorage.setItem('gokulActiveShift', JSON.stringify(activeShift)); saveRates(); checkActiveShift();
-        }
-
-        function punchOut() {
-            if (!activeShift) return;
-            const now = new Date(); const start = new Date(activeShift.inTimeObj); let diffHours = (now.getTime() - start.getTime()) / (1000 * 60 * 60);
-            const breakDeduct = diffHours > 4 ? 0.5 : 0; const net = Math.max(0, diffHours - breakDeduct); const isFullOT = start.getDay() === 0 || activeShift.isFullOT;
-
-            let regHours = isFullOT ? 0 : Math.min(net, 8); let otHours = isFullOT ? net : Math.max(0, net - 8);
-            const baseEarned = (regHours / 8) * activeShift.baseSalary; const otEarned = otHours * activeShift.otRate; const grossEarned = baseEarned + otEarned;
-            const inTimeStr = start.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false}); const outTimeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false}); const timingStr = `${inTimeStr} - ${outTimeStr}`;
-
-            shifts.push({ date: activeShift.date, jobType: activeShift.jobType, timing: timingStr, net, otHours, totalEarned: grossEarned, grossEarned: grossEarned }); shifts.sort((a, b) => new Date(a.date) - new Date(b.date)); localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
-            
-            activeShift = null; localStorage.removeItem('gokulActiveShift'); updateShiftStats(); checkActiveShift();
-            if(isFullOT) alert(`FULL OT SHIFT COMPLETED! 100% calculated as OT.`); else alert(`Shift Completed!`);
-        }
-
-        function cancelPunch() { if(confirm("Cancel current active shift?")) { activeShift = null; localStorage.removeItem('gokulActiveShift'); checkActiveShift(); } }
-
-        function recordShiftManual() {
-            const date = document.getElementById('att-date').value; const inTime = document.getElementById('att-in').value; const outTime = document.getElementById('att-out').value; const baseSalary = parseFloat(document.getElementById('att-base-rate').value); const otRate = parseFloat(document.getElementById('att-ot-rate').value); const jobType = document.getElementById('att-job-select').value;
-            const isFullOTCheckbox = document.getElementById('manual-full-ot'); const isFullOTCheck = isFullOTCheckbox ? isFullOTCheckbox.checked : false;
-            const extraOTInput = document.getElementById('manual-extra-ot'); const extraOTManual = extraOTInput ? (parseFloat(extraOTInput.value) || 0) : 0;
-
-            if (!date || !inTime || !outTime || isNaN(baseSalary) || isNaN(otRate)) return alert("Fill all details.");
-            saveRates();
-
-            let start = new Date(`1970-01-01T${inTime}:00`); let end = new Date(`1970-01-01T${outTime}:00`); if (end < start) end.setDate(end.getDate() + 1);
-            const gross = (end - start) / (1000 * 60 * 60); const breakDeduct = gross > 4 ? 0.5 : 0; let net = Math.max(0, gross - breakDeduct);
-            
-            const dateParts = date.split('-'); const shiftDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); const isFullOT = shiftDate.getDay() === 0 || isFullOTCheck;
-
-            let regHours = isFullOT ? 0 : Math.min(net, 8); let otHours = isFullOT ? net : Math.max(0, net - 8); otHours += extraOTManual; net += extraOTManual;
-            const baseEarned = (regHours / 8) * baseSalary; const otEarned = otHours * otRate; const grossEarned = baseEarned + otEarned; const timingStr = `${inTime} - ${outTime}`;
-
-            shifts.push({ date, jobType, timing: timingStr, net, otHours, totalEarned: grossEarned, grossEarned: grossEarned }); shifts.sort((a, b) => new Date(a.date) - new Date(b.date)); localStorage.setItem('gokulAttRecords', JSON.stringify(shifts));
-            
-            updateShiftStats(); document.getElementById('att-date').valueAsDate = new Date(); document.getElementById('att-in').value = '09:30'; document.getElementById('att-out').value = '18:00'; if(extraOTInput) extraOTInput.value = ''; toggleManualShift();
-            if(isFullOT) alert(`FULL OT SHIFT! Shift saved.`); else alert(`Shift saved!`);
-        }
-
-        function updateShiftStats() {
-            const tbody = document.getElementById('att-table-body'); let totalGross = 0;
-            shifts.forEach(s => { totalGross += (Number(s.grossEarned) || Number(s.totalEarned) || 0); });
-
-            const epf = parseFloat(document.getElementById('monthly-epf').value) || 0; const esic = parseFloat(document.getElementById('monthly-esic').value) || 0; const totalDed = epf + esic; const netPay = totalGross - totalDed;
-
-            if(tbody) {
-                let html = '';
-                [...shifts].reverse().forEach((s, revIdx) => {
-                    const actualIdx = shifts.length - 1 - revIdx; const jobName = s.jobType ? String(s.jobType) : 'Job'; const shortJob = jobName.length > 8 ? jobName.substring(0,8) + '..' : jobName; const timingDisp = s.timing ? String(s.timing) : ((s.inTime || '00:00') + '-' + (s.outTime || '00:00'));
-                    html += `<tr>
-                        <td>${s.date || ''}</td><td style="font-weight: 700; font-size: 11px;">${shortJob}</td><td style="font-size: 11px;">${timingDisp}</td>
-                        <td>${(Number(s.net)||0).toFixed(1)}h</td><td style="color: var(--text-accent); font-weight: 700;">${(Number(s.otHours)||0).toFixed(1)}h</td><td style="font-weight: 700;">₹${(Number(s.grossEarned) || Number(s.totalEarned) || 0).toFixed(0)}</td>
-                        <td>
-                            <div style="display: flex; gap: 8px; justify-content: center;">
-                                <button class="btn btn-primary" style="padding: 4px 8px; font-size: 11px; margin: 0; width: auto;" onclick="openEditShiftModal(${actualIdx})"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px; margin: 0; width: auto;" onclick="deleteShift(${actualIdx})"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </td>
-                    </tr>`;
-                });
-                tbody.innerHTML = html;
-            }
-
-            const statDays = document.getElementById('stat-days'); if(statDays) statDays.innerText = shifts.length;
-            const statGross = document.getElementById('stat-gross'); if(statGross) statGross.innerText = `₹${totalGross.toFixed(0)}`;
-            const statDed = document.getElementById('stat-ded'); if(statDed) statDed.innerText = `₹${totalDed.toFixed(0)}`;
-            const statNet = document.getElementById('stat-net'); if(statNet) statNet.innerText = `₹${netPay.toFixed(0)}`;
-            
-            // LINK MONTHLY SALARY SPAN
-            const dashMonthlySalary = document.getElementById('dash-monthly-salary'); if(dashMonthlySalary) dashMonthlySalary.innerText = `₹${netPay.toFixed(0)}`;
-        }
-
-        function deleteShift(idx) { if (confirm("Delete shift?")) { shifts.splice(idx, 1); localStorage.setItem('gokulAttRecords', JSON.stringify(shifts)); updateShiftStats(); } }
-        function clearShifts() { if (confirm("Clear all shift records?")) { shifts = []; localStorage.setItem('gokulAttRecords', JSON.stringify(shifts)); updateShiftStats(); } }
-
-        // --- 7. AUTO-DOWNLOAD PDF SETTINGS ---
-        function toggleAutoPdf() { localStorage.setItem('gokulAutoPdf', document.getElementById('auto-pdf-toggle').checked); }
-        function checkAutoPdfDownload() {
-            if(localStorage.getItem('gokulAutoPdf') === 'true') {
-                const now = new Date(); const currentMonthKey = now.getFullYear() + '-' + now.getMonth(); const lastDownload = localStorage.getItem('gokulLastAutoPdf');
-                if (now.getDate() >= 1 && lastDownload !== currentMonthKey) {
-                    setTimeout(() => { downloadAllPdfsNow(); localStorage.setItem('gokulLastAutoPdf', currentMonthKey); }, 3000);
-                }
-            }
-        }
-        function downloadAllPdfsNow() {
-            alert("Starting automated download for all reports...");
-            setTimeout(downloadVaultLedger, 500); setTimeout(downloadPayslip, 2500); setTimeout(downloadTimesheet, 4500); setTimeout(downloadMasterEmiReport, 6500);
-        }
-
-        // --- 8. PREMIUM SAVINGS LEDGER DOWNLOAD WITH HTML2PDF ---
-        function downloadVaultLedger() {
-            if (transactions.length === 0) return alert("No transactions to export!");
-            const brandName = localStorage.getItem('gokulPdfBrand') || 'GOKUL HUB INC.'; const primaryHex = localStorage.getItem('gokulPdfPrimary') || '#1e293b'; const accentHex = localStorage.getItem('gokulPdfAccent') || '#d4af37';
-            const exportContainer = document.createElement('div'); exportContainer.style.padding = '24px'; exportContainer.style.color = '#111'; exportContainer.style.background = '#ffffff'; exportContainer.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
-
-            let inc = 0, exp = 0; transactions.forEach(t => { if (t.type === 'income') inc += (Number(t.amount) || 0); if (t.type === 'expense') exp += (Number(t.amount) || 0); }); const bal = inc - exp;
-
-            exportContainer.innerHTML = `
-                <div style="background:${primaryHex}; color:#fff; padding:20px; border-radius:12px; margin-bottom:20px; border-bottom: 4px solid ${accentHex};">
-                    <h2 style="margin:0; font-size:24px; font-family: 'Playfair Display', serif; letter-spacing: 1px;">${brandName}</h2>
-                    <p style="margin:6px 0 0; font-size:12px; color:${accentHex}; font-weight: bold; letter-spacing: 2px;">PREMIUM SAVINGS LEDGER REPORT</p>
-                </div>
-                <div style="display:flex; justify-content:space-between; margin-bottom:24px; font-size:13px; background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                    <div>
-                        <strong style="color: #475569;">ACCOUNT HOLDER:</strong><br>
-                        <span style="font-size: 16px; font-weight: 800; color: ${primaryHex};">${profile.name.toUpperCase()}</span><br>
-                        <span style="color: #64748b;">ID: ${profile.idStr} | Role: ${profile.role}</span><br>
-                        <span style="color: #64748b;">Date: ${new Date().toLocaleDateString()}</span>
-                    </div>
-                    <div style="text-align:right;">
-                        <div style="color: #27ae60; margin-bottom: 4px;"><strong>Total Income:</strong> +₹${inc.toFixed(2)}</div>
-                        <div style="color: #e74c3c; margin-bottom: 4px;"><strong>Total Expense:</strong> -₹${exp.toFixed(2)}</div>
-                        <div style="font-size: 16px; color: ${accentHex}; margin-top: 8px;"><strong>Net Balance: ₹${bal.toFixed(2)}</strong></div>
-                    </div>
-                </div>
-                <table style="width:100%; border-collapse:collapse; font-size:12px; text-align:left;">
-                    <thead>
-                        <tr style="background:${primaryHex}; color:#fff;">
-                            <th style="padding:12px 8px; border-radius: 6px 0 0 0;">Date</th><th style="padding:12px 8px;">Description</th><th style="padding:12px 8px;">Flow</th><th style="padding:12px 8px; text-align:right; border-radius: 0 6px 0 0;">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${[...transactions].reverse().map((t, i) => `
-                            <tr style="background:${i % 2 === 0 ? '#ffffff' : '#f8fafc'}; border-bottom:1px solid #e2e8f0;">
-                                <td style="padding:10px 8px; color: #475569;">${t.date ? String(t.date).split(',')[0] : ''}</td><td style="padding:10px 8px; font-weight: 600; color: #0f172a;">${t.category}</td>
-                                <td style="padding:10px 8px; font-weight:bold; color:${t.type === 'income' ? '#27ae60' : '#e74c3c'};">${t.type.toUpperCase()}</td>
-                                <td style="padding:10px 8px; text-align:right; font-weight:bold; color:${t.type === 'income' ? '#27ae60' : '#e74c3c'};">${t.type === 'income' ? '+' : '-'}₹${Number(t.amount).toFixed(2)}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-                <div style="margin-top: 40px; border-top: 2px solid #e2e8f0; padding-top: 20px;">
-                    <p style="font-weight: bold; font-size: 11px; margin: 0; color: #0f172a;">AUTHORIZED SIGNATURE</p>
-                    <div style="width: 150px; height: 1px; background: #94a3b8; margin: 30px 0 10px;"></div>
-                    <p style="font-size: 9px; color: #94a3b8; margin: 0;">System Generated Ledger - ${brandName}</p>
-                </div>
-            `;
-            document.body.appendChild(exportContainer);
-
-            const opt = { margin: 10, filename: `Gokul_Savings_Ledger_${Date.now()}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true, logging: false }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
-            html2pdf().set(opt).from(exportContainer).save().then(() => { document.body.removeChild(exportContainer); });
-        }
-
-        function downloadPayslip() {
-            if (shifts.length === 0) return alert("No shifts to export!");
-            const brandName = localStorage.getItem('gokulPdfBrand') || 'GOKUL HUB INC.'; const pColor = hexToRgb(localStorage.getItem('gokulPdfPrimary') || '#1e293b');
-            const { jsPDF } = window.jspdf; const doc = new jsPDF('p', 'mm', 'a4');
-            
-            let totalGross = 0, totalOTHours = 0, totalNetHours = 0;
-            shifts.forEach(s => { totalGross += (Number(s.grossEarned) || Number(s.totalEarned) || 0); totalNetHours += (Number(s.net) || 0); totalOTHours += (Number(s.otHours) || 0); });
-
-            const totalEpf = parseFloat(localStorage.getItem('gokulMonthlyEPF')) || 0; const totalEsic = parseFloat(localStorage.getItem('gokulMonthlyESIC')) || 0;
-            const otPay = totalOTHours > 0 ? (totalGross * (totalOTHours / totalNetHours)) : 0; const basePay = totalGross - otPay; const basic = basePay * 0.6; const hra = basePay * 0.4; const totalDed = totalEpf + totalEsic;
-
-            try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 15, 20, 20); } catch(e) {}
-            doc.setTextColor(pColor[0], pColor[1], pColor[2]); doc.setFontSize(16); doc.setFont("helvetica", "bold"); doc.text(brandName, 105, 20, { align: "center" });
-            doc.setFontSize(10); doc.setFont("helvetica", "normal"); const monthName = new Date().toLocaleString('default', { month: 'long', year: 'numeric' }); doc.text(`Payslip For The Month of ${monthName}`, 105, 26, { align: "center" });
-            doc.setDrawColor(pColor[0], pColor[1], pColor[2]); doc.setLineWidth(0.4); doc.rect(14, 38, 182, 145); doc.line(14, 52, 196, 52); doc.line(14, 62, 196, 62);
-            doc.setTextColor(0, 0, 0); doc.setFontSize(9);
-            doc.text(`Emp. No/Card No : ${profile.idStr}`, 16, 44); doc.text(`Name : ${profile.name.toUpperCase()}`, 80, 44); doc.text(`Des. : ${profile.role.substring(0, 20)}`, 140, 44);
-            const days = shifts.length; doc.text(`Days pre : ${days}`, 16, 58); doc.text(`PH : 0`, 50, 58); doc.text(`EL : 0`, 70, 58); doc.text(`ELB : 0`, 95, 58); doc.text(`O.ALL : 0`, 115, 58); doc.text(`P days : ${days}`, 145, 58); doc.text(`LOP : 0`, 175, 58);
-            doc.setFont("helvetica", "bold"); doc.setTextColor(pColor[0], pColor[1], pColor[2]); doc.text("EARNINGS", 55, 68, { align: "center" }); doc.text("DEDUCTIONS", 145, 68, { align: "center" }); doc.line(14, 72, 196, 72); doc.line(105, 62, 105, 183);
-
-            doc.setTextColor(0, 0, 0); doc.setFont("helvetica", "normal");
-            let y = 80; const gap = 8; const leftX = 16, valLeftX = 98, rightX = 108, valRightX = 190;
-            doc.text("Basic", leftX, y); doc.text(basic.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
-            doc.text("HRA", leftX, y); doc.text(hra.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
-            doc.text("EDA/O.ALL", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
-            doc.text("OT", leftX, y); doc.text(otPay.toFixed(2), valLeftX, y, { align: "right" }); y += gap;
-            doc.text("Misc. Ear 1", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
-            doc.text("Misc. 2", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" }); y += gap;
-            doc.text("OTHER", leftX, y); doc.text("0.00", valLeftX, y, { align: "right" });
-            y = 80; doc.text("EPF", rightX, y); doc.text(totalEpf.toFixed(2), valRightX, y, { align: "right" }); y += gap;
-            doc.text("ESI", rightX, y); doc.text(totalEsic.toFixed(2), valRightX, y, { align: "right" }); y += gap;
-            doc.text("PT", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
-            doc.text("Loan", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
-            doc.text("Adv.", rightX, y); doc.text("0.00", valRightX, y, { align: "right" }); y += gap;
-            doc.text("TDS", rightX, y); doc.text("0.00", valRightX, y, { align: "right" });
-            doc.line(14, 160, 196, 160); doc.line(105, 170, 196, 170);
-            
-            doc.setFont("helvetica", "bold"); doc.text("Gross", leftX, 167); doc.text(totalGross.toFixed(2), valLeftX, 167, { align: "right" }); doc.text("Tot Ded", rightX, 167); doc.text(totalDed.toFixed(2), valRightX, 167, { align: "right" }); doc.text("Net Pay", rightX, 177); doc.text((totalGross - totalDed).toFixed(2), valRightX, 177, { align: "right" });
-
-            doc.save(`Payslip_${monthName.replace(' ', '_')}.pdf`);
-        }
-
-        function downloadTimesheet() {
-            if (shifts.length === 0) return alert("No shifts to export!");
-            const brandName = localStorage.getItem('gokulPdfBrand') || 'GOKUL HUB INC.'; const primaryColor = hexToRgb(localStorage.getItem('gokulPdfPrimary') || '#1e293b'); const accentColor = hexToRgb(localStorage.getItem('gokulPdfAccent') || '#d4af37');
-            const { jsPDF } = window.jspdf; const pageHeight = Math.max(297, 140 + (shifts.length * 10)); const doc = new jsPDF('p', 'mm', [210, pageHeight]);
-            const darkText = [40, 40, 40], lightText = [100, 100, 100];
-
-            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.rect(0, 0, 210, 40, 'F'); doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.setFont("helvetica", "bold");
-            try { if (profile.avatar && profile.avatar.startsWith('data:image')) doc.addImage(profile.avatar, 'JPEG', 14, 10, 20, 20); } catch(e) {}
-            const textStartX = profile.avatar && profile.avatar.startsWith('data:image') ? 38 : 14; doc.text(brandName, textStartX, 20); doc.setFontSize(12); doc.setFont("helvetica", "normal"); doc.text("OFFICIAL TIMESHEET & SALARY REPORT", textStartX, 30);
-            const now = new Date(); doc.setFontSize(10); doc.text(`Date: ${now.toLocaleDateString()}`, 160, 25);
-            doc.setTextColor(darkText[0], darkText[1], darkText[2]); doc.setFontSize(12); doc.setFont("helvetica", "bold"); doc.text("EMPLOYEE DETAILS", 14, 50);
-            doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.text(`Name: ${profile.name}`, 14, 58); doc.text(`ID: ${profile.idStr}`, 14, 64); doc.text(`Role: ${profile.role}`, 14, 70);
-            
-            let totalPay = 0, totalHrs = 0, totalOT = 0;
-            shifts.forEach(s => { totalPay += (Number(s.grossEarned) || Number(s.totalEarned) || 0); totalHrs += (Number(s.net) || 0); totalOT += (Number(s.otHours) || 0); });
-
-            doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]); doc.setLineWidth(0.5); doc.roundedRect(120, 45, 75, 38, 3, 3, 'S'); doc.setFont("helvetica", "bold"); doc.text("SUMMARY", 125, 52); doc.setFont("helvetica", "normal"); doc.text(`Total Days: ${shifts.length}`, 125, 60); doc.text(`Reg Hours: ${totalHrs.toFixed(1)}h`, 125, 66); doc.text(`OT Hours: ${totalOT.toFixed(1)}h`, 125, 72); doc.setFont("helvetica", "bold"); doc.setTextColor(accentColor[0], accentColor[1], accentColor[2]); doc.text(`Gross Salary: INR ${totalPay.toFixed(2)}`, 125, 78);
-
-            doc.setTextColor(darkText[0], darkText[1], darkText[2]);
-            const tableColumn = ["Date", "Job Title", "Timing", "Reg (Hrs)", "OT (Hrs)", "Earned (INR)"];
-            const tableRows = shifts.map(s => [ s.date || '', s.jobType || 'Job', s.timing || `${s.inTime || ''} - ${s.outTime || ''}`, ((Number(s.net)||0) - (Number(s.otHours)||0)).toFixed(1), (Number(s.otHours)||0).toFixed(1), `Rs. ${(Number(s.grossEarned) || Number(s.totalEarned) || 0).toFixed(2)}` ]);
-
-            doc.autoTable({ startY: 95, head: [tableColumn], body: tableRows, theme: 'striped', headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold', halign: 'center' }, bodyStyles: { textColor: darkText, halign: 'center' }, alternateRowStyles: { fillColor: [240, 244, 248] }, styles: { font: 'helvetica', fontSize: 10, cellPadding: 6 }, columnStyles: { 1: { halign: 'left' }, 5: { fontStyle: 'bold', textColor: [22, 163, 74] } }, margin: { top: 10, right: 14, bottom: 20, left: 14 } });
-
-            const finalY = doc.lastAutoTable.finalY || 95; doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.text("AUTHORIZED SIGNATURE", 14, finalY + 30); doc.setLineWidth(0.5); doc.line(14, finalY + 25, 70, finalY + 25); doc.setFontSize(8); doc.setFont("helvetica", "normal"); doc.setTextColor(lightText[0], lightText[1], lightText[2]); doc.text(`System Generated Report - ${brandName}`, 14, finalY + 45);
-            doc.save(`Gokul_Timesheet_Report_${now.getTime()}.pdf`);
-        }
-
-        // --- 9. PREMIUM THEMES ---
-        const themeOpts = [ { id: 'jarvis', name: '🤖 J.A.R.V.I.S.' }, { id: 'rajput', name: '👑 Royal Rajput' }, { id: 'peacock', name: '🦚 Peacock Emerald' }, { id: 'saffron', name: '🕉️ Varanasi Saffron' }, { id: 'mughal', name: '🕌 Mughal Magenta' }, { id: 'maratha', name: '⚔️ Maratha Navy' }, { id: 'chola', name: '🏛️ Chola Bronze' }, { id: 'sapphire', name: '💎 Sapphire Ocean' }, { id: 'amethyst', name: '🔮 Amethyst Lotus' }, { id: 'jade', name: '🌿 Jade Forest' }, { id: 'ruby', name: '🌹 Crimson Ruby' }, { id: 'gold', name: '✨ Golden Temple' }, { id: 'slate', name: '⛰️ Himalayan Slate' }, { id: 'desert', name: '🐪 Thar Desert' }, { id: 'sunset', name: '🌅 Sunset Orange' }, { id: 'lavender', name: '🪻 Kashmiri Lavender' }, { id: 'platinum', name: '💍 Platinum Pearl' }, { id: 'obsidian', name: '🌑 Obsidian Gold' }, { id: 'light', name: '☀️ Classic Light' }, { id: 'aesthetic', name: '🌸 Soft Aesthetic' } ];
-
-        function renderThemeGallery() {
-            const gallery = document.getElementById('theme-gallery');
-            if(gallery) { gallery.innerHTML = themeOpts.map(th => `<div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyTheme('${th.id}'); document.getElementById('auto-theme-toggle').checked = false; toggleAutoTheme();"><div style="font-weight: 800; font-size: 13px;">${th.name}</div></div>`).join(''); }
-        }
-        
-        function applyTheme(id) { 
-            document.documentElement.setAttribute('data-theme', id); localStorage.setItem('gokulTheme', id); 
-            const icon = document.getElementById('mode-icon');
-            if(icon) {
-                if(id === 'light' || id === 'platinum') { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); } 
-                else { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
-            }
-        }
-
-        // --- 10. DATA EXPORT / IMPORT ---
-        function exportData() {
-            const data = { profile: JSON.parse(localStorage.getItem('gokulProfile')), vaultTx: JSON.parse(localStorage.getItem('gokulVaultTx')), attRecords: JSON.parse(localStorage.getItem('gokulAttRecords')), petrolRecords: JSON.parse(localStorage.getItem('gokulPetrolRecords')), emiRegistry: JSON.parse(localStorage.getItem('gokulEmiRegistry')), dreamGoal: JSON.parse(localStorage.getItem('gokulDreamGoal')) };
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data)); const downloadAnchorNode = document.createElement('a'); downloadAnchorNode.setAttribute("href", dataStr); downloadAnchorNode.setAttribute("download", "GokulHub_Backup.json");
-            document.body.appendChild(downloadAnchorNode); downloadAnchorNode.click(); downloadAnchorNode.remove();
-        }
-
-        function importData() {
-            const file = document.getElementById('import-file').files[0]; if (!file) return alert("Select .json file.");
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if(data.profile) localStorage.setItem('gokulProfile', JSON.stringify(data.profile)); if(data.vaultTx) localStorage.setItem('gokulVaultTx', JSON.stringify(data.vaultTx)); if(data.attRecords) localStorage.setItem('gokulAttRecords', JSON.stringify(data.attRecords)); if(data.petrolRecords) localStorage.setItem('gokulPetrolRecords', JSON.stringify(data.petrolRecords)); if(data.emiRegistry) localStorage.setItem('gokulEmiRegistry', JSON.stringify(data.emiRegistry)); if(data.dreamGoal) localStorage.setItem('gokulDreamGoal', JSON.stringify(data.dreamGoal));
-                    alert("Backup Restored! Refreshing..."); window.location.reload();
-                } catch(err) { alert("Invalid file!"); }
-            }
-            reader.readAsText(file);
-        }
-
+    (function(){
+      const magnumHtmlBase64 = 'PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KPGhlYWQ+CiAgICA8bWV0YSBjaGFyc2V0PSJVVEYtOCI+CiAgICA8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLCBpbml0aWFsLXNjYWxlPTEuMCwgbWF4aW11bS1zY2FsZT0xLjAsIHVzZXItc2NhbGFibGU9bm8sIHZpZXdwb3J0LWZpdD1jb3ZlciI+CiAgICAKICAgIDwhLS0gUFdBIFNldHRpbmdzIC0tPgogICAgPG1ldGEgbmFtZT0ibW9iaWxlLXdlYi1hcHAtY2FwYWJsZSIgY29udGVudD0ieWVzIj4KICAgIDxtZXRhIG5hbWU9ImFwcGxlLW1vYmlsZS13ZWItYXBwLWNhcGFibGUiIGNvbnRlbnQ9InllcyI+CiAgICA8bWV0YSBuYW1lPSJhcHBsZS1tb2JpbGUtd2ViLWFwcC1zdGF0dXMtYmFyLXN0eWxlIiBjb250ZW50PSJibGFjay10cmFuc2x1Y2VudCI+CiAgICA8bGluayByZWw9Im1hbmlmZXN0IiBocmVmPSdkYXRhOmFwcGxpY2F0aW9uL21hbmlmZXN0K2pzb247Y2hhcnNldD11dGYtOCwlN0IlMjJuYW1lJTIyJTNBJTIyTWFnbnVtJTIwUG9ydGFsJTIyJTJDJTIyZGlzcGxheSUyMiUzQSUyMnN0YW5kYWxvbmUlMjIlMkMlMjJiYWNrZ3JvdW5kX2NvbG9yJTIyJTNBJTIyJTIzMGEwYTBhJTIyJTdEJz4KCiAgICA8dGl0bGU+TWFnbnVtIFNLTCAtIFByZW1pdW0gUG9ydGFsPC90aXRsZT4KICAgIAogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9mb250cy5nb29nbGVhcGlzLmNvbS9jc3MyP2ZhbWlseT1QbGF5ZmFpcitEaXNwbGF5OndnaHRANjAwOzcwMCZmYW1pbHk9UG9wcGluczp3Z2h0QDMwMDs0MDA7NTAwOzYwMCZkaXNwbGF5PXN3YXAiIHJlbD0ic3R5bGVzaGVldCI+CiAgICA8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG5qcy5jbG91ZGZsYXJlLmNvbS9hamF4L2xpYnMvaHRtbDJwZGYuanMvMC4xMC4xL2h0bWwycGRmLmJ1bmRsZS5taW4uanMiPjwvc2NyaXB0PgogICAgCiAgICA8IS0tIEZpcmViYXNlIExpYnJhcmllcyAtLT4KICAgIDxzY3JpcHQgc3JjPSJodHRwczovL3d3dy5nc3RhdGljLmNvbS9maXJlYmFzZWpzLzguMTAuMS9maXJlYmFzZS1hcHAuanMiPjwvc2NyaXB0PgogICAgPHNjcmlwdCBzcmM9Imh0dHBzOi8vd3d3LmdzdGF0aWMuY29tL2ZpcmViYXNlanMvOC4xMC4xL2ZpcmViYXNlLWRhdGFiYXNlLmpzIj48L3NjcmlwdD4KICAgIAogICAgPHN0eWxlPgogICAgICAgIC8qID09PT09PT09PT09PT09PT09IFBSRU1JVU0gUk9ZQUwgREFSSyBUSEVNRSA9PT09PT09PT09PT09PT09PSAqLwogICAgICAgIDpyb290IHsKICAgICAgICAgICAgLS1iZy1kYXJrOiAjMGEwYTBhOyAtLXN1cmZhY2U6ICMxNDE0MTQ7IC0tc3VyZmFjZS1saWdodDogIzFmMWYxZjsKICAgICAgICAgICAgLS1nb2xkOiAjZDRhZjM3OyAtLWdvbGQtbGlnaHQ6ICNmM2U1YWI7IC0tdGV4dC1tYWluOiAjZmZmZmZmOwogICAgICAgICAgICAtLXRleHQtbXV0ZWQ6ICM5Y2EzYWY7IC0tYm9yZGVyOiAjMzMzMzMzOyAtLXN1Y2Nlc3M6ICMxMGI5ODE7IC0tZGFuZ2VyOiAjZWY0NDQ0OwogICAgICAgIH0KCiAgICAgICAgKiB7IGJveC1zaXppbmc6IGJvcmRlci1ib3g7IG1hcmdpbjogMDsgcGFkZGluZzogMDsgZm9udC1mYW1pbHk6ICdQb3BwaW5zJywgc2Fucy1zZXJpZjsgLXdlYmtpdC10YXAtaGlnaGxpZ2h0LWNvbG9yOiB0cmFuc3BhcmVudDsgfQogICAgICAgIGJvZHkgeyB3aWR0aDogMTAwdnc7IGhlaWdodDogMTAwdmg7IG92ZXJmbG93OiBoaWRkZW47IGJhY2tncm91bmQ6IHZhcigtLWJnLWRhcmspOyBjb2xvcjogdmFyKC0tdGV4dC1tYWluKTsgfQogICAgICAgIGgxLCBoMiwgLmxvZ28tdGl0bGUgeyBmb250LWZhbWlseTogJ1BsYXlmYWlyIERpc3BsYXknLCBzZXJpZjsgfQogICAgICAgIAogICAgICAgIC52aWV3IHsgZGlzcGxheTogbm9uZTsgd2lkdGg6IDEwMCU7IGhlaWdodDogMTAwJTsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgfQogICAgICAgIC52aWV3LmFjdGl2ZSB7IGRpc3BsYXk6IGZsZXg7IH0KCiAgICAgICAgLyogPT09PT09PT09PT09PT09PT0gRlVMTFNDUkVFTiBXRUxDT01FIE9WRVJMQVkgPT09PT09PT09PT09PT09PT0gKi8KICAgICAgICAjd2VsY29tZS1vdmVybGF5IHsKICAgICAgICAgICAgcG9zaXRpb246IGZpeGVkOyB0b3A6IDA7IGxlZnQ6IDA7IHdpZHRoOiAxMDB2dzsgaGVpZ2h0OiAxMDB2aDsKICAgICAgICAgICAgYmFja2dyb3VuZDogcmFkaWFsLWdyYWRpZW50KGNpcmNsZSBhdCBjZW50ZXIsICMxYTFhMWEgMCUsICMwMDAwMDAgMTAwJSk7CiAgICAgICAgICAgIHotaW5kZXg6IDk5OTk7IGRpc3BsYXk6IGZsZXg7IGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47IGFsaWduLWl0ZW1zOiBjZW50ZXI7IGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgICAgICAgICBjdXJzb3I6IHBvaW50ZXI7IHRleHQtYWxpZ246IGNlbnRlcjsKICAgICAgICB9CiAgICAgICAgI3dlbGNvbWUtb3ZlcmxheSBoMSB7IGZvbnQtc2l6ZTogNDJweDsgY29sb3I6IHZhcigtLWdvbGQpOyB0ZXh0LXNoYWRvdzogMCA0cHggMTVweCByZ2JhKDIxMiwgMTc1LCA1NSwgMC40KTsgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsgbGV0dGVyLXNwYWNpbmc6IDNweDsgfQogICAgICAgICN3ZWxjb21lLW92ZXJsYXkgcCB7IGNvbG9yOiB2YXIoLS10ZXh0LW11dGVkKTsgZm9udC1zaXplOiAxNXB4OyBtYXJnaW4tdG9wOiAxNXB4OyBhbmltYXRpb246IGJsaW5rIDEuNXMgaW5maW5pdGU7IGxldHRlci1zcGFjaW5nOiAxcHg7IHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7IH0KICAgICAgICBAa2V5ZnJhbWVzIGJsaW5rIHsgMCUsIDEwMCUgeyBvcGFjaXR5OiAxOyB9IDUwJSB7IG9wYWNpdHk6IDAuMzsgfSB9CgogICAgICAgIDo6LXdlYmtpdC1zY3JvbGxiYXIgeyB3aWR0aDogNnB4OyBoZWlnaHQ6IDZweDsgfQogICAgICAgIDo6LXdlYmtpdC1zY3JvbGxiYXItdHJhY2sgeyBiYWNrZ3JvdW5kOiB2YXIoLS1iZy1kYXJrKTsgfQogICAgICAgIDo6LXdlYmtpdC1zY3JvbGxiYXItdGh1bWIgeyBiYWNrZ3JvdW5kOiB2YXIoLS1ib3JkZXIpOyBib3JkZXItcmFkaXVzOiAxMHB4OyB9CgogICAgICAgIC8qID09PT09PT09PT09PT09PT09IFJPTEUgU0VMRUNUSU9OID09PT09PT09PT09PT09PT09ICovCiAgICAgICAgI3JvbGUtc2VsZWN0LXZpZXcgeyBhbGlnbi1pdGVtczogY2VudGVyOyBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjsgdGV4dC1hbGlnbjogY2VudGVyOyBiYWNrZ3JvdW5kOiByYWRpYWwtZ3JhZGllbnQoY2lyY2xlIGF0IGNlbnRlciwgIzFhMWExYSAwJSwgIzAwMDAwMCAxMDAlKTsgcGFkZGluZzogMjBweDsgfQogICAgICAgIC5sb2dvLXRpdGxlIHsgZm9udC1zaXplOiBjbGFtcCgzMHB4LCA4dncsIDQwcHgpOyBjb2xvcjogdmFyKC0tZ29sZCk7IG1hcmdpbi1ib3R0b206IDVweDsgbGV0dGVyLXNwYWNpbmc6IDJweDsgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsgdGV4dC1zaGFkb3c6IDAgNHB4IDE1cHggcmdiYSgyMTIsIDE3NSwgNTUsIDAuMyk7IH0KICAgICAgICAucm9sZS1idG4geyB3aWR0aDogMTAwJTsgbWF4LXdpZHRoOiAzMDBweDsgcGFkZGluZzogMThweDsgbWFyZ2luOiAxMHB4IDA7IGZvbnQtc2l6ZTogMTZweDsgZm9udC13ZWlnaHQ6IDYwMDsgYm9yZGVyLXJhZGl1czogMTJweDsgY3Vyc29yOiBwb2ludGVyOyBib3JkZXI6IG5vbmU7IHRyYW5zaXRpb246IGFsbCAwLjNzOyB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOyBsZXR0ZXItc3BhY2luZzogMXB4OyB9CiAgICAgICAgLnJvbGUtYnRuOmFjdGl2ZSB7IHRyYW5zZm9ybTogc2NhbGUoMC45Nik7IH0KICAgICAgICAuYnRuLXN0YWZmIHsgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgdmFyKC0tZ29sZCksICNhYThjMmMpOyBjb2xvcjogIzAwMDsgYm94LXNoYWRvdzogMCAxMHB4IDI1cHggcmdiYSgyMTIsIDE3NSwgNTUsIDAuMik7IH0KICAgICAgICAuYnRuLWFkbWluIHsgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7IGJvcmRlcjogMnB4IHNvbGlkIHZhcigtLWdvbGQpOyBjb2xvcjogdmFyKC0tZ29sZCk7IH0KCiAgICAgICAgLyogPT09PT09PT09PT09PT09PT0gU1RBRkYgUE9SVEFMID09PT09PT09PT09PT09PT09ICovCiAgICAgICAgI3N0YWZmLXZpZXcgeyBhbGlnbi1pdGVtczogY2VudGVyOyBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjsgcGFkZGluZzogMjBweDsgYmFja2dyb3VuZDogdXJsKCdodHRwczovL3d3dy50cmFuc3BhcmVudHRleHR1cmVzLmNvbS9wYXR0ZXJucy9zdGFyZHVzdC5wbmcnKSwgdmFyKC0tYmctZGFyayk7IH0KICAgICAgICAuc3RhZmYtY2FyZCB7IGJhY2tncm91bmQ6IHJnYmEoMjAsIDIwLCAyMCwgMC44KTsgYmFja2Ryb3AtZmlsdGVyOiBibHVyKDIwcHgpOyBwYWRkaW5nOiAzMHB4OyBib3JkZXItcmFkaXVzOiAyNHB4OyBib3JkZXI6IDFweCBzb2xpZCByZ2JhKDIxMiwgMTc1LCA1NSwgMC4yKTsgYm94LXNoYWRvdzogMCAyMHB4IDUwcHggcmdiYSgwLDAsMCwwLjUpOyB3aWR0aDogMTAwJTsgbWF4LXdpZHRoOiA0MDBweDsgdGV4dC1hbGlnbjogY2VudGVyOyB9CiAgICAgICAgLnN0YWZmLWNhcmQgaDIgeyBjb2xvcjogdmFyKC0tZ29sZC1saWdodCk7IG1hcmdpbi1ib3R0b206IDI1cHg7IGZvbnQtc2l6ZTogMjRweDsgfQogICAgICAgIAogICAgICAgIHNlbGVjdCB7IHdpZHRoOiAxMDAlOyBwYWRkaW5nOiAxNnB4OyBib3JkZXItcmFkaXVzOiAxMnB4OyBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpOyBmb250LXNpemU6IDE1cHg7IGZvbnQtZmFtaWx5OiAnUG9wcGlucyc7IG1hcmdpbi1ib3R0b206IDI1cHg7IG91dGxpbmU6IG5vbmU7IGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UtbGlnaHQpOyBjb2xvcjogd2hpdGU7IGFwcGVhcmFuY2U6IG5vbmU7IH0KICAgICAgICBzZWxlY3Q6Zm9jdXMgeyBib3JkZXItY29sb3I6IHZhcigtLWdvbGQpOyB9CiAgICAgICAgCiAgICAgICAgLmJpZy1wdW5jaC1idG4geyB3aWR0aDogMTAwJTsgcGFkZGluZzogMjBweDsgZm9udC1zaXplOiAxNnB4OyBmb250LXdlaWdodDogNjAwOyBsZXR0ZXItc3BhY2luZzogMXB4OyBib3JkZXItcmFkaXVzOiAxNnB4OyBib3JkZXI6IG5vbmU7IGNvbG9yOiAjMDAwOyBtYXJnaW4tYm90dG9tOiAxNXB4OyBjdXJzb3I6IHBvaW50ZXI7IHRyYW5zaXRpb246IGFsbCAwLjJzOyB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOyB9CiAgICAgICAgLmJpZy1wdW5jaC1idG46YWN0aXZlIHsgdHJhbnNmb3JtOiBzY2FsZSgwLjk2KTsgfQogICAgICAgIC5iZy1pbiB7IGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCgxMzVkZWcsICMxMGI5ODEsICMwNTk2NjkpOyBib3gtc2hhZG93OiAwIDEwcHggMjVweCByZ2JhKDE2LCAxODUsIDEyOSwgMC4yKTsgY29sb3I6IHdoaXRlOyB9CiAgICAgICAgLmJnLW91dCB7IGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCgxMzVkZWcsICNmNTllMGIsICNkOTc3MDYpOyBib3gtc2hhZG93OiAwIDEwcHggMjVweCByZ2JhKDI0NSwgMTU4LCAxMSwgMC4yKTsgY29sb3I6IHdoaXRlOyB9CiAgICAgICAgLmJpZy1wdW5jaC1idG46ZGlzYWJsZWQgeyBiYWNrZ3JvdW5kOiB2YXIoLS1ib3JkZXIpICFpbXBvcnRhbnQ7IGNvbG9yOiB2YXIoLS10ZXh0LW11dGVkKSAhaW1wb3J0YW50OyBib3gtc2hhZG93OiBub25lICFpbXBvcnRhbnQ7IHBvaW50ZXItZXZlbnRzOiBub25lOyB9CgogICAgICAgIC8qID09PT09PT09PT09PT09PT09IEFETUlOIERBU0hCT0FSRCA9PT09PT09PT09PT09PT09PSAqLwogICAgICAgIC50b3AtYmFyIHsgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tc3VyZmFjZSk7IHBhZGRpbmc6IGVudihzYWZlLWFyZWEtaW5zZXQtdG9wLCAxNXB4KSAyMHB4IDE1cHggMjBweDsgZGlzcGxheTogZmxleDsganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuOyBhbGlnbi1pdGVtczogY2VudGVyOyBib3JkZXItYm90dG9tOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTsgZmxleC13cmFwOiB3cmFwOyBnYXA6IDEwcHg7IH0KICAgICAgICAubGl2ZS1pbmRpY2F0b3IgeyBkaXNwbGF5OiBmbGV4OyBhbGlnbi1pdGVtczogY2VudGVyOyBnYXA6IDhweDsgY29sb3I6IHZhcigtLWdvbGQpOyBmb250LXNpemU6IDEycHg7IGZvbnQtd2VpZ2h0OiA2MDA7IHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7IGxldHRlci1zcGFjaW5nOiAxcHg7IH0KICAgICAgICAucHVsc2UgeyB3aWR0aDogOHB4OyBoZWlnaHQ6IDhweDsgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tZ29sZCk7IGJvcmRlci1yYWRpdXM6IDUwJTsgYm94LXNoYWRvdzogMCAwIDEwcHggdmFyKC0tZ29sZCk7IGFuaW1hdGlvbjogcHVsc2UtYW5pbSAxLjVzIGluZmluaXRlOyB9CiAgICAgICAgQGtleWZyYW1lcyBwdWxzZS1hbmltIHsgMCUgeyBvcGFjaXR5OiAxOyB0cmFuc2Zvcm06IHNjYWxlKDEpOyB9IDUwJSB7IG9wYWNpdHk6IDAuNjsgdHJhbnNmb3JtOiBzY2FsZSgxLjQpOyB9IDEwMCUgeyBvcGFjaXR5OiAxOyB0cmFuc2Zvcm06IHNjYWxlKDEpOyB9IH0KICAgICAgICAKICAgICAgICAuYXBwLWNvbnRlbnQgeyBmbGV4OiAxOyBvdmVyZmxvdy15OiBhdXRvOyBwYWRkaW5nLWJvdHRvbTogMTAwcHg7IHdpZHRoOiAxMDAlOyB9CiAgICAgICAgI3ByaW50LWFyZWEgeyBtYXgtd2lkdGg6IDEwMDBweDsgbWFyZ2luOiAwIGF1dG87IG1pbi1oZWlnaHQ6IDEwMCU7IHBhZGRpbmctYm90dG9tOiAyMHB4OyB9CiAgICAgICAgCiAgICAgICAgLmhlYWRlciB7IHBhZGRpbmc6IDI1cHggMjBweCAxNXB4IDIwcHg7IHRleHQtYWxpZ246IGNlbnRlcjsgfQogICAgICAgIC5oZWFkZXIgaDEgeyBmb250LXNpemU6IGNsYW1wKDIwcHgsIDZ2dywgMjZweCk7IGNvbG9yOiB2YXIoLS1nb2xkKTsgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsgbGV0dGVyLXNwYWNpbmc6IDJweDsgfQogICAgICAgIC5oZWFkZXIgcCB7IGZvbnQtc2l6ZTogMTNweDsgY29sb3I6IHZhcigtLXRleHQtbXV0ZWQpOyBtYXJnaW4tdG9wOiA1cHg7IH0KICAgICAgICAKICAgICAgICAuYWRtaW4tY29udHJvbHMgeyBkaXNwbGF5OiBmbGV4OyBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjsgZ2FwOiAxMHB4OyBtYXJnaW46IDE1cHggMDsgZmxleC13cmFwOiB3cmFwOyBwYWRkaW5nOiAwIDE1cHg7IH0KICAgICAgICAuZGF0ZS1waWNrZXItd3JhcHBlciB7IGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UtbGlnaHQpOyBwYWRkaW5nOiA4cHggMTVweDsgYm9yZGVyLXJhZGl1czogMTBweDsgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTsgfQogICAgICAgIC5kYXRlLXBpY2tlci13cmFwcGVyIGlucHV0IHsgYm9yZGVyOiBub25lOyBiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgZm9udC1zaXplOiAxNHB4OyBmb250LXdlaWdodDogNjAwOyBjb2xvcjogdmFyKC0tZ29sZC1saWdodCk7IG91dGxpbmU6IG5vbmU7IGNvbG9yLXNjaGVtZTogZGFyazsgfQogICAgICAgIAogICAgICAgIC5idG4tbWFuYWdlIHsgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7IGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWdvbGQpOyBjb2xvcjogdmFyKC0tZ29sZCk7IHBhZGRpbmc6IDhweCAxNXB4OyBib3JkZXItcmFkaXVzOiAxMHB4OyBjdXJzb3I6IHBvaW50ZXI7IGZvbnQtc2l6ZTogMTNweDsgZm9udC13ZWlnaHQ6IDYwMDsgdHJhbnNpdGlvbjogMC4zczsgfQogICAgICAgIC5idG4tbWFuYWdlOmFjdGl2ZSB7IGJhY2tncm91bmQ6IHZhcigtLWdvbGQpOyBjb2xvcjogYmxhY2s7IH0KCiAgICAgICAgLnRhYmxlLWNvbnRhaW5lciB7IHBhZGRpbmc6IDAgMTVweDsgb3ZlcmZsb3cteDogYXV0bzsgd2lkdGg6IDEwMCU7IH0KICAgICAgICB0YWJsZSB7IHdpZHRoOiAxMDAlOyBib3JkZXItY29sbGFwc2U6IHNlcGFyYXRlOyBib3JkZXItc3BhY2luZzogMCAxMHB4OyBtaW4td2lkdGg6IDY1MHB4OyB9CiAgICAgICAgdGggeyB0ZXh0LWFsaWduOiBsZWZ0OyBwYWRkaW5nOiAwIDEwcHggOHB4IDEwcHg7IGZvbnQtc2l6ZTogMTFweDsgY29sb3I6IHZhcigtLXRleHQtbXV0ZWQpOyB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOyBsZXR0ZXItc3BhY2luZzogMXB4OyB9CiAgICAgICAgdHIuc3RhZmYtcm93IHsgYmFja2dyb3VuZDogdmFyKC0tc3VyZmFjZSk7IGJveC1zaGFkb3c6IDAgNHB4IDE1cHggcmdiYSgwLDAsMCwwLjIyKTsgfQogICAgICAgIHRkIHsgcGFkZGluZzogMTJweCAxMHB4OyBib3JkZXItdG9wOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTsgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkIHZhcigtLWJvcmRlcik7IHZlcnRpY2FsLWFsaWduOiBtaWRkbGU7IGZvbnQtc2l6ZTogMTRweDsgZm9udC13ZWlnaHQ6IDUwMDsgfQogICAgICAgIHRyLnN0YWZmLXJvdyB0ZDpmaXJzdC1jaGlsZCB7IGJvcmRlci1sZWZ0OiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTsgYm9yZGVyLXRvcC1sZWZ0LXJhZGl1czogMTJweDsgYm9yZGVyLWJvdHRvbS1sZWZ0LXJhZGl1czogMTJweDsgZm9udC13ZWlnaHQ6IDYwMDsgY29sb3I6IHZhcigtLWdvbGQtbGlnaHQpOyB3aGl0ZS1zcGFjZTogbm93cmFwOyB9CiAgICAgICAgdHIuc3RhZmYtcm93IHRkOmxhc3QtY2hpbGQgeyBib3JkZXItcmlnaHQ6IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpOyBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMTJweDsgYm9yZGVyLWJvdHRvbS1yaWdodC1yYWRpdXM6IDEycHg7IHRleHQtYWxpZ246IGNlbnRlcjsgfQogICAgICAgIAogICAgICAgIC8qIFByZW1pdW0gRWRpdGFibGUgSW5wdXRzIGZvciBBZG1pbiAqLwogICAgICAgIGlucHV0W3R5cGU9InRpbWUiXS5hZG1pbi1lZGl0IHsgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7IGJvcmRlcjogMXB4IHNvbGlkIHRyYW5zcGFyZW50OyBjb2xvcjogdmFyKC0tdGV4dC1tdXRlZCk7IGZvbnQtZmFtaWx5OiAnUG9wcGlucycsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTRweDsgcGFkZGluZzogNnB4OyBib3JkZXItcmFkaXVzOiA4cHg7IG91dGxpbmU6IG5vbmU7IHdpZHRoOiAxMDAlOyB0cmFuc2l0aW9uOiAwLjNzOyB9CiAgICAgICAgaW5wdXRbdHlwZT0idGltZSJdLmFkbWluLWVkaXQ6Zm9jdXMgeyBib3JkZXItY29sb3I6IHZhcigtLWdvbGQpOyBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlLWxpZ2h0KTsgY29sb3I6IHdoaXRlOyB9CiAgICAgICAgaW5wdXRbdHlwZT0idGltZSJdLmFkbWluLWVkaXQuZmlsbGVkIHsgY29sb3I6IHdoaXRlOyBmb250LXdlaWdodDogNTAwOyB9CgogICAgICAgIC5zdGF0dXMtYmFkZ2UgeyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7IHBhZGRpbmc6IDZweCAxMnB4OyBib3JkZXItcmFkaXVzOiAyMHB4OyBmb250LXNpemU6IDExcHg7IGZvbnQtd2VpZ2h0OiA3MDA7IHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7IGxldHRlci1zcGFjaW5nOiAwLjVweDsgd2lkdGg6IDg1cHg7IH0KICAgICAgICAuYWJzZW50IHsgYmFja2dyb3VuZC1jb2xvcjogcmdiYSgyMzksIDY4LCA2OCwgMC4xKTsgY29sb3I6IHZhcigtLWRhbmdlcik7IGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoMjM5LCA2OCwgNjgsIDAuMik7IH0KICAgICAgICAucHJlc2VudCB7IGJhY2tncm91bmQtY29sb3I6IHJnYmEoMTYsIDE4NSwgMTI5LCAwLjEpOyBjb2xvcjogdmFyKC0tc3VjY2Vzcyk7IGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoMTYsIDE4NSwgMTI5LCAwLjIpOyB9CiAgICAgICAgCiAgICAgICAgLmJvdHRvbS1iYXIgeyBwb3NpdGlvbjogZml4ZWQ7IGJvdHRvbTogMDsgbGVmdDogMDwgd2lkdGg6IDEwMCU7IGJhY2tncm91bmQ6IHJnYmEoMjAsIDIwLCAyMCwgMC45NSk7IGJhY2tkcm9wLWZpbHRlcjogYmx1cigxMHB4KTsgcGFkZGluZzogMTVweCAxNXB4IGNhbGMoZW52KHNhZmUtYXJlYS1pbnNldC1ib3R0b20sIDE1cHgpICsgMTVweCkgMTVweDsgYm9yZGVyLXRvcDogMXB4IHNvbGlkIHZhcigtLWJvcmRlcik7IGRpc3BsYXk6IGZsZXg7IGp1c3RpZnktY29udGVudDogY2VudGVyOyB9CiAgICAgICAgLmJ0bi1kb3dubG9hZCB7IHdpZHRoOiAxMDAlOyBtYXgtd2lkdGg6IDEwMDBweDsgYm9yZGVyOiBub25lOyBwYWRkaW5nOiAxNnB4OyBib3JkZXItcmFkaXVzOiAxMnB4OyBmb250LXNpemU6IDE0cHg7IGZvbnQtd2VpZ2h0OiA2MDA7IGxldHRlci1zcGFjaW5nOiAxcHg7IGN1cnNvcjogcG9pbnRlcjsgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgdmFyKC0tZ29sZCksICNhYThjMmMpOyBjb2xvcjogIzAwMDsgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsgYm94LXNoYWRvdzogMCAxMHB4IDI1cHggcmdiYSgyMTIsIDE3NSwgNTUsIDAuMik7IHRyYW5zaXRpb246IDAuMnM7IH0KICAgICAgICAuYnRuLWRvd25sb2FkOmFjdGl2ZSB7IHRyYW5zZm9ybTogc2NhbGUoMC45OCk7IH0KCiAgICAgICAgLyogPT09PT09PT09PT09PT09PT0gTU9EQUxTID09PT09PT09PT09PT09PT09ICovCiAgICAgICAgLm1vZGFsLW92ZXJsYXkgeyBkaXNwbGF5OiBub25lOyBwb3NpdGlvbjogZml4ZWQ7IHRvcDogMDsgbGVmdDogMDsgd2lkdGg6IDEwMCU7IGhlaWdodDogMTAwJTsgYmFja2dyb3VuZDogcmdiYSgwLDAsMCwwLjg1KTsgYmFja2Ryb3AtZmlsdGVyOiBibHVyKDVweCk7IHotaW5kZXg6IDIwMDA7IGp1c3RpZnktY29udGVudDogY2VudGVyOyBhbGlnbi1pdGVtczogY2VudGVyOyBwYWRkaW5nOiAyMHB4OyB9CiAgICAgICAgLm1vZGFsLW92ZXJsYXkuYWN0aXZlIHsgZGlzcGxheTogZmxleDsgfQogICAgICAgIC5tb2RhbC1jb250ZW50IHsgYmFja2dyb3VuZDogdmFyKC0tc3VyZmFjZSk7IGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWdvbGQpOyBib3JkZXItcmFkaXVzOiAyMHB4OyB3aWR0aDogMTAwJTsgbWF4LXdpZHRoOiA0NTBweDsgcGFkZGluZzogMjVweDsgbWF4LWhlaWdodDogODV2aDsgZGlzcGxheTogZmxleDsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgfQogICAgICAgIC5tb2RhbC1jb250ZW50IGgyIHsgY29sb3I6IHZhcigtLWdvbGQpOyBtYXJnaW4tYm90dG9tOiAyMHB4OyBmb250LXNpemU6IDIwcHg7IH0KICAgICAgICAKICAgICAgICAuc3RhZmYtbGlzdC1lZGl0b3IgeyBmbGV4OiAxOyBvdmVyZmxvdy15OiBhdXRvOyBtYXJnaW4tYm90dG9tOiAyMHB4OyB9CiAgICAgICAgLnN0YWZmLWVkaXQtaXRlbSB7IGRpc3BsYXk6IGZsZXg7IGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2VlbjsgYWxpZ24taXRlbXM6IGNlbnRlcjsgYmFja2dyb3VuZDogdmFyKC0tYmctZGFyayk7IHBhZGRpbmc6IDEycHg7IGJvcmRlci1yYWRpdXM6IDEwcHg7IG1hcmdpbi1ib3R0b206IDhweDsgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTsgfQogICAgICAgIC5zdGFmZi1lZGl0LWl0ZW0gc3BhbiB7IGZvbnQtd2VpZ2h0OiA1MDA7IGNvbG9yOiB3aGl0ZTsgZm9udC1zaXplOiAxNHB4OyB9CiAgICAgICAgLmFjdGlvbi1idG5zIGJ1dHRvbiB7IHBhZGRpbmc6IDZweCAxMHB4OyBib3JkZXItcmFkaXVzOiA2cHg7IGJvcmRlcjogbm9uZTsgY3Vyc29yOiBwb2ludGVyOyBmb250LXdlaWdodDogNjAwOyBtYXJnaW4tbGVmdDogNnB4OyBmb250LXNpemU6IDExcHg7IH0KICAgICAgICAuYnRuLWVkaXQgeyBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlLWxpZ2h0KTsgY29sb3I6IHZhcigtLWdvbGQpOyBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1nb2xkKTsgfQogICAgICAgIC5idG4tZGVsIHsgYmFja2dyb3VuZDogcmdiYSgyMzksIDY4LCA2OCwgMC4xKTsgY29sb3I6IHZhcigtLWRhbmdlcik7IH0KICAgICAgICAKICAgICAgICAuYWRkLXN0YWZmLWZvcm0geyBkaXNwbGF5OiBmbGV4OyBnYXA6IDhweDsgbWFyZ2luLXRvcDogMTBweDsgfQogICAgICAgIC5hZGQtc3RhZmYtZm9ybSBpbnB1dCB7IGZsZXg6IDE7IHBhZGRpbmc6IDEycHg7IGJvcmRlci1yYWRpdXM6IDhweDsgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTsgYmFja2dyb3VuZDogdmFyKC0tYmctZGFyayk7IGNvbG9yOiB3aGl0ZTsgb3V0bGluZTogbm9uZTsgZm9udC1zaXplOiAxNHB4OyB9CiAgICAgICAgLmFkZC1zdGFmZi1mb3JtIGJ1dHRvbiB7IHBhZGRpbmc6IDEycHggMThweDsgYm9yZGVyLXJhZGl1czogOHB4OyBib3JkZXI6IG5vbmU7IGJhY2tncm91bmQ6IHZhcigtLWdvbGQpOyBjb2xvcjogYmxhY2s7IGZvbnQtd2VpZ2h0OiA2MDA7IGN1cnNvcjogcG9pbnRlcjsgfQoKICAgICAgICAvKiA9PT09PT09PT09PT09PT09PSBQREYgTU9ERSA9PT09PT09PT09PT09PT09PSAqLwogICAgICAgIC5wZGYtbW9kZSB7IGJhY2tncm91bmQ6IHdoaXRlICFpbXBvcnRhbnQ7IGNvbG9yOiBibGFjayAhaW1wb3J0YW50OyB9CiAgICAgICAgLnBkZi1tb2RlIC50b3AtYmFyLCAucGRmLW1vZGUgLmJvdHRvbS1iYXIsIC5wZGYtbW9kZSAuYWRtaW4tY29udHJvbHMgeyBkaXNwbGF5OiBub25lICFpbXBvcnRhbnQ7IH0KICAgICAgICAucGRmLW1vZGUgI3ByaW50LWFyZWEgeyBwYWRkaW5nLWJvdHRvbTogMDwgbWFyZ2luLXRvcDogMDsgfQogICAgICAgIC5wZGYtbW9kZSAuaGVhZGVyIGgxIHsgY29sb3I6IGJsYWNrICFpbXBvcnRhbnQ7IH0KICAgICAgICAucGRmLW1vZGUgdGFibGUsIC5wZGYtbW9kZSB0ci5zdGFmZi1yb3cgdGQgeyBiYWNrZ3JvdW5kOiB3aGl0ZSAhaW1wb3J0YW50OyBjb2xvcjogYmxhY2sgIWltcG9ydGFudDsgYm9yZGVyLWNvbG9yOiAjZGRkICFpbXBvcnRhbnQ7IGJveC1zaGFkb3c6IG5vbmUgIWltcG9ydGFudDsgfQogICAgICAgIC5wZGYtbW9kZSAuc3RhdHVzLWJhZGdlLmFic2VudCB7IGJvcmRlcjogMXB4IHNvbGlkIHJlZDsgY29sb3I6IHJlZDsgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7IH0KICAgICAgICAucGRmLW1vZGUgLnN0YXR1cy1iYWRnZS5wcmVzZW50IHsgYm9yZGVyOiAxcHggc29saWQgZ3JlZW47IGNvbG9yOiBncmVlbjsgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7IH0KICAgICAgICAucGRmLW1vZGUgdHIuc3RhZmYtcm93IHRkOmZpcnN0LWNoaWxkIHsgY29sb3I6IGJsYWNrICFpbXBvcnRhbnQ7IH0KICAgIDwvc3R5bGU+CjwvaGVhZD4KPGJvZHk+CgogICAgPCEtLSAwLiBGVUxMU0NSRUVOIFdFTENPTUUgT1ZFUkxBWSAtLT4KICAgIDxkaXYgaWQ9IndlbGNvbWUtb3ZlcmxheSIgb25jbGljaz0ic3RhcnRBcHAoKSI+CiAgICAgICAgPGgxPk1hZ251bSBTS0w8L2gxPgogICAgICAgIDxwPlRhcCBhbnl3aGVyZSB0byBzdGFydCBwb3J0YWw8L3A+CiAgICA8L2Rpdj4KCiAgICA8IS0tIDEuIFJPTEUgU0VMRUNUSU9OIFNDUkVFTiAtLT4KICAgIDxkaXYgaWQ9InJvbGUtc2VsZWN0LXZpZXciIGNsYXNzPSJ2aWV3Ij4KICAgICAgICA8ZGl2IGNsYXNzPSJsb2dvLXRpdGxlIj5NYWdudW0gU0tMPC9kaXY+CiAgICAgICAgPHAgc3R5bGU9ImNvbG9yOiB2YXIoLS10ZXh0LW11dGVkKTsgbWFyZ2luLWJvdHRvbTogNDBweDsgZm9udC1zdHlsZTogaXRhbGljOyBmb250LXNpemU6IDE0cHg7Ij5QcmVtaXVtIEZhYnJpYyBUZWFtIFBvcnRhbDwvcD4KICAgICAgICA8YnV0dG9uIGNsYXNzPSJyb2xlLWJ0biBidG4tc3RhZmYiIG9uY2xpY2s9Im9wZW5TdGFmZigpIj5TdGFmZiBMb2dpbjwvYnV0dG9uPgogICAgICAgIDxidXR0b24gY2xhc3M9InJvbGUtYnRuIGJ0bi1hZG1pbiIgb25jbGljaz0ib3BlbkFkbWluKCkiPkFkbWluIFBvcnRhbDwvYnV0dG9uPgogICAgPC9kaXY+CgogICAgPCEtLSAyLiBTVEFGRiBBUFAgU0NSRUVOIC0tPgogICAgPGRpdiBpZD0ic3RhZmYtdmlldyIgY2xhc3M9InZpZXciPgogICAgICAgIDxkaXYgY2xhc3M9InN0YWZmLWNhcmQiPgogICAgICAgICAgICA8aDI+V2VsY29tZSB0byBXb3JrPC9oMj4KICAgICAgICAgICAgPHNlbGVjdCBpZD0ic3RhZmZOYW1lU2VsZWN0IiBvbmNoYW5nZT0ibG9hZFN0YWZmU3RhdGUoKSI+CiAgICAgICAgICAgICAgICA8b3B0aW9uIHZhbHVlPSIiIGRpc2FibGVkIHNlbGVjdGVkPkxvYWRpbmcgc3RhZmYuLi48L29wdGlvbj4KICAgICAgICAgICAgPC9zZWxlY3Q+CiAgICAgICAgICAgIAogICAgICAgICAgICA8YnV0dG9uIGlkPSJidG5JbiIgY2xhc3M9ImJpZy1wdW5jaC1idG4gYmctaW4iIG9uY2xpY2s9InN0YWZmUHVuY2goJ2luJykiIGRpc2FibGVkPuKaoSBQVU5DSCBJTjwvYnV0dG9uPgogICAgICAgICAgICA8YnV0dG9uIGlkPSJidG5PdXQiIGNsYXNzPSJiaWctcHVuY2gtYnRuIGJnLW91dCIgb25jbGljaz0ic3RhZmZQdW5jaCgnb3V0JykiIGRpc2FibGVkPuKaoSBQVU5DSCBPVVQ8L2J1dHRvbj4KICAgICAgICAgICAgCiAgICAgICAgICAgIDxwIHN0eWxlPSJtYXJnaW4tdG9wOiAyNXB4OyBmb250LXNpemU6IDEzcHg7IGNvbG9yOiB2YXIoLS1nb2xkKTsgY3Vyc29yOiBwb2ludGVyOyBmb250LXdlaWdodDogNTAwOyIgb25jbGljaz0ibG9nb3V0KCkiPuKGkCBDaGFuZ2UgUm9sZTwvcD4KICAgICAgICA8L2Rpdj4KICAgIDwvZGl2PgoKICAgPCEtLSAzLiBBRE1JTiBBUFAgU0NSRUVOIC0tPgogICAgPGRpdiBpZD0iYWRtaW4tdmlldyIgY2xhc3M9InZpZXciPgogICAgICAgIDxkaXYgY2xhc3M9InRvcC1iYXIiPgogICAgICAgICAgICA8ZGl2IGNsYXNzPSJsaXZlLWluZGljYXRvciI+PGRpdiBjbGFzcz0icHVsc2UiPjwvZGl2PiBMaXZlIFN5bmMgQWN0aXZlPC9kaXY+CiAgICAgICAgICAgIDxidXR0b24gc3R5bGU9ImJhY2tncm91bmQ6IHRyYW5zcGFyZW50OyBjb2xvcjogdmFyKC0tdGV4dC1tdXRlZCk7IGJvcmRlcjogbm9uZTsgZm9udC1zaXplOiAxMnB4OyBjdXJzb3I6IHBvaW50ZXI7IGZvbnQtd2VpZ2h0OiA1MDA7IiBvbmNsaWNrPSJsb2dvdXQoKSI+TG9nb3V0PC9idXR0b24+CiAgICAgICAgPC9kaXY+CiAgICAgICAgCiAgICAgICAgPGRpdiBjbGFzcz0iYXBwLWNvbnRlbnQiPgogICAgICAgICAgICA8ZGl2IGlkPSJwcmludC1hcmVhIj4KICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImhlYWRlciI+CiAgICAgICAgICAgICAgICAgICAgPGgxPkFkbWluIERhc2hib2FyZDwvaDE+CiAgICAgICAgICAgICAgICAgICAgPHA+TWFnbnVtIENsb3RoaW5nIFNLTCDigKIgRGFpbHkgTG9nPC9wPgogICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImFkbWluLWNvbnRyb2xzIj4KICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJkYXRlLXBpY2tlci13cmFwcGVyIj4KICAgICAgICAgICAgICAgICAgICAgICAgPGlucHV0IHR5cGU9ImRhdGUiIGlkPSJhdHRlbmRhbmNlRGF0ZSIgb25jaGFuZ2U9ImxvYWRBZG1pbkRhdGEoKSI+CiAgICAgICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICAgICAgPGJ1dHRvbiBjbGFzcz0iYnRuLW1hbmFnZSIgb25jbGljaz0ib3BlblN0YWZmTWFuYWdlcigpIj7impnvuI8gU3RhZmY8L2J1dHRvbj4KICAgICAgICAgICAgICAgICAgICA8YnV0dG9uIGNsYXNzPSJidG4tbWFuYWdlIiBvbmNsaWNrPSJjaGFuZ2VBZG1pblBhc3N3b3JkKCkiPvCflJEgUGFzc3dvcmQ8L2J1dHRvbj4KICAgICAgICAgICAgICAgIDwvZGl2PgoKICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9InRhYmxlLWNvbnRhaW5lciI+CiAgICAgICAgICAgICAgICAgICAgPHRhYmxlIGlkPSJhdHRlbmRhbmNlVGFibGUiPgogICAgICAgICAgICAgICAgICAgICAgICA8dGhlYWQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dHI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRoIHN0eWxlPSJ3aWR0aDogMjUlOyI+U3RhZmYgTWVtYmVyPC90aD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGggc3R5bGU9IndpZHRoOiAyMCU7Ij5Jbi1UaW1lPC90aD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGggc3R5bGU9IndpZHRoOiAyMCU7Ij5PdXQtVGltZTwvdGg+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRoIHN0eWxlPSJ0ZXh0LWFsaWduOiBjZW50ZXI7IHdpZHRoOiAxNSU7Ij5Ib3VyczwvdGg+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRoIHN0eWxlPSJ0ZXh0LWFsaWduOiBjZW50ZXI7IHdpZHRoOiAyMCU7Ij5TdGF0dXM8L3RoPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90cj4KICAgICAgICAgICAgICAgICAgICAgICAgPC90aGVhZD4KICAgICAgICAgICAgICAgICAgICAgICAgPHRib2R5IGlkPSJ0YWJsZUJvZHkiPjwvdGJvZHk+CiAgICAgICAgICAgICAgICAgICAgPC90YWJsZT4KICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgICAKICAgICAgICA8ZGl2IGNsYXNzPSJib3R0b20tYmFyIj4KICAgICAgICAgICAgPGJ1dHRvbiBjbGFzcz0iYnRuLWRvd25sb2FkIiBvbmNsaWNrPSJnZW5lcmF0ZVBERigpIj5Eb3dubG9hZCBSb3lhbCBQREY8L2J1dHRvbj4KICAgICAgICA8L2Rpdj4KICAgIDwvZGl2PgoKICAgIDwhLS0gNC4gU1RBRkYgTUFOQUdFUiBNT0RBTCAoQWRtaW4gT25seSkgLS0+CiAgICA8ZGl2IGNsYXNzPSJtb2RhbC1vdmVybGF5IiBpZD0ic3RhZmZNb2RhbCI+CiAgICAgICAgPGRpdiBjbGFzcz0ibW9kYWwtY29udGVudCI+CiAgICAgICAgICAgIDxoMj5NYW5hZ2UgU3RhZmYgRGlyZWN0b3J5PC9oMj4KICAgICAgICAgICAgPGRpdiBjbGFzcz0ic3RhZmYtbGlzdC1lZGl0b3IiIGlkPSJzdGFmZkVkaXRvckxpc3QiPjwvZGl2PgogICAgICAgICAgICA8ZGl2IGNsYXNzPSJhZGQtc3RhZmYtZm9ybSI+CiAgICAgICAgICAgICAgICA8aW5wdXQgdHlwZT0idGV4dCIgaWQ9Im5ld1N0YWZmTmFtZSIgcGxhY2Vob2xkZXI9Ik5ldyBzdGFmZiBuYW1lLi4uIj4KICAgICAgICAgICAgICAgIDxidXR0b24gb25jbGljaz0iYWRkTmV3U3RhZmYoKSI+QWRkPC9idXR0b24+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICA8YnV0dG9uIHN0eWxlPSJtYXJnaW4tdG9wOiAxNXB4OyBwYWRkaW5nOiAxMnB4OyBib3JkZXItcmFkaXVzOiAxMHB4OyBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlLWxpZ2h0KTsgY29sb3I6IHdoaXRlOyBib3JkZXI6IG5vbmU7IGN1cnNvcjogcG9pbnRlcjsgZm9udC13ZWlnaHQ6IDYwMDsiIG9uY2xpY2s9ImNsb3NlU3RhZmZNYW5hZ2VyKCkiPkNsb3NlIFdpbmRvdzwvYnV0dG9uPgogICAgICAgIDwvZGl2PgogICAgPC9kaXY+CgogICAgPHNjcmlwdD4KICAgICAgICAvLyA9PT09PT09PT09PT09PT09PSBGSVJFQkFTRSBDT05GSUcgPT09PT09PT09PT09PT09PT0KICAgICAgICBjb25zdCBmaXJlYmFzZUNvbmZpZyA9IHsKICAgICAgICAgICAgYXBpS2V5OiAiQUl6YVN5Q2QzSEhQM2hITEJuRWtxT3ZLOGpnQkFHRTk5X21qXzZrIiwKICAgICAgICAgICAgYXV0aERvbWFpbjogIm1hZ251bS1jbG90aGluZy1hdHRlbmRhbmNlLmZpcmViYXNlYXBwLmNvbSIsCiAgICAgICAgICAgIHByb2plY3RJZDogIm1hZ251bS1jbG90aGluZy1hdHRlbmRhbmNlIiwKICAgICAgICAgICAgc3RvcmFnZUJ1Y2tldDogIm1hZ251bS1jbG90aGluZy1hdHRlbmRhbmNlLmZpcmViYXNlc3RvcmFnZS5hcHAiLAogICAgICAgICAgICBtZXNzYWdpbmdTZW5kZXJJZDogIjc2MjExMzY2MTc0NCIsCiAgICAgICAgICAgIGFwcElkOiAiMTo3NjIxMTM2NjE3NDQ6d2ViOmY5ZWRkNGNhMDEyZmIwYzk4MTA2ZjUiLAogICAgICAgICAgICBtZWFzdXJlbWVudElkOiAiRy1WQkRKS0MwWEJNIgogICAgICAgIH07CgogICAgICAgIGxldCBkYjsKICAgICAgICB0cnkgewogICAgICAgICAgICBmaXJlYmFzZS5pbml0aWFsaXplQXBwKGZpcmViYXNlQ29uZmlnKTsKICAgICAgICAgICAgZGIgPSBmaXJlYmFzZS5kYXRhYmFzZSgpOwogICAgICAgIH0gY2F0Y2goZSkgewogICAgICAgICAgICBhbGVydCgiRmlyZWJhc2UgY29ubmVjdGlvbiBlcnJvci4iKTsKICAgICAgICB9CgogICAgICAgIGxldCBnbG9iYWxTdGFmZkxpc3QgPSBbXTsKICAgICAgICBsZXQgY3VycmVudFN0YWZmTGlzdGVuZXIgPSBudWxsOwogICAgICAgIGxldCBhZG1pblBpbiA9ICIxMjM0IjsgLy8gRGVmYXVsdCBQSU4KCiAgICAgICAgLy8gPT09PT09PT09PT09PT09PT0gRlVMTFNDUkVFTiAmIEJPT1QgPT09PT09PT09PT09PT09PT0KICAgICAgICBmdW5jdGlvbiBzdGFydEFwcCgpIHsKICAgICAgICAgICAgbGV0IGVsZW0gPSBkb2N1bWVudC5kb2N1bWVudEVsZW1lbnQ7CiAgICAgICAgICAgIGlmIChlbGVtLnJlcXVlc3RGdWxsc2NyZWVuKSB7IGVsZW0ucmVxdWVzdEZ1bGxzY3JlZW4oKTsgfSAKICAgICAgICAgICAgZWxzZSBpZiAoZWxlbS53ZWJraXRSZXF1ZXN0RnVsbHNjcmVlbikgeyBlbGVtLndlYmtpdFJlcXVlc3RGdWxsc2NyZWVuKCk7IH0KCiAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCd3ZWxjb21lLW92ZXJsYXknKS5zdHlsZS5kaXNwbGF5ID0gJ25vbmUnOwogICAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgncm9sZS1zZWxlY3QtdmlldycpLmNsYXNzTGlzdC5hZGQoJ2FjdGl2ZScpOwogICAgICAgIH0KCiAgICAgICAgZnVuY3Rpb24gZ2V0TG9jYWxEYXRlKCkgewogICAgICAgICAgICBjb25zdCBkID0gbmV3IERhdGUoKTsKICAgICAgICAgICAgcmV0dXJuIGAke2QuZ2V0RnVsbFllYXIoKX0tJHtTdHJpbmcoZC5nZXRNb250aCgpKzEpLnBhZFN0YXJ0KDIsJzAnKX0tJHtTdHJpbmcoZC5nZXREYXRlKCkpLnBhZFN0YXJ0KDIsJzAnKX1gOwogICAgICAgIH0KICAgICAgICBmdW5jdGlvbiBnZXRMb2NhbFRpbWUoKSB7CiAgICAgICAgICAgIGNvbnN0IGQgPSBuZXcgRGF0ZSgpOwogICAgICAgICAgICByZXR1cm4gYCR7U3RyaW5nKGQuZ2V0SG91cnMoKSkucGFkU3RhcnQoMiwnMCcpfToke1N0cmluZyhkLmdldE1pbnV0ZXMoKSkucGFkU3RhcnQoMiwnMCcpfWA7CiAgICAgICAgfQogICAgICAgIGZ1bmN0aW9uIHN3aXRjaFZpZXcodmlld0lkKSB7CiAgICAgICAgICAgIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoJy52aWV3JykuZm9yRWFjaCh2ID0+IHYuY2xhc3NMaXN0LnJlbW92ZSgnYWN0aXZlJykpOwogICAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCh2aWV3SWQpLmNsYXNzTGlzdC5hZGQoJ2FjdGl2ZScpOwogICAgICAgIH0KICAgICAgICBmdW5jdGlvbiBsb2dvdXQoKSB7IHN3aXRjaFZpZXcoJ3JvbGUtc2VsZWN0LXZpZXcnKTsgfQoKICAgICAgICAvLyA9PT09PT09PT09PT09PT09PSBBUFAgSU5JVElBTElaQVRJT04gPT09PT09PT09PT09PT09PT0KICAgICAgICBpZiAoZGIpIHsKICAgICAgICAgICAgLy8gTG9hZCBTdGFmZiBMaXN0CiAgICAgICAgICAgIGRiLnJlZignbWFnbnVtX3NldHRpbmdzL3N0YWZmTGlzdCcpLm9uKCd2YWx1ZScsIHNuYXAgPT4gewogICAgICAgICAgICAgICAgY29uc3QgZGF0YSA9IHNuYXAudmFsKCk7CiAgICAgICAgICAgICAgICBpZiAoZGF0YSAmJiBBcnJheS5pc0FycmF5KGRhdGEpKSB7CiAgICAgICAgICAgICAgICAgICAgZ2xvYmFsU3RhZmZMaXN0ID0gZGF0YTsKICAgICAgICAgICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgICAgICAgICAgZ2xvYmFsU3RhZmZMaXN0ID0gWyJHb2t1bCBQIl07CiAgICAgICAgICAgICAgICAgICAgZGIucmVmKCdtYWdudW1fc2V0dGluZ3Mvc3RhZmZMaXN0Jykuc2V0KGdsb2JhbFN0YWZmTGlzdCk7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIGlmIChkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnc3RhZmYtdmlldycpLmNsYXNzTGlzdC5jb250YWlucygnYWN0aXZlJykpIHBvcHVsYXRlU3RhZmZEcm9wZG93bigpOwogICAgICAgICAgICAgICAgaWYgKGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdhZG1pbi12aWV3JykuY2xhc3NMaXN0LmNvbnRhaW5zKCdhY3RpdmUnKSkgeyBpbml0QWRtaW5UYWJsZSgpOyBsb2FkQWRtaW5EYXRhKCk7IH0KICAgICAgICAgICAgICAgIGlmIChkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnc3RhZmZNb2RhbCcpLmNsYXNzTGlzdC5jb250YWlucygnYWN0aXZlJykpIHJlbmRlclN0YWZmRWRpdG9yTGlzdCgpOwogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIC8vIExvYWQgQWRtaW4gUGFzc3dvcmQKICAgICAgICAgICAgZGIucmVmKCdtYWdudW1fc2V0dGluZ3MvYWRtaW5QYXNzd29yZCcpLm9uKCd2YWx1ZScsIHNuYXAgPT4gewogICAgICAgICAgICAgICAgaWYoc25hcC52YWwoKSkgeyBhZG1pblBpbiA9IHNuYXAudmFsKCk7IH0KICAgICAgICAgICAgfSk7CiAgICAgICAgfQoKICAgICAgICAvLyA9PT09PT09PT09PT09PT09PSBBRE1JTiBMT0dJQyA9PT09PT09PT09PT09PT09PQogICAgICAgIGZ1bmN0aW9uIG9wZW5BZG1pbigpIHsKICAgICAgICAgICAgY29uc3QgcGluID0gcHJvbXB0KCJFbnRlciBBZG1pbiBQYXNzd29yZCAoUElOKToiKTsKICAgICAgICAgICAgaWYgKHBpbiA9PT0gYWRtaW5QaW4pIHsgCiAgICAgICAgICAgICAgICBzd2l0Y2hWaWV3KCdhZG1pbi12aWV3Jyk7CiAgICAgICAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYXR0ZW5kYW5jZURhdGUnKS52YWx1ZSA9IGdldExvY2FsRGF0ZSgpOwogICAgICAgICAgICAgICAgaW5pdEFkbWluVGFibGUoKTsKICAgICAgICAgICAgICAgIGxvYWRBZG1pbkRhdGEoKTsKICAgICAgICAgICAgfSBlbHNlIGlmKHBpbiAhPT0gbnVsbCkgewogICAgICAgICAgICAgICAgYWxlcnQoIldyb25nIFBhc3N3b3JkISIpOwogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICBmdW5jdGlvbiBjaGFuZ2VBZG1pblBhc3N3b3JkKCkgewogICAgICAgICAgICBjb25zdCBjdXJyZW50ID0gcHJvbXB0KCJFbnRlciBDdXJyZW50IFBhc3N3b3JkOiIpOwogICAgICAgICAgICBpZiAoY3VycmVudCA9PT0gYWRtaW5QaW4pIHsKICAgICAgICAgICAgICAgIGNvbnN0IG5ld1BpbiA9IHByb21wdCgiRW50ZXIgTmV3IFBhc3N3b3JkOiIpOwogICAgICAgICAgICAgICAgaWYgKG5ld1BpbiAmJiBuZXdQaW4udHJpbSgpICE9PSAiIikgewogICAgICAgICAgICAgICAgICAgIGRiLnJlZignbWFnbnVtX3NldHRpbmdzL2FkbWluUGFzc3dvcmQnKS5zZXQobmV3UGluLnRyaW0oKSk7CiAgICAgICAgICAgICAgICAgICAgYWxlcnQoIlBhc3N3b3JkIENoYW5nZWQgU3VjY2Vzc2Z1bGx5ISDwn5SSIik7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0gZWxzZSBpZihjdXJyZW50ICE9PSBudWxsKSB7CiAgICAgICAgICAgICAgICBhbGVydCgiSW5jb3JyZWN0IEN1cnJlbnQgUGFzc3dvcmQhIik7CiAgICAgICAgICAgIH0KICAgICAgICB9CgogICAgICAgIC8vIEhhbmRsZSBBZG1pbiBNYW51YWwgRWRpdAogICAgICAgIGZ1bmN0aW9uIGFkbWluTWFudWFsRWRpdChpbmRleCwgdHlwZSwgdmFsdWUpIHsKICAgICAgICAgICAgY29uc3QgZGF0ZSA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdhdHRlbmRhbmNlRGF0ZScpLnZhbHVlOwogICAgICAgICAgICBjb25zdCBuYW1lID0gZ2xvYmFsU3RhZmZMaXN0W2luZGV4XTsKICAgICAgICAgICAgaWYobmFtZSkgewogICAgICAgICAgICAgICAgZGIucmVmKGBtYWdudW1fYXR0ZW5kYW5jZS8ke2RhdGV9LyR7bmFtZX1gKS51cGRhdGUoewogICAgICAgICAgICAgICAgICAgIFt0eXBlXTogdmFsdWUKICAgICAgICAgICAgICAgIH0pOwogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICBmdW5jdGlvbiBpbml0QWRtaW5UYWJsZSgpIHsKICAgICAgICAgICAgY29uc3QgdGJvZHkgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgidGFibGVCb2R5Iik7CiAgICAgICAgICAgIHRib2R5LmlubmVySFRNTCA9ICIiOwogICAgICAgICAgICAKICAgICAgICAgICAgaWYoZ2xvYmFsU3RhZmZMaXN0Lmxlbmd0aCA9PT0gMCkgewogICAgICAgICAgICAgICAgdGJvZHkuaW5uZXJIVE1MID0gYDx0cj48dGQgY29sc3Bhbj0iNSIgc3R5bGU9InRleHQtYWxpZ246Y2VudGVyOyI+Tm8gc3RhZmYgYWRkZWQgeWV0LiBDbGljayAn4pqZ77iPIFN0YWZmJy48L3RkPjwvdHI+YDsKICAgICAgICAgICAgICAgIHJldHVybjsKICAgICAgICAgICAgfQoKICAgICAgICAgICAgZ2xvYmFsU3RhZmZMaXN0LmZvckVhY2goKG5hbWUsIGluZGV4KSA9PiB7CiAgICAgICAgICAgICAgICAvLyBVc2luZyBpbnB1dCB0eXBlPSJ0aW1lIiBmb3IgbWFudWFsIGVkaXRpbmcgYnkgQWRtaW4KICAgICAgICAgICAgICAgIHRib2R5LmlubmVySFRNTCArPSBgCiAgICAgICAgICAgICAgICAgICAgPHRyIGNsYXNzPSJzdGFmZi1yb3ciIGlkPSJyb3ctJHtpbmRleH0iPgogICAgICAgICAgICAgICAgICAgICAgICA8dGQ+JHtuYW1lfTwvdGQ+CiAgICAgICAgICAgICAgICAgICAgICAgIDx0ZD48aW5wdXQgdHlwZT0idGltZSIgY2xhc3M9ImFkbWluLWVkaXQiIGlkPSJpbi0ke2luZGV4fSIgb25jaGFuZ2U9ImFkbWluTWFudWFsRWRpdCgke2luZGV4fSwgJ2luJywgdGhpcy52YWx1ZSkiPjwvdGQ+CiAgICAgICAgICAgICAgICAgICAgICAgIDx0ZD48aW5wdXQgdHlwZT0idGltZSIgY2xhc3M9ImFkbWluLWVkaXQiIGlkPSJvdXQtJHtpbmRleH0iIG9uY2hhbmdlPSJhZG1pbk1hbnVhbEVkaXQoJHtpbmRleH0sICdvdXQnLCB0aGlzLnZhbHVlKSI+PC90ZD4KICAgICAgICAgICAgICAgICAgICAgICAgPHRkIHN0eWxlPSJ0ZXh0LWFsaWduOmNlbnRlcjsgZm9udC13ZWlnaHQ6NzAwOyBjb2xvcjp2YXIoLS1nb2xkKTsiIGlkPSJocnMtJHtpbmRleH0iPjAuMDA8L3RkPgogICAgICAgICAgICAgICAgICAgICAgICA8dGQ+PHNwYW4gY2xhc3M9InN0YXR1cy1iYWRnZSBhYnNlbnQiIGlkPSJzdGF0dXMtJHtpbmRleH0iPkFic2VudDwvc3Bhbj48L3RkPgogICAgICAgICAgICAgICAgICAgIDwvdHI+CiAgICAgICAgICAgICAgICBgOwogICAgICAgICAgICB9KTsKICAgICAgICB9CgogICAgICAgIGZ1bmN0aW9uIGxvYWRBZG1pbkRhdGEoKSB7CiAgICAgICAgICAgIGlmKCFkYikgcmV0dXJuOwogICAgICAgICAgICBjb25zdCBkYXRlID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2F0dGVuZGFuY2VEYXRlJykudmFsdWU7CiAgICAgICAgICAgIAogICAgICAgICAgICBkYi5yZWYoYG1hZ251bV9hdHRlbmRhbmNlYCkub2ZmKCk7IAogICAgICAgICAgICAKICAgICAgICAgICAgZGIucmVmKGBtYWdudW1fYXR0ZW5kYW5jZS8ke2RhdGV9YCkub24oJ3ZhbHVlJywgc25hcCA9PiB7CiAgICAgICAgICAgICAgICBjb25zdCBkYXRhID0gc25hcC52YWwoKSB8fCB7fTsKICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgZ2xvYmFsU3RhZmZMaXN0LmZvckVhY2goKG5hbWUsIGluZGV4KSA9PiB7CiAgICAgICAgICAgICAgICAgICAgY29uc3Qgcm93RGF0YSA9IGRhdGFbbmFtZV0gfHwge307CiAgICAgICAgICAgICAgICAgICAgY29uc3QgaW5UaW1lID0gcm93RGF0YS5pbiB8fCAiIjsKICAgICAgICAgICAgICAgICAgICBjb25zdCBvdXRUaW1lID0gcm93RGF0YS5vdXQgfHwgIiI7CiAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgY29uc3QgaW5FbCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKGBpbi0ke2luZGV4fWApOwogICAgICAgICAgICAgICAgICAgIGNvbnN0IG91dEVsID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoYG91dC0ke2luZGV4fWApOwogICAgICAgICAgICAgICAgICAgIGNvbnN0IHN0YXR1c0JhZGdlID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoYHN0YXR1cy0ke2luZGV4fWApOwogICAgICAgICAgICAgICAgICAgIGNvbnN0IGhycyA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKGBocnMtJHtpbmRleH1gKTsKCiAgICAgICAgICAgICAgICAgICAgaWYoIWluRWwpIHJldHVybjsgCgogICAgICAgICAgICAgICAgICAgIC8vIFVwZGF0ZSBpbnB1dHMKICAgICAgICAgICAgICAgICAgICBpbkVsLnZhbHVlID0gaW5UaW1lOwogICAgICAgICAgICAgICAgICAgIGlmKGluVGltZSkgaW5FbC5jbGFzc0xpc3QuYWRkKCdmaWxsZWQnKTsgZWxzZSBpbkVsLmNsYXNzTGlzdC5yZW1vdmUoJ2ZpbGxlZCcpOwogICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgIG91dEVsLnZhbHVlID0gb3V0VGltZTsKICAgICAgICAgICAgICAgICAgICBpZihvdXRUaW1lKSBvdXRFbC5jbGFzc0xpc3QuYWRkKCdmaWxsZWQnKTsgZWxzZSBvdXRFbC5jbGFzc0xpc3QucmVtb3ZlKCdmaWxsZWQnKTsKICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICBpZiAoaW5UaW1lIHx8IG91dFRpbWUpIHsKICAgICAgICAgICAgICAgICAgICAgICAgc3RhdHVzQmFkZ2UuaW5uZXJUZXh0ID0gIlByZXNlbnQiOwogICAgICAgICAgICAgICAgICAgICAgICBzdGF0dXNCYWRnZS5jbGFzc05hbWUgPSAic3RhdHVzLWJhZGdlIHByZXNlbnQiOwogICAgICAgICAgICAgICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgICAgICAgICAgICAgIHN0YXR1c0JhZGdlLmlubmVyVGV4dCA9ICJBYnNlbnQiOwogICAgICAgICAgICAgICAgICAgICAgICBzdGF0dXNCYWRnZS5jbGFzc05hbWUgPSAic3RhdHVzLWJhZGdlIGFic2VudCI7CiAgICAgICAgICAgICAgICAgICAgICAgIGhycy5pbm5lclRleHQgPSAiMC4wMCI7CiAgICAgICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgICAgICBpZiAoaW5UaW1lICYmIG91dFRpbWUpIHsKICAgICAgICAgICAgICAgICAgICAgICAgbGV0IGRJbiA9IG5ldyBEYXRlKCIwMS8wMS8yMDAwICIgKyBpblRpbWUpOwogICAgICAgICAgICAgICAgICAgICAgICBsZXQgZE91dCA9IG5ldyBEYXRlKCIwMS8wMS8yMDAwICIgKyBvdXRUaW1lKTsKICAgICAgICAgICAgICAgICAgICAgICAgaWYgKGRPdXQgPCBkSW4pIGRPdXQuc2V0RGF0ZShkT3V0LmdldERhdGUoKSArIDEpOyAKICAgICAgICAgICAgICAgICAgICAgICAgaHJzLmlubmVyVGV4dCA9ICgoZE91dCAtIGRJbikgLyAxMDAwIC8gNjAgLyA2MCkudG9GaXhlZCgyKTsKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICB9KTsKICAgICAgICAgICAgfSk7CiAgICAgICAgfQoKICAgICAgICBmdW5jdGlvbiBnZW5lcmF0ZVBERigpIHsKICAgICAgICAgICAgZG9jdW1lbnQuYm9keS5jbGFzc0xpc3QuYWRkKCdwZGYtbW9kZScpOyAKICAgICAgICAgICAgY29uc3QgZWxlbWVudCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdwcmludC1hcmVhJyk7CiAgICAgICAgICAgIGNvbnN0IGRhdGVWYWx1ZSA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdhdHRlbmRhbmNlRGF0ZScpLnZhbHVlOwogICAgICAgICAgICAKICAgICAgICAgICAgY29uc3Qgb3B0ID0gewogICAgICAgICAgICAgICAgbWFyZ2luOiBbMC41LCAwLjUsIDAuNSwgMC41XSwKICAgICAgICAgICAgICAgIGZpbGVuYW1lOiBgTWFnbnVtX1ByZW1pdW1fTG9nXyR7ZGF0ZVZhbHVlfS5wZGZgLAogICAgICAgICAgICAgICAgaW1hZ2U6IHsgdHlwZTogJ2pwZWcnLCBxdWFsaXR5OiAxLjAgfSwKICAgICAgICAgICAgICAgIGh0bWwyY2FudmFzOiB7IAogICAgICAgICAgICAgICAgICAgIHNjYWxlOiAyLCAKICAgICAgICAgICAgICAgICAgICB1c2VDT1JTOiB0cnVlLAogICAgICAgICAgICAgICAgICAgIG9uY2xvbmU6IGZ1bmN0aW9uKGNsb25lZERvYykgewogICAgICAgICAgICAgICAgICAgICAgICBsZXQgaW5wdXRzID0gY2xvbmVkRG9jLnF1ZXJ5U2VsZWN0b3JBbGwoJ2lucHV0W3R5cGU9InRpbWUiXS5hZG1pbi1lZGl0Jyk7CiAgICAgICAgICAgICAgICAgICAgICAgIGlucHV0cy5mb3JFYWNoKGlucHV0ID0+IHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldCBzcGFuID0gY2xvbmVkRG9jLmNyZWF0ZUVsZW1lbnQoJ3NwYW4nKTsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNwYW4uaW5uZXJUZXh0ID0gaW5wdXQudmFsdWUgfHwgJy0tOi0tJzsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNwYW4uc3R5bGUuZm9udFNpemUgPSAnMTRweCc7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICBzcGFuLnN0eWxlLmZvbnRXZWlnaHQgPSAnNTAwJzsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlucHV0LnBhcmVudE5vZGUucmVwbGFjZUNoaWxkKHNwYW4sIGlucHV0KTsKICAgICAgICAgICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgIGpzUERGOiB7IHVuaXQ6ICdpbicsIGZvcm1hdDogJ2E0Jywgb3JpZW50YXRpb246ICdwb3J0cmFpdCcgfQogICAgICAgICAgICB9OwogICAgICAgICAgICAKICAgICAgICAgICAgaHRtbDJwZGYoKS5zZXQob3B0KS5mcm9tKGVsZW1lbnQpLnNhdmUoKS50aGVuKCgpID0+IGRvY3VtZW50LmJvZHkuY2xhc3NMaXN0LnJlbW92ZSgncGRmLW1vZGUnKSk7CiAgICAgICAgfQoKICAgICAgICAvLyA9PT09PT09PT09PT09PT09PSBNQU5BR0UgU1RBRkYgTE9HSUMgPT09PT09PT09PT09PT09PT0KICAgICAgICBmdW5jdGlvbiBvcGVuU3RhZmZNYW5hZ2VyKCkgewogICAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnc3RhZmZNb2RhbCcpLmNsYXNzTGlzdC5hZGQoJ2FjdGl2ZScpOwogICAgICAgICAgICByZW5kZXJTdGFmZkVkaXRvckxpc3QoKTsKICAgICAgICB9CgogICAgICAgIGZ1bmN0aW9uIGNsb3NlU3RhZmZNYW5hZ2VyKCkgewogICAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnc3RhZmZNb2RhbCcpLmNsYXNzTGlzdC5yZW1vdmUoJ2FjdGl2ZScpOwogICAgICAgIH0KCiAgICAgICAgZnVuY3Rpb24gcmVuZGVyU3RhZmZFZGl0b3JMaXN0KCkgewogICAgICAgICAgICBjb25zdCBsaXN0RGl2ID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3N0YWZmRWRpdG9yTGlzdCcpOwogICAgICAgICAgICBsaXN0RGl2LmlubmVySFRNTCA9ICIiOwogICAgICAgICAgICBnbG9iYWxTdGFmZkxpc3QuZm9yRWFjaCgobmFtZSwgaW5kZXgpID0+IHsKICAgICAgICAgICAgICAgIGxpc3REaXYuaW5uZXJIVE1MICs9IGAKICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJzdGFmZi1lZGl0LWl0ZW0iPgogICAgICAgICAgICAgICAgICAgICAgICA8c3Bhbj4ke25hbWV9PC9zcGFuPgogICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJhY3Rpb24tYnRucyI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8YnV0dG9uIGNsYXNzPSJidG4tZWRpdCIgb25jbGljaz0iZWRpdFN0YWZmKCR7aW5kZXh9KSI+RWRpdDwvYnV0dG9uPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPGJ1dHRvbiBjbGFzcz0iYnRuLWRlbCIgb25jbGljaz0iZGVsZXRlU3RhZmYoJHtpbmRleH0pIj5EZWw8L2J1dHRvbj4KICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICBgOwogICAgICAgICAgICB9KTsKICAgICAgICB9CgogICAgICAgIGZ1bmN0aW9uIGFkZE5ld1N0YWZmKCkgewogICAgICAgICAgICBjb25zdCBpbnB1dCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCduZXdTdGFmZk5hbWUnKTsKICAgICAgICAgICAgY29uc3QgbmFtZSA9IGlucHV0LnZhbHVlLnRyaW0oKTsKICAgICAgICAgICAgaWYobmFtZSAmJiAhZ2xvYmFsU3RhZmZMaXN0LmluY2x1ZGVzKG5hbWUpKSB7CiAgICAgICAgICAgICAgICBnbG9iYWxTdGFmZkxpc3QucHVzaChuYW1lKTsKICAgICAgICAgICAgICAgIGRiLnJlZignbWFnbnVtX3NldHRpbmdzL3N0YWZmTGlzdCcpLnNldChnbG9iYWxTdGFmZkxpc3QpOwogICAgICAgICAgICAgICAgaW5wdXQudmFsdWUgPSAiIjsKICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICAgICAgZnVuY3Rpb24gZWRpdFN0YWZmKGluZGV4KSB7CiAgICAgICAgICAgIGNvbnN0IG9sZE5hbWUgPSBnbG9iYWxTdGFmZkxpc3RbaW5kZXhdOwogICAgICAgICAgICBjb25zdCBuZXdOYW1lID0gcHJvbXB0KCJFZGl0IHN0YWZmIG5hbWU6Iiwgb2xkTmFtZSk7CiAgICAgICAgICAgIGlmKG5ld05hbWUgJiYgbmV3TmFtZS50cmltKCkgIT09ICIiICYmIG5ld05hbWUgIT09IG9sZE5hbWUpIHsKICAgICAgICAgICAgICAgIGdsb2JhbFN0YWZmTGlzdFtpbmRleF0gPSBuZXdOYW1lLnRyaW0oKTsKICAgICAgICAgICAgICAgIGRiLnJlZignbWFnbnVtX3NldHRpbmdzL3N0YWZmTGlzdCcpLnNldChnbG9iYWxTdGFmZkxpc3QpOwogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICBmdW5jdGlvbiBkZWxldGVTdGFmZihpbmRleCkgewogICAgICAgICAgICBpZihjb25maXJtKGBSZW1vdmUgIiR7Z2xvYmFsU3RhZmZMaXN0W2luZGV4XX0iP2ApKSB7CiAgICAgICAgICAgICAgICBnbG9iYWxTdGFmZkxpc3Quc3BsaWNlKGluZGV4LCAxKTsKICAgICAgICAgICAgICAgIGRiLnJlZignbWFnbnVtX3NldHRpbmdzL3N0YWZmTGlzdCcpLnNldChnbG9iYWxTdGFmZkxpc3QpOwogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICAvLyA9PT09PT09PT09PT09PT09PSBTVEFGRiBBUFAgTE9HSUMgPT09PT09PT09PT09PT09PT0KICAgICAgICBmdW5jdGlvbiBvcGVuU3RhZmYoKSB7CiAgICAgICAgICAgIHN3aXRjaFZpZXcoJ3N0YWZmLXZpZXcnKTsKICAgICAgICAgICAgcG9wdWxhdGVTdGFmZkRyb3Bkb3duKCk7CiAgICAgICAgfQoKICAgICAgICBmdW5jdGlvbiBwb3B1bGF0ZVN0YWZmRHJvcGRvd24oKSB7CiAgICAgICAgICAgIGNvbnN0IHNlbCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdzdGFmZk5hbWVTZWxlY3QnKTsKICAgICAgICAgICAgY29uc3QgY3VycmVudFNlbGVjdGlvbiA9IHNlbC52YWx1ZTsKICAgICAgICAgICAgCiAgICAgICAgICAgIHNlbC5pbm5lckhUTUwgPSAnPG9wdGlvbiB2YWx1ZT0iIiBkaXNhYmxlZCBzZWxlY3RlZD5TZWxlY3QgWW91ciBOYW1lLi4uPC9vcHRpb24+JzsKICAgICAgICAgICAgZ2xvYmFsU3RhZmZMaXN0LmZvckVhY2gobmFtZSA9PiB7CiAgICAgICAgICAgICAgICBzZWwuaW5uZXJIVE1MICs9IGA8b3B0aW9uIHZhbHVlPSIke25hbWV9Ij4ke25hbWV9PC9vcHRpb24+YDsKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICBpZihjdXJyZW50U2VsZWN0aW9uICYmIGdsb2JhbFN0YWZmTGlzdC5pbmNsdWRlcyhjdXJyZW50U2VsZWN0aW9uKSkgewogICAgICAgICAgICAgICAgc2VsLnZhbHVlID0gY3VycmVudFNlbGVjdGlvbjsKICAgICAgICAgICAgfSBlbHNlIHsKICAgICAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdidG5JbicpLmRpc2FibGVkID0gdHJ1ZTsKICAgICAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdidG5PdXQnKS5kaXNhYmxlZCA9IHRydWU7CiAgICAgICAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYnRuSW4nKS5pbm5lclRleHQgPSAi4pqhIFBVTkNIIElOIjsKICAgICAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdidG5PdXQnKS5pbm5lclRleHQgPSAi4pqhIFBVTkNIIE9VVCI7CiAgICAgICAgICAgIH0KICAgICAgICB9CgogICAgICAgIGZ1bmN0aW9uIGxvYWRTdGFmZlN0YXRlKCkgewogICAgICAgICAgICBpZighZGIpIHJldHVybjsKICAgICAgICAgICAgY29uc3QgbmFtZSA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdzdGFmZk5hbWVTZWxlY3QnKS52YWx1ZTsKICAgICAgICAgICAgaWYoIW5hbWUpIHJldHVybjsKCiAgICAgICAgICAgIGNvbnN0IHRvZGF5ID0gZ2V0TG9jYWxEYXRlKCk7CiAgICAgICAgICAgIAogICAgICAgICAgICBpZihjdXJyZW50U3RhZmZMaXN0ZW5lcikgY3VycmVudFN0YWZmTGlzdGVuZXIub2ZmKCk7CgogICAgICAgICAgICBjb25zdCBpbkJ0biA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdidG5JbicpOwogICAgICAgICAgICBjb25zdCBvdXRCdG4gPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYnRuT3V0Jyk7CiAgICAgICAgICAgIGluQnRuLmRpc2FibGVkID0gZmFsc2U7CiAgICAgICAgICAgIG91dEJ0bi5kaXNhYmxlZCA9IGZhbHNlOwoKICAgICAgICAgICAgY3VycmVudFN0YWZmTGlzdGVuZXIgPSBkYi5yZWYoYG1hZ251bV9hdHRlbmRhbmNlLyR7dG9kYXl9LyR7bmFtZX1gKTsKICAgICAgICAgICAgCiAgICAgICAgICAgIGN1cnJlbnRTdGFmZkxpc3RlbmVyLm9uKCd2YWx1ZScsIHNuYXAgPT4gewogICAgICAgICAgICAgICAgY29uc3QgZGF0YSA9IHNuYXAudmFsKCkgfHwge307CiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIGlmIChkYXRhLmluKSB7CiAgICAgICAgICAgICAgICAgICAgaW5CdG4uaW5uZXJUZXh0ID0gIuKchSBJTjogIiArIGRhdGEuaW47CiAgICAgICAgICAgICAgICAgICAgaW5CdG4uZGlzYWJsZWQgPSB0cnVlOwogICAgICAgICAgICAgICAgfSBlbHNlIHsKICAgICAgICAgICAgICAgICAgICBpbkJ0bi5pbm5lclRleHQgPSAi4pqhIFBVTkNIIElOIjsKICAgICAgICAgICAgICAgICAgICBpbkJ0bi5kaXNhYmxlZCA9IGZhbHNlOwogICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgIGlmIChkYXRhLm91dCkgewogICAgICAgICAgICAgICAgICAgIG91dEJ0bi5pbm5lclRleHQgPSAi4pyFIE9VVDogIiArIGRhdGEub3V0OwogICAgICAgICAgICAgICAgICAgIG91dEJ0bi5kaXNhYmxlZCA9IHRydWU7CiAgICAgICAgICAgICAgICB9IGVsc2UgewogICAgICAgICAgICAgICAgICAgIG91dEJ0bi5pbm5lclRleHQgPSAi4pqhIFBVTkNIIE9VVCI7CiAgICAgICAgICAgICAgICAgICAgb3V0QnRuLmRpc2FibGVkID0gIWRhdGEuaW47IAogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9KTsKICAgICAgICB9CgogICAgICAgIGZ1bmN0aW9uIHN0YWZmUHVuY2godHlwZSkgewogICAgICAgICAgICBjb25zdCBuYW1lID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3N0YWZmTmFtZVNlbGVjdCcpLnZhbHVlOwogICAgICAgICAgICBpZighbmFtZSkgcmV0dXJuIGFsZXJ0KCJTZWxlY3QgeW91ciBuYW1lIGZpcnN0ISIpOwogICAgICAgICAgICAKICAgICAgICAgICAgY29uc3QgdGltZSA9IGdldExvY2FsVGltZSgpOwogICAgICAgICAgICBjb25zdCB0b2RheSA9IGdldExvY2FsRGF0ZSgpOwogICAgICAgICAgICAKICAgICAgICAgICAgY29uc3QgYnRuID0gdHlwZSA9PT0gJ2luJyA/IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdidG5JbicpIDogZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2J0bk91dCcpOwogICAgICAgICAgICBjb25zdCBvcmlnaW5hbFRleHQgPSBidG4uaW5uZXJUZXh0OwogICAgICAgICAgICAKICAgICAgICAgICAgYnRuLmlubmVyVGV4dCA9ICJQcm9jZXNzaW5nLi4uIjsKICAgICAgICAgICAgYnRuLmRpc2FibGVkID0gdHJ1ZTsKICAgICAgICAgICAgCiAgICAgICAgICAgIGRiLnJlZihgbWFnbnVtX2F0dGVuZGFuY2UvJHt0b2RheX0vJHtuYW1lfWApLnVwZGF0ZSh7CiAgICAgICAgICAgICAgICBbdHlwZV06IHRpbWUKICAgICAgICAgICAgfSkudGhlbigoKSA9PiB7CiAgICAgICAgICAgICAgICBpZihuYXZpZ2F0b3IudmlicmF0ZSkgbmF2aWdhdG9yLnZpYnJhdGUoNTApOwogICAgICAgICAgICB9KS5jYXRjaChlcnJvciA9PiB7CiAgICAgICAgICAgICAgICBidG4uaW5uZXJUZXh0ID0gb3JpZ2luYWxUZXh0OwogICAgICAgICAgICAgICAgYnRuLmRpc2FibGVkID0gZmFsc2U7CiAgICAgICAgICAgICAgICBhbGVydCgiRXJyb3IhIFBsZWFzZSBjaGVjayB5b3VyIGludGVybmV0IGNvbm5lY3Rpb24uIik7CiAgICAgICAgICAgIH0pOwogICAgICAgIH0KICAgIDwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4K';
+      let loaded = false;
+      window.openMagnumPortal = function(){
+        const overlay = document.getElementById('magnum-portal-overlay');
+        overlay.classList.add('active'); overlay.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+        if (!loaded) {
+          let html;
+          try { html = decodeURIComponent(escape(atob(magnumHtmlBase64))); }
+          catch (e) { html = atob(magnumHtmlBase64); }
+          document.getElementById('magnum-portal-frame').srcdoc = html;
+          loaded = true;
+        }
+      };
+      window.closeMagnumPortal = function(){
+        const overlay = document.getElementById('magnum-portal-overlay');
+        overlay.classList.remove('active'); overlay.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+      };
+      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') window.closeMagnumPortal(); });
+    })();
     </script>
 </body>
-
-<style>
-#magnum-portal-overlay{position:fixed;inset:0;z-index:99999;background:#050505;display:none;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-#magnum-portal-overlay.active{display:flex}
-#magnum-portal-toolbar{height:52px;flex:0 0 52px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#111827;color:#f0c75e;border-bottom:1px solid rgba(240,199,94,.35);font:600 14px Arial,sans-serif}
-#magnum-portal-toolbar button{border:1px solid #f0c75e;border-radius:9px;background:#1f2937;color:#fff;padding:8px 13px;cursor:pointer}
-#magnum-portal-frame{border:0;width:100%;height:calc(100% - 52px);flex:1;background:#000}
-@media(prefers-reduced-motion:reduce){#magnum-portal-overlay{scroll-behavior:auto}}
-</style>
-<div id="magnum-portal-overlay" aria-hidden="true">
-  <div id="magnum-portal-toolbar"><span>MAGNUM SKL · STAFF ATTENDANCE</span><button type="button" onclick="closeMagnumPortal()" aria-label="Close staff portal">✕ Close</button></div>
-  <iframe id="magnum-portal-frame" title="Magnum SKL staff attendance portal" allow="clipboard-read; clipboard-write" referrerpolicy="no-referrer"></iframe>
-</div>
-<script>
-(function(){
-  const magnumHtmlBase64 = 'PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KPGhlYWQ+CiAgICA8bWV0YSBjaGFyc2V0PSJVVEYtOCI+CiAgICA8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLCBpbml0aWFsLXNjYWxlPTEuMCwgbWF4aW11bS1zY2FsZT0xLjAsIHVzZXItc2NhbGFibGU9bm8sIHZpZXdwb3J0LWZpdD1jb3ZlciI+CiAgICAKICAgIDwhLS0gUFdBIFNldHRpbmdzIC0tPgogICAgPG1ldGEgbmFtZT0ibW9iaWxlLXdlYi1hcHAtY2FwYWJsZSIgY29udGVudD0ieWVzIj4KICAgIDxtZXRhIG5hbWU9ImFwcGxlLW1vYmlsZS13ZWItYXBwLWNhcGFibGUiIGNvbnRlbnQ9InllcyI+CiAgICA8bWV0YSBuYW1lPSJhcHBsZS1tb2JpbGUtd2ViLWFwcC1zdGF0dXMtYmFyLXN0eWxlIiBjb250ZW50PSJibGFjay10cmFuc2x1Y2VudCI+CiAgICA8bGluayByZWw9Im1hbmlmZXN0IiBocmVmPSdkYXRhOmFwcGxpY2F0aW9uL21hbmlmZXN0K2pzb247Y2hhcnNldD11dGYtOCwlN0IlMjJuYW1lJTIyJTNBJTIyTWFnbnVtJTIwUG9ydGFsJTIyJTJDJTIyZGlzcGxheSUyMiUzQSUyMnN0YW5kYWxvbmUlMjIlMkMlMjJiYWNrZ3JvdW5kX2NvbG9yJTIyJTNBJTIyJTIzMGEwYTBhJTIyJTdEJz4KCiAgICA8dGl0bGU+TWFnbnVtIFNLTCAtIFByZW1pdW0gUG9ydGFsPC90aXRsZT4KICAgIAogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9mb250cy5nb29nbGVhcGlzLmNvbS9jc3MyP2ZhbWlseT1QbGF5ZmFpcitEaXNwbGF5OndnaHRANjAwOzcwMCZmYW1pbHk9UG9wcGluczp3Z2h0QDMwMDs0MDA7NTAwOzYwMCZkaXNwbGF5PXN3YXAiIHJlbD0ic3R5bGVzaGVldCI+CiAgICA8c2NyaXB0IHNyYz0iaHR0cHM6Ly9jZG5qcy5jbG91ZGZsYXJlLmNvbS9hamF4L2xpYnMvaHRtbDJwZGYuanMvMC4xMC4xL2h0bWwycGRmLmJ1bmRsZS5taW4uanMiPjwvc2NyaXB0PgogICAgCiAgICA8IS0tIEZpcmViYXNlIExpYnJhcmllcyAtLT4KICAgIDxzY3JpcHQgc3JjPSJodHRwczovL3d3dy5nc3RhdGljLmNvbS9maXJlYmFzZWpzLzguMTAuMS9maXJlYmFzZS1hcHAuanMiPjwvc2NyaXB0PgogICAgPHNjcmlwdCBzcmM9Imh0dHBzOi8vd3d3LmdzdGF0aWMuY29tL2ZpcmViYXNlanMvOC4xMC4xL2ZpcmViYXNlLWRhdGFiYXNlLmpzIj48L3NjcmlwdD4KICAgIAogICAgPHN0eWxlPgogICAgICAgIC8qID09PT09PT09PT09PT09PT09IFBSRU1JVU0gUk9ZQUwgREFSSyBUSEVNRSA9PT09PT09PT09PT09PT09PSAqLwogICAgICAgIDpyb290IHsKICAgICAgICAgICAgLS1iZy1kYXJrOiAjMGEwYTBhOyAtLXN1cmZhY2U6ICMxNDE0MTQ7IC0tc3VyZmFjZS1saWdodDogIzFmMWYxZjsKICAgICAgICAgICAgLS1nb2xkOiAjZDRhZjM3OyAtLWdvbGQtbGlnaHQ6ICNmM2U1YWI7IC0tdGV4dC1tYWluOiAjZmZmZmZmOwogICAgICAgICAgICAtLXRleHQtbXV0ZWQ6ICM5Y2EzYWY7IC0tYm9yZGVyOiAjMzMzMzMzOyAtLXN1Y2Nlc3M6ICMxMGI5ODE7IC0tZGFuZ2VyOiAjZWY0NDQ0OwogICAgICAgIH0KCiAgICAgICAgKiB7IGJveC1zaXppbmc6IGJvcmRlci1ib3g7IG1hcmdpbjogMDsgcGFkZGluZzogMDsgZm9udC1mYW1pbHk6ICdQb3BwaW5zJywgc2Fucy1zZXJpZjsgLXdlYmtpdC10YXAtaGlnaGxpZ2h0LWNvbG9yOiB0cmFuc3BhcmVudDsgfQogICAgICAgIGJvZHkgeyB3aWR0aDogMTAwdnc7IGhlaWdodDogMTAwdmg7IG92ZXJmbG93OiBoaWRkZW47IGJhY2tncm91bmQ6IHZhcigtLWJnLWRhcmspOyBjb2xvcjogdmFyKC0tdGV4dC1tYWluKTsgfQogICAgICAgIGgxLCBoMiwgLmxvZ28tdGl0bGUgeyBmb250LWZhbWlseTogJ1BsYXlmYWlyIERpc3BsYXknLCBzZXJpZjsgfQogICAgICAgIAogICAgICAgIC52aWV3IHsgZGlzcGxheTogbm9uZTsgd2lkdGg6IDEwMCU7IGhlaWdodDogMTAwJTsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgfQogICAgICAgIC52aWV3LmFjdGl2ZSB7IGRpc3BsYXk6IGZsZXg7IH0KCiAgICAgICAgLyogPT09PT09PT09PT09PT09PT0gRlVMTFNDUkVFTiBXRUxDT01FIE9WRVJMQVkgPT09PT09PT09PT09PT09PT0gKi8KICAgICAgICAjd2VsY29tZS1vdmVybGF5IHsKICAgICAgICAgICAgcG9zaXRpb246IGZpeGVkOyB0b3A6IDA7IGxlZnQ6IDA7IHdpZHRoOiAxMDB2dzsgaGVpZ2h0OiAxMDB2aDsKICAgICAgICAgICAgYmFja2dyb3VuZDogcmFkaWFsLWdyYWRpZW50KGNpcmNsZSBhdCBjZW50ZXIsICMxYTFhMWEgMCUsICMwMDAwMDAgMTAwJSk7CiAgICAgICAgICAgIHotaW5kZXg6IDk5OTk7IGRpc3BsYXk6IGZsZXg7IGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47IGFsaWduLWl0ZW1zOiBjZW50ZXI7IGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgICAgICAgICBjdXJzb3I6IHBvaW50ZXI7IHRleHQtYWxpZ246IGNlbnRlcjsKICAgICAgICB9CiAgICAgICAgI3dlbGNvbWUtb3ZlcmxheSBoMSB7IGZvbnQtc2l6ZTogNDJweDsgY29sb3I6IHZhcigtLWdvbGQpOyB0ZXh0LXNoYWRvdzogMCA0cHggMTVweCByZ2JhKDIxMiwgMTc1LCA1NSwgMC40KTsgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsgbGV0dGVyLXNwYWNpbmc6IDNweDsgfQogICAgICAgICN3ZWxjb21lLW92ZXJsYXkgcCB7IGNvbG9yOiB2YXIoLS10ZXh0LW11dGVkKTsgZm9udC1zaXplOiAxNXB4OyBtYXJnaW4tdG9wOiAxNXB4OyBhbmltYXRpb246IGJsaW5rIDEuNXMgaW5maW5pdGU7IGxldHRlci1zcGFjaW5nOiAxcHg7IHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7IH0KICAgICAgICBAa2V5ZnJhbWVzIGJsaW5rIHsgMCUsIDEwMCUgeyBvcGFjaXR5OiAxOyB9IDUwJSB7IG9wYWNpdHk6IDAuMzsgfSB9CgogICAgICAgIDo6LXdlYmtpdC1zY3JvbGxiYXIgeyB3aWR0aDogNnB4OyBoZWlnaHQ6IDZweDsgfQogICAgICAgIDo6LXdlYmtpdC1zY3JvbGxiYXItdHJhY2sgeyBiYWNrZ3JvdW5kOiB2YXIoLS1iZy1kYXJrKTsgfQogICAgICAgIDo6LXdlYmtpdC1zY3JvbGxiYXItdGh1bWIgeyBiYWNrZ3JvdW5kOiB2YXIoLS1ib3JkZXIpOyBib3JkZXItcmFkaXVzOiAxMHB4OyB9CgogICAgICAgIC8qID09PT09PT09PT09PT09PT09IFJPTEUgU0VMRUNUSU9OID09PT09PT09PT09PT09PT09ICovCiAgICAgICAgI3JvbGUtc2VsZWN0LXZpZXcgeyBhbGlnbi1pdGVtczogY2VudGVyOyBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjsgdGV4dC1hbGlnbjogY2VudGVyOyBiYWNrZ3JvdW5kOiByYWRpYWwtZ3JhZGllbnQoY2lyY2xlIGF0IGNlbnRlciwgIzFhMWExYSAwJSwgIzAwMDAwMCAxMDAlKTsgcGFkZGluZzogMjBweDsgfQogICAgICAgIC5sb2dvLXRpdGxlIHsgZm9udC1zaXplOiBjbGFtcCgzMHB4LCA4dncsIDQwcHgpOyBjb2xvcjogdmFyKC0tZ29sZCk7IG1hcmdpbi1ib3R0b206IDVweDsgbGV0dGVyLXNwYWNpbmc6IDJweDsgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsgdGV4dC1zaGFkb3c6IDAgNHB4IDE1cHggcmdiYSgyMTIsIDE3NSwgNTUsIDAuMyk7IH0KICAgICAgICAucm9sZS1idG4geyB3aWR0aDogMTAwJTsgbWF4LXdpZHRoOiAzMDBweDsgcGFkZGluZzogMThweDsgbWFyZ2luOiAxMHB4IDA7IGZvbnQtc2l6ZTogMTZweDsgZm9udC13ZWlnaHQ6IDYwMDsgYm9yZGVyLXJhZGl1czogMTJweDsgY3Vyc29yOiBwb2ludGVyOyBib3JkZXI6IG5vbmU7IHRyYW5zaXRpb246IGFsbCAwLjNzOyB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOyBsZXR0ZXItc3BhY2luZzogMXB4OyB9CiAgICAgICAgLnJvbGUtYnRuOmFjdGl2ZSB7IHRyYW5zZm9ybTogc2NhbGUoMC45Nik7IH0KICAgICAgICAuYnRuLXN0YWZmIHsgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgdmFyKC0tZ29sZCksICNhYThjMmMpOyBjb2xvcjogIzAwMDsgYm94LXNoYWRvdzogMCAxMHB4IDI1cHggcmdiYSgyMTIsIDE3NSwgNTUsIDAuMik7IH0KICAgICAgICAuYnRuLWFkbWluIHsgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7IGJvcmRlcjogMnB4IHNvbGlkIHZhcigtLWdvbGQpOyBjb2xvcjogdmFyKC0tZ29sZCk7IH0KCiAgICAgICAgLyogPT09PT09PT09PT09PT09PT0gU1RBRkYgUE9SVEFMID09PT09PT09PT09PT09PT09ICovCiAgICAgICAgI3N0YWZmLXZpZXcgeyBhbGlnbi1pdGVtczogY2VudGVyOyBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjsgcGFkZGluZzogMjBweDsgYmFja2dyb3VuZDogdXJsKCdodHRwczovL3d3dy50cmFuc3BhcmVudHRleHR1cmVzLmNvbS9wYXR0ZXJucy9zdGFyZHVzdC5wbmcnKSwgdmFyKC0tYmctZGFyayk7IH0KICAgICAgICAuc3RhZmYtY2FyZCB7IGJhY2tncm91bmQ6IHJnYmEoMjAsIDIwLCAyMCwgMC44KTsgYmFja2Ryb3AtZmlsdGVyOiBibHVyKDIwcHgpOyBwYWRkaW5nOiAzMHB4OyBib3JkZXItcmFkaXVzOiAyNHB4OyBib3JkZXI6IDFweCBzb2xpZCByZ2JhKDIxMiwgMTc1LCA1NSwgMC4yKTsgYm94LXNoYWRvdzogMCAyMHB4IDUwcHggcmdiYSgwLDAsMCwwLjUpOyB3aWR0aDogMTAwJTsgbWF4LXdpZHRoOiA0MDBweDsgdGV4dC1hbGlnbjogY2VudGVyOyB9CiAgICAgICAgLnN0YWZmLWNhcmQgaDIgeyBjb2xvcjogdmFyKC0tZ29sZC1saWdodCk7IG1hcmdpbi1ib3R0b206IDI1cHg7IGZvbnQtc2l6ZTogMjRweDsgfQogICAgICAgIAogICAgICAgIHNlbGVjdCB7IHdpZHRoOiAxMDAlOyBwYWRkaW5nOiAxNnB4OyBib3JkZXItcmFkaXVzOiAxMnB4OyBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpOyBmb250LXNpemU6IDE1cHg7IGZvbnQtZmFtaWx5OiAnUG9wcGlucyc7IG1hcmdpbi1ib3R0b206IDI1cHg7IG91dGxpbmU6IG5vbmU7IGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UtbGlnaHQpOyBjb2xvcjogd2hpdGU7IGFwcGVhcmFuY2U6IG5vbmU7IH0KICAgICAgICBzZWxlY3Q6Zm9jdXMgeyBib3JkZXItY29sb3I6IHZhcigtLWdvbGQpOyB9CiAgICAgICAgCiAgICAgICAgLmJpZy1wdW5jaC1idG4geyB3aWR0aDogMTAwJTsgcGFkZGluZzogMjBweDsgZm9udC1zaXplOiAxNnB4OyBmb250LXdlaWdodDogNjAwOyBsZXR0ZXItc3BhY2luZzogMXB4OyBib3JkZXItcmFkaXVzOiAxNnB4OyBib3JkZXI6IG5vbmU7IGNvbG9yOiAjMDAwOyBtYXJnaW4tYm90dG9tOiAxNXB4OyBjdXJzb3I6IHBvaW50ZXI7IHRyYW5zaXRpb246IGFsbCAwLjJzOyB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOyB9CiAgICAgICAgLmJpZy1wdW5jaC1idG46YWN0aXZlIHsgdHJhbnNmb3JtOiBzY2FsZSgwLjk2KTsgfQogICAgICAgIC5iZy1pbiB7IGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCgxMzVkZWcsICMxMGI5ODEsICMwNTk2NjkpOyBib3gtc2hhZG93OiAwIDEwcHggMjVweCByZ2JhKDE2LCAxODUsIDEyOSwgMC4yKTsgY29sb3I6IHdoaXRlOyB9CiAgICAgICAgLmJnLW91dCB7IGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCgxMzVkZWcsICNmNTllMGIsICNkOTc3MDYpOyBib3gtc2hhZG93OiAwIDEwcHggMjVweCByZ2JhKDI0NSwgMTU4LCAxMSwgMC4yKTsgY29sb3I6IHdoaXRlOyB9CiAgICAgICAgLmJpZy1wdW5jaC1idG46ZGlzYWJsZWQgeyBiYWNrZ3JvdW5kOiB2YXIoLS1ib3JkZXIpICFpbXBvcnRhbnQ7IGNvbG9yOiB2YXIoLS10ZXh0LW11dGVkKSAhaW1wb3J0YW50OyBib3gtc2hhZG93OiBub25lICFpbXBvcnRhbnQ7IHBvaW50ZXItZXZlbnRzOiBub25lOyB9CgogICAgICAgIC8qID09PT09PT09PT09PT09PT09IEFETUlOIERBU0hCT0FSRCA9PT09PT09PT09PT09PT09PSAqLwogICAgICAgIC50b3AtYmFyIHsgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tc3VyZmFjZSk7IHBhZGRpbmc6IGVudihzYWZlLWFyZWEtaW5zZXQtdG9wLCAxNXB4KSAyMHB4IDE1cHggMjBweDsgZGlzcGxheTogZmxleDsganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuOyBhbGlnbi1pdGVtczogY2VudGVyOyBib3JkZXItYm90dG9tOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTsgZmxleC13cmFwOiB3cmFwOyBnYXA6IDEwcHg7IH0KICAgICAgICAubGl2ZS1pbmRpY2F0b3IgeyBkaXNwbGF5OiBmbGV4OyBhbGlnbi1pdGVtczogY2VudGVyOyBnYXA6IDhweDsgY29sb3I6IHZhcigtLWdvbGQpOyBmb250LXNpemU6IDEycHg7IGZvbnQtd2VpZ2h0OiA2MDA7IHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7IGxldHRlci1zcGFjaW5nOiAxcHg7IH0KICAgICAgICAucHVsc2UgeyB3aWR0aDogOHB4OyBoZWlnaHQ6IDhweDsgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tZ29sZCk7IGJvcmRlci1yYWRpdXM6IDUwJTsgYm94LXNoYWRvdzogMCAwIDEwcHggdmFyKC0tZ29sZCk7IGFuaW1hdGlvbjogcHVsc2UtYW5pbSAxLjVzIGluZmluaXRlOyB9CiAgICAgICAgQGtleWZyYW1lcyBwdWxzZS1hbmltIHsgMCUgeyBvcGFjaXR5OiAxOyB0cmFuc2Zvcm06IHNjYWxlKDEpOyB9IDUwJSB7IG9wYWNpdHk6IDAuNjsgdHJhbnNmb3JtOiBzY2FsZSgxLjQpOyB9IDEwMCUgeyBvcGFjaXR5OiAxOyB0cmFuc2Zvcm06IHNjYWxlKDEpOyB9IH0KICAgICAgICAKICAgICAgICAuYXBwLWNvbnRlbnQgeyBmbGV4OiAxOyBvdmVyZmxvdy15OiBhdXRvOyBwYWRkaW5nLWJvdHRvbTogMTAwcHg7IHdpZHRoOiAxMDAlOyB9CiAgICAgICAgI3ByaW50LWFyZWEgeyBtYXgtd2lkdGg6IDEwMDBweDsgbWFyZ2luOiAwIGF1dG87IG1pbi1oZWlnaHQ6IDEwMCU7IHBhZGRpbmctYm90dG9tOiAyMHB4OyB9CiAgICAgICAgCiAgICAgICAgLmhlYWRlciB7IHBhZGRpbmc6IDI1cHggMjBweCAxNXB4IDIwcHg7IHRleHQtYWxpZ246IGNlbnRlcjsgfQogICAgICAgIC5oZWFkZXIgaDEgeyBmb250LXNpemU6IGNsYW1wKDIwcHgsIDZ2dywgMjZweCk7IGNvbG9yOiB2YXIoLS1nb2xkKTsgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsgbGV0dGVyLXNwYWNpbmc6IDJweDsgfQogICAgICAgIC5oZWFkZXIgcCB7IGZvbnQtc2l6ZTogMTNweDsgY29sb3I6IHZhcigtLXRleHQtbXV0ZWQpOyBtYXJnaW4tdG9wOiA1cHg7IH0KICAgICAgICAKICAgICAgICAuYWRtaW4tY29udHJvbHMgeyBkaXNwbGF5OiBmbGV4OyBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjsgZ2FwOiAxMHB4OyBtYXJnaW46IDE1cHggMDsgZmxleC13cmFwOiB3cmFwOyBwYWRkaW5nOiAwIDE1cHg7IH0KICAgICAgICAuZGF0ZS1waWNrZXItd3JhcHBlciB7IGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UtbGlnaHQpOyBwYWRkaW5nOiA4cHggMTVweDsgYm9yZGVyLXJhZGl1czogMTBweDsgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTsgfQogICAgICAgIC5kYXRlLXBpY2tlci13cmFwcGVyIGlucHV0IHsgYm9yZGVyOiBub25lOyBiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgZm9udC1zaXplOiAxNHB4OyBmb250LXdlaWdodDogNjAwOyBjb2xvcjogdmFyKC0tZ29sZC1saWdodCk7IG91dGxpbmU6IG5vbmU7IGNvbG9yLXNjaGVtZTogZGFyazsgfQogICAgICAgIAogICAgICAgIC5idG4tbWFuYWdlIHsgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7IGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWdvbGQpOyBjb2xvcjogdmFyKC0tZ29sZCk7IHBhZGRpbmc6IDhweCAxNXB4OyBib3JkZXItcmFkaXVzOiAxMHB4OyBjdXJzb3I6IHBvaW50ZXI7IGZvbnQtc2l6ZTogMTNweDsgZm9udC13ZWlnaHQ6IDYwMDsgdHJhbnNpdGlvbjogMC4zczsgfQogICAgICAgIC5idG4tbWFuYWdlOmFjdGl2ZSB7IGJhY2tncm91bmQ6IHZhcigtLWdvbGQpOyBjb2xvcjogYmxhY2s7IH0KCiAgICAgICAgLnRhYmxlLWNvbnRhaW5lciB7IHBhZGRpbmc6IDAgMTVweDsgb3ZlcmZsb3cteDogYXV0bzsgd2lkdGg6IDEwMCU7IH0KICAgICAgICB0YWJsZSB7IHdpZHRoOiAxMDAlOyBib3JkZXItY29sbGFwc2U6IHNlcGFyYXRlOyBib3JkZXItc3BhY2luZzogMCAxMHB4OyBtaW4td2lkdGg6IDY1MHB4OyB9CiAgICAgICAgdGggeyB0ZXh0LWFsaWduOiBsZWZ0OyBwYWRkaW5nOiAwIDEwcHggOHB4IDEwcHg7IGZvbnQtc2l6ZTogMTFweDsgY29sb3I6IHZhcigtLXRleHQtbXV0ZWQpOyB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOyBsZXR0ZXItc3BhY2luZzogMXB4OyB9CiAgICAgICAgdHIuc3RhZmYtcm93IHsgYmFja2dyb3VuZDogdmFyKC0tc3VyZmFjZSk7IGJveC1zaGFkb3c6IDAgNHB4IDE1cHggcmdiYSgwLDAsMCwwLjIpOyB9CiAgICAgICAgdGQgeyBwYWRkaW5nOiAxMnB4IDEwcHg7IGJvcmRlci10b3A6IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpOyBib3JkZXItYm90dG9tOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTsgdmVydGljYWwtYWxpZ246IG1pZGRsZTsgZm9udC1zaXplOiAxNHB4OyBmb250LXdlaWdodDogNTAwOyB9CiAgICAgICAgdHIuc3RhZmYtcm93IHRkOmZpcnN0LWNoaWxkIHsgYm9yZGVyLWxlZnQ6IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpOyBib3JkZXItdG9wLWxlZnQtcmFkaXVzOiAxMnB4OyBib3JkZXItYm90dG9tLWxlZnQtcmFkaXVzOiAxMnB4OyBmb250LXdlaWdodDogNjAwOyBjb2xvcjogdmFyKC0tZ29sZC1saWdodCk7IHdoaXRlLXNwYWNlOiBub3dyYXA7IH0KICAgICAgICB0ci5zdGFmZi1yb3cgdGQ6bGFzdC1jaGlsZCB7IGJvcmRlci1yaWdodDogMXB4IHNvbGlkIHZhcigtLWJvcmRlcik7IGJvcmRlci10b3AtcmlnaHQtcmFkaXVzOiAxMnB4OyBib3JkZXItYm90dG9tLXJpZ2h0LXJhZGl1czogMTJweDsgdGV4dC1hbGlnbjogY2VudGVyOyB9CiAgICAgICAgCiAgICAgICAgLyogUHJlbWl1bSBFZGl0YWJsZSBJbnB1dHMgZm9yIEFkbWluICovCiAgICAgICAgaW5wdXRbdHlwZT0idGltZSJdLmFkbWluLWVkaXQgeyBiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgYm9yZGVyOiAxcHggc29saWQgdHJhbnNwYXJlbnQ7IGNvbG9yOiB2YXIoLS10ZXh0LW11dGVkKTsgZm9udC1mYW1pbHk6ICdQb3BwaW5zJywgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxNHB4OyBwYWRkaW5nOiA2cHg7IGJvcmRlci1yYWRpdXM6IDhweDsgb3V0bGluZTogbm9uZTsgd2lkdGg6IDEwMCU7IHRyYW5zaXRpb246IDAuM3M7IH0KICAgICAgICBpbnB1dFt0eXBlPSJ0aW1lIl0uYWRtaW4tZWRpdDpmb2N1cyB7IGJvcmRlci1jb2xvcjogdmFyKC0tZ29sZCk7IGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UtbGlnaHQpOyBjb2xvcjogd2hpdGU7IH0KICAgICAgICBpbnB1dFt0eXBlPSJ0aW1lIl0uYWRtaW4tZWRpdC5maWxsZWQgeyBjb2xvcjogd2hpdGU7IGZvbnQtd2VpZ2h0OiA1MDA7IH0KCiAgICAgICAgLnN0YXR1cy1iYWRnZSB7IGRpc3BsYXk6IGlubGluZS1ibG9jazsgcGFkZGluZzogNnB4IDEycHg7IGJvcmRlci1yYWRpdXM6IDIwcHg7IGZvbnQtc2l6ZTogMTFweDsgZm9udC13ZWlnaHQ6IDcwMDsgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsgbGV0dGVyLXNwYWNpbmc6IDAuNXB4OyB3aWR0aDogODVweDsgfQogICAgICAgIC5hYnNlbnQgeyBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDIzOSwgNjgsIDY4LCAwLjEpOyBjb2xvcjogdmFyKC0tZGFuZ2VyKTsgYm9yZGVyOiAxcHggc29saWQgcmdiYSgyMzksIDY4LCA2OCwgMC4yKTsgfQogICAgICAgIC5wcmVzZW50IHsgYmFja2dyb3VuZC1jb2xvcjogcmdiYSgxNiwgMTg1LCAxMjksIDAuMSk7IGNvbG9yOiB2YXIoLS1zdWNjZXNzKTsgYm9yZGVyOiAxcHggc29saWQgcmdiYSgxNiwgMTg1LCAxMjksIDAuMik7IH0KICAgICAgICAKICAgICAgICAuYm90dG9tLWJhciB7IHBvc2l0aW9uOiBmaXhlZDsgYm90dG9tOiAwOyBsZWZ0OiAwOyB3aWR0aDogMTAwJTsgYmFja2dyb3VuZDogcmdiYSgyMCwgMjAsIDIwLCAwLjk1KTsgYmFja2Ryb3AtZmlsdGVyOiBibHVyKDEwcHgpOyBwYWRkaW5nOiAxNXB4IDE1cHggY2FsYyhlbnYoc2FmZS1hcmVhLWluc2V0LWJvdHRvbSwgMTVweCkgKyAxNXB4KSAxNXB4OyBib3JkZXItdG9wOiAxcHggc29saWQgdmFyKC0tYm9yZGVyKTsgZGlzcGxheTogZmxleDsganVzdGlmeS1jb250ZW50OiBjZW50ZXI7IH0KICAgICAgICAuYnRuLWRvd25sb2FkIHsgd2lkdGg6IDEwMCU7IG1heC13aWR0aDogMTAwMHB4OyBib3JkZXI6IG5vbmU7IHBhZGRpbmc6IDE2cHg7IGJvcmRlci1yYWRpdXM6IDEycHg7IGZvbnQtc2l6ZTogMTRweDsgZm9udC13ZWlnaHQ6IDYwMDsgbGV0dGVyLXNwYWNpbmc6IDFweDsgY3Vyc29yOiBwb2ludGVyOyBiYWNrZ3JvdW5kOiBsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCB2YXIoLS1nb2xkKSwgI2FhOGMyYyk7IGNvbG9yOiAjMDAwOyB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOyBib3gtc2hhZG93OiAwIDEwcHggMjVweCByZ2JhKDIxMiwgMTc1LCA1NSwgMC4yKTsgdHJhbnNpdGlvbjogMC4yczsgfQogICAgICAgIC5idG4tZG93bmxvYWQ6YWN0aXZlIHsgdHJhbnNmb3JtOiBzY2FsZSgwLjk4KTsgfQoKICAgICAgICAvKiA9PT09PT09PT09PT09PT09PSBNT0RBTFMgPT09PT09PT09PT09PT09PT0gKi8KICAgICAgICAubW9kYWwtb3ZlcmxheSB7IGRpc3BsYXk6IG5vbmU7IHBvc2l0aW9uOiBmaXhlZDsgdG9wOiAwOyBsZWZ0OiAwOyB3aWR0aDogMTAwJTsgaGVpZ2h0OiAxMDAlOyBiYWNrZ3JvdW5kOiByZ2JhKDAsMCwwLDAuODUpOyBiYWNrZHJvcC1maWx0ZXI6IGJsdXIoNXB4KTsgei1pbmRleDogMjAwMDsganVzdGlmeS1jb250ZW50OiBjZW50ZXI7IGFsaWduLWl0ZW1zOiBjZW50ZXI7IHBhZGRpbmc6IDIwcHg7IH0KICAgICAgICAubW9kYWwtb3ZlcmxheS5hY3RpdmUgeyBkaXNwbGF5OiBmbGV4OyB9CiAgICAgICAgLm1vZGFsLWNvbnRlbnQgeyBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlKTsgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tZ29sZCk7IGJvcmRlci1yYWRpdXM6IDIwcHg7IHdpZHRoOiAxMDAlOyBtYXgtd2lkdGg6IDQ1MHB4OyBwYWRkaW5nOiAyNXB4OyBtYXgtaGVpZ2h0OiA4NXZoOyBkaXNwbGF5OiBmbGV4OyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyB9CiAgICAgICAgLm1vZGFsLWNvbnRlbnQgaDIgeyBjb2xvcjogdmFyKC0tZ29sZCk7IG1hcmdpbi1ib3R0b206IDIwcHg7IGZvbnQtc2l6ZTogMjBweDsgfQogICAgICAgIAogICAgICAgIC5zdGFmZi1saXN0LWVkaXRvciB7IGZsZXg6IDE7IG92ZXJmbG93LXk6IGF1dG87IG1hcmdpbi1ib3R0b206IDIwcHg7IH0KICAgICAgICAuc3RhZmYtZWRpdC1pdGVtIHsgZGlzcGxheTogZmxleDsganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuOyBhbGlnbi1pdGVtczogY2VudGVyOyBiYWNrZ3JvdW5kOiB2YXIoLS1iZy1kYXJrKTsgcGFkZGluZzogMTJweDsgYm9yZGVyLXJhZGl1czogMTBweDsgbWFyZ2luLWJvdHRvbTogOHB4OyBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpOyB9CiAgICAgICAgLnN0YWZmLWVkaXQtaXRlbSBzcGFuIHsgZm9udC13ZWlnaHQ6IDUwMDsgY29sb3I6IHdoaXRlOyBmb250LXNpemU6IDE0cHg7IH0KICAgICAgICAuYWN0aW9uLWJ0bnMgYnV0dG9uIHsgcGFkZGluZzogNnB4IDEwcHg7IGJvcmRlci1yYWRpdXM6IDZweDsgYm9yZGVyOiBub25lOyBjdXJzb3I6IHBvaW50ZXI7IGZvbnQtd2VpZ2h0OiA2MDA7IG1hcmdpbi1sZWZ0OiA2cHg7IGZvbnQtc2l6ZTogMTFweDsgfQogICAgICAgIC5idG4tZWRpdCB7IGJhY2tncm91bmQ6IHZhcigtLXN1cmZhY2UtbGlnaHQpOyBjb2xvcjogdmFyKC0tZ29sZCk7IGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWdvbGQpOyB9CiAgICAgICAgLmJ0bi1kZWwgeyBiYWNrZ3JvdW5kOiByZ2JhKDIzOSwgNjgsIDY4LCAwLjEpOyBjb2xvcjogdmFyKC0tZGFuZ2VyKTsgfQogICAgICAgIAogICAgICAgIC5hZGQtc3RhZmYtZm9ybSB7IGRpc3BsYXk6IGZsZXg7IGdhcDogOHB4OyBtYXJnaW4tdG9wOiAxMHB4OyB9CiAgICAgICAgLmFkZC1zdGFmZi1mb3JtIGlucHV0IHsgZmxleDogMTsgcGFkZGluZzogMTJweDsgYm9yZGVyLXJhZGl1czogOHB4OyBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1ib3JkZXIpOyBiYWNrZ3JvdW5kOiB2YXIoLS1iZy1kYXJrKTsgY29sb3I6IHdoaXRlOyBvdXRsaW5lOiBub25lOyBmb250LXNpemU6IDE0cHg7IH0KICAgICAgICAuYWRkLXN0YWZmLWZvcm0gYnV0dG9uIHsgcGFkZGluZzogMTJweCAxOHB4OyBib3JkZXItcmFkaXVzOiA4cHg7IGJvcmRlcjogbm9uZTsgYmFja2dyb3VuZDogdmFyKC0tZ29sZCk7IGNvbG9yOiBibGFjazsgZm9udC13ZWlnaHQ6IDYwMDsgY3Vyc29yOiBwb2ludGVyOyB9CgogICAgICAgIC8qID09PT09PT09PT09PT09PT09IFBERiBNT0RFID09PT09PT09PT09PT09PT09ICovCiAgICAgICAgLnBkZi1tb2RlIHsgYmFja2dyb3VuZDogd2hpdGUgIWltcG9ydGFudDsgY29sb3I6IGJsYWNrICFpbXBvcnRhbnQ7IH0KICAgICAgICAucGRmLW1vZGUgLnRvcC1iYXIsIC5wZGYtbW9kZSAuYm90dG9tLWJhciwgLnBkZi1tb2RlIC5hZG1pbi1jb250cm9scyB7IGRpc3BsYXk6IG5vbmUgIWltcG9ydGFudDsgfQogICAgICAgIC5wZGYtbW9kZSAjcHJpbnQtYXJlYSB7IHBhZGRpbmctYm90dG9tOiAwOyBtYXJnaW4tdG9wOiAwOyB9CiAgICAgICAgLnBkZi1tb2RlIC5oZWFkZXIgaDEgeyBjb2xvcjogYmxhY2sgIWltcG9ydGFudDsgfQogICAgICAgIC5wZGYtbW9kZSB0YWJsZSwgLnBkZi1tb2RlIHRyLnN0YWZmLXJvdyB0ZCB7IGJhY2tncm91bmQ6IHdoaXRlICFpbXBvcnRhbnQ7IGNvbG9yOiBibGFjayAhaW1wb3J0YW50OyBib3JkZXItY29sb3I6ICNkZGQgIWltcG9ydGFudDsgYm94LXNoYWRvdzogbm9uZSAhaW1wb3J0YW50OyB9CiAgICAgICAgLnBkZi1tb2RlIC5zdGF0dXMtYmFkZ2UuYWJzZW50IHsgYm9yZGVyOiAxcHggc29saWQgcmVkOyBjb2xvcjogcmVkOyBiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgfQogICAgICAgIC5wZGYtbW9kZSAuc3RhdHVzLWJhZGdlLnByZXNlbnQgeyBib3JkZXI6IDFweCBzb2xpZCBncmVlbjsgY29sb3I6IGdyZWVuOyBiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgfQogICAgICAgIC5wZGYtbW9kZSB0ci5zdGFmZi1yb3cgdGQ6Zmlyc3QtY2hpbGQgeyBjb2xvcjogYmxhY2sgIWltcG9ydGFudDsgfQogICAgPC9zdHlsZT4KPC9oZWFkPgo8Ym9keT4KCiAgICA8IS0tIDAuIEZVTExTQ1JFRU4gV0VMQ09NRSBPVkVSTEFZIC0tPgogICAgPGRpdiBpZD0id2VsY29tZS1vdmVybGF5IiBvbmNsaWNrPSJzdGFydEFwcCgpIj4KICAgICAgICA8aDE+TWFnbnVtIFNLTDwvaDE+CiAgICAgICAgPHA+VGFwIGFueXdoZXJlIHRvIHN0YXJ0IHBvcnRhbDwvcD4KICAgIDwvZGl2PgoKICAgIDwhLS0gMS4gUk9MRSBTRUxFQ1RJT04gU0NSRUVOIC0tPgogICAgPGRpdiBpZD0icm9sZS1zZWxlY3QtdmlldyIgY2xhc3M9InZpZXciPgogICAgICAgIDxkaXYgY2xhc3M9ImxvZ28tdGl0bGUiPk1hZ251bSBTS0w8L2Rpdj4KICAgICAgICA8cCBzdHlsZT0iY29sb3I6IHZhcigtLXRleHQtbXV0ZWQpOyBtYXJnaW4tYm90dG9tOiA0MHB4OyBmb250LXN0eWxlOiBpdGFsaWM7IGZvbnQtc2l6ZTogMTRweDsiPlByZW1pdW0gRmFicmljIFRlYW0gUG9ydGFsPC9wPgogICAgICAgIDxidXR0b24gY2xhc3M9InJvbGUtYnRuIGJ0bi1zdGFmZiIgb25jbGljaz0ib3BlblN0YWZmKCkiPlN0YWZmIExvZ2luPC9idXR0b24+CiAgICAgICAgPGJ1dHRvbiBjbGFzcz0icm9sZS1idG4gYnRuLWFkbWluIiBvbmNsaWNrPSJvcGVuQWRtaW4oKSI+QWRtaW4gUG9ydGFsPC9idXR0b24+CiAgICA8L2Rpdj4KCiAgICA8IS0tIDIuIFNUQUZGIEFQUCBTQ1JFRU4gLS0+CiAgICA8ZGl2IGlkPSJzdGFmZi12aWV3IiBjbGFzcz0idmlldyI+CiAgICAgICAgPGRpdiBjbGFzcz0ic3RhZmYtY2FyZCI+CiAgICAgICAgICAgIDxoMj5XZWxjb21lIHRvIFdvcms8L2gyPgogICAgICAgICAgICA8c2VsZWN0IGlkPSJzdGFmZk5hbWVTZWxlY3QiIG9uY2hhbmdlPSJsb2FkU3RhZmZTdGF0ZSgpIj4KICAgICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9IiIgZGlzYWJsZWQgc2VsZWN0ZWQ+TG9hZGluZyBzdGFmZi4uLjwvb3B0aW9uPgogICAgICAgICAgICA8L3NlbGVjdD4KICAgICAgICAgICAgCiAgICAgICAgICAgIDxidXR0b24gaWQ9ImJ0bkluIiBjbGFzcz0iYmlnLXB1bmNoLWJ0biBiZy1pbiIgb25jbGljaz0ic3RhZmZQdW5jaCgnaW4nKSIgZGlzYWJsZWQ+4pqhIFBVTkNIIElOPC9idXR0b24+CiAgICAgICAgICAgIDxidXR0b24gaWQ9ImJ0bk91dCIgY2xhc3M9ImJpZy1wdW5jaC1idG4gYmctb3V0IiBvbmNsaWNrPSJzdGFmZlB1bmNoKCdvdXQnKSIgZGlzYWJsZWQ+4pqhIFBVTkNIIE9VVDwvYnV0dG9uPgogICAgICAgICAgICAKICAgICAgICAgICAgPHAgc3R5bGU9Im1hcmdpbi10b3A6IDI1cHg7IGZvbnQtc2l6ZTogMTNweDsgY29sb3I6IHZhcigtLWdvbGQpOyBjdXJzb3I6IHBvaW50ZXI7IGZvbnQtd2VpZ2h0OiA1MDA7IiBvbmNsaWNrPSJsb2dvdXQoKSI+4oaQIENoYW5nZSBSb2xlPC9wPgogICAgICAgIDwvZGl2PgogICAgPC9kaXY+CgogICAgPCEtLSAzLiBBRE1JTiBBUFAgU0NSRUVOIC0tPgogICAgPGRpdiBpZD0iYWRtaW4tdmlldyIgY2xhc3M9InZpZXciPgogICAgICAgIDxkaXYgY2xhc3M9InRvcC1iYXIiPgogICAgICAgICAgICA8ZGl2IGNsYXNzPSJsaXZlLWluZGljYXRvciI+PGRpdiBjbGFzcz0icHVsc2UiPjwvZGl2PiBMaXZlIFN5bmMgQWN0aXZlPC9kaXY+CiAgICAgICAgICAgIDxidXR0b24gc3R5bGU9ImJhY2tncm91bmQ6IHRyYW5zcGFyZW50OyBjb2xvcjogdmFyKC0tdGV4dC1tdXRlZCk7IGJvcmRlcjogbm9uZTsgZm9udC1zaXplOiAxMnB4OyBjdXJzb3I6IHBvaW50ZXI7IGZvbnQtd2VpZ2h0OiA1MDA7IiBvbmNsaWNrPSJsb2dvdXQoKSI+TG9nb3V0PC9idXR0b24+CiAgICAgICAgPC9kaXY+CiAgICAgICAgCiAgICAgICAgPGRpdiBjbGFzcz0iYXBwLWNvbnRlbnQiPgogICAgICAgICAgICA8ZGl2IGlkPSJwcmludC1hcmVhIj4KICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImhlYWRlciI+CiAgICAgICAgICAgICAgICAgICAgPGgxPkFkbWluIERhc2hib2FyZDwvaDE+CiAgICAgICAgICAgICAgICAgICAgPHA+TWFnbnVtIENsb3RoaW5nIFNLTCDigKIgRGFpbHkgTG9nPC9wPgogICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9ImFkbWluLWNvbnRyb2xzIj4KICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJkYXRlLXBpY2tlci13cmFwcGVyIj4KICAgICAgICAgICAgICAgICAgICAgICAgPGlucHV0IHR5cGU9ImRhdGUiIGlkPSJhdHRlbmRhbmNlRGF0ZSIgb25jaGFuZ2U9ImxvYWRBZG1pbkRhdGEoKSI+CiAgICAgICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICAgICAgPGJ1dHRvbiBjbGFzcz0iYnRuLW1hbmFnZSIgb25jbGljaz0ib3BlblN0YWZmTWFuYWdlcigpIj7impnvuI8gU3RhZmY8L2J1dHRvbj4KICAgICAgICAgICAgICAgICAgICA8YnV0dG9uIGNsYXNzPSJidG4tbWFuYWdlIiBvbmNsaWNrPSJjaGFuZ2VBZG1pblBhc3N3b3JkKCkiPvCflJEgUGFzc3dvcmQ8L2J1dHRvbj4KICAgICAgICAgICAgICAgIDwvZGl2PgoKICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9InRhYmxlLWNvbnRhaW5lciI+CiAgICAgICAgICAgICAgICAgICAgPHRhYmxlIGlkPSJhdHRlbmRhbmNlVGFibGUiPgogICAgICAgICAgICAgICAgICAgICAgICA8dGhlYWQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dHI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRoIHN0eWxlPSJ3aWR0aDogMjUlOyI+U3RhZmYgTWVtYmVyPC90aD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGggc3R5bGU9IndpZHRoOiAyMCU7Ij5Jbi1UaW1lPC90aD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGggc3R5bGU9IndpZHRoOiAyMCU7Ij5PdXQtVGltZTwvdGg+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRoIHN0eWxlPSJ0ZXh0LWFsaWduOiBjZW50ZXI7IHdpZHRoOiAxNSU7Ij5Ib3VyczwvdGg+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRoIHN0eWxlPSJ0ZXh0LWFsaWduOiBjZW50ZXI7IHdpZHRoOiAyMCU7Ij5TdGF0dXM8L3RoPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90cj4KICAgICAgICAgICAgICAgICAgICAgICAgPC90aGVhZD4KICAgICAgICAgICAgICAgICAgICAgICAgPHRib2R5IGlkPSJ0YWJsZUJvZHkiPjwvdGJvZHk+CiAgICAgICAgICAgICAgICAgICAgPC90YWJsZT4KICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgICAKICAgICAgICA8ZGl2IGNsYXNzPSJib3R0b20tYmFyIj4KICAgICAgICAgICAgPGJ1dHRvbiBjbGFzcz0iYnRuLWRvd25sb2FkIiBvbmNsaWNrPSJnZW5lcmF0ZVBERigpIj5Eb3dubG9hZCBSb3lhbCBQREY8L2J1dHRvbj4KICAgICAgICA8L2Rpdj4KICAgIDwvZGl2PgoKICAgIDwhLS0gNC4gU1RBRkYgTUFOQUdFUiBNT0RBTCAoQWRtaW4gT25seSkgLS0+CiAgICA8ZGl2IGNsYXNzPSJtb2RhbC1vdmVybGF5IiBpZD0ic3RhZmZNb2RhbCI+CiAgICAgICAgPGRpdiBjbGFzcz0ibW9kYWwtY29udGVudCI+CiAgICAgICAgICAgIDxoMj5NYW5hZ2UgU3RhZmYgRGlyZWN0b3J5PC9oMj4KICAgICAgICAgICAgPGRpdiBjbGFzcz0ic3RhZmYtbGlzdC1lZGl0b3IiIGlkPSJzdGFmZkVkaXRvckxpc3QiPjwvZGl2PgogICAgICAgICAgICA8ZGl2IGNsYXNzPSJhZGQtc3RhZmYtZm9ybSI+CiAgICAgICAgICAgICAgICA8aW5wdXQgdHlwZT0idGV4dCIgaWQ9Im5ld1N0YWZmTmFtZSIgcGxhY2Vob2xkZXI9Ik5ldyBzdGFmZiBuYW1lLi4uIj4KICAgICAgICAgICAgICAgIDxidXR0b24gb25jbGljaz0iYWRkTmV3U3RhZmYoKSI+QWRkPC9idXR0b24+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICA8YnV0dG9uIHN0eWxlPSJtYXJnaW4tdG9wOiAxNXB4OyBwYWRkaW5nOiAxMnB4OyBib3JkZXItcmFkaXVzOiAxMHB4OyBiYWNrZ3JvdW5kOiB2YXIoLS1zdXJmYWNlLWxpZ2h0KTsgY29sb3I6IHdoaXRlOyBib3JkZXI6IG5vbmU7IGN1cnNvcjogcG9pbnRlcjsgZm9udC13ZWlnaHQ6IDYwMDsiIG9uY2xpY2s9ImNsb3NlU3RhZmZNYW5hZ2VyKCkiPkNsb3NlIFdpbmRvdzwvYnV0dG9uPgogICAgICAgIDwvZGl2PgogICAgPC9kaXY+CgogICAgPHNjcmlwdD4KICAgICAgICAvLyA9PT09PT09PT09PT09PT09PSBGSVJFQkFTRSBDT05GSUcgPT09PT09PT09PT09PT09PT0KICAgICAgICBjb25zdCBmaXJlYmFzZUNvbmZpZyA9IHsKICAgICAgICAgICAgYXBpS2V5OiAiQUl6YVN5Q2QzSEhQM2hITEJuRWtxT3ZLOGpnQkFHRTk5X21qXzZrIiwKICAgICAgICAgICAgYXV0aERvbWFpbjogIm1hZ251bS1jbG90aGluZy1hdHRlbmRhbmNlLmZpcmViYXNlYXBwLmNvbSIsCiAgICAgICAgICAgIHByb2plY3RJZDogIm1hZ251bS1jbG90aGluZy1hdHRlbmRhbmNlIiwKICAgICAgICAgICAgc3RvcmFnZUJ1Y2tldDogIm1hZ251bS1jbG90aGluZy1hdHRlbmRhbmNlLmZpcmViYXNlc3RvcmFnZS5hcHAiLAogICAgICAgICAgICBtZXNzYWdpbmdTZW5kZXJJZDogIjc2MjExMzY2MTc0NCIsCiAgICAgICAgICAgIGFwcElkOiAiMTo3NjIxMTM2NjE3NDQ6d2ViOmY5ZWRkNGNhMDEyZmIwYzk4MTA2ZjUiLAogICAgICAgICAgICBtZWFzdXJlbWVudElkOiAiRy1WQkRKS0MwWEJNIgogICAgICAgIH07CgogICAgICAgIGxldCBkYjsKICAgICAgICB0cnkgewogICAgICAgICAgICBmaXJlYmFzZS5pbml0aWFsaXplQXBwKGZpcmViYXNlQ29uZmlnKTsKICAgICAgICAgICAgZGIgPSBmaXJlYmFzZS5kYXRhYmFzZSgpOwogICAgICAgIH0gY2F0Y2goZSkgewogICAgICAgICAgICBhbGVydCgiRmlyZWJhc2UgY29ubmVjdGlvbiBlcnJvci4iKTsKICAgICAgICB9CgogICAgICAgIGxldCBnbG9iYWxTdGFmZkxpc3QgPSBbXTsKICAgICAgICBsZXQgY3VycmVudFN0YWZmTGlzdGVuZXIgPSBudWxsOwogICAgICAgIGxldCBhZG1pblBpbiA9ICIxMjM0IjsgLy8gRGVmYXVsdCBQSU4KCiAgICAgICAgLy8gPT09PT09PT09PT09PT09PT0gRlVMTFNDUkVFTiAmIEJPT1QgPT09PT09PT09PT09PT09PT0KICAgICAgICBmdW5jdGlvbiBzdGFydEFwcCgpIHsKICAgICAgICAgICAgbGV0IGVsZW0gPSBkb2N1bWVudC5kb2N1bWVudEVsZW1lbnQ7CiAgICAgICAgICAgIGlmIChlbGVtLnJlcXVlc3RGdWxsc2NyZWVuKSB7IGVsZW0ucmVxdWVzdEZ1bGxzY3JlZW4oKTsgfSAKICAgICAgICAgICAgZWxzZSBpZiAoZWxlbS53ZWJraXRSZXF1ZXN0RnVsbHNjcmVlbikgeyBlbGVtLndlYmtpdFJlcXVlc3RGdWxsc2NyZWVuKCk7IH0KCiAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCd3ZWxjb21lLW92ZXJsYXknKS5zdHlsZS5kaXNwbGF5ID0gJ25vbmUnOwogICAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgncm9sZS1zZWxlY3QtdmlldycpLmNsYXNzTGlzdC5hZGQoJ2FjdGl2ZScpOwogICAgICAgIH0KCiAgICAgICAgZnVuY3Rpb24gZ2V0TG9jYWxEYXRlKCkgewogICAgICAgICAgICBjb25zdCBkID0gbmV3IERhdGUoKTsKICAgICAgICAgICAgcmV0dXJuIGAke2QuZ2V0RnVsbFllYXIoKX0tJHtTdHJpbmcoZC5nZXRNb250aCgpKzEpLnBhZFN0YXJ0KDIsJzAnKX0tJHtTdHJpbmcoZC5nZXREYXRlKCkpLnBhZFN0YXJ0KDIsJzAnKX1gOwogICAgICAgIH0KICAgICAgICBmdW5jdGlvbiBnZXRMb2NhbFRpbWUoKSB7CiAgICAgICAgICAgIGNvbnN0IGQgPSBuZXcgRGF0ZSgpOwogICAgICAgICAgICByZXR1cm4gYCR7U3RyaW5nKGQuZ2V0SG91cnMoKSkucGFkU3RhcnQoMiwnMCcpfToke1N0cmluZyhkLmdldE1pbnV0ZXMoKSkucGFkU3RhcnQoMiwnMCcpfWA7CiAgICAgICAgfQogICAgICAgIGZ1bmN0aW9uIHN3aXRjaFZpZXcodmlld0lkKSB7CiAgICAgICAgICAgIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoJy52aWV3JykuZm9yRWFjaCh2ID0+IHYuY2xhc3NMaXN0LnJlbW92ZSgnYWN0aXZlJykpOwogICAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCh2aWV3SWQpLmNsYXNzTGlzdC5hZGQoJ2FjdGl2ZScpOwogICAgICAgIH0KICAgICAgICBmdW5jdGlvbiBsb2dvdXQoKSB7IHN3aXRjaFZpZXcoJ3JvbGUtc2VsZWN0LXZpZXcnKTsgfQoKICAgICAgICAvLyA9PT09PT09PT09PT09PT09PSBBUFAgSU5JVElBTElaQVRJT04gPT09PT09PT09PT09PT09PT0KICAgICAgICBpZiAoZGIpIHsKICAgICAgICAgICAgLy8gTG9hZCBTdGFmZiBMaXN0CiAgICAgICAgICAgIGRiLnJlZignbWFnbnVtX3NldHRpbmdzL3N0YWZmTGlzdCcpLm9uKCd2YWx1ZScsIHNuYXAgPT4gewogICAgICAgICAgICAgICAgY29uc3QgZGF0YSA9IHNuYXAudmFsKCk7CiAgICAgICAgICAgICAgICBpZiAoZGF0YSAmJiBBcnJheS5pc0FycmF5KGRhdGEpKSB7CiAgICAgICAgICAgICAgICAgICAgZ2xvYmFsU3RhZmZMaXN0ID0gZGF0YTsKICAgICAgICAgICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgICAgICAgICAgZ2xvYmFsU3RhZmZMaXN0ID0gWyJHb2t1bCBQIl07CiAgICAgICAgICAgICAgICAgICAgZGIucmVmKCdtYWdudW1fc2V0dGluZ3Mvc3RhZmZMaXN0Jykuc2V0KGdsb2JhbFN0YWZmTGlzdCk7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIGlmIChkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnc3RhZmYtdmlldycpLmNsYXNzTGlzdC5jb250YWlucygnYWN0aXZlJykpIHBvcHVsYXRlU3RhZmZEcm9wZG93bigpOwogICAgICAgICAgICAgICAgaWYgKGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdhZG1pbi12aWV3JykuY2xhc3NMaXN0LmNvbnRhaW5zKCdhY3RpdmUnKSkgeyBpbml0QWRtaW5UYWJsZSgpOyBsb2FkQWRtaW5EYXRhKCk7IH0KICAgICAgICAgICAgICAgIGlmIChkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnc3RhZmZNb2RhbCcpLmNsYXNzTGlzdC5jb250YWlucygnYWN0aXZlJykpIHJlbmRlclN0YWZmRWRpdG9yTGlzdCgpOwogICAgICAgICAgICB9KTsKCiAgICAgICAgICAgIC8vIExvYWQgQWRtaW4gUGFzc3dvcmQKICAgICAgICAgICAgZGIucmVmKCdtYWdudW1fc2V0dGluZ3MvYWRtaW5QYXNzd29yZCcpLm9uKCd2YWx1ZScsIHNuYXAgPT4gewogICAgICAgICAgICAgICAgaWYoc25hcC52YWwoKSkgeyBhZG1pblBpbiA9IHNuYXAudmFsKCk7IH0KICAgICAgICAgICAgfSk7CiAgICAgICAgfQoKICAgICAgICAvLyA9PT09PT09PT09PT09PT09PSBBRE1JTiBMT0dJQyA9PT09PT09PT09PT09PT09PQogICAgICAgIGZ1bmN0aW9uIG9wZW5BZG1pbigpIHsKICAgICAgICAgICAgY29uc3QgcGluID0gcHJvbXB0KCJFbnRlciBBZG1pbiBQYXNzd29yZCAoUElOKToiKTsKICAgICAgICAgICAgaWYgKHBpbiA9PT0gYWRtaW5QaW4pIHsgCiAgICAgICAgICAgICAgICBzd2l0Y2hWaWV3KCdhZG1pbi12aWV3Jyk7CiAgICAgICAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYXR0ZW5kYW5jZURhdGUnKS52YWx1ZSA9IGdldExvY2FsRGF0ZSgpOwogICAgICAgICAgICAgICAgaW5pdEFkbWluVGFibGUoKTsKICAgICAgICAgICAgICAgIGxvYWRBZG1pbkRhdGEoKTsKICAgICAgICAgICAgfSBlbHNlIGlmKHBpbiAhPT0gbnVsbCkgewogICAgICAgICAgICAgICAgYWxlcnQoIldyb25nIFBhc3N3b3JkISIpOwogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICBmdW5jdGlvbiBjaGFuZ2VBZG1pblBhc3N3b3JkKCkgewogICAgICAgICAgICBjb25zdCBjdXJyZW50ID0gcHJvbXB0KCJFbnRlciBDdXJyZW50IFBhc3N3b3JkOiIpOwogICAgICAgICAgICBpZiAoY3VycmVudCA9PT0gYWRtaW5QaW4pIHsKICAgICAgICAgICAgICAgIGNvbnN0IG5ld1BpbiA9IHByb21wdCgiRW50ZXIgTmV3IFBhc3N3b3JkOiIpOwogICAgICAgICAgICAgICAgaWYgKG5ld1BpbiAmJiBuZXdQaW4udHJpbSgpICE9PSAiIikgewogICAgICAgICAgICAgICAgICAgIGRiLnJlZignbWFnbnVtX3NldHRpbmdzL2FkbWluUGFzc3dvcmQnKS5zZXQobmV3UGluLnRyaW0oKSk7CiAgICAgICAgICAgICAgICAgICAgYWxlcnQoIlBhc3N3b3JkIENoYW5nZWQgU3VjY2Vzc2Z1bGx5ISDwn5SSIik7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0gZWxzZSBpZihjdXJyZW50ICE9PSBudWxsKSB7CiAgICAgICAgICAgICAgICBhbGVydCgiSW5jb3JyZWN0IEN1cnJlbnQgUGFzc3dvcmQhIik7CiAgICAgICAgICAgIH0KICAgICAgICB9CgogICAgICAgIC8vIEhhbmRsZSBBZG1pbiBNYW51YWwgRWRpdAogICAgICAgIGZ1bmN0aW9uIGFkbWluTWFudWFsRWRpdChpbmRleCwgdHlwZSwgdmFsdWUpIHsKICAgICAgICAgICAgY29uc3QgZGF0ZSA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdhdHRlbmRhbmNlRGF0ZScpLnZhbHVlOwogICAgICAgICAgICBjb25zdCBuYW1lID0gZ2xvYmFsU3RhZmZMaXN0W2luZGV4XTsKICAgICAgICAgICAgaWYobmFtZSkgewogICAgICAgICAgICAgICAgZGIucmVmKGBtYWdudW1fYXR0ZW5kYW5jZS8ke2RhdGV9LyR7bmFtZX1gKS51cGRhdGUoewogICAgICAgICAgICAgICAgICAgIFt0eXBlXTogdmFsdWUKICAgICAgICAgICAgICAgIH0pOwogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICBmdW5jdGlvbiBpbml0QWRtaW5UYWJsZSgpIHsKICAgICAgICAgICAgY29uc3QgdGJvZHkgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgidGFibGVCb2R5Iik7CiAgICAgICAgICAgIHRib2R5LmlubmVySFRNTCA9ICIiOwogICAgICAgICAgICAKICAgICAgICAgICAgaWYoZ2xvYmFsU3RhZmZMaXN0Lmxlbmd0aCA9PT0gMCkgewogICAgICAgICAgICAgICAgdGJvZHkuaW5uZXJIVE1MID0gYDx0cj48dGQgY29sc3Bhbj0iNSIgc3R5bGU9InRleHQtYWxpZ246Y2VudGVyOyI+Tm8gc3RhZmYgYWRkZWQgeWV0LiBDbGljayAn4pqZ77iPIFN0YWZmJy48L3RkPjwvdHI+YDsKICAgICAgICAgICAgICAgIHJldHVybjsKICAgICAgICAgICAgfQoKICAgICAgICAgICAgZ2xvYmFsU3RhZmZMaXN0LmZvckVhY2goKG5hbWUsIGluZGV4KSA9PiB7CiAgICAgICAgICAgICAgICAvLyBVc2luZyBpbnB1dCB0eXBlPSJ0aW1lIiBmb3IgbWFudWFsIGVkaXRpbmcgYnkgQWRtaW4KICAgICAgICAgICAgICAgIHRib2R5LmlubmVySFRNTCArPSBgCiAgICAgICAgICAgICAgICAgICAgPHRyIGNsYXNzPSJzdGFmZi1yb3ciIGlkPSJyb3ctJHtpbmRleH0iPgogICAgICAgICAgICAgICAgICAgICAgICA8dGQ+JHtuYW1lfTwvdGQ+CiAgICAgICAgICAgICAgICAgICAgICAgIDx0ZD48aW5wdXQgdHlwZT0idGltZSIgY2xhc3M9ImFkbWluLWVkaXQiIGlkPSJpbi0ke2luZGV4fSIgb25jaGFuZ2U9ImFkbWluTWFudWFsRWRpdCgke2luZGV4fSwgJ2luJywgdGhpcy52YWx1ZSkiPjwvdGQ+CiAgICAgICAgICAgICAgICAgICAgICAgIDx0ZD48aW5wdXQgdHlwZT0idGltZSIgY2xhc3M9ImFkbWluLWVkaXQiIGlkPSJvdXQtJHtpbmRleH0iIG9uY2hhbmdlPSJhZG1pbk1hbnVhbEVkaXQoJHtpbmRleH0sICdvdXQnLCB0aGlzLnZhbHVlKSI+PC90ZD4KICAgICAgICAgICAgICAgICAgICAgICAgPHRkIHN0eWxlPSJ0ZXh0LWFsaWduOmNlbnRlcjsgZm9udC13ZWlnaHQ6NzAwOyBjb2xvcjp2YXIoLS1nb2xkKTsiIGlkPSJocnMtJHtpbmRleH0iPjAuMDA8L3RkPgogICAgICAgICAgICAgICAgICAgICAgICA8dGQ+PHNwYW4gY2xhc3M9InN0YXR1cy1iYWRnZSBhYnNlbnQiIGlkPSJzdGF0dXMtJHtpbmRleH0iPkFic2VudDwvc3Bhbj48L3RkPgogICAgICAgICAgICAgICAgICAgIDwvdHI+CiAgICAgICAgICAgICAgICBgOwogICAgICAgICAgICB9KTsKICAgICAgICB9CgogICAgICAgIGZ1bmN0aW9uIGxvYWRBZG1pbkRhdGEoKSB7CiAgICAgICAgICAgIGlmKCFkYikgcmV0dXJuOwogICAgICAgICAgICBjb25zdCBkYXRlID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2F0dGVuZGFuY2VEYXRlJykudmFsdWU7CiAgICAgICAgICAgIAogICAgICAgICAgICBkYi5yZWYoYG1hZ251bV9hdHRlbmRhbmNlYCkub2ZmKCk7IAogICAgICAgICAgICAKICAgICAgICAgICAgZGIucmVmKGBtYWdudW1fYXR0ZW5kYW5jZS8ke2RhdGV9YCkub24oJ3ZhbHVlJywgc25hcCA9PiB7CiAgICAgICAgICAgICAgICBjb25zdCBkYXRhID0gc25hcC52YWwoKSB8fCB7fTsKICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgZ2xvYmFsU3RhZmZMaXN0LmZvckVhY2goKG5hbWUsIGluZGV4KSA9PiB7CiAgICAgICAgICAgICAgICAgICAgY29uc3Qgcm93RGF0YSA9IGRhdGFbbmFtZV0gfHwge307CiAgICAgICAgICAgICAgICAgICAgY29uc3QgaW5UaW1lID0gcm93RGF0YS5pbiB8fCAiIjsKICAgICAgICAgICAgICAgICAgICBjb25zdCBvdXRUaW1lID0gcm93RGF0YS5vdXQgfHwgIiI7CiAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgY29uc3QgaW5FbCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKGBpbi0ke2luZGV4fWApOwogICAgICAgICAgICAgICAgICAgIGNvbnN0IG91dEVsID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoYG91dC0ke2luZGV4fWApOwogICAgICAgICAgICAgICAgICAgIGNvbnN0IHN0YXR1c0JhZGdlID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoYHN0YXR1cy0ke2luZGV4fWApOwogICAgICAgICAgICAgICAgICAgIGNvbnN0IGhycyA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKGBocnMtJHtpbmRleH1gKTsKCiAgICAgICAgICAgICAgICAgICAgaWYoIWluRWwpIHJldHVybjsgCgogICAgICAgICAgICAgICAgICAgIC8vIFVwZGF0ZSBpbnB1dHMKICAgICAgICAgICAgICAgICAgICBpbkVsLnZhbHVlID0gaW5UaW1lOwogICAgICAgICAgICAgICAgICAgIGlmKGluVGltZSkgaW5FbC5jbGFzc0xpc3QuYWRkKCdmaWxsZWQnKTsgZWxzZSBpbkVsLmNsYXNzTGlzdC5yZW1vdmUoJ2ZpbGxlZCcpOwogICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgIG91dEVsLnZhbHVlID0gb3V0VGltZTsKICAgICAgICAgICAgICAgICAgICBpZihvdXRUaW1lKSBvdXRFbC5jbGFzc0xpc3QuYWRkKCdmaWxsZWQnKTsgZWxzZSBvdXRFbC5jbGFzc0xpc3QucmVtb3ZlKCdmaWxsZWQnKTsKICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICBpZiAoaW5UaW1lIHx8IG91dFRpbWUpIHsKICAgICAgICAgICAgICAgICAgICAgICAgc3RhdHVzQmFkZ2UuaW5uZXJUZXh0ID0gIlByZXNlbnQiOwogICAgICAgICAgICAgICAgICAgICAgICBzdGF0dXNCYWRnZS5jbGFzc05hbWUgPSAic3RhdHVzLWJhZGdlIHByZXNlbnQiOwogICAgICAgICAgICAgICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgICAgICAgICAgICAgIHN0YXR1c0JhZGdlLmlubmVyVGV4dCA9ICJBYnNlbnQiOwogICAgICAgICAgICAgICAgICAgICAgICBzdGF0dXNCYWRnZS5jbGFzc05hbWUgPSAic3RhdHVzLWJhZGdlIGFic2VudCI7CiAgICAgICAgICAgICAgICAgICAgICAgIGhycy5pbm5lclRleHQgPSAiMC4wMCI7CiAgICAgICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgICAgICBpZiAoaW5UaW1lICYmIG91dFRpbWUpIHsKICAgICAgICAgICAgICAgICAgICAgICAgbGV0IGRJbiA9IG5ldyBEYXRlKCIwMS8wMS8yMDAwICIgKyBpblRpbWUpOwogICAgICAgICAgICAgICAgICAgICAgICBsZXQgZE91dCA9IG5ldyBEYXRlKCIwMS8wMS8yMDAwICIgKyBvdXRUaW1lKTsKICAgICAgICAgICAgICAgICAgICAgICAgaWYgKGRPdXQgPCBkSW4pIGRPdXQuc2V0RGF0ZShkT3V0LmdldERhdGUoKSArIDEpOyAKICAgICAgICAgICAgICAgICAgICAgICAgaHJzLmlubmVyVGV4dCA9ICgoZE91dCAtIGRJbikgLyAxMDAwIC8gNjAgLyA2MCkudG9GaXhlZCgyKTsKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICB9KTsKICAgICAgICAgICAgfSk7CiAgICAgICAgfQoKICAgICAgICBmdW5jdGlvbiBnZW5lcmF0ZVBERigpIHsKICAgICAgICAgICAgZG9jdW1lbnQuYm9keS5jbGFzc0xpc3QuYWRkKCdwZGYtbW9kZScpOyAKICAgICAgICAgICAgY29uc3QgZWxlbWVudCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdwcmludC1hcmVhJyk7CiAgICAgICAgICAgIGNvbnN0IGRhdGVWYWx1ZSA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdhdHRlbmRhbmNlRGF0ZScpLnZhbHVlOwogICAgICAgICAgICAKICAgICAgICAgICAgY29uc3Qgb3B0ID0gewogICAgICAgICAgICAgICAgbWFyZ2luOiBbMC41LCAwLjUsIDAuNSwgMC41XSwKICAgICAgICAgICAgICAgIGZpbGVuYW1lOiBgTWFnbnVtX1ByZW1pdW1fTG9nXyR7ZGF0ZVZhbHVlfS5wZGZgLAogICAgICAgICAgICAgICAgaW1hZ2U6IHsgdHlwZTogJ2pwZWcnLCBxdWFsaXR5OiAxLjAgfSwKICAgICAgICAgICAgICAgIGh0bWwyY2FudmFzOiB7IAogICAgICAgICAgICAgICAgICAgIHNjYWxlOiAyLCAKICAgICAgICAgICAgICAgICAgICB1c2VDT1JTOiB0cnVlLAogICAgICAgICAgICAgICAgICAgIG9uY2xvbmU6IGZ1bmN0aW9uKGNsb25lZERvYykgewogICAgICAgICAgICAgICAgICAgICAgICBsZXQgaW5wdXRzID0gY2xvbmVkRG9jLnF1ZXJ5U2VsZWN0b3JBbGwoJ2lucHV0W3R5cGU9InRpbWUiXS5hZG1pbi1lZGl0Jyk7CiAgICAgICAgICAgICAgICAgICAgICAgIGlucHV0cy5mb3JFYWNoKGlucHV0ID0+IHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldCBzcGFuID0gY2xvbmVkRG9jLmNyZWF0ZUVsZW1lbnQoJ3NwYW4nKTsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNwYW4uaW5uZXJUZXh0ID0gaW5wdXQudmFsdWUgfHwgJy0tOi0tJzsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNwYW4uc3R5bGUuZm9udFNpemUgPSAnMTRweCc7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICBzcGFuLnN0eWxlLmZvbnRXZWlnaHQgPSAnNTAwJzsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlucHV0LnBhcmVudE5vZGUucmVwbGFjZUNoaWxkKHNwYW4sIGlucHV0KTsKICAgICAgICAgICAgICAgICAgICAgICAgfSk7CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgIGpzUERGOiB7IHVuaXQ6ICdpbicsIGZvcm1hdDogJ2E0Jywgb3JpZW50YXRpb246ICdwb3J0cmFpdCcgfQogICAgICAgICAgICB9OwogICAgICAgICAgICAKICAgICAgICAgICAgaHRtbDJwZGYoKS5zZXQob3B0KS5mcm9tKGVsZW1lbnQpLnNhdmUoKS50aGVuKCgpID0+IGRvY3VtZW50LmJvZHkuY2xhc3NMaXN0LnJlbW92ZSgncGRmLW1vZGUnKSk7CiAgICAgICAgfQoKICAgICAgICAvLyA9PT09PT09PT09PT09PT09PSBNQU5BR0UgU1RBRkYgTE9HSUMgPT09PT09PT09PT09PT09PT0KICAgICAgICBmdW5jdGlvbiBvcGVuU3RhZmZNYW5hZ2VyKCkgewogICAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnc3RhZmZNb2RhbCcpLmNsYXNzTGlzdC5hZGQoJ2FjdGl2ZScpOwogICAgICAgICAgICByZW5kZXJTdGFmZkVkaXRvckxpc3QoKTsKICAgICAgICB9CgogICAgICAgIGZ1bmN0aW9uIGNsb3NlU3RhZmZNYW5hZ2VyKCkgewogICAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnc3RhZmZNb2RhbCcpLmNsYXNzTGlzdC5yZW1vdmUoJ2FjdGl2ZScpOwogICAgICAgIH0KCiAgICAgICAgZnVuY3Rpb24gcmVuZGVyU3RhZmZFZGl0b3JMaXN0KCkgewogICAgICAgICAgICBjb25zdCBsaXN0RGl2ID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3N0YWZmRWRpdG9yTGlzdCcpOwogICAgICAgICAgICBsaXN0RGl2LmlubmVySFRNTCA9ICIiOwogICAgICAgICAgICBnbG9iYWxTdGFmZkxpc3QuZm9yRWFjaCgobmFtZSwgaW5kZXgpID0+IHsKICAgICAgICAgICAgICAgIGxpc3REaXYuaW5uZXJIVE1MICs9IGAKICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJzdGFmZi1lZGl0LWl0ZW0iPgogICAgICAgICAgICAgICAgICAgICAgICA8c3Bhbj4ke25hbWV9PC9zcGFuPgogICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzPSJhY3Rpb24tYnRucyI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8YnV0dG9uIGNsYXNzPSJidG4tZWRpdCIgb25jbGljaz0iZWRpdFN0YWZmKCR7aW5kZXh9KSI+RWRpdDwvYnV0dG9uPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgPGJ1dHRvbiBjbGFzcz0iYnRuLWRlbCIgb25jbGljaz0iZGVsZXRlU3RhZmYoJHtpbmRleH0pIj5EZWw8L2J1dHRvbj4KICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgICAgICBgOwogICAgICAgICAgICB9KTsKICAgICAgICB9CgogICAgICAgIGZ1bmN0aW9uIGFkZE5ld1N0YWZmKCkgewogICAgICAgICAgICBjb25zdCBpbnB1dCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCduZXdTdGFmZk5hbWUnKTsKICAgICAgICAgICAgY29uc3QgbmFtZSA9IGlucHV0LnZhbHVlLnRyaW0oKTsKICAgICAgICAgICAgaWYobmFtZSAmJiAhZ2xvYmFsU3RhZmZMaXN0LmluY2x1ZGVzKG5hbWUpKSB7CiAgICAgICAgICAgICAgICBnbG9iYWxTdGFmZkxpc3QucHVzaChuYW1lKTsKICAgICAgICAgICAgICAgIGRiLnJlZignbWFnbnVtX3NldHRpbmdzL3N0YWZmTGlzdCcpLnNldChnbG9iYWxTdGFmZkxpc3QpOwogICAgICAgICAgICAgICAgaW5wdXQudmFsdWUgPSAiIjsKICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICAgICAgZnVuY3Rpb24gZWRpdFN0YWZmKGluZGV4KSB7CiAgICAgICAgICAgIGNvbnN0IG9sZE5hbWUgPSBnbG9iYWxTdGFmZkxpc3RbaW5kZXhdOwogICAgICAgICAgICBjb25zdCBuZXdOYW1lID0gcHJvbXB0KCJFZGl0IHN0YWZmIG5hbWU6Iiwgb2xkTmFtZSk7CiAgICAgICAgICAgIGlmKG5ld05hbWUgJiYgbmV3TmFtZS50cmltKCkgIT09ICIiICYmIG5ld05hbWUgIT09IG9sZE5hbWUpIHsKICAgICAgICAgICAgICAgIGdsb2JhbFN0YWZmTGlzdFtpbmRleF0gPSBuZXdOYW1lLnRyaW0oKTsKICAgICAgICAgICAgICAgIGRiLnJlZignbWFnbnVtX3NldHRpbmdzL3N0YWZmTGlzdCcpLnNldChnbG9iYWxTdGFmZkxpc3QpOwogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICBmdW5jdGlvbiBkZWxldGVTdGFmZihpbmRleCkgewogICAgICAgICAgICBpZihjb25maXJtKGBSZW1vdmUgIiR7Z2xvYmFsU3RhZmZMaXN0W2luZGV4XX0iP2ApKSB7CiAgICAgICAgICAgICAgICBnbG9iYWxTdGFmZkxpc3Quc3BsaWNlKGluZGV4LCAxKTsKICAgICAgICAgICAgICAgIGRiLnJlZignbWFnbnVtX3NldHRpbmdzL3N0YWZmTGlzdCcpLnNldChnbG9iYWxTdGFmZkxpc3QpOwogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICAvLyA9PT09PT09PT09PT09PT09PSBTVEFGRiBBUFAgTE9HSUMgPT09PT09PT09PT09PT09PT0KICAgICAgICBmdW5jdGlvbiBvcGVuU3RhZmYoKSB7CiAgICAgICAgICAgIHN3aXRjaFZpZXcoJ3N0YWZmLXZpZXcnKTsKICAgICAgICAgICAgcG9wdWxhdGVTdGFmZkRyb3Bkb3duKCk7CiAgICAgICAgfQoKICAgICAgICBmdW5jdGlvbiBwb3B1bGF0ZVN0YWZmRHJvcGRvd24oKSB7CiAgICAgICAgICAgIGNvbnN0IHNlbCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdzdGFmZk5hbWVTZWxlY3QnKTsKICAgICAgICAgICAgY29uc3QgY3VycmVudFNlbGVjdGlvbiA9IHNlbC52YWx1ZTsKICAgICAgICAgICAgCiAgICAgICAgICAgIHNlbC5pbm5lckhUTUwgPSAnPG9wdGlvbiB2YWx1ZT0iIiBkaXNhYmxlZCBzZWxlY3RlZD5TZWxlY3QgWW91ciBOYW1lLi4uPC9vcHRpb24+JzsKICAgICAgICAgICAgZ2xvYmFsU3RhZmZMaXN0LmZvckVhY2gobmFtZSA9PiB7CiAgICAgICAgICAgICAgICBzZWwuaW5uZXJIVE1MICs9IGA8b3B0aW9uIHZhbHVlPSIke25hbWV9Ij4ke25hbWV9PC9vcHRpb24+YDsKICAgICAgICAgICAgfSk7CgogICAgICAgICAgICBpZihjdXJyZW50U2VsZWN0aW9uICYmIGdsb2JhbFN0YWZmTGlzdC5pbmNsdWRlcyhjdXJyZW50U2VsZWN0aW9uKSkgewogICAgICAgICAgICAgICAgc2VsLnZhbHVlID0gY3VycmVudFNlbGVjdGlvbjsKICAgICAgICAgICAgfSBlbHNlIHsKICAgICAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdidG5JbicpLmRpc2FibGVkID0gdHJ1ZTsKICAgICAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdidG5PdXQnKS5kaXNhYmxlZCA9IHRydWU7CiAgICAgICAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYnRuSW4nKS5pbm5lclRleHQgPSAi4pqhIFBVTkNIIElOIjsKICAgICAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdidG5PdXQnKS5pbm5lclRleHQgPSAi4pqhIFBVTkNIIE9VVCI7CiAgICAgICAgICAgIH0KICAgICAgICB9CgogICAgICAgIGZ1bmN0aW9uIGxvYWRTdGFmZlN0YXRlKCkgewogICAgICAgICAgICBpZighZGIpIHJldHVybjsKICAgICAgICAgICAgY29uc3QgbmFtZSA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdzdGFmZk5hbWVTZWxlY3QnKS52YWx1ZTsKICAgICAgICAgICAgaWYoIW5hbWUpIHJldHVybjsKCiAgICAgICAgICAgIGNvbnN0IHRvZGF5ID0gZ2V0TG9jYWxEYXRlKCk7CiAgICAgICAgICAgIAogICAgICAgICAgICBpZihjdXJyZW50U3RhZmZMaXN0ZW5lcikgY3VycmVudFN0YWZmTGlzdGVuZXIub2ZmKCk7CgogICAgICAgICAgICBjb25zdCBpbkJ0biA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdidG5JbicpOwogICAgICAgICAgICBjb25zdCBvdXRCdG4gPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYnRuT3V0Jyk7CiAgICAgICAgICAgIGluQnRuLmRpc2FibGVkID0gZmFsc2U7CiAgICAgICAgICAgIG91dEJ0bi5kaXNhYmxlZCA9IGZhbHNlOwoKICAgICAgICAgICAgY3VycmVudFN0YWZmTGlzdGVuZXIgPSBkYi5yZWYoYG1hZ251bV9hdHRlbmRhbmNlLyR7dG9kYXl9LyR7bmFtZX1gKTsKICAgICAgICAgICAgCiAgICAgICAgICAgIGN1cnJlbnRTdGFmZkxpc3RlbmVyLm9uKCd2YWx1ZScsIHNuYXAgPT4gewogICAgICAgICAgICAgICAgY29uc3QgZGF0YSA9IHNuYXAudmFsKCkgfHwge307CiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIGlmIChkYXRhLmluKSB7CiAgICAgICAgICAgICAgICAgICAgaW5CdG4uaW5uZXJUZXh0ID0gIuKchSBJTjogIiArIGRhdGEuaW47CiAgICAgICAgICAgICAgICAgICAgaW5CdG4uZGlzYWJsZWQgPSB0cnVlOwogICAgICAgICAgICAgICAgfSBlbHNlIHsKICAgICAgICAgICAgICAgICAgICBpbkJ0bi5pbm5lclRleHQgPSAi4pqhIFBVTkNIIElOIjsKICAgICAgICAgICAgICAgICAgICBpbkJ0bi5kaXNhYmxlZCA9IGZhbHNlOwogICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgIGlmIChkYXRhLm91dCkgewogICAgICAgICAgICAgICAgICAgIG91dEJ0bi5pbm5lclRleHQgPSAi4pyFIE9VVDogIiArIGRhdGEub3V0OwogICAgICAgICAgICAgICAgICAgIG91dEJ0bi5kaXNhYmxlZCA9IHRydWU7CiAgICAgICAgICAgICAgICB9IGVsc2UgewogICAgICAgICAgICAgICAgICAgIG91dEJ0bi5pbm5lclRleHQgPSAi4pqhIFBVTkNIIE9VVCI7CiAgICAgICAgICAgICAgICAgICAgb3V0QnRuLmRpc2FibGVkID0gIWRhdGEuaW47IAogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9KTsKICAgICAgICB9CgogICAgICAgIGZ1bmN0aW9uIHN0YWZmUHVuY2godHlwZSkgewogICAgICAgICAgICBjb25zdCBuYW1lID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3N0YWZmTmFtZVNlbGVjdCcpLnZhbHVlOwogICAgICAgICAgICBpZighbmFtZSkgcmV0dXJuIGFsZXJ0KCJTZWxlY3QgeW91ciBuYW1lIGZpcnN0ISIpOwogICAgICAgICAgICAKICAgICAgICAgICAgY29uc3QgdGltZSA9IGdldExvY2FsVGltZSgpOwogICAgICAgICAgICBjb25zdCB0b2RheSA9IGdldExvY2FsRGF0ZSgpOwogICAgICAgICAgICAKICAgICAgICAgICAgY29uc3QgYnRuID0gdHlwZSA9PT0gJ2luJyA/IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdidG5JbicpIDogZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2J0bk91dCcpOwogICAgICAgICAgICBjb25zdCBvcmlnaW5hbFRleHQgPSBidG4uaW5uZXJUZXh0OwogICAgICAgICAgICAKICAgICAgICAgICAgYnRuLmlubmVyVGV4dCA9ICJQcm9jZXNzaW5nLi4uIjsKICAgICAgICAgICAgYnRuLmRpc2FibGVkID0gdHJ1ZTsKICAgICAgICAgICAgCiAgICAgICAgICAgIGRiLnJlZihgbWFnbnVtX2F0dGVuZGFuY2UvJHt0b2RheX0vJHtuYW1lfWApLnVwZGF0ZSh7CiAgICAgICAgICAgICAgICBbdHlwZV06IHRpbWUKICAgICAgICAgICAgfSkudGhlbigoKSA9PiB7CiAgICAgICAgICAgICAgICBpZihuYXZpZ2F0b3IudmlicmF0ZSkgbmF2aWdhdG9yLnZpYnJhdGUoNTApOwogICAgICAgICAgICB9KS5jYXRjaChlcnJvciA9PiB7CiAgICAgICAgICAgICAgICBidG4uaW5uZXJUZXh0ID0gb3JpZ2luYWxUZXh0OwogICAgICAgICAgICAgICAgYnRuLmRpc2FibGVkID0gZmFsc2U7CiAgICAgICAgICAgICAgICBhbGVydCgiRXJyb3IhIFBsZWFzZSBjaGVjayB5b3VyIGludGVybmV0IGNvbm5lY3Rpb24uIik7CiAgICAgICAgICAgIH0pOwogICAgICAgIH0KICAgIDwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4K';
-  let loaded = false;
-  window.openMagnumPortal = function(){
-    const overlay = document.getElementById('magnum-portal-overlay');
-    overlay.classList.add('active'); overlay.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
-    if (!loaded) {
-      let html;
-      try { html = decodeURIComponent(escape(atob(magnumHtmlBase64))); }
-      catch (e) { html = atob(magnumHtmlBase64); }
-      document.getElementById('magnum-portal-frame').srcdoc = html;
-      loaded = true;
-    }
-  };
-  window.closeMagnumPortal = function(){
-    const overlay = document.getElementById('magnum-portal-overlay');
-    overlay.classList.remove('active'); overlay.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
-  };
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') window.closeMagnumPortal(); });
-})();
-</script>
-
 </html>
