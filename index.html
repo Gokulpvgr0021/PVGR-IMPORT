@@ -166,6 +166,32 @@
         .profile-avatar-wrap img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--text-accent); object-fit: cover; box-shadow: 0 0 25px rgba(240, 199, 94, 0.4); }
         .profile-camera-btn { position: absolute; bottom: 0; right: -5px; background: #1a1a2e; border: 2px solid var(--text-accent); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff; cursor: pointer; transition: transform 0.2s; z-index: 15; }
         .profile-camera-btn:active { transform: scale(0.9); }
+        
+        /* 🔥 DYNAMIC COLOR SIGNATURE STYLING 🔥 */
+        .profile-signature-wrap {
+            position: absolute;
+            bottom: -20px;
+            left: 65px;
+            width: 110px;
+            height: 60px;
+            background-color: var(--text-accent); /* Adapts to any selected theme */
+            mix-blend-mode: screen; /* Makes the black background invisible */
+            transform: rotate(-8deg);
+            opacity: 0.95;
+            pointer-events: none; /* Allows clicking elements behind it */
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .profile-signature-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* Converts white paper to black, blue ink to white, and multiplies with the wrapper's color */
+            filter: invert(1) grayscale(1) contrast(4) brightness(1.2);
+            mix-blend-mode: multiply;
+        }
 
         .profile-info-wrap { display: flex; flex-direction: column; justify-content: center; }
         .profile-name-ui { font-family: 'Pacifico', cursive; font-size: 26px; font-weight: 500; color: var(--text-accent); letter-spacing: 1px; text-shadow: 0 0 10px rgba(240, 199, 94, 0.5); display: flex; align-items: center; gap: 8px;}
@@ -481,6 +507,8 @@
                                 <input type="file" id="quick-camera-input" accept="image/*" style="display: none;" onchange="quickUpdateProfileImage(this)">
                             </div>
                             
+                            <!-- SIGNATURE REMOVED AS REQUESTED -->
+
                             <div class="profile-info-wrap">
                                 <div class="profile-name-ui"><i class="fas fa-crown" style="font-size: 16px; color: var(--text-accent);"></i> <span id="prof-name">GOKUL PVGR</span></div>
                                 <div class="profile-tagline">Dream • Work • Achieve</div>
@@ -512,6 +540,7 @@
                                     <span class="mini-val" style="color: var(--success);" id="total-in">₹ 0.00</span>
                                 </div>
                             </div>
+                            <!-- Expense Removed, keeping Monthly Salary in purely 2 columns -->
                             <div class="mini-stat-col" style="border-right: none;">
                                 <div class="mini-icon blue"><i class="fas fa-calendar-alt"></i></div>
                                 <div class="mini-text">
@@ -1283,6 +1312,16 @@
             </div>
             <div id="job-profile-list" style="display: flex; flex-direction: column; gap: 12px; margin-top: 18px;"></div>
             <button class="btn btn-primary" style="margin-top: 18px;" onclick="closeModal('jobModal')">Done</button>
+        </div>
+    </div>
+
+    <!-- MODAL: MENU -->
+    <div class="modal-mask" id="menuSheetModal">
+        <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom)); border-radius: 24px 24px 0 0;">
+            <div style="font-weight: 900; font-size: 20px; text-align: center; border-bottom: 1px solid var(--border-highlight); padding-bottom: 18px; margin-bottom: 16px; font-family: var(--font-heading);">App Menu</div>
+            <button class="btn btn-primary" onclick="openProfileModal(); closeModal('menuSheetModal')"><i class="fas fa-user-edit"></i> Edit Profile</button>
+            <button class="btn btn-danger" style="margin-top: 12px;" onclick="resetVaultOnly(); closeModal('menuSheetModal')"><i class="fas fa-trash-restore"></i> Reset Savings Only</button>
+            <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important; margin-top: 12px;" onclick="closeModal('menuSheetModal')">Close</button>
         </div>
     </div>
 
