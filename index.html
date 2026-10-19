@@ -391,65 +391,8 @@
             .att-stats-row { grid-template-columns: repeat(2, 1fr); gap: 16px; }
         }
     </style>
-    
-<style>
-#gh-splash {
-  position:fixed; inset:0; z-index:999999;
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  background:radial-gradient(circle,#063b80,#020617 70%);
-  color:white; font-family:Arial,sans-serif;
-  animation:ghFade 3.2s forwards;
-}
-#gh-splash .logo {
-  font-size:clamp(70px,20vw,130px);
-  font-weight:900; letter-spacing:-8px;
-  color:#16dcff;
-  text-shadow:0 0 25px #00bfff;
-  animation:ghFloat 1.5s ease-in-out infinite;
-}
-#gh-splash h1 { font-size:clamp(28px,8vw,44px); }
-#gh-splash h1 span { color:#16dcff; }
-#gh-splash .ring {
-  width:180px;height:180px;position:absolute;
-  border:2px solid #10cfff;border-radius:50%;
-  animation:ghSpin 4s linear infinite;
-  box-shadow:0 0 20px #008cff66;
-}
-#gh-splash .bar {
-  width:65vw;max-width:280px;height:5px;
-  background:#17345b;border-radius:10px;overflow:hidden;
-}
-#gh-splash .bar:after {
-  content:"";display:block;height:100%;
-  background:#16dcff;animation:ghLoad 2.4s ease-out forwards;
-}
-@keyframes ghFloat {
-  50% { transform:translateY(-12px) scale(1.04); }
-}
-@keyframes ghSpin { to { transform:rotate(360deg); } }
-@keyframes ghLoad { to { width:100%; } }
-@keyframes ghFade {
-  0%,75% { opacity:1; visibility:visible; }
-  100% { opacity:0; visibility:hidden; }
-}
-@media(prefers-reduced-motion:reduce) {
-  #gh-splash * { animation-duration:.01ms !important; }
-}
-</style>
-
 </head>
 <body>
-    
-<div id="gh-splash">
-  <div class="ring"></div>
-  <div class="logo">GH</div>
-  <h1>GOKUL <span>HUB</span></h1>
-  <p>YOUR LIFE • YOUR HUB</p>
-  <p>Loading your world...</p>
-  <div class="bar"></div>
-</div>
-
 
     <!-- MOBILE BOTTOM TABS -->
     <div class="mobile-tab-bar">
@@ -2498,16 +2441,6 @@
 
     </script>
     <script src="./gokul-enhancements.js"></script>
-
-<script>
-window.addEventListener('load', function () {
-  setTimeout(function () {
-    const splash = document.getElementById('gh-splash');
-    if (splash) splash.remove();
-  }, 3300);
-});
-</script>
-
 </body>
 
 <style>
