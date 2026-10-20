@@ -357,3 +357,182 @@
     addSettingsPanel();
   }
 })();
+
+/* Gokul Hub Daily Random Wallpaper */
+(function () {
+  "use strict";
+
+  const ENABLE = "gokulDailyWallpaperEnabled";
+  const GALLERY = "gokulDailyWallpaperGallery";
+  const LASTDAY = "gokulDailyWallpaperDate";
+  const CHOSEN = "gokulDailyWallpaperChosen";
+
+  const online = [
+    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=85",
+    "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1600&q=85",
+    "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=85",
+    "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1600&q=85",
+    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=85",
+    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=85"
+  ];
+
+  const readGallery = () => {
+    try {
+      return JSON.parse(localStorage.getItem(GALLERY) || "[]");
+    } catch {
+      return [];
+    }
+  };
+
+  function applyImage(src) {
+    const dim = localStorage.getItem("gokulWallpaperDim") || "0.5";
+    document.body.style.backgroundImage =
+      `linear-gradient(rgba(0,0,0,${dim}),rgba(0,0,0,${dim})),url("${src}")`;
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundAttachment = "fixed";
+    localStorage.setItem(CHOSEN, src);
+
+    if (src.startsWith("data:image/")) {
+      localStorage.setItem("gokulWallpaper", src);
+    }
+  }
+
+  function pick(force = false) {
+    const items = [...online, ...readGallery()];
+    if (!items.length) return;
+
+    const today = new Date().toLocaleDateString("en-CA");
+    const last = localStorage.getItem(LASTDAY);
+
+    if (!force && last === today) {
+      const saved = localStorage.getItem(CHOSEN);
+      if (saved) applyImage(saved);
+      return;
+    }
+
+    let next = items[Math.floor(Math.random() * items.length)];
+    const previous = localStorage.getItem(CHOSEN);
+
+    if (items.length > 1 && next === previous) {
+      next = items[(items.indexOf(next) + 1) % items.length];
+    }
+
+    applyImage(next);
+    localStorage.setItem(LASTDAY, today);
+  }
+
+  function buildPanel() {
+    const settings = document.getElementById("settings-view");
+    if (!settings || document.getElementById("daily-wallpaper-panel")) return;
+
+    const panel = document.createElement("div");
+    panel.id = "daily-wallpaper-panel";
+    panel.className = "form-card";
+    panel.innerHTML = `
+      <h3>🌄 Daily Random Wallpaper</h3>
+      <p>Online HD wallpapers + your own gallery photos.</p>
+      <label style="display:block;margin:14px 0">
+        <input id="daily-wallpaper-toggle" type="checkbox">
+        Daily automatic wallpaper change
+      </label>
+      <input id="daily-wallpaper-files" type="file"
+        accept="image/*" multiple style="max-width:100%;margin:10px 0">
+      <button class="btn btn-primary" id="daily-wallpaper-save">
+        Save Gallery Photos
+      </button>
+      <button class="btn btn-success" id="daily-wallpaper-now"
+        style="margin-top:8px">🎲 Change Now</button>
+      <p id="daily-wallpaper-info" style="margin-top:12px"></p>
+    `;
+
+    settings.insertBefore(panel, settings.firstChild);
+
+    const toggle = panel.querySelector("#daily-wallpaper-toggle");
+    const info = panel.querySelector("#daily-wallpaper-info");
+
+    function status() {
+      toggle.checked = localStorage.getItem(ENABLE) === "true";
+      info.textContent =
+        readGallery().length + " gallery photos · " +
+        online.length + " online wallpapers";
+    }
+
+    toggle.onchange = () => {
+      localStorage.setItem(ENABLE, String(toggle.checked));
+      if (toggle.checked) pick();
+    };
+
+    panel.querySelector("#daily-wallpaper-now").onclick = () => pick(true);
+
+    panel.querySelector("#daily-wallpaper-save").onclick = async () => {
+      const files = Array.from(
+        panel.querySelector("#daily-wallpaper-files").files
+      );
+      if (!files.length) {
+        alert("First select your wallpaper photos.");
+        return;
+      }
+
+      const gallery = readGallery();
+
+      try {
+        for (const file of files) {
+          if (!file.type.startsWith("image/")) continue;
+
+          const data = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              const img = new Image();
+              img.onload = () => {
+                const scale = Math.min(1, 1400 / Math.max(img.width, img.height));
+                const canvas = document.createElement("canvas");
+                canvas.width = Math.round(img.width * scale);
+                canvas.height = Math.round(img.height * scale);
+                canvas.getContext("2d").drawImage(
+                  img, 0, 0, canvas.width, canvas.height
+                );
+                resolve(canvas.toDataURL("image/jpeg", 0.7));
+              };
+              img.onerror = reject;
+              img.src = reader.result;
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+
+          gallery.push(data);
+        }
+
+        localStorage.setItem(GALLERY, JSON.stringify(gallery));
+        status();
+        alert("Wallpaper gallery saved!");
+      } catch (error) {
+        alert("Storage full or image could not be processed. Try fewer photos.");
+      }
+    };
+
+    status();
+  }
+
+  function start() {
+    buildPanel();
+
+    if (localStorage.getItem(ENABLE) === "true") {
+      pick();
+    }
+
+    // Recheck on returning to the app each day.
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden && localStorage.getItem(ENABLE) === "true") {
+        pick();
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start);
+  } else {
+    start();
+  }
+})();
