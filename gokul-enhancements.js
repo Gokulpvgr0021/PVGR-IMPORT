@@ -536,3 +536,271 @@
     start();
   }
 })();
+
+/* GOKUL HUB — CINEMATIC MOTION LAYER
+   Additive visual effects only. Does not modify app records or settings.
+*/
+(function () {
+  "use strict";
+
+  if (document.getElementById("gh-cinematic-style")) return;
+
+  const style = document.createElement("style");
+  style.id = "gh-cinematic-style";
+
+  style.textContent = `
+    :root {
+      --gh-gold: #d4af37;
+      --gh-blue: #38bdf8;
+      --gh-cine-ease: cubic-bezier(.2,.75,.25,1);
+    }
+
+    @keyframes gh-cine-enter {
+      from { opacity: 0; transform: translate3d(0,22px,0) scale(.985); }
+      to { opacity: 1; transform: translate3d(0,0,0) scale(1); }
+    }
+
+    @keyframes gh-cine-border {
+      0%,100% { border-color: rgba(212,175,55,.22); }
+      50% { border-color: rgba(56,189,248,.36); }
+    }
+
+    @keyframes gh-cine-shimmer {
+      from { transform: translateX(-150%) skewX(-18deg); }
+      to { transform: translateX(180%) skewX(-18deg); }
+    }
+
+    .gh-cine-card {
+      position: relative;
+      isolation: isolate;
+      border-color: rgba(212,175,55,.24) !important;
+      box-shadow: 0 8px 28px rgba(0,0,0,.13);
+      transition:
+        transform .32s var(--gh-cine-ease),
+        box-shadow .32s var(--gh-cine-ease),
+        border-color .32s ease;
+      backface-visibility: hidden;
+    }
+
+    .gh-cine-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(
+        120deg,
+        transparent 15%,
+        rgba(56,189,248,.045) 40%,
+        rgba(212,175,55,.07) 52%,
+        transparent 78%
+      );
+      opacity: .7;
+    }
+
+    .gh-cine-visible {
+      animation: gh-cine-enter .65s var(--gh-cine-ease) both;
+    }
+
+    .gh-cine-button {
+      position: relative;
+      overflow: hidden;
+      transition:
+        transform .18s var(--gh-cine-ease),
+        filter .18s ease,
+        box-shadow .18s ease;
+    }
+
+    .gh-cine-button::after {
+      content: "";
+      position: absolute;
+      top: -30%;
+      bottom: -30%;
+      left: 0;
+      width: 35%;
+      pointer-events: none;
+      background: linear-gradient(
+        90deg, transparent, rgba(255,255,255,.13), transparent
+      );
+      transform: translateX(-150%) skewX(-18deg);
+    }
+
+    .gh-cine-button:active {
+      transform: scale(.975);
+      filter: brightness(1.12);
+    }
+
+    .gh-cine-button:active::after {
+      animation: gh-cine-shimmer .5s ease;
+    }
+
+    .gh-cine-ambient {
+      position: fixed;
+      width: 230px;
+      height: 230px;
+      right: -125px;
+      top: 18%;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .15;
+      background: radial-gradient(
+        circle at 35% 35%,
+        rgba(56,189,248,.8),
+        rgba(212,175,55,.22) 38%,
+        transparent 72%
+      );
+      filter: blur(14px);
+      transform: translate3d(0,var(--gh-cine-scroll,0px),0);
+      contain: strict;
+    }
+
+    @media (hover:hover) and (pointer:fine) {
+      .gh-cine-card:hover {
+        transform: perspective(1000px) translateY(-5px) rotateX(.7deg);
+        box-shadow:
+          0 16px 36px rgba(0,0,0,.2),
+          0 0 0 1px rgba(56,189,248,.16),
+          0 0 24px rgba(212,175,55,.08);
+      }
+
+      .gh-cine-button:hover {
+        filter: brightness(1.08);
+        box-shadow: 0 5px 18px rgba(56,189,248,.10);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .gh-cine-card,
+      .gh-cine-button,
+      .gh-cine-card::after,
+      .gh-cine-button::after {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+      }
+      .gh-cine-visible { animation: none !important; }
+      .gh-cine-ambient { display: none !important; }
+    }
+  `;
+
+  document.head.appendChild(style);
+
+  function initCinematicLayer() {
+    if (!document.body) return;
+
+    if (!document.querySelector(".gh-cine-ambient")) {
+      const ambient = document.createElement("div");
+      ambient.className = "gh-cine-ambient";
+      ambient.setAttribute("aria-hidden", "true");
+      document.body.appendChild(ambient);
+    }
+
+    const cards = [
+      ".dash-card",
+      ".dashboard-card",
+      ".stat-card",
+      ".form-card",
+      ".glass-card",
+      ".feature-card",
+      ".menu-card",
+      ".report-card",
+      ".settings-card",
+      "#gokul-extra-tools",
+      "#daily-wallpaper-panel"
+    ].join(",");
+
+    const sections = [
+      ".dash-card",
+      ".dashboard-card",
+      ".stat-card",
+      ".feature-card",
+      ".menu-card",
+      ".report-card"
+    ].join(",");
+
+    const reducedMotion = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const revealObserver = !reducedMotion &&
+      "IntersectionObserver" in window
+      ? new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("gh-cine-visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.08, rootMargin: "0px 0px -20px 0px" })
+      : null;
+
+    function enhanceElement(el) {
+      if (!(el instanceof Element)) return;
+
+      if (el.matches(cards)) el.classList.add("gh-cine-card");
+
+      if (el.matches(sections)) {
+        if (reducedMotion || !revealObserver) {
+          el.classList.add("gh-cine-visible");
+        } else {
+          revealObserver.observe(el);
+        }
+      }
+
+      if (el.matches("button, .btn, [role='button']")) {
+        el.classList.add("gh-cine-button");
+      }
+    }
+
+    function scan(root) {
+      if (!(root instanceof Element)) return;
+      enhanceElement(root);
+
+      root.querySelectorAll(cards).forEach(enhanceElement);
+      root.querySelectorAll(sections).forEach(enhanceElement);
+      root.querySelectorAll("button, .btn, [role='button']")
+        .forEach(enhanceElement);
+    }
+
+    scan(document.body);
+
+    // Lightweight scroll-linked ambient movement.
+    let framePending = false;
+    window.addEventListener("scroll", function () {
+      if (framePending) return;
+      framePending = true;
+
+      window.requestAnimationFrame(function () {
+        const ambient = document.querySelector(".gh-cine-ambient");
+        if (ambient) {
+          const offset = Math.min(window.scrollY * .07, 65);
+          ambient.style.setProperty("--gh-cine-scroll", offset + "px");
+        }
+        framePending = false;
+      });
+    }, { passive: true });
+
+    // Support app panels and cards created dynamically.
+    const changes = new MutationObserver(records => {
+      records.forEach(record => {
+        record.addedNodes.forEach(node => {
+          if (node instanceof Element) scan(node);
+        });
+      });
+    });
+
+    changes.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initCinematicLayer, {
+      once: true
+    });
+  } else {
+    initCinematicLayer();
+  }
+})();
+
