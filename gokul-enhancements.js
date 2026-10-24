@@ -804,3 +804,185 @@
   }
 })();
 
+/* GOKUL HUB — GRAND CINEMATIC SCROLL REVEAL
+   Visual-only upgrade. Does not modify app data or settings.
+*/
+(function () {
+  "use strict";
+
+  if (document.getElementById("gh-grand-reveal-style")) return;
+
+  const style = document.createElement("style");
+  style.id = "gh-grand-reveal-style";
+
+  style.textContent = `
+    /* Let the new reveal system control the entrance */
+    .gh-cine-visible {
+      animation: none !important;
+    }
+
+    .gh-grand-item {
+      opacity: 0;
+      transform: translate3d(0, 48px, 0) scale(.94);
+      filter: blur(5px);
+      transition:
+        opacity .85s cubic-bezier(.16,1,.3,1),
+        transform .9s cubic-bezier(.16,1,.3,1),
+        filter .8s ease,
+        box-shadow .7s ease,
+        border-color .7s ease;
+      transition-delay: var(--gh-grand-delay, 0ms);
+      will-change: opacity, transform, filter;
+    }
+
+    .gh-grand-item.gh-grand-in {
+      opacity: 1;
+      transform: translate3d(0,0,0) scale(1);
+      filter: blur(0);
+      border-color: rgba(212,175,55,.48);
+      box-shadow:
+        0 12px 32px rgba(0,0,0,.18),
+        0 0 0 1px rgba(212,175,55,.08),
+        0 0 25px rgba(56,189,248,.09);
+    }
+
+    .gh-grand-item.gh-grand-in::before {
+      opacity: 1;
+    }
+
+    .gh-grand-item::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      background: linear-gradient(
+        115deg,
+        transparent 15%,
+        rgba(212,175,55,.12) 45%,
+        rgba(56,189,248,.12) 58%,
+        transparent 82%
+      );
+      transition: opacity .8s ease;
+    }
+
+    @media (hover:hover) and (pointer:fine) {
+      .gh-grand-item.gh-grand-in:hover {
+        transform: translate3d(0,-6px,0) scale(1.012);
+        box-shadow:
+          0 20px 42px rgba(0,0,0,.22),
+          0 0 24px rgba(212,175,55,.14),
+          0 0 34px rgba(56,189,248,.10);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .gh-grand-item,
+      .gh-grand-item.gh-grand-in {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        transition: none !important;
+        will-change: auto;
+      }
+
+      .gh-grand-item::before {
+        display: none !important;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+
+  function initGrandReveal() {
+    if (!document.body) return;
+
+    const targets = [
+      ".dash-card",
+      ".dashboard-card",
+      ".stat-card",
+      ".form-card",
+      ".glass-card",
+      ".feature-card",
+      ".menu-card",
+      ".report-card",
+      ".settings-card",
+      "#gokul-extra-tools",
+      "#daily-wallpaper-panel"
+    ].join(",");
+
+    const reducedMotion = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!("IntersectionObserver" in window) || reducedMotion) {
+      document.querySelectorAll(targets).forEach(el => {
+        el.style.opacity = "1";
+        el.style.transform = "none";
+        el.style.filter = "none";
+      });
+      return;
+    }
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("gh-grand-in");
+        } else {
+          entry.target.classList.remove("gh-grand-in");
+        }
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: "0px 0px -7% 0px"
+    });
+
+    function prepare(el, index) {
+      if (!(el instanceof Element)) return;
+      if (!el.matches(targets)) return;
+      if (el.dataset.ghGrandReady === "1") return;
+
+      el.dataset.ghGrandReady = "1";
+      el.classList.add("gh-grand-item");
+      el.style.setProperty(
+        "--gh-grand-delay",
+        (Math.min(index, 5) * 85) + "ms"
+      );
+
+      observer.observe(el);
+    }
+
+    function scan(root) {
+      if (!(root instanceof Element)) return;
+
+      prepare(root, 0);
+      root.querySelectorAll(targets).forEach((el, index) => {
+        prepare(el, index);
+      });
+    }
+
+    scan(document.body);
+
+    const mutationObserver = new MutationObserver(records => {
+      records.forEach(record => {
+        record.addedNodes.forEach(node => {
+          if (node instanceof Element) scan(node);
+        });
+      });
+    });
+
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initGrandReveal, {
+      once: true
+    });
+  } else {
+    initGrandReveal();
+  }
+})();
+
