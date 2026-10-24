@@ -900,6 +900,8 @@
 
     const targets = [
       ".dash-card",
+      ".master-balance-card",
+      ".dashboard-grid-ui > .dash-card",
       ".dashboard-card",
       ".stat-card",
       ".form-card",
