@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Gokul Hub Premium</title>
+    
+    <!-- PWA Fullscreen Manifest & Meta Tags -->
+    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiR29rdWwgSHViIFByZW1pdW0iLCJzaG9ydF9uYW1lIjoiR29rdWwgSHViIiwiZGlzcGxheSI6ImZ1bGxzY3JlZW4iLCJzdGFydF91cmwiOiIuLyIsImJhY2tncm91bmRfY29sb3ciOiIjMDAwMDAwIiwidGhlbWVfY29sb3ciOiIjMDAwMDAwIn0=">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+
+    <link rel="icon" href="10276.png" type="image/png">
+    <link rel="apple-touch-icon" href="10276.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Comfortaa:wght@400;700&family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;600;700&family=Josefin+Sans:wght@400;700&family=Lato:wght@400;700&family=Lora:ital,wght@0,500;0,700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700&family=Nunito:wght@400;700&family=Open+Sans:wght@400;600&family=Oswald:wght@500;700&family=Outfit:wght@400;600;800&family=Pacifico&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;600;800&family=Quicksand:wght@500;700&family=Righteous&family=Roboto:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/auth.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+<div id="gh-auth-gate" class="gh-auth-gate">
+ <div class="gh-auth-card"><div class="gh-brand">GOKUL HUB</div><div class="gh-tagline">PREMIUM WORKSPACE</div>
+  <div id="gh-role-choice"><button class="gh-role staff" onclick="GHAuth.choose('staff')">STAFF LOGIN</button><button class="gh-role admin" onclick="GHAuth.choose('admin')">ADMIN LOGIN</button></div>
+  <div id="gh-login-form" hidden><h2 id="gh-login-title">Login</h2><input id="gh-login-id" autocomplete="username" placeholder="Staff ID"><input id="gh-login-password" type="password" autocomplete="current-password" placeholder="Password"><button id="gh-login-submit" class="gh-role admin" onclick="GHAuth.submit()">LOGIN</button><div id="gh-login-message" role="status"></div><button class="gh-back" onclick="GHAuth.back()">← Back</button></div></div></div>
+<div id="gh-staff-app" class="gh-staff-app" hidden><header class="gh-staff-header"><div><b>GOKUL HUB</b><small id="gh-staff-name">STAFF</small></div><button onclick="GHAuth.logout()">LOGOUT</button></header>
+ <main class="gh-staff-main"><h1>Attendance</h1><p id="gh-staff-date"></p><div class="gh-punch-grid"><button id="gh-punch-in" onclick="GHAuth.punch('in')">⚡ PUNCH IN</button><button id="gh-punch-out" onclick="GHAuth.punch('out')">⚡ PUNCH OUT</button></div>
+ <div class="gh-stats"><article><small>PRESENT</small><strong id="gh-present">0</strong></article><article><small>ABSENT</small><strong id="gh-absent">0</strong></article><article><small>OT HOURS</small><strong id="gh-ot">0.0h</strong></article><article><small>WORKING HOURS</small><strong id="gh-hours">0.0h</strong></article></div><h2>My Attendance History</h2><div class="gh-history-wrap"><table><thead><tr><th>Date</th><th>In</th><th>Out</th><th>Hours</th><th>Status</th></tr></thead><tbody id="gh-staff-history"></tbody></table></div></main></div>
+
+
+    <!-- MOBILE BOTTOM TABS -->
+    <div class="mobile-tab-bar">
+        <button class="tab-item active" id="tab-vault" onclick="navTo('vault-dashboard')"><i class="fas fa-piggy-bank"></i><span>Savings</span></button>
+        <button class="tab-item" id="tab-att" onclick="navTo('attendance')"><i class="fas fa-business-time"></i><span>Work</span></button>
+        <button class="tab-item" id="tab-emi" onclick="navTo('emi-dashboard')"><i class="fas fa-calculator"></i><span>EMI</span></button>
+        <button class="tab-item" id="tab-history" onclick="navTo('history')"><i class="fas fa-list"></i><span>History</span></button>
+        <button class="tab-item" id="tab-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i><span>Settings</span></button>
+    </div>
+
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div>
+                <div class="sidebar-brand">
+                    <img id="sidebar-avatar-img" src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'">
+                    <div class="sidebar-brand-text">GOKUL HUB</div>
+                </div>
+                <div class="nav-list">
+                    <button class="btn btn-primary active" id="dnav-vault-dashboard" onclick="navTo('vault-dashboard')"><i class="fas fa-piggy-bank"></i> <span>Home Savings</span></button>
+                    <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" id="dnav-attendance" onclick="navTo('attendance')"><i class="fas fa-business-time"></i> <span>Work & Salary</span></button>
+                    <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" id="dnav-emi-dashboard" onclick="navTo('emi-dashboard')"><i class="fas fa-calculator"></i> <span>EMI Tracker</span></button>
+                    <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" id="dnav-history" onclick="navTo('history')"><i class="fas fa-list"></i> <span>Time List</span></button>
+                    <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important;" id="dnav-settings" onclick="navTo('settings')"><i class="fas fa-cog"></i> <span>Settings</span></button>
+                    
+                </div>
+            </div>
+            <div class="sidebar-footer">
+                <button class="btn btn-primary" style="padding: 14px; font-size: 15px;" onclick="openProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
+            </div>
+        </aside>
+
+        <main class="main-stage">
+            
+            <!-- 1. EXCLUSIVE HOME / SAVINGS DASHBOARD -->
+            <section id="vault-dashboard-view" class="view-panel active">
+                <div id="vault-dashboard-panel">
+                    
+                    <!-- Top Profile Area -->
+                    <div class="home-top-section">
+                        <div class="profile-cluster">
+                            <div class="profile-avatar-wrap">
+                                <img id="vault-avatar-img" src="10276.png" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' fill=\'%23f0c75e\'><circle cx=\'50\' cy=\'50\' r=\'40\'/></svg>'">
+                                <div class="profile-camera-btn" onclick="document.getElementById('quick-camera-input').click()"><i class="fas fa-camera"></i></div>
+                                <input type="file" id="quick-camera-input" accept="image/*" style="display: none;" onchange="quickUpdateProfileImage(this)">
+                            </div>
+
+                            <div class="profile-info-wrap">
+                                <div class="profile-name-ui"><i class="fas fa-crown" style="font-size: 16px; color: var(--text-accent);"></i> <span id="prof-name">GOKUL PVGR</span></div>
+                                <div class="profile-tagline">Dream • Work • Achieve</div>
+                                <div class="edit-prof-pill" onclick="openProfileModal()"><i class="fas fa-user"></i> Edit Profile <i class="fas fa-chevron-right" style="font-size: 9px;"></i></div>
+                            </div>
+                        </div>
+                        <div class="floating-cursive">Better Days<br>Ahead ♡</div>
+                        <div class="top-settings-btn" onclick="navTo('settings')"><i class="fas fa-cog"></i></div>
+                    </div>
+
+                    <!-- Master Balance Card (Savings Oriented) -->
+                    <div class="master-balance-card">
+                        <div class="bal-top-row">
+                            <div style="display: flex; gap: 14px; align-items: center;">
+                                <div class="bal-icon-large"><i class="fas fa-piggy-bank"></i></div>
+                                <div>
+                                    <div style="font-size: 13px; color: var(--text-muted); font-weight: 700; margin-bottom: 2px;">Total Savings</div>
+                                    <div style="font-size: 32px; font-weight: 900; font-family: var(--font-heading);" id="total-balance">₹ 0.00</div>
+                                </div>
+                            </div>
+                            <button class="bal-details-btn" onclick="document.getElementById('vault-detailed-section').scrollIntoView({behavior: 'smooth'})">View Details <i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        
+                        <div class="bal-bottom-grid" style="grid-template-columns: repeat(2, 1fr);">
+                            <div class="mini-stat-col">
+                                <div class="mini-icon green"><i class="fas fa-arrow-up"></i></div>
+                                <div class="mini-text">
+                                    <span class="mini-lbl">Total Deposited</span>
+                                    <span class="mini-val" style="color: var(--success);" id="total-in">₹ 0.00</span>
+                                </div>
+                            </div>
+                            <div class="mini-stat-col" style="border-right: none;">
+                                <div class="mini-icon blue"><i class="fas fa-calendar-alt"></i></div>
+                                <div class="mini-text">
+                                    <span class="mini-lbl">Monthly Hours</span>
+                                    <span class="mini-val" style="color: #38bdf8;" id="dash-monthly-salary">0.0h</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6 Grid Dashboard -->
+                    <div class="dashboard-grid-ui">
+                        <div class="dash-card card-vault" onclick="document.getElementById('vault-detailed-section').scrollIntoView({behavior: 'smooth'})">
+                            <div class="dash-icon"><i class="fas fa-piggy-bank"></i></div>
+                            <div class="dash-title">Savings</div>
+                            <div class="dash-sub">Deposits & Cashbacks</div>
+                            <div class="dash-arrow"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+                        <div class="dash-card card-work" onclick="navTo('attendance')">
+                            <div class="dash-icon"><i class="fas fa-clock"></i></div>
+                            <div class="dash-title">Work & Salary</div>
+                            <div class="dash-sub">Punch In/Out, Overtime & Shift Entry</div>
+                            <div class="dash-arrow"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+                        
+                        <div class="dash-card card-emi" onclick="navTo('emi-dashboard')">
+                            <div class="dash-icon"><i class="fas fa-calculator"></i></div>
+                            <div class="dash-title">EMI</div>
+                            <div class="dash-sub">Loan, EMI Calculator & Payment Tracker</div>
+                            <div class="dash-arrow"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+                        <div class="dash-card" onclick="navTo('history')">
+                            <div class="dash-icon"><i class="fas fa-list-alt"></i></div>
+                            <div class="dash-title">History & Reports</div>
+                            <div class="dash-sub">Shift History, Ledger, Salary Slip & PDF</div>
+                            <div class="dash-arrow"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+                        <div class="dash-card" onclick="navTo('settings')">
+                            <div class="dash-icon"><i class="fas fa-cog"></i></div>
+                            <div class="dash-title">Settings</div>
+                            <div class="dash-sub">Profile, Wallpaper & Themes</div>
+                            <div class="dash-arrow"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+                        <div class="dash-card" onclick="alert('Premium Features Unlocking Soon!')">
+                            <div class="dash-icon"><i class="fas fa-star"></i></div>
+                            <div class="dash-title" style="color: var(--text-accent);">Premium</div>
+                            <div class="dash-sub">Get more features (Coming Soon)</div>
+                            <div class="dash-arrow"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- SMART PROMO BANNER -->
+                    <div class="promo-banner" onclick="cyclePromoQuote()">
+                        <div class="promo-text" id="promo-main-text">Small Steps<br>Big Dreams ♡</div>
+                        <div class="promo-sub" id="promo-sub-text">
+                            <span><i class="fas fa-crown" style="color: var(--text-accent);"></i> Your Journey</span>
+                            <span>Your Rules</span>
+                        </div>
+                        <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(240, 199, 94, 0.1); border: 1px solid var(--text-accent); color: var(--text-accent); display: flex; align-items: center; justify-content: center; font-size: 12px; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);" id="promo-refresh-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                    </div>
+
+                    <!-- NEW DREAM GOAL TRACKER -->
+                    <div class="dream-goal-banner" onclick="openDreamGoalModal()">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                            <div class="goal-title-text" id="goal-title-display"><i class="fas fa-star" style="color: var(--text-accent); margin-right: 6px;"></i> Dream Goal</div>
+                            <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(240, 199, 94, 0.1); border: 1px solid var(--text-accent); color: var(--text-accent); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">
+                                <i class="fas fa-pen"></i>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 10px;">
+                            <span id="goal-saved-display" style="color: var(--success); font-size: 16px;">₹0</span>
+                            <span id="goal-target-display" style="color: var(--text-muted);">Target: ₹0</span>
+                        </div>
+                        
+                        <div style="background: rgba(0,0,0,0.6); height: 10px; border-radius: 5px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);">
+                            <div id="goal-progress-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #f6d365, #fda085); transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 5px;"></div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                            <span id="goal-balance-display" style="font-size: 11px; color: var(--danger); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Pending: ₹0</span>
+                            <span id="goal-percent-display" style="font-size: 11px; color: var(--text-accent); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">0% Completed</span>
+                        </div>
+                    </div>
+
+                    <!-- DETAILED SAVINGS SECTION -->
+                    <div id="vault-detailed-section" style="padding-top: 20px;">
+                        
+                        <!-- CASHBACK WALLET -->
+                        <div class="total-box" style="padding: 24px; border-radius: 20px; background: rgba(0,0,0,0.4); border: 1px solid var(--text-accent); margin-bottom: 30px;">
+                            <div style="font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 8px;">🎁 Cashback Wallet</div>
+                            <div style="font-size: 36px; font-weight: 900; margin: 12px 0 20px 0; color: var(--text-main); font-family: var(--font-heading);" id="cashback-balance">₹0.00</div>
+                            <button class="btn btn-primary" style="padding: 14px; font-size: 15px; border-radius: 12px; border: 1px solid var(--text-accent); color: var(--text-main); background: transparent; box-shadow: none !important;" onclick="redeemCashback()"><i class="fas fa-exchange-alt"></i> Redeem to Savings</button>
+                        </div>
+
+                        <!-- ⛽ PETROL TRACKER -->
+                        <div class="panel-heading" style="border: none; margin-bottom: 18px;">
+                            <span style="font-size: 22px;">⛽ Petrol Expense Tracker</span>
+                        </div>
+                        <div class="form-card">
+                            <div style="display: flex; gap: 16px; width: 100%; margin-bottom: 18px; flex-wrap: wrap;">
+                                <div class="input-group" style="flex: 1; min-width: 45%;">
+                                    <label>Price / Litre (₹)</label>
+                                    <input type="number" id="petrol-price" class="form-control" placeholder="102.63" inputmode="decimal" oninput="calculatePetrolLitre()">
+                                </div>
+                                <div class="input-group" style="flex: 1; min-width: 45%;">
+                                    <label>Amount Spent (₹)</label>
+                                    <input type="number" id="petrol-amount" class="form-control" placeholder="0" inputmode="decimal" oninput="calculatePetrolLitre()">
+                                </div>
+                                <div class="input-group" style="flex: 1; min-width: 100%;">
+                                    <label>Current Odometer (km)</label>
+                                    <input type="number" id="petrol-odometer" class="form-control" placeholder="e.g. 15200" inputmode="numeric" oninput="calculatePetrolLitre()">
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 14px; border: 1px solid var(--border-highlight);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 14px;">
+                                    <span style="font-size: 13px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Litres Filled Today</span>
+                                    <span id="petrol-litre-display" style="font-size: 26px; font-weight: 900; color: var(--text-main); font-family: var(--font-heading);">0.00 L</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 13px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Last Fill Mileage Result</span>
+                                    <span id="petrol-mileage-display" style="font-size: 24px; font-weight: 900; color: var(--text-accent); font-family: var(--font-heading);">-- km/l</span>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-danger" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 50%, #d35400 100%) !important; padding: 18px; font-size: 15px;" onclick="logPetrolExpense()"><i class="fas fa-gas-pump"></i> Save Petrol Record</button>
+                            <p style="font-size: 12px; color: var(--text-muted); margin-top: 12px; text-align: center; font-weight: 700; letter-spacing: 0.5px;">*Petrol expenses are tracked separately and do NOT affect your Savings balance.</p>
+
+                            <div style="margin-top: 20px; border-top: 1px dashed var(--border-highlight); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                                <div style="display: flex; flex-direction: column; gap: 6px;">
+                                    <span style="font-size: 12px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Total Litres (All Time)</span>
+                                    <span id="total-petrol-litres" style="font-size: 18px; font-weight: 900; color: var(--text-main);">0.00 L</span>
+                                </div>
+                                <div style="display: flex; flex-direction: column; text-align: right; gap: 6px;">
+                                    <span style="font-size: 12px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Overall Avg Mileage</span>
+                                    <span id="avg-petrol-mileage" style="font-size: 18px; font-weight: 900; color: var(--text-accent);">-- km/l</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PETROL HISTORY TABLE -->
+                        <div class="panel-heading" style="border: none; margin-bottom: 18px;">
+                            <span style="font-size: 22px;">📊 Mileage History</span>
+                        </div>
+                        <div class="table-wrap">
+                            <table id="petrol-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Odo (km)</th>
+                                        <th>Litres</th>
+                                        <th>Amount</th>
+                                        <th>Mileage</th>
+                                        <th style="width: 80px;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="petrol-table-body"></tbody>
+                            </table>
+                        </div>
+
+                        <!-- QUICK LOG SAVINGS -->
+                        <div class="panel-heading" style="border: none; margin-bottom: 18px;">
+                            <span style="font-size: 22px;">⚡ Quick Log Savings</span>
+                        </div>
+                        
+                        <div class="form-card">
+                            <div class="input-group">
+                                <label>Amount (₹)</label>
+                                <input type="number" id="quick-tx-amount" class="form-control" placeholder="0.00" inputmode="decimal">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label>Notes</label>
+                                <input type="text" id="quick-tx-note" class="form-control" placeholder="e.g. UPI Payment, Salary, Cashback...">
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px;">
+                                    <span style="font-size: 13px; color: var(--text-muted); width: 100%; font-weight: 800; margin-bottom: 4px;">Quick Add Tags:</span>
+                                    <button class="btn btn-primary" style="padding: 10px 16px; width: auto; font-size: 13px;" onclick="addEmoji('UPI 💸')">💸 UPI</button>
+                                    <button class="btn btn-primary" style="padding: 10px 16px; width: auto; font-size: 13px;" onclick="addEmoji('Bank Deposit 🏦')">🏦 Bank Deposit</button>
+                                    <button class="btn btn-primary" style="padding: 10px 16px; width: auto; font-size: 13px;" onclick="addEmoji('Cashback 🎁')">🎁 Cashback</button>
+                                    <button class="btn btn-primary" style="padding: 10px 16px; width: auto; font-size: 13px;" onclick="addEmoji('Goal Saving 🎯')">🎯 Goal Saving</button>
+                                    <button class="btn btn-primary" style="padding: 10px 16px; width: auto; font-size: 13px;" onclick="addEmoji('Salary 💰')">💰 Salary</button>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 16px; margin-top: 18px;">
+                                <button class="btn btn-success" style="padding: 18px; font-size: 15px; width: 100%;" onclick="saveQuickTx('income')"><i class="fas fa-plus-circle"></i> Add to Savings</button>
+                            </div>
+                            <button class="btn btn-primary" style="margin-top: 8px; width: 100%; background-image: linear-gradient(135deg, #4a00e0, #8e2de2) !important; border-color: #8e2de2 !important; color: #fff !important; box-shadow: 0 8px 25px rgba(142, 45, 226, 0.4) !important; padding: 18px; font-size: 15px;" onclick="saveQuickTx('cashback')"><i class="fas fa-gift"></i> Save as Cashback</button>
+                        </div>
+
+                        <!-- Mini Ledger View inside Savings -->
+                        <div class="panel-heading" style="border: none; margin-top: 24px;">
+                            <span style="font-size: 22px;">🧾 Savings Ledger</span>
+                        </div>
+                        <div class="table-wrap">
+                            <table id="ledger-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Note</th>
+                                        <th>Flow</th>
+                                        <th>Amount</th>
+                                        <th style="width: 80px;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ledger-table-body"></tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="btn-flex-row" style="margin-top: 14px;">
+                            <button class="btn btn-primary" style="padding: 18px; font-size: 15px;" onclick="downloadVaultLedger()"><i class="fas fa-file-pdf"></i> Download Premium Savings Ledger</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. ATTENDANCE & WORK -->
+            <section id="attendance-view" class="view-panel">
+                
+                <div class="form-card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;">
+                        <h3 style="color: var(--text-main); font-size: 22px; font-family: var(--font-heading);"><i class="fas fa-stopwatch"></i> Live Punching System</h3>
+                    </div>
+                    
+                    <!-- PUNCH IN VIEW -->
+                    <div id="punch-in-view">
+                        <div class="input-group" style="margin-bottom: 20px;">
+                            <label style="display: flex; justify-content: space-between;">
+                                <span>Select Job Profile</span>
+                                <span style="color: var(--text-accent); cursor: pointer; text-decoration: underline;" onclick="openJobModal()"><i class="fas fa-edit"></i> Edit Jobs</span>
+                            </label>
+                            <select id="att-job-select" class="form-control"></select>
+                        </div>
+                        
+                        
+                        
+                        <div class="input-group" style="margin-bottom: 24px;">
+                            <label style="display:flex; align-items:center; gap:12px; font-weight:800; color:var(--text-accent);">
+                                <input type="checkbox" id="live-full-ot" style="width:24px;height:24px;">
+                                Make today FULL OT (Holiday/Special Day)
+                            </label>
+                        </div>
+
+                        <button class="btn btn-success" style="padding: 22px; font-size: 18px;" onclick="punchIn()"><i class="fas fa-sign-in-alt"></i> PUNCH IN NOW</button>
+                        
+                        <div style="text-align: center; margin-top: 20px;">
+                            <a href="#" style="color: var(--text-muted); font-size: 14px; text-decoration: underline; font-weight: 700;" onclick="toggleManualShift()">Log Past Shift Manually</a>
+                        </div>
+                    </div>
+
+                    <!-- PUNCH OUT VIEW -->
+                    <div id="punch-out-view" style="display: none; text-align: center; padding: 14px 0;">
+                        <div style="font-size: 15px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Currently On Duty</div>
+                        <div id="active-shift-job" style="font-size: 32px; color: var(--text-main); font-weight: 900; margin: 14px 0; font-family: var(--font-heading);">Job Name</div>
+                        
+                        <div style="background: rgba(0,0,0,0.4); padding: 16px; border-radius: 14px; border: 1px solid var(--border-highlight); margin-bottom: 24px;">
+                            <span style="color: var(--text-accent); font-weight: 800; font-size: 18px;"><i class="fas fa-clock"></i> Punched In: <span id="active-shift-time" style="color: #fff;">00:00</span></span>
+                        </div>
+                        
+                        <button class="btn btn-danger" style="padding: 22px; font-size: 18px; margin-bottom: 16px;" onclick="punchOut()"><i class="fas fa-sign-out-alt"></i> PUNCH OUT & SAVE</button>
+                        <a href="#" style="color: var(--text-muted); font-size: 14px; text-decoration: underline; font-weight: 700;" onclick="cancelPunch()">Cancel Active Shift</a>
+                    </div>
+                </div>
+
+                <!-- MANUAL SHIFT LOG -->
+                <div id="manual-shift-view" class="form-card" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+                        <h3 style="color: var(--text-main); font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-history"></i> Manual Entry</h3>
+                        <button class="btn btn-danger" style="width: auto; padding: 8px 14px; font-size: 13px;" onclick="toggleManualShift()">Close</button>
+                    </div>
+
+                    <div class="input-group"><label>Date (Sundays = 100% OT)</label><input type="date" id="att-date" class="form-control"></div>
+                    
+                    <div style="display: flex; gap: 16px; width: 100%; margin-top: 12px;">
+                        <div class="input-group"><label>In Time</label><input type="time" id="att-in" class="form-control" value="09:30"></div>
+                        <div class="input-group"><label>Out Time</label><input type="time" id="att-out" class="form-control" value="18:00"></div>
+                    </div>
+
+                    <div class="input-group" style="margin-top: 18px;">
+                        <label style="display:flex; align-items:center; gap:12px; font-weight:800; color:var(--text-accent);">
+                            <input type="checkbox" id="manual-full-ot" style="width:24px;height:24px;">
+                            Make this date FULL OT (Holiday/Special Day)
+                        </label>
+                    </div>
+
+                    <div class="input-group" style="margin-top: 18px; border-top: 1px dashed var(--border-highlight); padding-top: 18px;">
+                        <label style="color: var(--text-muted);">Extra OT Hours (Optional direct entry)</label>
+                        <input type="number" id="manual-extra-ot" class="form-control" placeholder="e.g. 3">
+                    </div>
+                    
+                    <button class="btn btn-primary" style="margin-top: 18px; padding: 18px; font-size: 15px;" onclick="recordShiftManual()"><i class="fas fa-save"></i> Save Manual Shift</button>
+                </div>
+
+                <div class="panel-heading">
+                    <span>Work & Attendance Log</span>
+                </div>
+
+                <div style="font-size:12px;color:var(--text-muted);margin:0 0 12px;" id="att-summary-period">Current month summary</div>
+                <div id="att-summary-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:12px;margin-bottom:20px;">
+                    <div class="form-card" style="margin:0;padding:14px;"><div class="mini-lbl">TOTAL OT HOURS</div><div id="stat-ot" style="font-size:25px;font-weight:900;color:var(--text-accent);">0.0h</div></div>
+                    <div class="form-card" style="margin:0;padding:14px;"><div class="mini-lbl">TOTAL PRESENT</div><div id="stat-present" style="font-size:25px;font-weight:900;">0</div></div>
+                    <div class="form-card" style="margin:0;padding:14px;"><div class="mini-lbl">TOTAL ABSENT</div><div id="stat-absent" style="font-size:25px;font-weight:900;color:var(--danger);">0</div></div>
+                    <div class="form-card" style="margin:0;padding:14px;"><div class="mini-lbl">WORKING HOURS</div><div id="stat-hours" style="font-size:25px;font-weight:900;">0.0h</div></div>
+                    <div class="form-card" style="margin:0;padding:14px;"><div class="mini-lbl">BREAK HOURS</div><div id="stat-break" style="font-size:25px;font-weight:900;">0.0h</div></div>
+                </div>
+
+                <div style="overflow-x:auto;margin-bottom:16px;">
+                    <table id="attendance-table" style="width:100%;min-width:590px;">
+                        <thead><tr>
+                            <th>Date</th><th>Job</th><th>Timing</th><th>Working</th><th>OT</th><th>Action</th>
+                        </tr></thead>
+                        <tbody id="att-table-body"></tbody>
+                    </table>
+                </div>
+                <div class="btn-flex-row">
+                    <button class="btn btn-primary" style="padding:18px;font-size:15px;" onclick="downloadTimesheet()"><i class="fas fa-list-alt"></i> Download Timesheet (PDF)</button>
+                    <button class="btn btn-danger" style="padding:18px;font-size:15px;" onclick="clearShifts()"><i class="fas fa-trash-alt"></i> Clear All Shift Records</button>
+                </div>
+</section>
+            
+            <!-- 3. EMI REGISTRY DASHBOARD -->
+            <section id="emi-dashboard-view" class="view-panel">
+                <div class="panel-heading" style="border: none; margin-bottom: 18px;">
+                    <span style="font-size: 22px;">💳 EMI Registry & Tracking</span>
+                </div>
+
+                <!-- Add New EMI Form -->
+                <div class="emi-card">
+                    <h3 style="color: var(--text-main); font-size: 18px; margin-bottom: 12px; font-family: var(--font-heading);"><i class="fas fa-plus-circle"></i> Register New EMI</h3>
+                    <div style="display: flex; gap: 16px; width: 100%; margin-bottom: 18px; flex-wrap: wrap;">
+                        <div class="input-group" style="flex: 1; min-width: 100%;">
+                            <label>Loan Name / Item (e.g. iPhone 15)</label>
+                            <input type="text" id="emi-reg-name" class="form-control" placeholder="Loan Name">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>Total Loan Amount (₹)</label>
+                            <input type="number" id="emi-reg-principal" class="form-control" placeholder="50000" inputmode="numeric" oninput="liveCalcEmiReg()">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>Interest Rate (% P.A.)</label>
+                            <input type="number" id="emi-reg-rate" class="form-control" placeholder="12" inputmode="decimal" oninput="liveCalcEmiReg()">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 100%;">
+                            <label>Total Tenure (Months)</label>
+                            <input type="number" id="emi-reg-months" class="form-control" placeholder="12" inputmode="numeric" oninput="liveCalcEmiReg()">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>Start Date</label>
+                            <input type="date" id="emi-reg-start" class="form-control" onchange="liveCalcEmiReg()">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>End Date</label>
+                            <input type="date" id="emi-reg-end" class="form-control">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>Auto Pay Date (Day of Month)</label>
+                            <input type="number" id="emi-reg-paydate" class="form-control" placeholder="e.g. 5" min="1" max="31">
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 14px; border: 1px solid var(--border-highlight);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 14px;">
+                            <span style="font-size: 13px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">EMI / Month</span>
+                            <span id="reg-live-emi" style="font-size: 26px; font-weight: 900; color: var(--text-accent); font-family: var(--font-heading);">₹0.00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 14px;">
+                            <span style="font-size: 13px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Total Interest</span>
+                            <span id="reg-live-int" style="font-size: 26px; font-weight: 900; color: var(--danger); font-family: var(--font-heading);">₹0.00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 13px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Total Payable</span>
+                            <span id="reg-live-total" style="font-size: 28px; font-weight: 900; color: var(--text-main); font-family: var(--font-heading);">₹0.00</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success" style="padding: 18px; font-size: 15px;" onclick="registerNewEmi()"><i class="fas fa-save"></i> Register EMI</button>
+                </div>
+
+                <!-- Active EMIs List -->
+                <div id="emi-registry-list" style="display: flex; flex-direction: column; gap: 24px;"></div>
+
+                <div class="btn-flex-row">
+                    <button class="btn btn-primary" style="background: linear-gradient(135deg, rgba(20, 30, 55, 0.95), rgba(212, 175, 55, 0.4)); color: #fff; border: 1px solid rgba(212, 175, 55, 0.6); box-shadow: 0 6px 20px rgba(0,0,0,0.5); padding: 18px; font-size: 15px;" onclick="downloadMasterEmiReport()"><i class="fas fa-file-pdf"></i> Download Master EMI Report</button>
+                </div>
+            </section>
+
+            <!-- 4. TIME LIST (TAB VIEW) -->
+            <section id="history-view" class="view-panel">
+                <div class="panel-heading">
+                    <span>Time List (Shifts)</span>
+                </div>
+                
+                <div class="table-wrap">
+                    <table id="history-attendance-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Job</th>
+                                <th>Timing</th>
+                                <th>Hrs</th>
+                                <th>OT</th>
+                                
+                                <th style="width: 80px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body"></tbody>
+                    </table>
+                </div>
+
+                <div class="btn-flex-row">
+                    <button class="btn btn-primary" style="padding: 18px; font-size: 15px;" onclick="downloadTimesheet()"><i class="fas fa-list-alt"></i> Download Timesheet (PDF)</button>
+                    <button class="btn btn-danger" style="padding: 18px; font-size: 15px;" onclick="clearShifts()"><i class="fas fa-trash-alt"></i> Clear All Shift Records</button>
+                </div>
+            </section>
+
+            <!-- 5. SETTINGS & THEMES -->
+            <section id="settings-view" class="view-panel">
+                <div class="panel-heading"><span>Settings & Themes</span></div>
+                
+                <div class="form-card">
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-file-pdf"></i> PDF Export Customization</h3>
+                    <div class="input-group">
+                        <label>Company/Brand Name on PDF</label>
+                        <input type="text" id="pdf-brand-name" class="form-control" placeholder="GOKUL HUB INC." onchange="savePdfSettings()">
+                    </div>
+                    <div style="display: flex; gap: 16px; margin-top: 14px; flex-wrap: wrap;">
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>PDF Primary Color</label>
+                            <input type="color" id="pdf-color-primary" class="form-control" style="padding: 5px; height: 50px; cursor: pointer;" onchange="savePdfSettings()">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 45%;">
+                            <label>PDF Accent Color</label>
+                            <input type="color" id="pdf-color-accent" class="form-control" style="padding: 5px; height: 50px; cursor: pointer;" onchange="savePdfSettings()">
+                        </div>
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 12px; line-height: 1.5;">These colors and titles will be applied to all your generated reports (Payslips, Timesheets, EMI, Ledger).</p>
+                    <button class="btn btn-primary" style="margin-top: 14px; padding: 14px; font-size: 13px; background: rgba(0,0,0,0.3) !important;" onclick="resetPdfSettings()"><i class="fas fa-undo"></i> Reset to Default PDF Styles</button>
+                </div>
+
+                <!-- 🖼️ Master Image Customization Option -->
+                <div class="form-card">
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-image"></i> Master Image Customization</h3>
+                    <div class="input-group">
+                        <label style="font-size: 14px; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 10px;">Upload Photo (Auto-Compress Supported)</label>
+                        <input type="file" id="master-image-file" accept="image/*" style="font-size: 15px; color: var(--text-muted); width: 100%; margin-bottom: 14px; padding: 10px; background: rgba(0,0,0,0.4); border-radius: 10px; border: 1px dashed var(--border-highlight);">
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+                        <button class="btn btn-primary" style="flex: 1; min-width: 120px; padding: 14px; font-size: 13px;" onclick="applyMasterImage('wallpaper')"><i class="fas fa-desktop"></i> Set as Wallpaper</button>
+                        <button class="btn btn-primary" style="flex: 1; min-width: 120px; padding: 14px; font-size: 13px;" onclick="applyMasterImage('profile')"><i class="fas fa-user-circle"></i> Set as Profile</button>
+                        <button class="btn btn-success" style="flex: 1; min-width: 100%; padding: 14px; font-size: 13px;" onclick="applyMasterImage('both')"><i class="fas fa-check-double"></i> Set as Both</button>
+                    </div>
+
+                    <div class="input-group" style="margin-top: 24px;">
+                        <label style="color: var(--text-main); font-size: 14px;"><i class="fas fa-adjust"></i> Wallpaper Brightness / Clearance</label>
+                        <input type="range" id="wallpaper-dimmer-slider" min="0" max="0.9" step="0.1" value="0.5" oninput="updateWallpaperDimmer(this.value)">
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">Adjust this if the background makes the text hard to read.</p>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px;">
+                        <button class="btn btn-danger" style="flex: 1; padding: 14px; font-size: 13px; background: rgba(255,0,0,0.2) !important; border-color: rgba(255,0,0,0.5) !important;" onclick="removeWallpaper()"><i class="fas fa-trash"></i> Remove Wallpaper</button>
+                        <button class="btn btn-danger" style="flex: 1; padding: 14px; font-size: 13px; background: rgba(255,0,0,0.2) !important; border-color: rgba(255,0,0,0.5) !important;" onclick="resetProfileImage()"><i class="fas fa-undo"></i> Reset Profile</button>
+                    </div>
+                </div>
+
+                <!-- Typography & Fonts Option -->
+                <div class="form-card">
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-font"></i> Typography & Fonts</h3>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5;">Choose a premium font style for the entire application.</p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 12px;" id="font-gallery">
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('default')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Playfair Display', serif;">Royal Default</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('modern')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Outfit', sans-serif;">Modern Tech</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('classic')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Lora', serif;">Classic Elegant</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('minimal')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Poppins', sans-serif;">Clean Minimal</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('corporate')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Roboto', sans-serif;">Corporate Base</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('geometric')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Montserrat', sans-serif;">Geometric Bold</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('rounded')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Quicksand', sans-serif;">Friendly Round</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('editorial')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Merriweather', serif;">Newspaper Edit</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('cinematic')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Cinzel', serif;">Cinematic Epic</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('hacker')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Space Mono', monospace;">Retro Hacker</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('vintage')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Cormorant Garamond', serif;">Vintage Class</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('casual')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Comfortaa', sans-serif;">Casual Comfort</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('sharp')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Josefin Sans', sans-serif;">Edgy Sharp</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('artdeco')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Righteous', cursive;">Art Deco Pop</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('soft')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Nunito', sans-serif;">Soft Warmth</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('vibe')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Pacifico', cursive;">Handwritten Vibe</div>
+                        </div>
+                        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; cursor: pointer; color: var(--text-main);" onclick="applyFont('impact')">
+                            <div style="font-weight: 800; font-size: 14px; font-family: 'Oswald', sans-serif;">Bold Impact</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🎨 3D TEXT & COLOR FADES -->
+                <div class="form-card">
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-palette"></i> 3D Text & Color Fades</h3>
+                    
+                    <div style="margin-bottom: 20px; padding: 16px; background: rgba(0,0,0,0.4); border-radius: 12px; border: 1px dashed var(--border-highlight);">
+                        <label style="display:flex; align-items:center; gap:12px; font-weight:800; color:var(--text-accent);">
+                            <input type="checkbox" id="text-3d-toggle" style="width:24px;height:24px;" onchange="toggle3DText()">
+                            <i class="fas fa-cube"></i> Enable Premium 3D Text Effect
+                        </label>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">Toggle the deep extrusion and 3D shadow effect for all text across the app.</p>
+                    </div>
+
+                    <div style="display: flex; gap: 16px; margin-top: 14px; flex-wrap: wrap;">
+                        <div class="input-group" style="flex: 1; min-width: 30%;">
+                            <label>Text Fade Start</label>
+                            <input type="color" id="text-grad-1" class="form-control" style="padding: 5px; height: 50px; cursor: pointer;" value="#ffffff" onchange="saveTextStyles()">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 30%;">
+                            <label>Text Fade End</label>
+                            <input type="color" id="text-grad-2" class="form-control" style="padding: 5px; height: 50px; cursor: pointer;" value="#f0c75e" onchange="saveTextStyles()">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 30%;">
+                            <label>3D Shadow Color</label>
+                            <input type="color" id="shadow-color" class="form-control" style="padding: 5px; height: 50px; cursor: pointer;" value="#000000" onchange="saveTextStyles()">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 18px; padding: 14px; font-size: 13px; background: rgba(0,0,0,0.3) !important;" onclick="resetTextStyles()"><i class="fas fa-undo"></i> Reset Colors</button>
+                </div>
+
+                <div class="form-card">
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-expand"></i> Full-Screen Experience</h3>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5;">For the best experience, add this site to your Home Screen. It will automatically run in full screen.</p>
+                    <div class="input-group">
+                        <label style="display:flex; align-items:center; gap:12px; font-weight:800; color:var(--text-accent);">
+                            <input type="checkbox" id="fullscreen-toggle" style="width:24px;height:24px;" onchange="toggleFullScreenManual()">
+                            Force Browser Full-Screen Mode
+                        </label>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">Note: This will hide browser bars. You must tap the screen once to activate.</p>
+                    </div>
+                </div>
+
+                <!-- Glass UI Transparency Options -->
+                <div class="form-card">
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-sliders-h"></i> UI Transparency Control</h3>
+                    
+                    <div style="font-weight: 800; font-size: 14px; color: var(--text-main); margin-bottom: 10px;">Background Blur (Image Clarity)</div>
+                    <input type="range" id="blur-slider" min="0" max="25" step="1" value="12" oninput="updateBgBlur(this.value)" style="width: 100%; margin-bottom: 24px;">
+
+                    <div style="font-weight: 800; font-size: 14px; color: var(--text-main); margin-bottom: 10px;">Global App Glass Opacity</div>
+                    <input type="range" id="opacity-slider" min="0.1" max="1" step="0.05" oninput="updateGlassOpacity(this.value)" style="width: 100%; margin-bottom: 24px;">
+
+                    <div style="font-weight: 800; font-size: 14px; color: var(--text-main); margin-bottom: 10px;">Cards Transparency (See-through)</div>
+                    <input type="range" id="card-opacity-slider" min="0.0" max="1.0" step="0.05" value="0.6" oninput="updateCardOpacity(this.value)" style="width: 100%;">
+                    <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">Lower the value to make cards more see-through against wallpapers.</p>
+                </div>
+
+                <div class="form-card">
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-calendar-check"></i> Scheduled Auto-Download</h3>
+                    <div class="input-group">
+                        <label style="display:flex; align-items:center; gap:12px; font-weight:800; color:var(--text-accent);">
+                            <input type="checkbox" id="auto-pdf-toggle" style="width:24px;height:24px;" onchange="toggleAutoPdf()">
+                            Enable Monthly Auto-Download (1st of every month)
+                        </label>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">Note: App must be opened at least once on or after the 1st of the month to trigger the background download.</p>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 18px; width: 100%; padding: 18px; font-size: 15px;" onclick="downloadAllPdfsNow()"><i class="fas fa-download"></i> Download All PDFs Now</button>
+                </div>
+
+                <div class="form-card">
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-trash-restore"></i> Reset Data</h3>
+                    <button class="btn btn-danger" style="width: 100%; padding: 18px; font-size: 15px;" onclick="resetVaultOnly()"><i class="fas fa-coins"></i> Reset Savings Dashboard Only</button>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-top: 14px; line-height: 1.5;">This will delete only your savings balance and transactions. Work shifts will remain safe.</p>
+                </div>
+                
+                <div class="form-card">
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-magic"></i> Automatic Smart Theme</h3>
+                    <div class="input-group">
+                        <label style="display:flex; align-items:center; gap:12px; font-weight:800; color:var(--text-accent);">
+                            <input type="checkbox" id="auto-theme-toggle" style="width:24px;height:24px;" onchange="toggleAutoTheme()">
+                            Enable Auto-Theme (Morning/Afternoon/Night)
+                        </label>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">Themes will change automatically at 6 AM, 12 PM, and 6 PM.</p>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--text-main); margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 14px; font-size: 24px; font-family: var(--font-heading);">Manual Premium Themes</h3>
+                
+                <!-- THEME GALLERY -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 16px; margin-bottom: 35px;" id="theme-gallery"></div>
+
+                <div class="form-card">
+                    <h3 style="margin-bottom: 18px; font-size: 20px; font-family: var(--font-heading);"><i class="fas fa-database"></i> Backup & Restore</h3>
+                    <div class="btn-flex-row">
+                        <button class="btn btn-primary" style="padding: 18px; font-size: 15px;" onclick="exportData()"><i class="fas fa-file-export"></i> Backup Savings Data (.json)</button>
+                    </div>
+                    <div style="margin-top: 24px;">
+                        <label style="font-size: 14px; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 10px;">Restore Backup File</label>
+                        <input type="file" id="import-file" accept=".json,application/json,application/octet-stream,text/plain" style="font-size: 15px; color: var(--text-muted); width: 100%; margin-bottom: 14px; padding: 10px; background: rgba(0,0,0,0.4); border-radius: 10px;">
+                        <button class="btn btn-danger" style="padding: 18px; font-size: 15px;" onclick="importData()"><i class="fas fa-upload"></i> Restore Backup</button>
+                    </div>
+                </div>
+
+            <div class="gh-admin-tools"><h3>Staff & Attendance Management</h3><p>Manage staff accounts and review daily punches.</p><button class="btn btn-primary" onclick="GHAuth.openStaffManager()">Manage Staff Accounts</button><div id="gh-admin-attendance"><div class="gh-admin-date"><input type="date" id="gh-admin-date"><button class="btn btn-primary" onclick="GHAuth.renderAdminAttendance()">Load Attendance</button><button class="btn btn-primary" onclick="window.print()">Print / Save PDF</button></div><div class="gh-history-wrap"><table><thead><tr><th>Staff</th><th>In</th><th>Out</th><th>Status</th></tr></thead><tbody id="gh-admin-attendance-rows"></tbody></table></div></div></div>
+</section>
+        </main>
+    </div>
+
+    <!-- MODAL: PROFILE -->
+    <div class="modal-mask" id="profileModal">
+        <div class="modal-sheet">
+            <h3 style="color: var(--text-main); text-align: center; font-size: 24px; margin-bottom: 14px; font-family: var(--font-heading);">Edit Profile</h3>
+            <div class="input-group"><label>Name</label><input type="text" id="m-prof-name" class="form-control"></div>
+            <div class="input-group"><label>Job Title</label><input type="text" id="m-prof-role" class="form-control"></div>
+            <div style="display: flex; gap: 16px;">
+                <div class="input-group"><label>ID</label><input type="text" id="m-prof-id" class="form-control"></div>
+                <div class="input-group"><label>Height</label><input type="text" id="m-prof-ht" class="form-control"></div>
+            </div>
+            <div class="input-group">
+                <label>Profile Photo</label>
+                <input type="file" id="m-prof-file" accept="image/*" style="font-size: 15px; padding: 14px; background: rgba(0,0,0,0.4); border-radius: 12px; border: 1px dashed var(--border-highlight);" onchange="encodeImageFileAsURL(this)">
+                <input type="hidden" id="m-prof-avatar">
+            </div>
+            <div class="btn-flex-row" style="margin-top: 20px;">
+                <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: #fff !important; box-shadow: none !important;" onclick="closeModal('profileModal')">Cancel</button>
+                <button class="btn btn-success" onclick="saveProfileData()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL: EDIT DREAM GOAL -->
+    <div class="modal-mask" id="dreamGoalModal">
+        <div class="modal-sheet">
+            <h3 style="color: var(--text-main); text-align: center; font-size: 22px; margin-bottom: 12px; font-family: var(--font-heading);"><i class="fas fa-star" style="color: var(--text-accent);"></i> Edit Dream Goal</h3>
+            <div class="input-group"><label>Goal Name</label><input type="text" id="edit-goal-name" class="form-control" placeholder="e.g. Royal Enfield"></div>
+            <div class="input-group"><label>Target Amount (₹)</label><input type="number" id="edit-goal-target" class="form-control" placeholder="e.g. 250000"></div>
+            <div class="input-group"><label>Currently Saved (₹)</label><input type="number" id="edit-goal-saved" class="form-control" placeholder="e.g. 50000"></div>
+            <div class="btn-flex-row" style="margin-top: 18px;">
+                <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: #fff !important; box-shadow: none !important;" onclick="closeModal('dreamGoalModal')">Cancel</button>
+                <button class="btn btn-success" onclick="saveDreamGoal()">Save Goal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: JOBS -->
+    <div class="modal-mask" id="jobModal">
+        <div class="modal-sheet">
+            <h3 style="color: var(--text-main); text-align: center; font-size: 24px; font-family: var(--font-heading);">Job Profiles</h3>
+            <div style="display: flex; gap: 14px; width: 100%;">
+                <input type="text" id="new-job-input" class="form-control" style="flex:1;" placeholder="New Job Name">
+                <button class="btn btn-success" style="width: auto; padding: 0 24px;" onclick="createJobProfile()"><i class="fas fa-plus"></i></button>
+            </div>
+            <div id="job-profile-list" style="display: flex; flex-direction: column; gap: 12px; margin-top: 18px;"></div>
+            <button class="btn btn-primary" style="margin-top: 18px;" onclick="closeModal('jobModal')">Done</button>
+        </div>
+    </div>
+
+    <!-- MODAL: MENU -->
+    <div class="modal-mask" id="menuSheetModal">
+        <div class="modal-sheet" style="margin-top: auto; margin-bottom: calc(65px + var(--safe-bottom)); border-radius: 24px 24px 0 0;">
+            <div style="font-weight: 900; font-size: 20px; text-align: center; border-bottom: 1px solid var(--border-highlight); padding-bottom: 18px; margin-bottom: 16px; font-family: var(--font-heading);">App Menu</div>
+            
+            <button class="btn btn-primary" onclick="openProfileModal(); closeModal('menuSheetModal')"><i class="fas fa-user-edit"></i> Edit Profile</button>
+            <button class="btn btn-danger" style="margin-top: 12px;" onclick="resetVaultOnly(); closeModal('menuSheetModal')"><i class="fas fa-trash-restore"></i> Reset Savings Only</button>
+            <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; box-shadow: none !important; margin-top: 12px;" onclick="closeModal('menuSheetModal')">Close</button>
+        </div>
+    </div>
+
+    <!-- MODAL: EDIT VAULT TX -->
+    <div class="modal-mask" id="editTxModal">
+        <div class="modal-sheet">
+            <h3 style="color: var(--text-main); text-align: center; font-size: 22px; margin-bottom: 12px; font-family: var(--font-heading);">Edit Transaction</h3>
+            <div class="input-group"><label>Date</label><input type="text" id="edit-tx-date" class="form-control"></div>
+            <div class="input-group"><label>Note / Category</label><input type="text" id="edit-tx-note" class="form-control"></div>
+            <div style="display: flex; gap: 16px;">
+                <div class="input-group"><label>Amount (₹)</label><input type="number" id="edit-tx-amount" class="form-control" inputmode="decimal"></div>
+                <div class="input-group">
+                    <label>Type</label>
+                    <select id="edit-tx-flow" class="form-control">
+                        <option value="income">Deposit (+)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="btn-flex-row" style="margin-top: 18px;">
+                <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: #fff !important; box-shadow: none !important;" onclick="closeModal('editTxModal')">Cancel</button>
+                <button class="btn btn-success" onclick="saveEditedTx()">Save Transaction</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: EDIT SHIFT -->
+    <div class="modal-mask" id="editShiftModal">
+        <div class="modal-sheet">
+            <h3 style="color: var(--text-main); text-align: center; font-size: 22px; margin-bottom: 12px; font-family: var(--font-heading);">Edit Shift</h3>
+            <div class="input-group"><label>Date</label><input type="text" id="edit-shift-date" class="form-control"></div>
+            <div class="input-group"><label>Job / Title</label><input type="text" id="edit-shift-job" class="form-control"></div>
+            <div style="display: flex; gap: 16px;">
+                <div class="input-group"><label>Regular Hrs</label><input type="number" id="edit-shift-hrs" class="form-control" step="0.5"></div>
+                <div class="input-group"><label>OT Hrs</label><input type="number" id="edit-shift-ot" class="form-control" step="0.5"></div>
+            </div>
+            <div class="btn-flex-row" style="margin-top: 18px;">
+                <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: #fff !important; box-shadow: none !important;" onclick="closeModal('editShiftModal')">Cancel</button>
+                <button class="btn btn-success" onclick="saveEditedShift()">Save Shift</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: EDIT PETROL -->
+    <div class="modal-mask" id="editPetrolModal">
+        <div class="modal-sheet">
+            <h3 style="color: var(--text-main); text-align: center; font-size: 22px; margin-bottom: 12px; font-family: var(--font-heading);">Edit Petrol Record</h3>
+            <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 18px; line-height: 1.4;">Updating will auto-recalculate mileage for related records.</p>
+            <div class="input-group"><label>Date</label><input type="text" id="edit-petrol-date" class="form-control"></div>
+            <div style="display: flex; gap: 16px;">
+                <div class="input-group"><label>Price/L (₹)</label><input type="number" id="edit-petrol-price" class="form-control" inputmode="decimal"></div>
+                <div class="input-group"><label>Amount (₹)</label><input type="number" id="edit-petrol-amount" class="form-control" inputmode="decimal"></div>
+            </div>
+            <div class="input-group"><label>Odometer (km)</label><input type="number" id="edit-petrol-odo" class="form-control" inputmode="numeric"></div>
+            <input type="hidden" id="edit-petrol-id">
+            <div class="btn-flex-row" style="margin-top: 18px;">
+                <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: #fff !important; box-shadow: none !important;" onclick="closeModal('editPetrolModal')">Cancel</button>
+                <button class="btn btn-success" onclick="saveEditedPetrol()">Update & Recalculate</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: EDIT EMI -->
+    <div class="modal-mask" id="editEmiModal">
+        <div class="modal-sheet">
+            <h3 style="color: var(--text-main); text-align: center; font-size: 22px; margin-bottom: 12px; font-family: var(--font-heading);">Edit Loan Details</h3>
+            <div class="input-group"><label>Loan Name</label><input type="text" id="edit-emi-name" class="form-control"></div>
+            <div style="display: flex; gap: 16px;">
+                <div class="input-group"><label>Principal (₹)</label><input type="number" id="edit-emi-p" class="form-control"></div>
+                <div class="input-group"><label>Rate (%)</label><input type="number" id="edit-emi-r" class="form-control"></div>
+            </div>
+            <div style="display: flex; gap: 16px;">
+                <div class="input-group"><label>Total Months</label><input type="number" id="edit-emi-m" class="form-control"></div>
+                <div class="input-group"><label>Paid Months</label><input type="number" id="edit-emi-paid" class="form-control"></div>
+            </div>
+            <div style="display: flex; gap: 16px;">
+                <div class="input-group"><label>Start Date</label><input type="text" id="edit-emi-start" class="form-control" placeholder="DD/MM/YYYY"></div>
+                <div class="input-group"><label>Auto Pay Date</label><input type="text" id="edit-emi-paydate" class="form-control" placeholder="e.g. 5"></div>
+            </div>
+            <input type="hidden" id="edit-emi-id">
+            <div class="btn-flex-row" style="margin-top: 18px;">
+                <button class="btn btn-primary" style="background-image: none !important; background-color: transparent !important; border: 1px solid var(--border-color) !important; color: #fff !important; box-shadow: none !important;" onclick="closeModal('editEmiModal')">Cancel</button>
+                <button class="btn btn-success" onclick="saveEditedEmi()">Save EMI Info</button>
+            </div>
+        </div>
+    </div>
+
+    
+    
+<script src="./js/auth.js"></script>
+<script src="./js/app.js"></script>
+<script src="./js/enhancements.js"></script>
+</body>
+</html>
