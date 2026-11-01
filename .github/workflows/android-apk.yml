@@ -33,7 +33,7 @@ jobs:
           mkdir -p www
           cp index.html style.css auth.css auth.js app.js enhancements.js www/
           cp manifest.webmanifest service-worker.js www/
-          cp -R icons www/icons
+          cp icon-192.png icon-512.png www/
           if [ -f 10276.png ]; then cp 10276.png www/; fi
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
