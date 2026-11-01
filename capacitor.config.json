@@ -1,0 +1,6 @@
+{
+  "appId": "com.pvgr.gokulhub",
+  "appName": "Gokul Hub",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

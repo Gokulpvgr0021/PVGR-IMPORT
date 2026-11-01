@@ -898,5 +898,15 @@
 <script src="./auth.js"></script>
 <script src="./app.js"></script>
 <script src="./enhancements.js"></script>
+<script>
+// PWA offline app-shell support. Firebase data remains in the existing Firebase project.
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./service-worker.js').catch(function (error) {
+      console.warn('Gokul Hub service worker registration failed:', error);
+    });
+  });
+}
+</script>
 </body>
 </html>

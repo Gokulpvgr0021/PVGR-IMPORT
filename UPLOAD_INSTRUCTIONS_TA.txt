@@ -1,0 +1,29 @@
+GOKUL HUB PWA + ANDROID APK (PHONE-ONLY BUILD)
+
+IMPORTANT: Upload these files only to the gokulhub-apk-build branch. Do not upload to main.
+Do not delete or replace the existing app files. This package includes an updated index.html plus new PWA/build files.
+
+ZIP contents:
+- index.html (same app source with external PWA manifest + service-worker registration)
+- manifest.webmanifest
+- service-worker.js
+- icons/icon-192.png and icon-512.png
+- capacitor.config.json
+- .github/workflows/android-apk.yml
+
+GitHub mobile steps:
+1. Open the PVGR-IMPORT repository and confirm branch dropdown says gokulhub-apk-build.
+2. Add/upload the ZIP contents into the repository root, preserving folders (.github/workflows and icons).
+3. GitHub will show a commit page. Commit directly to gokulhub-apk-build.
+4. Open Actions > Build Gokul Hub Android APK > Run workflow (if it did not start automatically).
+5. Wait until the workflow is green. Open the completed run, scroll to Artifacts, download Gokul-Hub-Android-APK, extract the ZIP and install app-debug.apk.
+
+PWA:
+After the PWA files are committed and the branch is deployed to HTTPS hosting, open the deployed URL in Chrome/Brave menu and choose Install app / Add to Home screen.
+
+Safety/limitations:
+- The workflow builds a DEBUG APK for testing, not a Play Store release.
+- This package does not change Firebase paths or migrate/delete Firebase records.
+- Firebase-backed data continues to use the same remote Firebase project. Browser localStorage and native app storage are separate; local-only data may not automatically transfer. Back up and test before relying on the APK.
+- Offline support caches the app shell only. Firebase sync and external CDN libraries need internet.
+- The current branch in GitHub must already contain 10276.png; the workflow copies it if present. It is not modified by this package.
