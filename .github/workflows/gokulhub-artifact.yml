@@ -1,0 +1,34 @@
+
+name: Gokul Hub ZIP Artifact
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build-zip:
+    name: Create Gokul Hub ZIP
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create ZIP File
+        run: |
+          zip -r GokulHub-Source.zip . \
+            -x ".git/*" \
+               ".github/*" \
+               "GokulHub-Source.zip"
+
+      - name: Upload ZIP Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GokulHub-Source
+          path: GokulHub-Source.zip
+          retention-days: 30
