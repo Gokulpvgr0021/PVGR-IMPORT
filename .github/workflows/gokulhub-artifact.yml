@@ -1,5 +1,5 @@
 
-name: Gokul Hub ZIP Artifact
+name: Gokul Hub APK and ZIP Builder
 
 on:
   workflow_dispatch:
@@ -11,22 +11,75 @@ permissions:
   contents: read
 
 jobs:
-  build-zip:
-    name: Create Gokul Hub ZIP
+  build:
+    name: Build Android APK and Source ZIP
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Create ZIP File
+      - name: Create Source ZIP
         run: |
           zip -r GokulHub-Source.zip . \
             -x ".git/*" \
                ".github/*" \
                "GokulHub-Source.zip"
 
-      - name: Upload ZIP Artifact
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Prepare Capacitor
+        run: |
+          npm init -y
+          npm install @capacitor/core@7 @capacitor/android@7 @capacitor/cli@7
+
+          cat > capacitor.config.json <<'EOF'
+          {
+            "appId": "com.pvgr.gokulhub",
+            "appName": "Gokul Hub",
+            "webDir": "www"
+          }
+          EOF
+
+          mkdir www
+          rsync -a \
+            --exclude='/.git/' \
+            --exclude='/.github/' \
+            --exclude='/node_modules/' \
+            --exclude='/android/' \
+            --exclude='/www/' \
+            --exclude='/GokulHub-Source.zip' \
+            ./ www/
+
+      - name: Create Android Project
+        run: npx cap add android
+
+      - name: Sync Android App
+        run: npx cap sync android
+
+      - name: Build APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: GokulHub-Android-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
+
+      - name: Upload Source ZIP
         uses: actions/upload-artifact@v4
         with:
           name: GokulHub-Source
