@@ -40,7 +40,7 @@ jobs:
       - name: Prepare Capacitor
         run: |
           npm init -y
-          npm install @capacitor/core@7 @capacitor/android@7 @capacitor/cli@7 @capacitor/assets
+          npm install @capacitor/core@7 @capacitor/android@7 @capacitor/cli@7 @capacitor/assets @capacitor/filesystem@7 @capacitor/share@7 esbuild
 
           cat > capacitor.config.json <<'EOF'
           {
@@ -59,6 +59,8 @@ jobs:
             --exclude='/www/' \
             --exclude='/GokulHub-Source.zip' \
             ./ www/
+
+          npx esbuild native-pdf-bridge.src.js --bundle --platform=browser --format=iife --outfile=www/native-pdf-bridge.js
 
       - name: Create Android Project
         run: npx cap add android
