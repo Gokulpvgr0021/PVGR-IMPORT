@@ -1,0 +1,20 @@
+GOKUL HUB - ALL PDF DOWNLOAD FIX
+
+Replace these files in your GitHub repository with the same paths:
+- index.html
+- app.js
+- upgrades.js
+- service-worker.js
+- .github/workflows/gokulhub-artifact.yml
+- add native-pdf-bridge.src.js to the repository root
+
+Then commit to main and run GitHub Actions > Gokul Hub APK and ZIP Builder.
+Download the NEW GokulHub-Android-APK artifact and install that APK.
+
+On Android, PDF generation writes the PDF to the app cache and opens the Android
+Save/Share chooser. Choose an available destination app (for example Files or Drive)
+to save a copy. This is not an automatic write to the public Downloads folder.
+
+Do not replace or delete Firebase configuration, database records, or unrelated files.
+The workflow creates a new APK; it does not migrate or erase app data. Keep a backup
+before installing an APK that changes the app signing identity.
