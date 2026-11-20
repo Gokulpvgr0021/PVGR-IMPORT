@@ -309,11 +309,14 @@
         <div class="gh-chat-layout">
 
             <!-- CHAT CONTACTS -->
-            <div class="gh-chat-sidebar">
-                <div class="gh-chat-header">
-                    <h2>💬 GOKUL CHAT</h2>
-                    <button type="button" onclick="alert('Group chat setup coming next!')">＋</button>
-                </div>
+            <div class="gh-chat-header">
+    <button type="button" id="gh-staff-chat-back"
+        style="display:none;"
+        onclick="closeStaffChat()">← ATTENDANCE</button>
+
+    <h2>💬 GOKUL CHAT</h2>
+    <button type="button" onclick="alert('Group chat setup coming next!')">＋</button>
+</div>
 
                 <div class="gh-chat-search">
                     <input type="search" id="gh-chat-search"
