@@ -274,6 +274,70 @@
                 </div>
             </section>
 
+            
+<!-- GOKUL CHAT MODULE -->
+<section id="chat-view" class="view-panel">
+    <div id="gh-chat-view" class="active">
+        <div class="gh-chat-layout">
+
+            <!-- CHAT CONTACTS -->
+            <div class="gh-chat-sidebar">
+                <div class="gh-chat-header">
+                    <h2>💬 GOKUL CHAT</h2>
+                    <button type="button" onclick="alert('Group chat setup coming next!')">＋</button>
+                </div>
+
+                <div class="gh-chat-search">
+                    <input type="search" id="gh-chat-search"
+                        placeholder="Search contacts...">
+                </div>
+
+                <div class="gh-chat-list" id="gh-chat-list">
+                    <div class="gh-chat-empty">
+                        <div style="font-size:40px;">💬</div>
+                        <p>Contacts will appear here</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHAT CONVERSATION -->
+            <div class="gh-chat-main">
+                <div class="gh-chat-conversation-header">
+                    <div class="gh-chat-avatar">G</div>
+                    <div>
+                        <h3 id="gh-chat-contact-name">GOKUL CHAT</h3>
+                        <div class="gh-chat-status" id="gh-chat-contact-status">
+                            Select a conversation
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gh-chat-messages" id="gh-chat-messages">
+                    <div class="gh-chat-empty">
+                        <div style="font-size:55px;">👋</div>
+                        <h3>Welcome to GOKUL CHAT</h3>
+                        <p>Select a contact to start chatting.</p>
+                    </div>
+                </div>
+
+                <div class="gh-chat-typing" id="gh-chat-typing"></div>
+
+                <div class="gh-chat-composer">
+                    <textarea id="gh-chat-input"
+                        placeholder="Type a message..."
+                        rows="1"></textarea>
+                    <button type="button" class="gh-chat-send"
+                        id="gh-chat-send" aria-label="Send message">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- END GOKUL CHAT MODULE -->
+            
             <!-- 2. ATTENDANCE & WORK -->
             <section id="attendance-view" class="view-panel">
                 
