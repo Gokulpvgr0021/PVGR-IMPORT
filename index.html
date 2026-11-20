@@ -932,5 +932,33 @@
   }
 })();
 </script>
+    <script>
+function openStaffChat() {
+    var staff = document.getElementById('gh-staff-app');
+    var shell = document.querySelector('.app-shell');
+    var back = document.getElementById('gh-staff-chat-back');
+
+    if (!staff || !shell) return;
+
+    staff.hidden = true;
+    shell.style.display = '';
+
+    if (back) back.style.display = 'inline-flex';
+
+    if (typeof navTo === 'function') {
+        navTo('chat');
+    }
+}
+
+function closeStaffChat() {
+    var staff = document.getElementById('gh-staff-app');
+    var shell = document.querySelector('.app-shell');
+    var back = document.getElementById('gh-staff-chat-back');
+
+    if (back) back.style.display = 'none';
+    if (shell) shell.style.display = 'none';
+    if (staff) staff.hidden = false;
+}
+    </script>
 </body>
 </html>
