@@ -39,7 +39,18 @@
  <div class="gh-auth-card"><div class="gh-brand">GOKUL HUB</div><div class="gh-tagline">PREMIUM WORKSPACE</div>
   <div id="gh-role-choice"><button class="gh-role staff" onclick="GHAuth.choose('staff')">STAFF LOGIN</button><button class="gh-role admin" onclick="GHAuth.choose('admin')">ADMIN LOGIN</button></div>
   <div id="gh-login-form" hidden><h2 id="gh-login-title">Login</h2><input id="gh-login-id" autocomplete="username" placeholder="Staff ID"><input id="gh-login-password" type="password" autocomplete="current-password" placeholder="Password"><button id="gh-login-submit" class="gh-role admin" onclick="GHAuth.submit()">LOGIN</button><div id="gh-login-message" role="status"></div><button class="gh-back" onclick="GHAuth.back()">← Back</button></div></div></div>
-<div id="gh-staff-app" class="gh-staff-app" hidden><header class="gh-staff-header"><div><b>GOKUL HUB</b><small id="gh-staff-name">STAFF</small></div><button onclick="GHAuth.logout()">LOGOUT</button></header>
+<div id="gh-staff-app" class="gh-staff-app" hidden><header class="gh-staff-header">
+    <div>
+        <b>GOKUL HUB</b>
+        <small id="gh-staff-name">STAFF</small>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+        <button type="button" onclick="openStaffChat()">
+            <i class="fas fa-comments"></i> CHAT
+        </button>
+        <button onclick="GHAuth.logout()">LOGOUT</button>
+    </div>
+</header>
  <main class="gh-staff-main"><h1>Attendance</h1><p id="gh-staff-date"></p><div class="gh-punch-grid"><button id="gh-punch-in" onclick="GHAuth.punch('in')">⚡ PUNCH IN</button><button id="gh-punch-out" onclick="GHAuth.punch('out')">⚡ PUNCH OUT</button></div>
  <div class="gh-stats"><article><small>PRESENT</small><strong id="gh-present">0</strong></article><article><small>ABSENT</small><strong id="gh-absent">0</strong></article><article><small>OT HOURS</small><strong id="gh-ot">0.0h</strong></article><article><small>WORKING HOURS</small><strong id="gh-hours">0.0h</strong></article></div><h2>My Attendance History</h2><div class="gh-history-wrap"><table><thead><tr><th>Date</th><th>In</th><th>Out</th><th>Hours</th><th>Status</th></tr></thead><tbody id="gh-staff-history"></tbody></table></div></main></div>
 
