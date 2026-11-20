@@ -4,7 +4,7 @@
    Offline App Shell + CDN Runtime Cache
    ===================================================== */
 
-const CACHE_VERSION = 'gokul-hub-offline-v5';
+const CACHE_VERSION = 'gokul-hub-offline-v6';
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const CDN_CACHE = `${CACHE_VERSION}-cdn`;
 
