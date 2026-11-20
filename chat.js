@@ -1,7 +1,7 @@
 
 /* =====================================================
-   GOKUL CHAT - AUTHENTICATION BRIDGE
-   Existing Gokul Hub login remains unchanged.
+   GOKUL CHAT - FIREBASE AUTH BRIDGE
+   Existing Gokul Hub login is preserved.
    ===================================================== */
 
 (function () {
@@ -28,16 +28,15 @@
     auth: null,
     db: null,
     user: null,
-    ready: false,
-    error: null,
+    initialized: false,
 
     async initialize() {
-      if (!window.firebase) {
-        throw new Error("Firebase SDK is not loaded.");
-      }
+      if (this.initialized) return true;
 
-      if (!firebase.auth || !firebase.database) {
-        throw new Error("Firebase Auth or Database SDK is missing.");
+      if (!window.firebase ||
+          !firebase.auth ||
+          !firebase.database) {
+        throw new Error("Firebase SDK missing.");
       }
 
       this.app =
@@ -49,26 +48,24 @@
 
       this.auth.onAuthStateChanged(user => {
         this.user = user || null;
-        this.ready = !!user;
 
         window.dispatchEvent(
           new CustomEvent("gokulchat:auth", {
-            detail: { user: this.user }
+            detail: { authenticated: !!user }
           })
         );
       });
 
+      this.initialized = true;
       return true;
     },
 
     async login(role, username, password) {
       if (!navigator.onLine) {
-        throw new Error("Chat login requires an internet connection.");
+        throw new Error("Internet connection required for chat login.");
       }
 
-      if (!this.auth) {
-        await this.initialize();
-      }
+      await this.initialize();
 
       const response = await fetch(CONFIG.workerLogin, {
         method: "POST",
@@ -76,9 +73,9 @@
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          role,
-          username,
-          password
+          role: role,
+          username: username,
+          password: password
         })
       });
 
@@ -86,26 +83,33 @@
 
       try {
         result = await response.json();
-      } catch {
+      } catch (_) {
         throw new Error("Invalid authentication server response.");
       }
 
-      if (!response.ok || !result.success || !result.customToken) {
-        throw new Error(result.error || "Chat authentication failed.");
+      if (!response.ok ||
+          !result.success ||
+          !result.customToken) {
+        throw new Error(
+          result.error || "Chat authentication failed."
+        );
       }
 
-      const credential = await this.auth.signInWithCustomToken(
-        result.customToken
-      );
+      const credential =
+        await this.auth.signInWithCustomToken(result.customToken);
 
       this.user = credential.user;
-      this.ready = true;
 
-      return {
-        success: true,
-        user: result.user,
-        firebaseUser: credential.user
-      };
+      window.dispatchEvent(
+        new CustomEvent("gokulchat:ready", {
+          detail: {
+            role: role,
+            user: result.user
+          }
+        })
+      );
+
+      return true;
     },
 
     async logout() {
@@ -114,7 +118,6 @@
       }
 
       this.user = null;
-      this.ready = false;
     },
 
     getCurrentUser() {
@@ -128,78 +131,8 @@
 
   window.GokulChatAuth = ChatAuth;
 
-  /*
-   * Capture credentials only in memory during the existing
-   * Gokul Hub login. The original login function is preserved.
-   */
-
-  function connectExistingLogin() {
-    if (!window.GHAuth || window.GHAuth.__chatConnected) {
-      return;
-    }
-
-    const originalSubmit = window.GHAuth.submit;
-
-    window.GHAuth.submit = async function () {
-      const title = document.getElementById("gh-login-title");
-      const idInput = document.getElementById("gh-login-id");
-      const passwordInput = document.getElementById("gh-login-password");
-
-      const role =
-        title && /admin/i.test(title.textContent) ? "admin" : "staff";
-
-      const username =
-        role === "admin" ? "admin" : (idInput?.value || "").trim();
-
-      const password = passwordInput?.value || "";
-
-      await originalSubmit.apply(this, arguments);
-
-      const gate = document.getElementById("gh-auth-gate");
-      const staffScreen = document.getElementById("gh-staff-app");
-      const shell = document.querySelector(".app-shell");
-
-      const loginSucceeded =
-        gate?.hidden === true &&
-        (
-          staffScreen?.hidden === false ||
-          (shell && getComputedStyle(shell).display !== "none")
-        );
-
-      if (!loginSucceeded || !password) return;
-
-      try {
-        await ChatAuth.login(role, username, password);
-
-        window.dispatchEvent(
-          new CustomEvent("gokulchat:ready", {
-            detail: {
-              role,
-              user: ChatAuth.user
-            }
-          })
-        );
-      } catch (error) {
-        console.warn("GOKUL CHAT sign-in unavailable:", error);
-
-        window.dispatchEvent(
-          new CustomEvent("gokulchat:error", {
-            detail: { message: error.message }
-          })
-        );
-      }
-    };
-
-    window.GHAuth.__chatConnected = true;
-  }
-
-  connectExistingLogin();
-
-  document.addEventListener("DOMContentLoaded", () => {
-    connectExistingLogin();
-
+  document.addEventListener("DOMContentLoaded", function () {
     ChatAuth.initialize().catch(error => {
-      ChatAuth.error = error;
       console.warn("GOKUL CHAT initialization:", error);
     });
   });
